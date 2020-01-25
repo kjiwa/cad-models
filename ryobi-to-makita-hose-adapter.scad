@@ -5,7 +5,6 @@
  * enables them to be connected to Makita vacuums.
  */
 
-12345678901234567890123456789012345678901234567890123456789012345678901234567890
 /**
  * The height of the adapter's end sections. These sections fit into the dust
  * port and vacuum hose.
