@@ -5,9 +5,26 @@
  * enables them to be connected to Makita vacuums.
  */
 
+12345678901234567890123456789012345678901234567890123456789012345678901234567890
+/**
+ * The height of the adapter's end sections. These sections fit into the dust
+ * port and vacuum hose.
+ */
 END_SECTION_HEIGHT = 20;
+
+/**
+ * The height of the adapter's middle section. This section connects the two end
+ * sections.
+ */
 MIDDLE_SECTION_HEIGHT = 10;
 
+/**
+ * Creates a hose adapter.
+ *
+ * @param d1 The inside diameter of the dust port.
+ * @param d2 The inside diameter of the vacuum hose.
+ * @param thickness The adapter thickness.
+ */
 module hose_adapter(d1, d2, thickness) {
   module shell(d1, d2) {
     cylinder(h=END_SECTION_HEIGHT, d=d1, $fn=32);
