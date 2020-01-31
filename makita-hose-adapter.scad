@@ -1,8 +1,8 @@
 /**
- * Kreg pocket hole jig adapter for Makita vacuums and dust extractors.
+ * Hose adapter for Makita vacuums and dust extractors.
  *
- * This adapter fits inside the dust port of Kreg pocket hole jigs and enables
- * them to be connected to Makita vacuums.
+ * This adapter fits inside tool dust ports and enables them to be connected to
+ * Makita vacuums.
  */
 
 /**
@@ -28,9 +28,9 @@ module hose_adapter(d1, d2, thickness) {
   module shell(d1, d2) {
     cylinder(h=END_SECTION_HEIGHT, d=d1, $fn=32);
     translate([0, 0, END_SECTION_HEIGHT])
-      cylinder(h=MIDDLE_SECTION_HEIGHT, d1=d1, d2=d2, $fn=32);
+        cylinder(h=MIDDLE_SECTION_HEIGHT, d1=d1, d2=d2, $fn=32);
     translate([0, 0, END_SECTION_HEIGHT + MIDDLE_SECTION_HEIGHT])
-      cylinder(h=END_SECTION_HEIGHT, d=d2, $fn=32);
+        cylinder(h=END_SECTION_HEIGHT, d=d2, $fn=32);
   }
     
   difference() {
@@ -39,4 +39,14 @@ module hose_adapter(d1, d2, thickness) {
   }
 }
 
-hose_adapter(30.5, 37, 2);
+hose_adapter_thickness = 2;
+makita_dust_extractor_port_diameter = 37;
+
+// dust_port_diameter = 30.5;  // Kreg pocket hole jig K4
+// dust_port_diameter = 31.5;  // Ryobi P411 cordless random orbit sander
+dust_port_diameter = 36.5;  // DeWalt DW618 router plunge base
+
+hose_adapter(
+    dust_port_diameter,
+    makita_dust_extractor_port_diameter,
+    hose_adapter_thickness);
