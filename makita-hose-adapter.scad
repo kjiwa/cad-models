@@ -44,7 +44,7 @@ makita_dust_extractor_port_diameter = 37;
 
 // dust_port_diameter = 30.5;  // Kreg pocket hole jig K4
 // dust_port_diameter = 31.5;  // Ryobi P411 cordless random orbit sander
-dust_port_diameter = 36.5;  // DeWalt DW618 router plunge base
+dust_port_diameter = 34.5;  // DeWalt DW618 router plunge base
 
 hose_adapter(
     dust_port_diameter,
