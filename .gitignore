@@ -1,0 +1,17 @@
+# Build outputs & generated meshes
+*.stl
+*.3mf
+*.obj
+*.png
+*.svg
+*.dxf
+*.deps
+build/
+dist/
+
+# OS / Editor artifacts
+.DS_Store
+*.swp
+*~
+.vscode/
+.idea/
