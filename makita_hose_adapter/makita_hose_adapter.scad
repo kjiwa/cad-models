@@ -2,7 +2,7 @@
  * Hose adapter for Makita vacuums and dust extractors.
  *
  * This adapter fits inside tool dust ports and enables them to be connected to
- * Makita vacuums.
+ * Makita vacuums. All dimensions are in millimeters.
  */
 
 /**
@@ -25,6 +25,8 @@ MIDDLE_SECTION_HEIGHT = 10;
  * @param thickness The adapter thickness.
  */
 module hose_adapter(d1, d2, thickness) {
+  // Generates the solid adapter profile consisting of two cylindrical ends
+  // connected by a conical transition loft.
   module shell(d1, d2) {
     cylinder(h=END_SECTION_HEIGHT, d=d1, $fn=32);
     translate([0, 0, END_SECTION_HEIGHT])
@@ -39,9 +41,13 @@ module hose_adapter(d1, d2, thickness) {
   }
 }
 
+// Wall thickness of the adapter shell in millimeters.
 hose_adapter_thickness = 2;
+
+// Inside diameter of the Makita vacuum hose connection in millimeters.
 makita_dust_extractor_port_diameter = 37;
 
+// Tool dust port inside diameter in millimeters.
 // dust_port_diameter = 30.5;  // Kreg pocket hole jig K4
 // dust_port_diameter = 31.5;  // Ryobi P411 cordless random orbit sander
 dust_port_diameter = 34.5;  // DeWalt DW618 router plunge base

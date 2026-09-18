@@ -1,3 +1,8 @@
+/**
+ * Parametric mounting plate to secure curtain rod brackets to walls or trim.
+ * Dimensions are specified in inches and scaled to millimeters on export.
+ */
+
 /* [Dimensions] */
 plate_width = 6.0;       // Width of the mounting plate in inches
 plate_height = 4.0;      // Height of the mounting plate in inches
@@ -22,9 +27,10 @@ hex_nut_spacing = 0.875;       // Vertical center-to-center spacing between oute
 
 /* [Hidden] */
 $fn = 64;
-EPSILON = 0.01;
-INCH_TO_MM = 25.4;
+EPSILON = 0.01;     // Small offset to ensure clean manifold boolean cuts
+INCH_TO_MM = 25.4;  // Conversion factor from inches to millimeters
 
+// Generates the base plate with top-edge chamfers via convex hull.
 module chamfered_plate(width = plate_width, height = plate_height, thickness = plate_thickness, chamfer = chamfer_size) {
   if (chamfer > 0 && chamfer < min(width / 2, height / 2, thickness)) {
     hull() {
@@ -39,6 +45,7 @@ module chamfered_plate(width = plate_width, height = plate_height, thickness = p
   }
 }
 
+// Generates wall mounting screw clearance holes along left and right margins.
 module mounting_hole_pattern(width = plate_width, thickness = plate_thickness, hole_dia = screw_hole_diameter, side_margin = hole_side_margin, count = holes_per_column, spacing = hole_spacing) {
   x_positions = [-width / 2 + side_margin, width / 2 - side_margin];
 
@@ -56,12 +63,15 @@ module mounting_hole_pattern(width = plate_width, thickness = plate_thickness, h
   }
 }
 
+// Generates the raised rear boss block to house hex nuts for bracket mounting screws.
 module hex_nut_boss(width = boss_width, height = boss_height, thickness = boss_thickness, x_offset = boss_x_offset) {
   translate([x_offset, 0, -thickness / 2])
     cube([width, height, thickness], center = true);
 }
 
+// Generates hex nut pockets and screw clearance through-holes in the boss.
 module hex_nut_boss_pattern(thickness = boss_thickness, plate_thick = plate_thickness, x_offset = boss_x_offset, flats_dia = hex_nut_flats_dia, nut_depth = hex_nut_depth, count = hex_nut_count, spacing = hex_nut_spacing, screw_dia = screw_hole_diameter) {
+  // Convert distance across flats to circumscribed cylinder diameter for 6-sided cylinder
   hex_outer_dia = flats_dia / cos(30);
 
   if (count <= 1) {
@@ -80,6 +90,7 @@ module hex_nut_boss_pattern(thickness = boss_thickness, plate_thick = plate_thic
   }
 }
 
+// Full assembly: plate with boss, minus wall screw and bracket mounting holes.
 module curtain_rod_mounting_plate() {
   difference() {
     union() {
