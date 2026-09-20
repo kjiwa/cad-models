@@ -62,12 +62,12 @@ module slot_cradle(x_center, is_first_slot = true) {
       if (is_visible("bottom_shelf")) {
         color("SeaGreen") cradle_base_foot(x_center);
       }
+
+      cradle_support_gussets(x_center, is_first_slot);
     }
 
     if (include_screw_holes) {
       screwdriver_access_cutter(x_center, z_screw);
     }
   }
-
-  cradle_support_gussets(x_center, is_first_slot);
 }
