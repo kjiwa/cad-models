@@ -22,8 +22,27 @@ A parametric, 3D-printable pegboard holder for Ryobi 40V batteries with an angle
 ryobi_40v_battery_holder/
 ├── Makefile                        # Build automation for STL, 3MF, and PNG renders
 ├── README.md                       # Project documentation & printing recommendations
-└── ryobi_40v_battery_holder.scad   # Parametric OpenSCAD source model
+├── ryobi_40v_battery_holder.scad   # Top-level assembly orchestrator & Customizer parameters
+└── components/
+    ├── backplate.scad              # Mounting backplate, screw holes, and weight-relief windows
+    ├── bottom_shelf.scad           # Battery resting shelf and build-plate base foot
+    ├── gussets.scad                # Structural reinforcement gusset styles and ribs
+    ├── labels.scad                 # Component visibility filters and 3D preview labels
+    ├── pegs.scad                   # Pegboard upper retention hooks and stabilizing pins
+    ├── slide_bed.scad              # Angled battery slide bed with friction relief and debossed text
+    ├── slide_rails.scad            # Battery slide retention rails with lead-in flares
+    └── slot_cradle.scad            # Slot cradle assembly and screwdriver access channel
 ```
+
+---
+
+## Architecture
+
+The model is organized into single-responsibility geometric components and pure orchestration modules:
+
+- **Single-Responsibility Primitives**: Each component file isolates specific geometric operations (e.g. `backplate_blank`, `backplate_tilt_chamfer`, `backplate_screw_holes`, `rail_profile_2d`, `rail_lead_in_flare`, `cradle_base_foot_hull`).
+- **Subassembly Orchestrators**: Mid-level modules (`backplate`, `mounting_pegs`, `slide_rails`, `gusset_ribs`, `slot_cradle`) compose primitives without mixing coordinate frames or responsibilities.
+- **Top-Level Orchestrator**: `ryobi_40v_battery_holder.scad` declares Customizer parameters, computes derived dimensions, and invokes the top-level assembly.
 
 ---
 

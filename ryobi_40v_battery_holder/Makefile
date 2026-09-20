@@ -1,7 +1,8 @@
 OPENSCAD ?= openscad
 MODEL     := ryobi_40v_battery_holder
-SCAD_FILE := $(MODEL).scad
-BUILD_DIR := build
+SCAD_FILE  := $(MODEL).scad
+COMPONENTS := $(wildcard components/*.scad)
+BUILD_DIR  := build
 
 OPENSCAD_FLAGS := --render
 RENDER_FLAGS   := --camera=0,0,0,60,0,215,550 --autocenter --viewall --imgsize=1024,768 --colorscheme=Tomorrow
@@ -17,15 +18,15 @@ stl: $(BUILD_DIR)/$(MODEL).stl
 
 preview: $(BUILD_DIR)/$(MODEL)_preview.png
 
-$(BUILD_DIR)/$(MODEL).stl: $(SCAD_FILE)
+$(BUILD_DIR)/$(MODEL).stl: $(SCAD_FILE) $(COMPONENTS)
 	@mkdir -p $(@D)
 	$(OPENSCAD) $(OPENSCAD_FLAGS) -o $@ $<
 
-$(BUILD_DIR)/$(MODEL).3mf: $(SCAD_FILE)
+$(BUILD_DIR)/$(MODEL).3mf: $(SCAD_FILE) $(COMPONENTS)
 	@mkdir -p $(@D)
 	$(OPENSCAD) $(OPENSCAD_FLAGS) -o $@ $<
 
-$(BUILD_DIR)/$(MODEL)_preview.png: $(SCAD_FILE)
+$(BUILD_DIR)/$(MODEL)_preview.png: $(SCAD_FILE) $(COMPONENTS)
 	@mkdir -p $(@D)
 	$(OPENSCAD) $(RENDER_FLAGS) --render -o $@ $<
 
