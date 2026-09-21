@@ -77,7 +77,7 @@ module rail_front_edge_roundover(x_outer, h_slot, t_lip, r_shelf) {
 module single_rail() {
   w_pocket = rail_width + 2 * rail_clearance;
   h_slot = rail_thickness + rail_clearance;
-  t_lip = rail_thickness;
+  t_lip = rail_lip_thickness;
   d_lip = rail_lip_depth;
 
   x_outer = bed_width / 2;

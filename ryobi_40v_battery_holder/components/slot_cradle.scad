@@ -22,7 +22,7 @@ module cradle_tilted_subassembly(is_first_slot) {
     if (enable_rails && is_visible("slide_rails")) {
       color("RoyalBlue") slide_rails();
       if (is_first_slot) {
-        component_label("Slide Rails", [0, bed_thickness + rail_thickness * 2 + rail_clearance + 0.5, rail_length / 2]);
+        component_label("Slide Rails", [0, bed_thickness + bottom_shelf_depth + 0.5, rail_length / 2]);
       }
     }
   }

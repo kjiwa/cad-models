@@ -76,13 +76,14 @@ The model is organized into single-responsibility geometric components and pure 
 ### `[Ryobi 40V Battery Interface]`
 | Parameter | Default | Units | Description |
 |---|---|---|---|
-| `rail_width` | `68.0` | mm | Outer width across battery slide rails |
-| `rail_thickness` | `3.5` | mm | Thickness of rail lip |
+| `rail_width` | `62.0` | mm | Outer width across battery slide rails |
+| `rail_thickness` | `5.5` | mm | Thickness of battery slide flange |
+| `rail_lip_thickness` | `2.0` | mm | Thickness of retaining rail lip |
 | `rail_lip_depth` | `4.5` | mm | Undercut depth of rail lip |
-| `rail_length` | `75.0` | mm | Slide rail engagement length |
+| `rail_length` | `80.0` | mm | Slide rail engagement length |
 | `rail_clearance` | `0.5` | mm | Fit tolerance gap around rails |
 | `bed_width` | `76.0` | mm | Slide bed and bottom shelf width |
-| `bottom_shelf_depth` | `7.5` | mm | Depth of bottom resting shelf |
+| `bottom_shelf_depth` | `8.0` | mm | Depth of bottom resting shelf |
 | `bottom_shelf_thickness` | `6.0` | mm | Thickness of bottom resting shelf |
 | `enable_rails` | `true` | bool | Include central slide rails |
 

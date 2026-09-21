@@ -25,16 +25,19 @@ label_size = 4.5; // [2:0.5:10]
 
 /* [Ryobi 40V Battery Interface] */
 // Width across outer edges of battery slide rails in mm
-rail_width = 68.0;
+rail_width = 62.0;
 
-// Thickness of the rail lip in mm
-rail_thickness = 3.5;
+// Thickness of the battery slide flange in mm
+rail_thickness = 5.5;
+
+// Thickness of the retaining rail lip in mm
+rail_lip_thickness = 2.0;
 
 // Undercut depth of the rail lip in mm
 rail_lip_depth = 4.5;
 
 // Slide rail engagement length in mm
-rail_length = 75.0;
+rail_length = 80.0;
 
 // Fit tolerance gap around rails in mm
 rail_clearance = 0.5;
@@ -43,7 +46,7 @@ rail_clearance = 0.5;
 bed_width = 76.0;
 
 // Depth of bottom support shelf in mm
-bottom_shelf_depth = 7.5;
+bottom_shelf_depth = 8.0;
 
 // Thickness of bottom support shelf in mm
 bottom_shelf_thickness = 6.0;
