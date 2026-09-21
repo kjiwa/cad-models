@@ -11,7 +11,7 @@ battery_count = 2; // [1:1:6]
 tilt_angle = 15; // [0:5:45]
 
 // Center-to-center spacing between slots in pegboard hole increments
-slot_spacing_pegs = 5; // [3:2:9]
+slot_spacing_pegs = 4; // [3:1:8]
 
 /* [Component Inspection & Labels] */
 // Show 3D text labels for components in preview

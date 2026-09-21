@@ -64,7 +64,7 @@ The model is organized into single-responsibility geometric components and pure 
 |---|---|---|---|
 | `battery_count` | `2` | `1` - `6` | Number of batteries held side-by-side |
 | `tilt_angle` | `15` | `0` - `45` deg | Forward tilt angle from vertical |
-| `slot_spacing_pegs` | `5` | `3` - `9` (odd) | Slot center-to-center spacing in pegboard holes (5" = 127 mm) |
+| `slot_spacing_pegs` | `4` | `3` - `8` | Slot center-to-center spacing in pegboard holes (4" = 101.6 mm) |
 
 ### `[Component Inspection & Labels]`
 | Parameter | Default | Range / Options | Description |

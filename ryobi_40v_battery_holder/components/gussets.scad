@@ -122,7 +122,7 @@ module gusset_rib_pair(x_center, span, z_bot, h_plate_attach, h_contact, w_conta
 // Orchestrates structural cradle reinforcement gussets based on the configured style.
 module gusset_ribs(x_center) {
   w = bed_width;
-  gusset_span = 2 * peg_hole_spacing;
+  gusset_span = (slot_spacing_pegs % 2 == 0) ? peg_hole_spacing : 2 * peg_hole_spacing;
   z_gusset_bot = z_shelf;
   h_gusset = z_plate_top - z_gusset_bot;
   w_gusset = h_gusset * tan(tilt_angle);
