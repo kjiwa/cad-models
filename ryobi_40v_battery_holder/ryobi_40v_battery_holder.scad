@@ -68,7 +68,7 @@ pin_diameter = 5.7;
 stabilizing_peg_pattern = "all"; // [all: All Available Rows (1-in and 2-in), span_2: 2-in Below Only, span_1: 1-in Below Only]
 
 // Height of retention hook tab behind pegboard in mm
-hook_rise = 4.0;
+hook_rise = 3.5;
 
 // Top margin above upper hooks in mm
 peg_top_margin = 6.35;

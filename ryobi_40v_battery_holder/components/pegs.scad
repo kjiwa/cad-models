@@ -2,11 +2,13 @@
  * Pegboard mounting hooks and stabilizing pins.
  */
 
-// Generates an upper retention hook with an internal chamfered root and rear spine.
+// Generates an upper retention hook with contoured bend, heel relief, and lead-in chamfer.
 module pegboard_upper_hook(pin_d = pin_diameter, board_t = pegboard_thickness, rise = hook_rise) {
   shank_len = board_t + 0.8;
-  hook_t = 3.2;
+  hook_t = 3.0;
   root_chamfer = 0.35;
+  heel_chamfer = 2.4;
+  tab_lead = 1.2;
 
   rotate([90, 0, 0]) {
     translate([0, 0, -backplate_thickness])
@@ -16,24 +18,24 @@ module pegboard_upper_hook(pin_d = pin_diameter, board_t = pegboard_thickness, r
   }
 
   translate([0, -shank_len, 0]) {
-    hull() {
-      rotate([90, 0, 0])
-        cylinder(d = pin_d, h = hook_t);
-      translate([0, -hook_t / 2, rise])
-        rotate([0, 90, 0])
-          cylinder(d = hook_t, h = pin_d * 0.8, center = true);
-    }
-    // Reinforcing spine on the back of the hook tab
-    translate([0, -hook_t, 0]) {
-      rotate([90, 0, 90]) {
-        linear_extrude(height = pin_d * 0.7, center = true) {
-          polygon(points = [
-            [0, 0],
-            [0, rise * 0.75],
-            [-rise * 0.5, 0]
-          ]);
-        }
+    difference() {
+      hull() {
+        rotate([90, 0, 0])
+          cylinder(d = pin_d, h = hook_t);
+        translate([0, -hook_t / 2, rise])
+          rotate([0, 90, 0])
+            cylinder(d = hook_t, h = pin_d * 0.85, center = true);
       }
+
+      // Bottom-rear heel relief: eliminates diagonal bulk that binds when tilted
+      translate([0, -hook_t, -pin_d / 2])
+        rotate([-45, 0, 0])
+          cube([pin_d + 2, heel_chamfer * sqrt(2), heel_chamfer * sqrt(2)], center = true);
+
+      // Tab front lead-in: guides the tab smoothly into the hole during tilted entry
+      translate([0, 0, rise + hook_t / 2])
+        rotate([45, 0, 0])
+          cube([pin_d + 2, tab_lead * sqrt(2), tab_lead * sqrt(2)], center = true);
     }
   }
 }

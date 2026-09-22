@@ -94,7 +94,7 @@ The model is organized into single-responsibility geometric components and pure 
 | `pegboard_thickness_in` | `0.25` | in | Pegboard thickness |
 | `pin_diameter` | `5.7` | mm | Pin diameter (tolerance fit for 1/4" / 6.35 mm hole) |
 | `stabilizing_peg_pattern` | `all` | options | Stabilizing peg pattern below upper hooks (`all`, `span_2`, `span_1`) |
-| `hook_rise` | `4.0` | mm | Vertical rise of hook tab behind pegboard |
+| `hook_rise` | `3.5` | mm | Vertical rise of hook tab behind pegboard |
 | `peg_top_margin` | `6.35` | mm | Top margin above upper hooks |
 | `tilt_chamfer` | `2.0` | mm | Rear top chamfer size for pegboard insertion clearance |
 | `include_screw_holes` | `true` | bool | Include countersunk screw clearance holes |
