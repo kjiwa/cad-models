@@ -1,0 +1,6 @@
+[submodule "lib/peglock_openscad"]
+	path = lib/peglock_openscad
+	url = https://github.com/loudej/peglock_openscad.git
+[submodule "lib/BOSL2"]
+	path = lib/BOSL2
+	url = https://github.com/BelfrySCAD/BOSL2.git
