@@ -11,10 +11,17 @@ import sys
 
 
 def slugify(name: str) -> str:
-    return re.sub(r"[^a-zA-Z0-9]+", "_", name).strip("_")
+    slug = re.sub(r"[^a-zA-Z0-9]+", "_", name).strip("_")
+    return slug or "preset"
 
 
 def main() -> None:
+    if "OPENSCADPATH" not in os.environ:
+        repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+        lib_dir = os.path.join(repo_root, "lib")
+        if os.path.isdir(lib_dir):
+            os.environ["OPENSCADPATH"] = lib_dir
+
     parser = argparse.ArgumentParser(description="Build OpenSCAD presets")
     parser.add_argument("--model", required=True, help="Model name")
     parser.add_argument("--scad", required=True, help="Path to .scad file")

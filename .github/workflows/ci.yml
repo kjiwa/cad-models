@@ -28,10 +28,14 @@ jobs:
           sudo apt-get install -y --no-install-recommends openscad xvfb
 
       - name: Build models
+        env:
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
         run: |
           set -eu
           if [ "${GITHUB_EVENT_NAME:-}" = "pull_request" ] && [ -n "${GITHUB_BASE_REF:-}" ] && git rev-parse --verify "origin/${GITHUB_BASE_REF}" >/dev/null 2>&1; then
             BASE="origin/${GITHUB_BASE_REF}"
+          elif [ -n "${GITHUB_EVENT_BEFORE:-}" ] && [ "${GITHUB_EVENT_BEFORE}" != "0000000000000000000000000000000000000000" ] && git rev-parse --verify "${GITHUB_EVENT_BEFORE}" >/dev/null 2>&1; then
+            BASE="${GITHUB_EVENT_BEFORE}"
           elif git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
             BASE="HEAD~1"
           else
