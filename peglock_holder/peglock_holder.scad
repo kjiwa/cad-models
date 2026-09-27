@@ -1,5 +1,6 @@
 include <BOSL2/std.scad>
 include <peglock_openscad/peglock_modules.scad>
+include <peglock_mount/peglock_mount.scad>
 
 /* [Holder] */
 Holder_Width = 12.7;
@@ -29,24 +30,6 @@ numPeglocks = max(floor(overallHolderWidth / Peglock_Width), 1);
 backerWidth = max(overallHolderWidth, Peglock_Width);
 backerHeight = max(Holder_Height, Peglock_Height);
 
-module PeglockHolders() {
-  translate([Peglock_Width / 2, 0, 0])
-    for (i=[1:numPeglocks]) {
-      translate([(i - 1) * Peglock_Spacing, 0, 0]) mirror([0, 1, 0]) holder(is_cutting=true);
-    }
-}
-
-module PeglockBase() {
-  dx = Peglock_Spacing - Peglock_Width;
-  x = numPeglocks * Peglock_Spacing - dx;
-  translate([-x / 2, 0, -Peglock_Height / 2])
-    difference() {
-      translate([x / 2, -Peglock_Depth / 2, Peglock_Height / 2])
-        cuboid([x, Peglock_Depth, Peglock_Height], rounding=Peglock_Roundover, except=[FRONT, BACK]);
-      PeglockHolders();
-    }
-}
-
 module HolderLip() {
   translate([0, -Holder_Front_Lip_Thickness / 2, Holder_Front_Lip_Height / 2])
     intersection() {
@@ -59,7 +42,15 @@ module HolderLip() {
 module Holder() {
   h = Holder_Height + (Holder_Closed_Bottom ? Holder_Wall_Thickness : 0);
   tz = (h - Peglock_Height) / 2 + Peglock_Roundover;
-  translate([0, -Holder_Wall_Thickness, 0]) PeglockBase();
+  translate([0, -Holder_Wall_Thickness, 0])
+    PeglockBase(
+      count = numPeglocks,
+      width = Peglock_Width,
+      height = Peglock_Height,
+      depth = Peglock_Depth,
+      spacing = Peglock_Spacing,
+      roundover = Peglock_Roundover
+    );
   translate([0, -Holder_Wall_Thickness, 0]) HolderBacker();
   translate([0, 0, h < (Peglock_Height - 2 * Peglock_Roundover) ? tz : 0]) HolderGrid();
 }

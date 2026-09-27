@@ -21,6 +21,7 @@ peglock_hook/
 ├── peglock_hook.json       # Customizer preset configurations (socket sets)
 ├── peglock_hook.scad       # Parametric OpenSCAD source model
 ├── BOSL2                   # Relative symlink to ../lib/BOSL2
+├── peglock_mount           # Relative symlink to ../lib/peglock_mount
 └── peglock_openscad        # Relative symlink to ../lib/peglock_openscad
 ```
 

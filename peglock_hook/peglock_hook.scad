@@ -1,5 +1,6 @@
 include <BOSL2/std.scad>
 include <peglock_openscad/peglock_modules.scad>
+include <peglock_mount/peglock_mount.scad>
 
 /* [Hook] */
 Hook_Shape = "Square";  // [Circle, Square, Triangle, RightTriangle]
@@ -58,26 +59,6 @@ module RoundedRightTriangle(l, h, d, cr) {
       translate([l - cr, h - cr]) cylinder(r=cr, h=d);
       translate([cr, h - cr]) cylinder(r=cr, h=d);
       translate([cr, cr]) cylinder(r=cr, h=d);
-    }
-}
-
-module PeglockHolders() {
-  translate([Peglock_Width / 2, 0, 0])
-    for (i=[1:numPeglocks]) {
-      translate([(i - 1) * Peglock_Spacing, 0, 0])
-        mirror([0, 1, 0])
-        holder(is_cutting=true);
-    }
-}
-
-module PeglockBase() {
-  dx = Peglock_Spacing - Peglock_Width;
-  x = numPeglocks * Peglock_Spacing - dx;
-  translate([-x / 2, 0, -Peglock_Height / 2])
-    difference() {
-      translate([x / 2, -Peglock_Depth / 2, Peglock_Height / 2])
-        cuboid([x, Peglock_Depth, Peglock_Height], rounding=Peglock_Roundover, except=[FRONT, BACK]);
-      PeglockHolders();
     }
 }
 
@@ -149,7 +130,15 @@ module HookBacker() {
 }
 
 module Hook() {
-  translate([0, -Hook_Wall_Thickness, 0]) PeglockBase();
+  translate([0, -Hook_Wall_Thickness, 0])
+    PeglockBase(
+      count = numPeglocks,
+      width = Peglock_Width,
+      height = Peglock_Height,
+      depth = Peglock_Depth,
+      spacing = Peglock_Spacing,
+      roundover = Peglock_Roundover
+    );
   translate([0, -Hook_Wall_Thickness / 2, 0]) HookBacker();
   HookGrid();
 }
