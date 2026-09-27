@@ -14,6 +14,10 @@ function slot_type(index) =
 function slot_exit_height(index) =
   slot_is_plastic(index) ? plastic_exit_height : metal_exit_height;
 
+// Returns the calibrated internal cavity depth for a given slot index.
+function slot_chute_depth(index) =
+  slot_is_plastic(index) ? effective_plastic_depth : effective_metal_depth;
+
 // Returns the debossed front badge text for a given slot index.
 function slot_badge_text(index) =
   slot_is_plastic(index) ? "PLASTIC" : "METAL";
@@ -22,13 +26,15 @@ function slot_badge_text(index) =
 module chute_cavity(
   x_center,
   w = chute_width,
-  d = chute_depth,
+  d = effective_metal_depth,
   h = dispenser_height,
   floor_t = floor_thickness,
   back_t = backplate_thickness,
-  rear_w = rear_wall_thickness
+  tower_d = tower_depth,
+  front_w = front_wall_thickness
 ) {
-  y_c = back_t + rear_w + d / 2;
+  y_front_inner = back_t + tower_d - front_w;
+  y_c = y_front_inner - d / 2;
   z_cavity = floor_t;
   h_cavity = h - floor_t + EPSILON;
 
@@ -41,14 +47,15 @@ module exit_gate(
   x_center,
   exit_h,
   w = chute_width + 1.2,
-  d = chute_depth,
+  d = effective_metal_depth,
   floor_t = floor_thickness,
   back_t = backplate_thickness,
-  rear_w = rear_wall_thickness,
+  tower_d = tower_depth,
   front_w = front_wall_thickness,
   shelf_ext = shelf_extension
 ) {
-  y_start = back_t + rear_w;
+  y_front_inner = back_t + tower_d - front_w;
+  y_start = y_front_inner - d;
   total_gate_d = d + front_w + shelf_ext + 10.0;
   chamfer_h = min(1.0, exit_h * 0.4);
 
@@ -99,12 +106,16 @@ module sight_slot(
   slot_w = sight_slot_width,
   z_start = sight_slot_z_start,
   z_end = sight_slot_z_end,
-  y_start = backplate_thickness + rear_wall_thickness + chute_depth - EPSILON,
-  cut_depth = front_wall_thickness + shelf_extension + 10.0
+  back_t = backplate_thickness,
+  tower_d = tower_depth,
+  front_w = front_wall_thickness,
+  shelf_ext = shelf_extension
 ) {
   if (enable_sight_slots && (z_end > z_start + slot_w)) {
     h = z_end - z_start;
     r = slot_w / 2;
+    y_start = back_t + tower_d - front_w - EPSILON;
+    cut_depth = front_w + shelf_ext + 10.0;
 
     translate([x_center, y_start, z_start + h / 2]) {
       rotate([-90, 0, 0]) {
@@ -121,11 +132,12 @@ module sight_slot(
 
 // Generates all internal cutouts, gates, finger notches, and funnels for one dispenser slot.
 module slot_cutouts(index, x_center) {
-  chute_cavity(x_center);
-  exit_gate(x_center, slot_exit_height(index));
+  d = slot_chute_depth(index);
+  chute_cavity(x_center, d = d);
+  exit_gate(x_center, slot_exit_height(index), d = d);
   finger_scoop(x_center);
   sight_slot(x_center);
-  tower_top_funnel(x_center);
+  tower_top_funnel(x_center, chute_d = d);
 
   if (enable_badge_labels) {
     tower_debossed_text(x_center, slot_badge_text(index));

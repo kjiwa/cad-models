@@ -4,9 +4,10 @@ A parametric, 3D-printable pegboard dispenser for single-edge utility razor blad
 
 ## Features
 
-- **Side-by-Side Dual Compartments**: Dispenses metal blades and plastic blades from separate dedicated chutes with debossed front identification badges (`METAL` and `PLASTIC`).
+- **Side-by-Side Dual Compartments**: Dispenses metal blades and plastic scraper blades from separate dedicated chutes with debossed front identification badges (`METAL` and `PLASTIC`).
+- **Tailored Cavity Depths with Flush Front**: Independent internal pocket depths for sleeved metal blades (`23.0 mm`, accommodating 22.0 mm paper-sleeved blades) and plastic blades (`20.0 mm`, accommodating 18.7 mm blades), front-aligned so multi-tower dispenser faces remain coplanar.
 - **Parametric Capacity & Count**: Configurable dispenser height (`dispenser_height`) and number of side-by-side towers (`dispenser_count`).
-- **Calibrated Single-Blade Exit Gates**: Independent exit gate heights for metal blades (`1.7 mm`, matching ~1.1 mm spine) and plastic blades (`2.1 mm`, matching ~1.5 mm body), preventing double feeding.
+- **Calibrated Single-Blade Exit Gates**: Independent exit gate heights for metal blades (`1.7 mm`, matching ~1.2 mm sleeved blade) and plastic blades (`2.1 mm`, matching ~1.6 mm body), preventing double feeding.
 - **Support-Free Internal Bridging**: 45-degree lead-in chamfer on the exit gate ceiling prevents sagging during bridging so chutes print cleanly without internal support.
 - **Ergonomic Pinch-Grip Retrieval**: Front resting shelf combined with a bottom finger-scoop cutout allows pinching the bottom blade from above and below to slide it out smoothly.
 - **Front Inventory Sight Slots**: Full-height vertical slots allow visual tracking of remaining blades and downward thumb feed.
@@ -49,10 +50,12 @@ razor_blade_dispenser/
 ### `[Blade Cavity & Exit Gates]`
 | Parameter | Default | Description |
 |---|---|---|
-| `chute_width` | `40.8` | Internal blade cavity width in mm |
-| `chute_depth` | `20.5` | Internal blade cavity depth in mm |
+| `chute_width` | `41.0` | Internal blade cavity width in mm |
+| `metal_chute_depth` | `23.0` | Internal blade cavity depth for metal blades in mm (fits 22.0 mm sleeved blades) |
+| `plastic_chute_depth` | `20.0` | Internal blade cavity depth for plastic blades in mm (fits 18.7 mm blades) |
 | `metal_exit_height` | `1.7` | Exit gate height for metal blade slot in mm |
 | `plastic_exit_height` | `2.1` | Exit gate height for plastic blade slot in mm |
+| `chute_depth` | `0` | Legacy global chute depth override (0 uses independent depths) |
 
 ### `[Grip & Front Features]`
 | Parameter | Default | Description |
@@ -116,9 +119,10 @@ make clean
 
 ## 3D Printing Recommendations
 
-- **Material**: PLA or PETG. PETG is recommended for high-durability workshop environments.
-- **Orientation**: Print standing upright on its base flat against the build plate (Z = 0) with the backplate vertical.
-- **Supports**: Only tree supports needed under the rear pegboard hooks. The vertical chute cavities, top funnels, and internal 45-degree exit gate chamfers print completely support-free.
-- **Walls / Perimeters**: 3 to 4 walls for strong hook engagement and rigid tower walls.
-- **Infill**: 20% to 30% Gyroid or Grid.
-- **Top / Bottom Layers**: 4 to 5 layers.
+- **Material**: PETG is strongly recommended for workshop durability, superior layer adhesion, impact resistance, and slight flex that prevents pegboard hooks from snapping during installation or repositioning. PLA+ / Tough PLA is a viable alternative if PETG is unavailable.
+- **Orientation**: Print standing upright on its base flat against the build plate (Z = 0) with the backplate vertical. The generous floor surface area provides rock-solid bed adhesion without needing a brim.
+- **Walls / Perimeters**: Set to **4 to 5 perimeters** (min 1.6 mm - 2.0 mm total wall thickness). This ensures the 5.7 mm diameter pegboard mounting pins and retention hooks are printed almost entirely as solid concentric loops, maximizing shear and tensile strength.
+- **Infill**: 25% to 30% **Gyroid** or **Cubic** infill for uniform multi-axis load distribution.
+- **Top / Bottom Solid Layers**: 5 layers minimum (1.0 mm thickness at 0.2 mm layer height) for rigid floors and clean ceiling bridging.
+- **Supports**: Set supports to **"Touching buildplate only"** with **Tree Supports** (or Organic Supports) under the rear pegboard hooks and pins. Ensure *"Don't support bridges"* is enabled so no support material is placed inside the vertical blade chutes or exit gates—the internal 45-degree chamfers bridge completely support-free.
+- **Extrusion Temperature & Cooling**: Print at the higher end of the filament manufacturer's temperature range (e.g. 240°C–245°C for PETG) with moderate cooling fan speed (30%–50%) to maximize inter-layer fusion across horizontal hook layers.

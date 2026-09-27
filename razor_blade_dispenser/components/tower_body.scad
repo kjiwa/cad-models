@@ -65,8 +65,17 @@ module tower_front_shelf(
 }
 
 // Generates the top lead-in funnel bevel cutter for drop-in loading.
-module tower_top_funnel(x_center, chute_w = chute_width, chute_d = chute_depth, back_t = backplate_thickness, rear_w = rear_wall_thickness, lead = top_funnel_lead) {
-  y_c = back_t + rear_w + chute_d / 2;
+module tower_top_funnel(
+  x_center,
+  chute_w = chute_width,
+  chute_d = effective_metal_depth,
+  back_t = backplate_thickness,
+  tower_d = tower_depth,
+  front_w = front_wall_thickness,
+  lead = top_funnel_lead
+) {
+  y_front_inner = back_t + tower_d - front_w;
+  y_c = y_front_inner - chute_d / 2;
   z_top = dispenser_height;
 
   translate([x_center, y_c, z_top - lead + EPSILON]) {

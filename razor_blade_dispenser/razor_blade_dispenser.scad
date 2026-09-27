@@ -17,17 +17,23 @@ dispenser_height = 100.0; // [60:5:200]
 slot_spacing_pegs = 2; // [2:1:4]
 
 /* [Blade Cavity & Exit Gates] */
-// Internal blade pocket width in mm (accommodates ~39.6-40.0 mm blades)
-chute_width = 40.8;
+// Internal blade pocket width in mm (accommodates 39.15mm plastic & 39.9mm metal blades)
+chute_width = 41.0;
 
-// Internal blade pocket depth in mm (accommodates ~19.0-20.0 mm blades)
-chute_depth = 20.5;
+// Internal blade pocket depth for metal blade slot in mm (accommodates 22.0mm sleeved blades)
+metal_chute_depth = 23.0;
 
-// Bottom exit gate height for metal blade slot in mm (sized for ~1.1 mm spine)
+// Internal blade pocket depth for plastic blade slot in mm (accommodates 18.7mm plastic blades)
+plastic_chute_depth = 20.0;
+
+// Bottom exit gate height for metal blade slot in mm (sized for 1.2mm sleeved spine)
 metal_exit_height = 1.7;
 
-// Bottom exit gate height for plastic blade slot in mm (sized for ~1.5 mm body)
+// Bottom exit gate height for plastic blade slot in mm (sized for 1.6mm blade body)
 plastic_exit_height = 2.1;
+
+// Legacy global chute depth override (0 uses metal_chute_depth and plastic_chute_depth)
+chute_depth = 0;
 
 /* [Grip & Front Features] */
 // Width of bottom finger scoop cutout in mm
@@ -121,7 +127,11 @@ slot_spacing = slot_spacing_pegs * peg_hole_spacing;
 
 actual_dispenser_count = (dispenser_count > 0) ? dispenser_count : max(len(slot_pattern), 1);
 total_width = actual_dispenser_count * slot_spacing;
-tower_depth = rear_wall_thickness + chute_depth + front_wall_thickness;
+
+effective_metal_depth = (chute_depth > 0) ? chute_depth : metal_chute_depth;
+effective_plastic_depth = (chute_depth > 0) ? chute_depth : plastic_chute_depth;
+max_chute_depth = max(effective_metal_depth, effective_plastic_depth);
+tower_depth = rear_wall_thickness + max_chute_depth + front_wall_thickness;
 
 backplate_height = dispenser_height;
 z_plate_bottom = 0;
