@@ -31,15 +31,56 @@ module stadium_cutout_2d(width, height) {
   }
 }
 
+// Generates a single countersunk screw clearance through-hole.
+module countersunk_screw_hole(
+  screw_d = screw_hole_diameter,
+  cs_d = countersink_diameter,
+  thickness = backplate_thickness
+) {
+  cs_depth = (cs_d - screw_d) / 2;
+  actual_cs_depth = min(cs_depth, thickness - 1.0);
+
+  translate([0, thickness + EPSILON, 0]) {
+    rotate([90, 0, 0]) {
+      cylinder(d1 = cs_d, d2 = screw_d, h = actual_cs_depth + EPSILON);
+      cylinder(d = screw_d, h = thickness + 2 * EPSILON);
+    }
+  }
+}
+
+// Generates countersunk screw clearance holes in backplate inter-tower columns.
+module backplate_screw_holes(
+  count = actual_dispenser_count,
+  spacing = slot_spacing,
+  thickness = backplate_thickness,
+  screw_d = screw_hole_diameter,
+  cs_d = countersink_diameter,
+  z_top = z_plate_top,
+  z_bottom = z_plate_bottom
+) {
+  if (include_screw_holes && count > 1) {
+    for (i = [0 : count - 2]) {
+      x_win = (i + 0.5 - (count - 1) / 2) * spacing;
+      translate([x_win, 0, z_top - 10.0])
+        countersunk_screw_hole(screw_d, cs_d, thickness);
+      translate([x_win, 0, z_bottom + 15.0])
+        countersunk_screw_hole(screw_d, cs_d, thickness);
+    }
+  }
+}
+
 // Generates stadium-shaped weight-relief through-holes between adjacent dispenser slots.
-module backplate_relief_windows(count = actual_dispenser_count, spacing = slot_spacing, z_center = (z_plate_top + z_plate_bottom) / 2, thickness = backplate_thickness, height = backplate_height) {
+module backplate_relief_windows(count = actual_dispenser_count, spacing = slot_spacing, thickness = backplate_thickness, height = backplate_height) {
   if (count > 1) {
     win_w = 12.0;
-    win_h = max(height - 30.0, 10.0);
+    margin_top = include_screw_holes ? 20.0 : 15.0;
+    margin_bot = include_screw_holes ? 24.0 : 15.0;
+    win_h = max(height - margin_top - margin_bot, 10.0);
+    z_win_center = (height - margin_top + margin_bot) / 2;
 
     for (i = [0 : count - 2]) {
       x_win = (i + 0.5 - (count - 1) / 2) * spacing;
-      translate([x_win, -EPSILON, z_center]) {
+      translate([x_win, -EPSILON, z_win_center]) {
         rotate([-90, 0, 0]) {
           linear_extrude(height = thickness + 2 * EPSILON) {
             stadium_cutout_2d(win_w, win_h);
@@ -50,12 +91,13 @@ module backplate_relief_windows(count = actual_dispenser_count, spacing = slot_s
   }
 }
 
-// Orchestrates the backplate slab minus tilt chamfer and relief windows.
+// Orchestrates the backplate slab minus tilt chamfer, relief windows, and screw holes.
 module backplate() {
   difference() {
     backplate_blank();
     backplate_tilt_chamfer();
     backplate_relief_windows();
+    backplate_screw_holes();
   }
 }
 

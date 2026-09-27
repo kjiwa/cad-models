@@ -20,8 +20,14 @@ slot_spacing_pegs = 2; // [2:1:4]
 // Internal blade pocket width in mm (accommodates 39.15mm plastic & 39.9mm metal blades)
 chute_width = 41.0;
 
-// Internal blade pocket depth for metal blade slot in mm (accommodates 22.0mm sleeved blades)
+// Metal blade packaging type: sleeved (standard paper sleeve, 22.0mm depth) or bare (unwrapped blade, 19.5mm depth)
+metal_blade_type = "sleeved"; // [sleeved: Paper-Sleeved (22.0mm depth), bare: Bare Unwrapped (19.5mm depth)]
+
+// Internal blade pocket depth for sleeved metal blade slot in mm (accommodates 22.0mm sleeved blades)
 metal_chute_depth = 23.0;
+
+// Internal blade pocket depth for bare metal blade slot in mm (accommodates 19.5mm bare blades)
+bare_metal_chute_depth = 20.5;
 
 // Internal blade pocket depth for plastic blade slot in mm (accommodates 18.7mm plastic blades)
 plastic_chute_depth = 20.0;
@@ -45,6 +51,12 @@ grip_notch_depth = 12.0;
 // Forward extension of front resting shelf in mm
 shelf_extension = 6.0;
 
+// Bottom width of outward flared opening ramp in mm
+opening_flare_width = 22.0; // [14.0:1.0:30.0]
+
+// Vertical height of outward flared opening ramp in mm
+opening_flare_height = 12.0; // [6.0:1.0:25.0]
+
 // Enable front vertical sight slots for visual blade inventory
 enable_sight_slots = true;
 
@@ -60,7 +72,19 @@ badge_text_size = 4.0;
 // Deboss depth for front badges in mm
 badge_deboss_depth = 0.6;
 
-/* [Pegboard Mounting] */
+/* [Pegboard & Wall Mounting] */
+// Include rear pegboard mounting hooks and pins (false for flush wall mounting)
+include_pegs = true;
+
+// Include countersunk screw clearance holes in backplate
+include_screw_holes = true;
+
+// Screw shank clearance hole diameter in mm (#8 screw clearance ~4.5mm)
+screw_hole_diameter = 4.5; // [3.0:0.5:6.0]
+
+// Screw countersink flathead diameter in mm (#8 flathead ~9.0mm)
+countersink_diameter = 9.0; // [6.0:0.5:12.0]
+
 // Pegboard hole center spacing in inches
 peg_hole_spacing_in = 1.0;
 
@@ -128,7 +152,8 @@ slot_spacing = slot_spacing_pegs * peg_hole_spacing;
 actual_dispenser_count = (dispenser_count > 0) ? dispenser_count : max(len(slot_pattern), 1);
 total_width = actual_dispenser_count * slot_spacing;
 
-effective_metal_depth = (chute_depth > 0) ? chute_depth : metal_chute_depth;
+calibrated_metal_depth = (metal_blade_type == "bare") ? bare_metal_chute_depth : metal_chute_depth;
+effective_metal_depth = (chute_depth > 0) ? chute_depth : calibrated_metal_depth;
 effective_plastic_depth = (chute_depth > 0) ? chute_depth : plastic_chute_depth;
 max_chute_depth = max(effective_metal_depth, effective_plastic_depth);
 tower_depth = rear_wall_thickness + max_chute_depth + front_wall_thickness;
@@ -177,6 +202,8 @@ module razor_blade_dispenser() {
                 x_c = ((actual_dispenser_count - 1) / 2 - i) * slot_spacing;
                 slot_cutouts(i, x_c);
               }
+
+              tower_screw_access_holes();
             }
         }
       }

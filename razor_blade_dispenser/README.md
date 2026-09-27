@@ -10,6 +10,9 @@ A parametric, 3D-printable pegboard dispenser for single-edge utility razor blad
 - **Calibrated Single-Blade Exit Gates**: Independent exit gate heights for metal blades (`1.7 mm`, matching ~1.2 mm sleeved blade) and plastic blades (`2.1 mm`, matching ~1.6 mm body), preventing double feeding.
 - **Support-Free Internal Bridging**: 45-degree lead-in chamfer on the exit gate ceiling prevents sagging during bridging so chutes print cleanly without internal support.
 - **Ergonomic Pinch-Grip Retrieval**: Front resting shelf combined with a bottom finger-scoop cutout allows pinching the bottom blade from above and below to slide it out smoothly.
+- **Smooth Bellmouth Flared Front Opening**: Parametric flared opening profile blending seamlessly from the vertical sight slot into the exit gate. Provides continuous G1/G2 tangent curvature that eliminates sharp corners, directional kinks, and inward pinch points for comfortable downward thumb feed and blade extraction.
+- **Dual Pegboard & Wall Mounting**: Standard 1/4" pegboard hooks with heel relief, plus countersunk #8 screw mounting clearance holes with front driver pass-through tunnels and an `include_pegs` toggle for flush wall or cabinet mounting.
+- **Sleeved vs. Bare Metal Blade Calibration**: Configurable pocket depths for paper-sleeved blades (`23.0 mm`) and bare unwrapped blades (`20.5 mm`), eliminating stack tilt and slop.
 - **Front Inventory Sight Slots**: Full-height vertical slots allow visual tracking of remaining blades and downward thumb feed.
 - **Pegboard Locking Hooks**: Standard 1/4" pegboard mounting (1" pitch, 1/4" board thickness) reusing contoured retention hooks with heel relief and stabilizing pins that lock within 1/4" wall clearance.
 - **Open Top Drop-In Loading**: Chamfered top funnels facilitate effortless blade reloading.
@@ -51,7 +54,9 @@ razor_blade_dispenser/
 | Parameter | Default | Description |
 |---|---|---|
 | `chute_width` | `41.0` | Internal blade cavity width in mm |
-| `metal_chute_depth` | `23.0` | Internal blade cavity depth for metal blades in mm (fits 22.0 mm sleeved blades) |
+| `metal_blade_type` | `sleeved` | Packaging type: `sleeved` (22.0 mm depth) or `bare` (19.5 mm depth) |
+| `metal_chute_depth` | `23.0` | Internal cavity depth for sleeved metal blades in mm |
+| `bare_metal_chute_depth` | `20.5` | Internal cavity depth for bare metal blades in mm |
 | `plastic_chute_depth` | `20.0` | Internal blade cavity depth for plastic blades in mm (fits 18.7 mm blades) |
 | `metal_exit_height` | `1.7` | Exit gate height for metal blade slot in mm |
 | `plastic_exit_height` | `2.1` | Exit gate height for plastic blade slot in mm |
@@ -63,15 +68,21 @@ razor_blade_dispenser/
 | `grip_notch_width` | `22.0` | Width of bottom finger scoop cutout in mm |
 | `grip_notch_depth` | `12.0` | Depth of bottom finger scoop cutout under blade in mm |
 | `shelf_extension` | `6.0` | Forward extension of front resting shelf in mm |
+| `opening_flare_width` | `22.0` | Bottom width of outward flared opening ramp in mm |
+| `opening_flare_height` | `12.0` | Vertical height of outward flared opening ramp in mm |
 | `enable_sight_slots` | `true` | Enable front vertical sight slots for inventory |
 | `sight_slot_width` | `10.0` | Width of front sight slot in mm |
 | `enable_badge_labels` | `true` | Enable debossed front text badges |
 | `badge_text_size` | `4.0` | Font size for front debossed text badges in mm |
 | `badge_deboss_depth` | `0.6` | Deboss depth into front face in mm |
 
-### `[Pegboard Mounting]`
+### `[Pegboard & Wall Mounting]`
 | Parameter | Default | Description |
 |---|---|---|
+| `include_pegs` | `true` | Include rear pegboard mounting hooks and pins (false for flush wall mounting) |
+| `include_screw_holes` | `true` | Include countersunk screw clearance holes in backplate |
+| `screw_hole_diameter` | `4.5` | Screw shank clearance hole diameter in mm (#8 screw) |
+| `countersink_diameter` | `9.0` | Screw flathead countersink diameter in mm (#8 flathead) |
 | `peg_hole_spacing_in` | `1.0` | Pegboard hole center-to-center spacing in inches |
 | `pegboard_thickness_in` | `0.25` | Pegboard thickness in inches |
 | `pin_diameter` | `5.7` | Pin diameter in mm (tolerance fit for 1/4" hole) |

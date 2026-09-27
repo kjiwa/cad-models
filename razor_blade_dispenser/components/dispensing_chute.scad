@@ -83,10 +83,11 @@ module finger_scoop(
 ) {
   y_front = back_t + tower_d + shelf_ext + EPSILON;
   r = min(4.0, scoop_w / 4);
+  h_cut = floor_t + 2 * EPSILON;
 
   translate([x_center, y_front, -EPSILON]) {
     rotate([0, 0, 180]) {
-      linear_extrude(height = floor_t + 2 * EPSILON) {
+      linear_extrude(height = h_cut) {
         hull() {
           translate([-scoop_w / 2, 0])
             square([scoop_w, EPSILON]);
@@ -100,30 +101,66 @@ module finger_scoop(
   }
 }
 
-// Generates the front vertical sight slot for inventory tracking and downward blade feed.
+// Generates the front vertical sight slot with smooth bellmouth flared opening.
 module sight_slot(
   x_center,
   slot_w = sight_slot_width,
-  z_start = sight_slot_z_start,
+  z_bottom = floor_thickness + metal_exit_height,
   z_end = sight_slot_z_end,
+  flare_w = opening_flare_width,
+  flare_h = opening_flare_height,
   back_t = backplate_thickness,
   tower_d = tower_depth,
   front_w = front_wall_thickness,
   shelf_ext = shelf_extension
 ) {
-  if (enable_sight_slots && (z_end > z_start + slot_w)) {
-    h = z_end - z_start;
-    r = slot_w / 2;
+  if (enable_sight_slots && (z_end > z_bottom + slot_w)) {
+    top_r = slot_w / 2;
+    actual_flare_w = max(flare_w, slot_w + 2.0);
+    actual_flare_h = max(flare_h, 4.0);
     y_start = back_t + tower_d - front_w - EPSILON;
     cut_depth = front_w + shelf_ext + 10.0;
+    delta_w = (actual_flare_w - slot_w) / 2;
+    steps = 40;
 
-    translate([x_center, y_start, z_start + h / 2]) {
+    translate([x_center, y_start, 0]) {
       rotate([-90, 0, 0]) {
         linear_extrude(height = cut_depth) {
-          hull() {
-            translate([0, -h / 2]) square([slot_w, EPSILON], center = true);
-            translate([0, h / 2 - r]) circle(r = r);
-          }
+          // Continuous 2D profile (in 2D space, Y corresponds to -Z in 3D):
+          // 1. Right curve: tangent to horizontal ceiling at bottom, tangent to vertical slot at top
+          pts_r_curve = [
+            for (i = [0 : steps])
+              let(
+                a = (i / steps) * 90,
+                x = (actual_flare_w / 2) - delta_w * sin(a),
+                z = z_bottom + actual_flare_h * (1 - cos(a))
+              )
+              [x, -z]
+          ];
+          pts_r_straight = [[slot_w / 2, -(z_end - top_r)]];
+          // 2. Top semi-circular arch
+          pts_top = [
+            for (a = [0 : 6 : 180])
+              [top_r * cos(a), -((z_end - top_r) + top_r * sin(a))]
+          ];
+          pts_l_straight = [[-slot_w / 2, -(z_bottom + actual_flare_h)]];
+          // 3. Left curve: tangent to vertical slot at top, tangent to horizontal ceiling at bottom
+          pts_l_curve = [
+            for (i = [steps : -1 : 0])
+              let(
+                a = (i / steps) * 90,
+                x = (actual_flare_w / 2) - delta_w * sin(a),
+                z = z_bottom + actual_flare_h * (1 - cos(a))
+              )
+              [-x, -z]
+          ];
+          // Extend cut down into exit gate to eliminate zero-thickness boundary facet
+          pts_bottom_ext = [
+            [-actual_flare_w / 2, -(floor_thickness - 1.0)],
+            [actual_flare_w / 2, -(floor_thickness - 1.0)]
+          ];
+
+          polygon(points = concat(pts_r_curve, pts_r_straight, pts_top, pts_l_straight, pts_l_curve, pts_bottom_ext));
         }
       }
     }
@@ -133,10 +170,11 @@ module sight_slot(
 // Generates all internal cutouts, gates, finger notches, and funnels for one dispenser slot.
 module slot_cutouts(index, x_center) {
   d = slot_chute_depth(index);
+  exit_h = slot_exit_height(index);
   chute_cavity(x_center, d = d);
-  exit_gate(x_center, slot_exit_height(index), d = d);
+  exit_gate(x_center, exit_h, d = d);
   finger_scoop(x_center);
-  sight_slot(x_center);
+  sight_slot(x_center, z_bottom = floor_thickness + exit_h);
   tower_top_funnel(x_center, chute_d = d);
 
   if (enable_badge_labels) {

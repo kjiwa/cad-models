@@ -108,6 +108,32 @@ module tower_debossed_text(
   }
 }
 
+// Generates cylindrical front driver access tunnels through the inter-tower columns to the rear countersunk screw holes.
+module tower_screw_access_holes(
+  count = actual_dispenser_count,
+  spacing = slot_spacing,
+  hole_d = countersink_diameter,
+  back_t = backplate_thickness,
+  tower_d = tower_depth,
+  shelf_ext = shelf_extension,
+  z_top = z_plate_top,
+  z_bottom = z_plate_bottom
+) {
+  if (include_screw_holes && count > 1) {
+    cut_len = tower_d + shelf_ext + 10.0;
+    for (i = [0 : count - 2]) {
+      x_win = (i + 0.5 - (count - 1) / 2) * spacing;
+      translate([x_win, back_t - EPSILON, z_top - 10.0])
+        rotate([-90, 0, 0])
+          cylinder(d = hole_d, h = cut_len);
+      translate([x_win, back_t - EPSILON, z_bottom + 15.0])
+        rotate([-90, 0, 0])
+          cylinder(d = hole_d, h = cut_len);
+    }
+  }
+}
+
+
 // Generates a continuous cylindrical fillet cutter rounding the top-left and top-right shoulders across the full Y-depth.
 module top_corner_cutter(
   width = total_width,
