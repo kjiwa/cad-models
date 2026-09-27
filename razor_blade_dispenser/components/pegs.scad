@@ -1,5 +1,5 @@
 /**
- * Pegboard mounting hooks and stabilizing pins.
+ * Pegboard mounting hooks and stabilizing pins for razor blade dispenser.
  */
 
 include <pegboard/pegs.scad>
@@ -34,7 +34,7 @@ module slot_pegs_column(x_pos, is_center_col, max_x) {
   }
 }
 
-// Generates all pegboard hooks and pins across columns for a single battery slot.
+// Generates all pegboard hooks and pins across columns for a single dispenser slot.
 module slot_pegs(x_center, max_x) {
   for (k = [-(slot_spacing_pegs - 1) / 2 : (slot_spacing_pegs - 1) / 2]) {
     slot_pegs_column(x_center + k * peg_hole_spacing, (k == 0), max_x);
@@ -43,10 +43,10 @@ module slot_pegs(x_center, max_x) {
 
 // Orchestrates mounting hooks and pins across all slots and positions inspection labels.
 module mounting_pegs() {
-  max_x_peg = total_width / 2 - pin_diameter / 2 - 2.0;
+  max_x_peg = total_width / 2 - pin_diameter / 2 - 1.0;
 
-  for (i = [0 : battery_count - 1]) {
-    x_c = (i - (battery_count - 1) / 2) * slot_spacing;
+  for (i = [0 : dispenser_count - 1]) {
+    x_c = ((dispenser_count - 1) / 2 - i) * slot_spacing;
     slot_pegs(x_c, max_x_peg);
   }
 

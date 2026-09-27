@@ -1,0 +1,33 @@
+{
+    "parameterSets": {
+        "Dual_Metal_and_Plastic": {
+            "dispenser_count": "2",
+            "dispenser_height": "100.0",
+            "slot_0_type": "metal",
+            "slot_1_type": "plastic"
+        },
+        "Single_Metal": {
+            "dispenser_count": "1",
+            "dispenser_height": "100.0",
+            "slot_0_type": "metal"
+        },
+        "Single_Plastic": {
+            "dispenser_count": "1",
+            "dispenser_height": "100.0",
+            "slot_0_type": "plastic"
+        },
+        "High_Capacity_Dual": {
+            "dispenser_count": "2",
+            "dispenser_height": "150.0",
+            "slot_0_type": "metal",
+            "slot_1_type": "plastic"
+        },
+        "Compact_Dual": {
+            "dispenser_count": "2",
+            "dispenser_height": "75.0",
+            "slot_0_type": "metal",
+            "slot_1_type": "plastic"
+        }
+    },
+    "fileFormatVersion": "1"
+}
