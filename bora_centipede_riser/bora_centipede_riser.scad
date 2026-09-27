@@ -8,7 +8,7 @@ Riser_Height = 152.4;
 Riser_Diameter = 66;
 
 /* [Riser Top Cap] */
-Riser_Top_Thickness = 3;
+Riser_Top_Thickness = 4;
 Riser_Top_Thread_Platform_Diameter = 15;
 Riser_Top_Thread_Platform_Height = 6;
 Riser_Top_Thread_Pitch = 2;
@@ -23,9 +23,15 @@ Riser_Bottom_Nut_Cutout_Height = 32.75;
 Riser_Bottom_Nut_Cutout_Corner_Radius = 6.25;
 
 /* [Supports] */
-Riser_Support_Thickness = 3;
+Riser_Reinforcement_Style = "Flared_Ribs"; // [Flared_Ribs: Open Truss, Conical_Vault: Architectural Column, None: Unreinforced]
+Riser_Support_Thickness = 3.6;
 Riser_Support_Inner_Diameter = 46;
 Riser_Support_Inner_Cutout_Offset = 4;
+Riser_Rib_Flare_Width = 4.0;
+Riser_Rib_Flare_Height = 10.0;
+Riser_Cone_Height = 8.0;
+Riser_Cone_Top_Diameter = 36.0;
+Riser_Cone_Bottom_Diameter = 40.0;
 
 /* [Nut] */
 Nut_Diameter = 22;
@@ -55,29 +61,25 @@ module roundedCylinder(d, h, cr, center=false) {
 }
 
 module supportCutoutHalf(segments=$fn) {
-  dx = 1e-6;
-  dy = Riser_Support_Thickness + 1;
-  dz = 1e-6;
-
   a = (Riser_Diameter - Riser_Support_Inner_Diameter) / 2;
-  wl = supportHeight - (2 * Riser_Support_Inner_Cutout_Offset) - Riser_Bottom_Nut_Cutout_Height;
-  k = 180 / wl;
-  step = wl / segments;
+  wl = supportCutoutHeight;
+  dy = Riser_Diameter + 10;
+  seg = segments > 0 ? segments : 64;
 
-  translate([-wl / 2, 0, 0]) {
-    hull() {
-      for (x = [0:step:wl - step]) {
-        z0 = a * sin(x * k);
-        z1 = a * sin((x + step) * k);
-        hull() {
-          translate([x, 0, z0]) rotate([90, 0, 0]) cylinder(d=dx, h=dy, center=true);
-          translate([x + step, 0, z1]) rotate([90, 0, 0]) cylinder(d=dx, h=dy, center=true);
-        }
-      }
-    }
-  }
+  pts = concat(
+    [for (i = [0:seg])
+      let(
+        u = i / seg,
+        x = -wl / 2 + u * wl,
+        z = a * sin(u * 180)
+      )
+      [x, z]],
+    [[wl / 2, -10], [-wl / 2, -10]]
+  );
 
-  translate([0, 0, -0.5]) cube([wl, dy, 1], center=true);
+  rotate([90, 0, 0])
+    linear_extrude(height=dy, center=true)
+      polygon(pts);
 }
 
 module supportCutout(segments=$fn) {
@@ -87,11 +89,56 @@ module supportCutout(segments=$fn) {
     }
 }
 
+module singleFlaredRib(len, th, h, f_w, f_h) {
+  z_top = h / 2;
+  z_bot = -h / 2;
+  union() {
+    cube([len, th, h], center=true);
+    hull() {
+      translate([0, 0, z_top - 0.05]) cube([len, th + 2 * f_w, 0.1], center=true);
+      translate([0, 0, z_top - f_h]) cube([len, th, 0.1], center=true);
+    }
+    hull() {
+      translate([0, 0, z_bot + 0.05]) cube([len, th + 2 * f_w, 0.1], center=true);
+      translate([0, 0, z_bot + f_h]) cube([len, th, 0.1], center=true);
+    }
+  }
+}
+
+module topCapital() {
+  z_top = supportHeight / 2;
+  translate([0, 0, z_top - Riser_Cone_Height])
+    cylinder(d1=Riser_Cone_Top_Diameter, d2=Riser_Diameter, h=Riser_Cone_Height);
+}
+
+module bottomBase() {
+  z_bot = -supportHeight / 2;
+  translate([0, 0, z_bot])
+    cylinder(d1=Riser_Diameter, d2=Riser_Cone_Bottom_Diameter, h=Riser_Cone_Height);
+}
+
 module supports() {
   difference() {
     union() {
-      cube([Riser_Support_Thickness, Riser_Diameter, supportHeight], center=true);
-      cube([Riser_Diameter, Riser_Support_Thickness, supportHeight], center=true);
+      if (Riser_Reinforcement_Style == "Flared_Ribs") {
+        intersection() {
+          cylinder(d=Riser_Diameter, h=supportHeight, center=true);
+          singleFlaredRib(Riser_Diameter, Riser_Support_Thickness, supportHeight, Riser_Rib_Flare_Width, Riser_Rib_Flare_Height);
+        }
+        intersection() {
+          cylinder(d=Riser_Diameter, h=supportHeight, center=true);
+          rotate([0, 0, 90])
+            singleFlaredRib(Riser_Diameter, Riser_Support_Thickness, supportHeight, Riser_Rib_Flare_Width, Riser_Rib_Flare_Height);
+        }
+      } else if (Riser_Reinforcement_Style == "Conical_Vault") {
+        cube([Riser_Support_Thickness, Riser_Diameter, supportHeight], center=true);
+        cube([Riser_Diameter, Riser_Support_Thickness, supportHeight], center=true);
+        topCapital();
+        bottomBase();
+      } else {
+        cube([Riser_Support_Thickness, Riser_Diameter, supportHeight], center=true);
+        cube([Riser_Diameter, Riser_Support_Thickness, supportHeight], center=true);
+      }
     }
 
     supportCutout();
@@ -118,7 +165,7 @@ module bottomCap() {
 module bottomCutout() {
   // Screw cutout
   translate([0, 0, -supportHeight / 2 - Riser_Bottom_Thickness - 1])
-    cylinder(d=Riser_Bottom_Screw_Cutout_Diameter, h=Riser_Bottom_Thickness + 1);
+    cylinder(d=Riser_Bottom_Screw_Cutout_Diameter, h=Riser_Bottom_Thickness + 1.2);
 
   // Nut cutout
   translate([0, 0, -Riser_Bottom_Nut_Cutout_Corner_Radius - supportHeight / 2])

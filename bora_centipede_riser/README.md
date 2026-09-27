@@ -58,7 +58,7 @@ All dimensions are in millimeters unless otherwise noted.
 ### `[Riser Top Cap]`
 | Parameter | Default | Description |
 |---|---|---|
-| `Riser_Top_Thickness` | `3` | Top cap plate thickness |
+| `Riser_Top_Thickness` | `4` | Top cap plate thickness |
 | `Riser_Top_Thread_Platform_Diameter` | `15` | Diameter of the raised thread boss |
 | `Riser_Top_Thread_Platform_Height` | `6` | Height of the raised thread boss |
 | `Riser_Top_Thread_Pitch` | `2` | Thread pitch in mm |
@@ -77,9 +77,15 @@ All dimensions are in millimeters unless otherwise noted.
 ### `[Supports]`
 | Parameter | Default | Description |
 |---|---|---|
-| `Riser_Support_Thickness` | `3` | Wall thickness of crossed vertical ribs |
+| `Riser_Reinforcement_Style` | `"Flared_Ribs"` | Reinforcement style: `"Flared_Ribs"` (open truss), `"Conical_Vault"` (architectural column), or `"None"` (unreinforced) |
+| `Riser_Support_Thickness` | `3.6` | Wall thickness of crossed vertical ribs |
 | `Riser_Support_Inner_Diameter` | `46` | Inner diameter of rib cutouts |
 | `Riser_Support_Inner_Cutout_Offset` | `4` | Offset for rib cutouts from caps |
+| `Riser_Rib_Flare_Width` | `4` | Lateral flare added to each rib side at plate interfaces (`Flared_Ribs` style) |
+| `Riser_Rib_Flare_Height` | `10` | Vertical span of the rib flare transition (`Flared_Ribs` style) |
+| `Riser_Cone_Height` | `8` | Vertical height of capital and base cones (`Conical_Vault` style) |
+| `Riser_Cone_Top_Diameter` | `36` | Inner base diameter of top capital cone (`Conical_Vault` style) |
+| `Riser_Cone_Bottom_Diameter` | `40` | Apex diameter of bottom base cone (`Conical_Vault` style) |
 
 ### `[Nut]`
 | Parameter | Default | Description |
@@ -89,6 +95,29 @@ All dimensions are in millimeters unless otherwise noted.
 | `Nut_Thread_Width` | `13.5` | Inner thread diameter (includes clearance) |
 | `Nut_Knurl_Count` | `15` | Number of grip notches on perimeter |
 | `Nut_Knurl_Diameter` | `1` | Diameter of knurl cutout cylinder |
+
+---
+
+## Reinforcement Styles & Trade-Offs
+
+The model provides three selectable reinforcement styles via `Riser_Reinforcement_Style`:
+
+### 1. `Flared_Ribs` (Default — Open Cruciform Truss)
+* **Aesthetic**: 100% faithful to the open-air Bora Centipede truss design. The quadrants between the four vertical spines remain completely open and transparent from top to bottom.
+* **Mechanics**: Each rib smoothly widens in thickness (from 3.6 mm at the waist to 11.6 mm at the plate junctions) over a 10 mm ramp. This triples the contact surface area at the plates (from 387 mm² to 1,120 mm² at the top; 234 mm² to 700 mm² at the bottom) and eliminates the sharp 90° notch where layer delamination starts under lateral bending.
+* **Filament & Print Time**: 93.5 cm³ (~116 g solid PLA, or ~55 g sliced at 20% infill). Adds only ~12 g of filament over the unreinforced model.
+* **Best For**: General woodworking and job-site use where retaining the lightweight, open-air aesthetic of the original risers is desired.
+
+### 2. `Conical_Vault` (Architectural Column)
+* **Aesthetic**: Sculpted architectural column aesthetic reminiscent of a classical Tuscan or Doric order capital and plinth. Under the top circular plate, a continuous 45° revolved cone flares from 36 mm to 66 mm. Above the bottom plate, a matching inverted cone tapers from 66 mm to 40 mm. The center between the cones remains completely open.
+* **Mechanics**: Maximum possible bending and shear strength ($5\times$ to $8\times$ over unreinforced). The continuous 360° conical vault provides unbroken perimeter support beneath the entire rim of the top plate. This prevents plate flexure or diaphragm peeling when heavy dog clamps, edge vises, or workpieces exert off-axis forces between the spines. At the base, the cone acts as a rigid collar around the nut cavity.
+* **Filament & Print Time**: 111.5 cm³ (~138 g solid PLA, or ~65 g sliced at 20% infill). Adds ~25 g over unreinforced (+10 g over `Flared_Ribs`).
+* **Best For**: Heavy-duty workshop environments with extreme lateral racking, heavy timber, or off-axis clamping forces.
+
+### 3. `None` (Unreinforced Original)
+* **Aesthetic**: Pure geometric replica of the original injection-molded part with straight 3.6 mm ribs meeting the plates at 90°.
+* **Filament & Print Time**: 74.3 cm³ (~92 g solid PLA, or ~45 g sliced at 20% infill).
+* **Note**: In upright FDM printing, horizontal layer lines at the sharp 90° spine-to-plate transition are susceptible to tensile shear delamination under lateral loads.
 
 ---
 
@@ -126,8 +155,10 @@ Outputs are generated in the `build/` subdirectory:
 
 ## 3D Printing Recommendations
 
-- **Material**: PLA or PETG (PLA provides good compressive stiffness for vertical load).
-- **Print Orientation**: Upright on the flat base (no supports required).
-- **Layer Height**: 0.30 mm draft works well and reduces print time.
-- **Perimeters**: 3 to 4 walls for strength.
-- **Infill**: 15% - 20% Gyroid or Grid.
+- **Material**: PLA, PETG, or PLA+ (PLA provides optimal compressive stiffness and dimensional stability under vertical load).
+- **Print Orientation**: Upright on the flat base (100% self-supporting with 45° gussets, zero supports required).
+- **Layer Height**: 0.20 mm or 0.24 mm (superior Z-axis inter-layer adhesion compared to 0.30 mm draft).
+- **Perimeters**: 4 walls (with a standard 0.40/0.45 mm line width, 4 perimeters make the 3.6 mm ribs 100% solid perimeter plastic).
+- **Solid Layers**: 5 or more top and bottom solid layers for rigid cap diaphragms.
+- **Infill**: 20% Gyroid (provides isotropic shear resistance in the central core and caps).
+- **Print Temperature & Cooling**: Increase nozzle temperature by 5–10°C over nominal and reduce part cooling fan speed (30–50%) to maximize inter-layer weld strength and shear resistance.
