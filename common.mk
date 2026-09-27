@@ -37,7 +37,7 @@ $(BUILD_DIR)/$(MODEL).3mf: $(SCAD_FILE) $(COMPONENTS)
 
 $(BUILD_DIR)/$(MODEL)_preview.png: $(SCAD_FILE) $(COMPONENTS)
 	@mkdir -p $(@D)
-	$(OPENSCAD) $(RENDER_FLAGS) --render -o $@ $<
+	$(OPENSCAD) $(OPENSCAD_BACKEND) $(RENDER_FLAGS) --render -o $@ $<
 
 presets: $(SCAD_FILE) $(COMPONENTS)
 	@if [ -f "$(JSON_FILE)" ]; then \
@@ -48,7 +48,7 @@ presets: $(SCAD_FILE) $(COMPONENTS)
 			--build-dir "$(BUILD_DIR)" \
 			--openscad "$(OPENSCAD)" \
 			--openscad-flags "$(OPENSCAD_FLAGS)" \
-			--render-flags "$(RENDER_FLAGS)" \
+			--render-flags "$(OPENSCAD_BACKEND) $(RENDER_FLAGS)" \
 			--target all; \
 	fi
 

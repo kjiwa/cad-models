@@ -3,16 +3,30 @@
  * All dimensions are in inches.
  */
 
-board_thickness = 0.75;  // Plywood sheet thickness in inches
-board_layers = 5;        // Number of plies for alternating veneer visualization
-leg_height = 36;         // Leg height from floor to underside of top in inches
-leg_width = 2;           // Width of each board in the L-shaped leg in inches
+/* [Tabletop] */
 top_length = 48;         // Tabletop length along X axis in inches
 top_width = 11;          // Tabletop width along Y axis in inches
 top_overhang = 1.5;      // Tabletop overhang beyond leg outer faces in inches
-apron_length = 41;       // top_length - 2 * top_overhang - 2 * leg_width
+
+/* [Legs] */
+leg_height = 36;         // Leg height from floor to underside of top in inches
+leg_width = 2;           // Width of each board in the L-shaped leg in inches
+
+/* [Plywood Stock] */
+board_thickness = 0.75;  // Plywood sheet thickness in inches
+board_layers = 5;        // Number of plies for alternating veneer visualization
+
+/* [Apron] */
 apron_width = 8;         // Apron vertical board width (height) in inches
-apron_depth = 5;         // top_width - 2 * top_overhang - 2 * 1.5
+// Optional override for front/back apron length (0 for automatic: top_length - 2 * top_overhang - 2 * leg_width)
+custom_apron_length = 0;
+// Optional override for side apron depth (0 for automatic: top_width - 2 * top_overhang - 3.0)
+custom_apron_depth = 0;
+
+/* [Hidden] */
+apron_length = (custom_apron_length > 0) ? custom_apron_length : (top_length - 2 * top_overhang - 2 * leg_width);
+apron_depth = (custom_apron_depth > 0) ? custom_apron_depth : (top_width - 2 * top_overhang - 3.0);
+
 
 // Generates a rectangular board with alternating colored veneer layers.
 module plywood(length, width, thickness, layers) {
