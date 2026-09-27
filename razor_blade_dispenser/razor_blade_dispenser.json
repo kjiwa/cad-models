@@ -1,33 +1,36 @@
 {
     "parameterSets": {
         "Dual_Metal_and_Plastic": {
-            "dispenser_count": "2",
-            "dispenser_height": "100.0",
-            "slot_0_type": "metal",
-            "slot_1_type": "plastic"
+            "slot_pattern": "MP",
+            "dispenser_count": "0",
+            "dispenser_height": "100.0"
         },
         "Single_Metal": {
-            "dispenser_count": "1",
-            "dispenser_height": "100.0",
-            "slot_0_type": "metal"
+            "slot_pattern": "M",
+            "dispenser_count": "0",
+            "dispenser_height": "100.0"
         },
         "Single_Plastic": {
-            "dispenser_count": "1",
-            "dispenser_height": "100.0",
-            "slot_0_type": "plastic"
+            "slot_pattern": "P",
+            "dispenser_count": "0",
+            "dispenser_height": "100.0"
         },
         "High_Capacity_Dual": {
-            "dispenser_count": "2",
-            "dispenser_height": "150.0",
-            "slot_0_type": "metal",
-            "slot_1_type": "plastic"
+            "slot_pattern": "MP",
+            "dispenser_count": "0",
+            "dispenser_height": "150.0"
         },
         "Compact_Dual": {
-            "dispenser_count": "2",
-            "dispenser_height": "75.0",
-            "slot_0_type": "metal",
-            "slot_1_type": "plastic"
+            "slot_pattern": "MP",
+            "dispenser_count": "0",
+            "dispenser_height": "75.0"
+        },
+        "Organizer_4_Slot": {
+            "slot_pattern": "MMPP",
+            "dispenser_count": "0",
+            "dispenser_height": "100.0"
         }
     },
     "fileFormatVersion": "1"
 }
+

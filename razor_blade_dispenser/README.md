@@ -41,11 +41,10 @@ razor_blade_dispenser/
 ### `[Dispenser Configuration]`
 | Parameter | Default | Description |
 |---|---|---|
-| `dispenser_count` | `2` | Number of side-by-side dispenser towers (1 to 4) |
+| `slot_pattern` | `MP` | Slot types: `M` for Metal, `P` for Plastic (e.g. `P`, `M`, `MP`, `MMMMPPMMM`) |
+| `dispenser_count` | `0` | Number of towers (0 auto-derives from `slot_pattern` length) |
 | `dispenser_height` | `100.0` | Total vertical tower height in mm |
 | `slot_spacing_pegs` | `2` | Tower spacing in pegboard hole increments (1 in / 25.4 mm) |
-| `slot_0_type` | `metal` | Blade type for left slot (`metal`, `plastic`) |
-| `slot_1_type` | `plastic` | Blade type for right slot (`metal`, `plastic`) |
 
 ### `[Blade Cavity & Exit Gates]`
 | Parameter | Default | Description |
@@ -73,22 +72,21 @@ razor_blade_dispenser/
 | `peg_hole_spacing_in` | `1.0` | Pegboard hole center-to-center spacing in inches |
 | `pegboard_thickness_in` | `0.25` | Pegboard thickness in inches |
 | `pin_diameter` | `5.7` | Pin diameter in mm (tolerance fit for 1/4" hole) |
-| `stabilizing_peg_pattern` | `all` | Lower stabilizing pin rows (`all`, `span_2`, `span_1`, `none`) |
+| `stabilizing_peg_pattern` | `bottom` | Stabilizing pin rows (`bottom`, `top_and_bottom`, `all`, `none`) |
 | `hook_rise` | `3.5` | Vertical rise of hook tab behind pegboard in mm |
 | `peg_top_margin` | `6.35` | Top margin above upper hooks in mm |
 | `tilt_chamfer` | `2.0` | Rear top chamfer for pegboard insertion clearance in mm |
-| `include_screw_holes` | `true` | Include countersunk screw clearance holes |
 
 ### `[Structure & Sizing]`
 | Parameter | Default | Description |
 |---|---|---|
 | `backplate_thickness` | `5.0` | Thickness of mounting backplate in mm |
 | `floor_thickness` | `3.5` | Thickness of bottom resting floor in mm |
-| `rear_wall_thickness` | `2.0` | Wall thickness between blade cavity and backplate in mm |
+| `rear_wall_thickness` | `3.5` | Wall thickness between blade cavity and backplate in mm |
 | `front_wall_thickness` | `3.5` | Front wall thickness in mm |
-| `backplate_corner_radius` | `6.0` | Corner radius for backplate perimeter in mm |
 | `tower_corner_radius` | `4.0` | Corner radius for outer tower body in mm |
-| `top_funnel_lead` | `2.0` | Chamfer depth for top loading funnel in mm |
+| `top_corner_radius` | `4.0` | Radius for softening top-left and top-right shoulders in mm |
+| `top_funnel_lead` | `1.6` | Chamfer depth for top loading funnel in mm |
 
 ---
 

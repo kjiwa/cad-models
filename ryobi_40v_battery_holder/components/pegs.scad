@@ -6,14 +6,16 @@ include <pegboard/pegs.scad>
 
 // Generates stabilizing pins at a single column position according to the selected pattern.
 module lower_pins_at_pos(x_pos, is_center_col) {
-  if (stabilizing_peg_pattern == "all" || stabilizing_peg_pattern == "span_1") {
+  lowest_peg_k = max(floor((z_top_peg - pin_diameter / 2 - 2.0) / peg_hole_spacing), 1);
+
+  if (stabilizing_peg_pattern == "all" || stabilizing_peg_pattern == "span_1" || stabilizing_peg_pattern == "top_and_bottom") {
     if (!include_screw_holes || !is_center_col) {
       translate([x_pos, 0, z_top_peg - peg_hole_spacing])
         pegboard_lower_pin();
     }
   }
-  if (stabilizing_peg_pattern == "all" || stabilizing_peg_pattern == "span_2") {
-    translate([x_pos, 0, z_top_peg - 2 * peg_hole_spacing])
+  if (stabilizing_peg_pattern == "all" || stabilizing_peg_pattern == "span_2" || stabilizing_peg_pattern == "bottom" || stabilizing_peg_pattern == "top_and_bottom") {
+    translate([x_pos, 0, z_top_peg - lowest_peg_k * peg_hole_spacing])
       pegboard_lower_pin();
   }
 }

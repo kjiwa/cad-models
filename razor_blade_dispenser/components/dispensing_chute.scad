@@ -2,19 +2,21 @@
  * Internal blade cavities, calibrated exit gates, finger scoop, and sight slots.
  */
 
+// Returns true if the slot at index (0-based) is configured for plastic blades.
+function slot_is_plastic(index) =
+  (index < len(slot_pattern)) ? (slot_pattern[index] == "P" || slot_pattern[index] == "p") : false;
+
 // Returns the slot type ("metal" or "plastic") for a given slot index.
 function slot_type(index) =
-  (index == 0) ? slot_0_type :
-  (index == 1) ? slot_1_type :
-  ((index % 2 == 0) ? slot_0_type : slot_1_type);
+  slot_is_plastic(index) ? "plastic" : "metal";
 
 // Returns the calibrated exit gate height for a given slot index.
 function slot_exit_height(index) =
-  (slot_type(index) == "metal") ? metal_exit_height : plastic_exit_height;
+  slot_is_plastic(index) ? plastic_exit_height : metal_exit_height;
 
 // Returns the debossed front badge text for a given slot index.
 function slot_badge_text(index) =
-  (slot_type(index) == "metal") ? "METAL" : "PLASTIC";
+  slot_is_plastic(index) ? "PLASTIC" : "METAL";
 
 // Generates the internal vertical chute cavity for a single slot.
 module chute_cavity(

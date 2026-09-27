@@ -98,3 +98,38 @@ module tower_debossed_text(
     }
   }
 }
+
+// Generates a continuous cylindrical fillet cutter rounding the top-left and top-right shoulders across the full Y-depth.
+module top_corner_cutter(
+  width = total_width,
+  height = dispenser_height,
+  depth = backplate_thickness + tower_depth + 20.0,
+  r = top_corner_radius
+) {
+  if (r > 0) {
+    box_sz = r + 2.0;
+
+    // Cut top-left corner
+    translate([-width / 2, -10.0, height]) {
+      difference() {
+        translate([-box_sz, 0, -r])
+          cube([box_sz + EPSILON, depth, r + EPSILON]);
+        translate([r, 0, -r])
+          rotate([-90, 0, 0])
+            cylinder(r = r, h = depth);
+      }
+    }
+
+    // Cut top-right corner
+    translate([width / 2, -10.0, height]) {
+      difference() {
+        translate([-EPSILON, 0, -r])
+          cube([box_sz + EPSILON, depth, r + EPSILON]);
+        translate([-r, 0, -r])
+          rotate([-90, 0, 0])
+            cylinder(r = r, h = depth);
+      }
+    }
+  }
+}
+
