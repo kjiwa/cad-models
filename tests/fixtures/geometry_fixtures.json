@@ -1,0 +1,227 @@
+{
+  "ryobi_default": {
+    "scad": "ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
+    "params": {},
+    "expect": {
+      "triangles": 9504,
+      "volume_mm3": 252496.6,
+      "bbox_size_mm": [
+        177.6,
+        48.41,
+        84.14
+      ],
+      "section_areas_mm2": [
+        1442.2,
+        1598.7,
+        1567.8,
+        1512.2,
+        1274.9,
+        779.6,
+        1417.4
+      ]
+    }
+  },
+  "ryobi_all_n1_t15": {
+    "scad": "ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
+    "params": {
+      "battery_count": "1",
+      "tilt_angle": "15",
+      "stabilizing_peg_pattern": "\"all\""
+    },
+    "expect": {
+      "triangles": 3804,
+      "volume_mm3": 122309.0,
+      "bbox_size_mm": [
+        76.0,
+        48.41,
+        84.14
+      ],
+      "section_areas_mm2": [
+        722.3,
+        791.6,
+        766.8,
+        703.6,
+        622.4,
+        431.9,
+        707.9
+      ]
+    }
+  },
+  "ryobi_span2_n2_t0_l110": {
+    "scad": "ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
+    "params": {
+      "battery_count": "2",
+      "tilt_angle": "0",
+      "rail_length": "110.0",
+      "stabilizing_peg_pattern": "\"span_2\""
+    },
+    "expect": {
+      "triangles": 7216,
+      "volume_mm3": 208488.2,
+      "bbox_size_mm": [
+        177.6,
+        28.15,
+        113.5
+      ],
+      "section_areas_mm2": [
+        2403.7,
+        1299.9,
+        1464.2,
+        1290.8,
+        980.4,
+        979.0,
+        1052.6
+      ]
+    }
+  },
+  "ryobi_span1_n2_t30": {
+    "scad": "ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
+    "params": {
+      "battery_count": "2",
+      "tilt_angle": "30",
+      "stabilizing_peg_pattern": "\"span_1\""
+    },
+    "expect": {
+      "triangles": 7782,
+      "volume_mm3": 314894.2,
+      "bbox_size_mm": [
+        177.6,
+        66.41,
+        79.28
+      ],
+      "section_areas_mm2": [
+        1313.5,
+        673.0,
+        1711.0,
+        1619.1,
+        1370.9,
+        315.8,
+        2520.4
+      ]
+    }
+  },
+  "ryobi_all_n2_t15_l110": {
+    "scad": "ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
+    "params": {
+      "battery_count": "2",
+      "tilt_angle": "15",
+      "rail_length": "110.0",
+      "stabilizing_peg_pattern": "\"all\""
+    },
+    "expect": {
+      "triangles": 9496,
+      "volume_mm3": 388722.5,
+      "bbox_size_mm": [
+        177.6,
+        56.18,
+        113.12
+      ],
+      "section_areas_mm2": [
+        2548.2,
+        1284.8,
+        1487.1,
+        1296.5,
+        341.0,
+        1595.4,
+        175.1
+      ]
+    }
+  },
+  "razor_default": {
+    "scad": "razor_blade_dispenser/razor_blade_dispenser.scad",
+    "params": {},
+    "expect": {
+      "triangles": 6516,
+      "volume_mm3": 169769.6,
+      "bbox_size_mm": [
+        101.6,
+        51.15,
+        100.0
+      ],
+      "section_areas_mm2": [
+        1835.2,
+        1676.5,
+        1263.3,
+        629.3,
+        31.1,
+        1313.3,
+        1861.8
+      ]
+    }
+  },
+  "razor_all_h150": {
+    "scad": "razor_blade_dispenser/razor_blade_dispenser.scad",
+    "params": {
+      "stabilizing_peg_pattern": "\"all\"",
+      "dispenser_height": "150.0"
+    },
+    "expect": {
+      "triangles": 11128,
+      "volume_mm3": 254666.1,
+      "bbox_size_mm": [
+        101.6,
+        51.15,
+        150.0
+      ],
+      "section_areas_mm2": [
+        2249.9,
+        1634.9,
+        1526.7,
+        1416.3,
+        1307.5,
+        52.4,
+        881.2
+      ]
+    }
+  },
+  "razor_top_and_bottom_h75": {
+    "scad": "razor_blade_dispenser/razor_blade_dispenser.scad",
+    "params": {
+      "stabilizing_peg_pattern": "\"top_and_bottom\"",
+      "dispenser_height": "75.0"
+    },
+    "expect": {
+      "triangles": 7668,
+      "volume_mm3": 128893.5,
+      "bbox_size_mm": [
+        101.6,
+        51.15,
+        75.0
+      ],
+      "section_areas_mm2": [
+        1446.7,
+        1994.1,
+        884.4,
+        1360.6,
+        1346.8,
+        1599.5,
+        2822.9
+      ]
+    }
+  },
+  "razor_none_single": {
+    "scad": "razor_blade_dispenser/razor_blade_dispenser.scad",
+    "params": {
+      "stabilizing_peg_pattern": "\"none\"",
+      "slot_pattern": "\"M\""
+    },
+    "expect": {
+      "triangles": 1888,
+      "volume_mm3": 81874.1,
+      "bbox_size_mm": [
+        50.8,
+        51.15,
+        100.0
+      ],
+      "section_areas_mm2": [
+        1111.9,
+        1214.7,
+        712.2,
+        675.8,
+        639.3,
+        935.5,
+        785.7
+      ]
+    }
+  }
+}

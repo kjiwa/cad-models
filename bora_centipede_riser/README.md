@@ -118,6 +118,8 @@ The model provides three selectable reinforcement styles via `Riser_Reinforcemen
 * **Filament & Print Time**: 74.3 cm³ (~92 g solid PLA, or ~45 g sliced at 20% infill).
 * **Note**: In upright FDM printing, horizontal layer lines at the sharp 90° spine-to-plate transition are susceptible to tensile shear delamination under lateral loads.
 
+**A note on testing**: `Flared_Ribs` (the default) targets a real field-reported failure mode — the top plate peeling off the ribs, i.e. delamination at the 90° rib-to-plate joint — by replacing that butt joint with a filleted ramp, but this reinforcement has not yet been physically load-tested. `None` reproduces the original, field-tested Printables geometry exactly (byte-identical except for a 3mm→4mm top-thickness bump and a screw-cutout epsilon fix) for anyone who wants the known-working part while `Flared_Ribs`/`Conical_Vault` are validated.
+
 ---
 
 ## CLI Build & Automation

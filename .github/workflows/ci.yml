@@ -25,13 +25,15 @@ jobs:
           submodules: recursive
           persist-credentials: false
 
-      - name: Run build_presets unit tests
-        run: python3 -m unittest discover
-
       - name: Install OpenSCAD and Xvfb
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends openscad xvfb
+
+      - name: Run unit tests
+        env:
+          OPENSCADPATH: ${{ github.workspace }}/lib
+        run: xvfb-run -a python3 -m unittest discover
 
       - name: Build models
         env:

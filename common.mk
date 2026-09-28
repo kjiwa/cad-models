@@ -1,7 +1,6 @@
 # Root common Makefile for OpenSCAD models
 
 REPO_ROOT ?= $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
-export OPENSCADPATH ?= $(REPO_ROOT)/lib
 
 OPENSCAD ?= openscad
 MODEL    ?= $(notdir $(CURDIR))
