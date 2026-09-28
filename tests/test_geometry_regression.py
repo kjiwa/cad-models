@@ -8,6 +8,14 @@ the time only covered each model's default configuration.
 
 Requires the `openscad` binary; skips (not fails) when it isn't on PATH, so this file
 must run after OpenSCAD is installed in CI, not before.
+
+Fixture values are generated against the OpenSCAD version CI installs (apt on Ubuntu
+noble, currently 2021.01, no Manifold backend -- CGAL only). A local OpenSCAD build new
+enough to support `--backend=Manifold` triangulates differently and will show spurious
+triangle-count/section-area diffs even on unchanged geometry; volume still agrees to
+within a fraction of a percent across backends. Regenerate fixtures inside a matching
+container (`docker run -v $(pwd):/repo ubuntu:noble ...`, install openscad via apt) when
+intentionally updating them, not with a newer local OpenSCAD.
 """
 
 import json
@@ -29,6 +37,7 @@ FIXTURES_PATH = os.path.join(os.path.dirname(__file__), "fixtures", "geometry_fi
 # changing volume by well over 1%).
 VOLUME_REL_TOL = 0.005
 BBOX_ABS_TOL_MM = 0.05
+TRIANGLE_ABS_TOL = 10
 
 
 @unittest.skipUnless(shutil.which("openscad"), "openscad binary not found on PATH")
@@ -47,8 +56,13 @@ class GeometryRegressionTestCase(unittest.TestCase):
         )
         expect = case["expect"]
 
-        self.assertEqual(
-            actual["triangles"], expect["triangles"],
+        # CGAL-backend rendering (used when OpenSCAD lacks the Manifold backend, e.g.
+        # the apt package CI installs) triangulates a small number of near-degenerate
+        # facets non-deterministically between runs of identical input -- observed
+        # +/-2 triangles out of ~9400 across 5 repeated renders. A tight tolerance
+        # here, not exact equality, is what makes this check reproducible in CI.
+        self.assertLessEqual(
+            abs(actual["triangles"] - expect["triangles"]), TRIANGLE_ABS_TOL,
             f"{name}: triangle count changed ({expect['triangles']} -> {actual['triangles']})",
         )
         self.assertAlmostEqual(

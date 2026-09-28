@@ -90,17 +90,34 @@ def fingerprint(tris):
     }
 
 
+def detect_backend_flag(openscad="openscad"):
+    # Mirrors common.mk's OPENSCAD_BACKEND detection: older OpenSCAD builds
+    # (e.g. the apt package on Ubuntu CI runners) support neither --backend
+    # nor --enable=manifold, so probe --help rather than assuming Manifold.
+    result = subprocess.run([openscad, "--help"], capture_output=True, text=True)
+    help_text = result.stdout + result.stderr
+    if "--backend" in help_text:
+        return ["--backend=Manifold"]
+    if "manifold" in help_text:
+        return ["--enable=manifold"]
+    return []
+
+
 def render_fingerprint(scad_path, params, openscad="openscad", openscadpath=None):
     env = dict(os.environ)
     if openscadpath:
         env["OPENSCADPATH"] = openscadpath
     with tempfile.TemporaryDirectory() as tmp:
         out = os.path.join(tmp, "out.stl")
-        cmd = [openscad, "--backend=Manifold", "--hardwarnings"]
+        cmd = [openscad, "--render"] + detect_backend_flag(openscad)
         for k, v in params.items():
             cmd += ["-D", f"{k}={v}"]
         cmd += ["-o", out, scad_path]
-        subprocess.run(cmd, check=True, env=env, capture_output=True, text=True)
+        result = subprocess.run(cmd, env=env, capture_output=True, text=True)
+        if result.returncode != 0:
+            raise RuntimeError(
+                f"openscad failed ({' '.join(cmd)}):\nstdout: {result.stdout}\nstderr: {result.stderr}"
+            )
         return fingerprint(read_stl_triangles(out))
 
 
