@@ -1,0 +1,23 @@
+{
+    "fileFormatVersion": "1",
+    "parameterSets": {
+        "Default (Standard 1/4\" - 5.7mm Fit)": {
+            "Hook_Rise": "6",
+            "Peg_Diameter": "5.7",
+            "Peg_Spacing": "25.4",
+            "Pegboard_Thickness": "6.35"
+        },
+        "Sy's Original (6.0mm)": {
+            "Hook_Rise": "6",
+            "Peg_Diameter": "6",
+            "Peg_Spacing": "25.4",
+            "Pegboard_Thickness": "6.35"
+        },
+        "Potting Bench (Thin Metal)": {
+            "Hook_Rise": "6",
+            "Peg_Diameter": "4.5",
+            "Peg_Spacing": "12.7",
+            "Pegboard_Thickness": "1.2"
+        }
+    }
+}

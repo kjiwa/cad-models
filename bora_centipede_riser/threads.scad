@@ -1,1 +1,0 @@
-../lib/threads-scad/threads.scad

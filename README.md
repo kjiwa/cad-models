@@ -7,6 +7,7 @@ Parametric, 3D-printable OpenSCAD models, each in its own directory with a `.sca
 - `curtain_rod_mounting_plate` — mounting plate for curtain rod brackets
 - `entryway_table` — plywood entryway table with angled legs
 - `makita_hose_adapter` — dust extraction hose adapter for Makita tools
+- `peglock_attachment` — board attachment clips for Sy's Peglock pegboard system
 - `peglock_holder` — bin/organizer for Sy's Peglock pegboard system
 - `peglock_hook` — hooks and socket racks for Sy's Peglock pegboard system
 - `razor_blade_dispenser` — pegboard dispenser for single-edge razor blades
@@ -42,7 +43,5 @@ licenses and are not covered by this repository's LICENSE:
 
 - `lib/BOSL2` ([BelfrySCAD/BOSL2](https://github.com/BelfrySCAD/BOSL2)) — BSD-2-Clause
 - `lib/threads-scad` ([rcolyer/threads-scad](https://github.com/rcolyer/threads-scad)) — CC0-1.0
-- `lib/peglock_openscad` ([loudej/peglock_openscad](https://github.com/loudej/peglock_openscad)) —
-  unlicensed (no LICENSE file upstream); resolution pending
-- `peglock_holder` and `peglock_hook` interface with Sy's Peglock modular pegboard mounting
+- `lib/peglock`, `peglock_attachment`, `peglock_holder`, and `peglock_hook` interface with Sy's Peglock modular pegboard mounting
   system, CC-BY; only the mounting interface is reused, credited here

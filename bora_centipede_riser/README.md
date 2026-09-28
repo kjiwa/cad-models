@@ -25,8 +25,7 @@ bora_centipede_riser/
 ├── README.md                  # Project documentation & printing recommendations
 ├── bora_centipede_riser.json  # Customizer parameter presets
 ├── bora_centipede_riser.scad  # Parametric OpenSCAD source model
-├── threads-scad               # Symlink to ../lib/threads-scad submodule
-└── threads.scad               # Symlink to ../lib/threads-scad/threads.scad
+└── threads-scad               # Symlink to ../lib/threads-scad submodule
 ```
 
 ---

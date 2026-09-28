@@ -1,6 +1,7 @@
 include <BOSL2/std.scad>
-include <peglock_openscad/peglock_modules.scad>
-include <peglock_mount/peglock_mount.scad>
+include <peglock/peglock.scad>
+
+// TODO: Add option to toggle between Sy's Peglock and monolithic integrated pegs (pegs.scad).
 
 /* [Holder] */
 Holder_Width = 12.7;
