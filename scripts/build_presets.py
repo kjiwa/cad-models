@@ -41,22 +41,36 @@ def main() -> None:
         with open(args.json, "r", encoding="utf-8") as f:
             data = json.load(f)
     except Exception as err:
-        print(f"Warning: could not parse {args.json}: {err}", file=sys.stderr)
-        return
+        print(f"Error: could not parse {args.json}: {err}", file=sys.stderr)
+        sys.exit(1)
 
     parameter_sets = data.get("parameterSets")
     if not isinstance(parameter_sets, dict) or not parameter_sets:
         return
+
+    preset_names = [name for name in parameter_sets.keys() if name]
+    slugs_by_name = {name: slugify(name) for name in preset_names}
+    seen_names_by_slug = {}
+    for name, slug in slugs_by_name.items():
+        seen_names_by_slug.setdefault(slug, []).append(name)
+    collisions = {
+        slug: names for slug, names in seen_names_by_slug.items() if len(names) > 1
+    }
+    if collisions:
+        for slug, names in collisions.items():
+            print(
+                f"Error: preset names {names!r} collide on slug '{slug}'",
+                file=sys.stderr,
+            )
+        sys.exit(1)
 
     os.makedirs(args.build_dir, exist_ok=True)
 
     openscad_flags = shlex.split(args.openscad_flags)
     render_flags = shlex.split(args.render_flags)
 
-    for preset_name in parameter_sets.keys():
-        if not preset_name:
-            continue
-        slug = slugify(preset_name)
+    for preset_name in preset_names:
+        slug = slugs_by_name[preset_name]
         preset_args = ["-p", args.json, "-P", preset_name]
 
         if args.target in ("all", "stl"):

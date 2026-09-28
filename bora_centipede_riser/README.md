@@ -4,7 +4,7 @@ Parametric, hardware-compatible risers and locking nuts for Bora Centipede work 
 
 Bora sells 6" risers that raise the stands to 36". However, when using a sheet of plywood or workbench top, the working height rises to 36-3/4", which is too high to serve as an infeed or outfeed table for 36" table saws. This model allows customizable riser heights, including 5-1/4" risers (133.35 mm) to account for workbench top thickness, as well as the standard 6" height (152.4 mm) and matching knurled locking nuts.
 
-Original design published on [Printables](https://www.printables.com/model/890834-bora-centipede-parametric-risers).
+Also posted on [Printables](https://www.printables.com/model/890834-bora-centipede-parametric-risers).
 
 ## Features
 

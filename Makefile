@@ -14,7 +14,7 @@ $(PROJECTS):
 stl 3mf preview presets:
 	@for dir in $(PROJECTS); do \
 		echo "==> Building $@ in $$dir"; \
-		$(MAKE) -C $$dir $@; \
+		$(MAKE) -C $$dir $@ || exit 1; \
 	done
 
 dist: all
@@ -31,7 +31,7 @@ clean:
 	@rm -rf dist
 	@for dir in $(PROJECTS); do \
 		echo "==> Cleaning in $$dir"; \
-		$(MAKE) -C $$dir clean; \
+		$(MAKE) -C $$dir clean || exit 1; \
 	done
 
 setup:
