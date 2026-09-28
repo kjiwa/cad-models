@@ -9,7 +9,7 @@ A parametric, 3D-printable pegboard dispenser for single-edge utility razor blad
 - **Parametric Capacity & Count**: Configurable dispenser height (`dispenser_height`) and number of side-by-side towers (`dispenser_count`).
 - **Calibrated Single-Blade Exit Gates**: Independent exit gate heights for metal blades (`1.7 mm`, matching ~1.2 mm sleeved blade) and plastic blades (`2.1 mm`, matching ~1.6 mm body), preventing double feeding.
 - **Support-Free Internal Bridging**: 45-degree lead-in chamfer on the exit gate ceiling prevents sagging during bridging so chutes print cleanly without internal support.
-- **Ergonomic Pinch-Grip Retrieval**: Front resting shelf combined with a bottom finger-scoop cutout allows pinching the bottom blade from above and below to slide it out smoothly.
+- **Full-Depth Slide-Out Channel & Front Shelf**: Bottom finger channel extends all the way to the chute rear wall, exposing the full blade underside so the user can easily push the bottom blade forward from underneath onto the front resting shelf for pinch-grip extraction.
 - **Smooth Bellmouth Flared Front Opening**: Parametric flared opening profile blending seamlessly from the vertical sight slot into the exit gate. Provides continuous G1/G2 tangent curvature that eliminates sharp corners, directional kinks, and inward pinch points for comfortable downward thumb feed and blade extraction.
 - **Dual Pegboard & Wall Mounting**: Standard 1/4" pegboard hooks with heel relief, plus countersunk #8 screw mounting clearance holes with front driver pass-through tunnels and an `include_pegs` toggle for flush wall or cabinet mounting.
 - **Sleeved vs. Bare Metal Blade Calibration**: Configurable pocket depths for paper-sleeved blades (`23.0 mm`) and bare unwrapped blades (`20.5 mm`), eliminating stack tilt and slop.
@@ -66,7 +66,7 @@ razor_blade_dispenser/
 | Parameter | Default | Description |
 |---|---|---|
 | `grip_notch_width` | `22.0` | Width of bottom finger scoop cutout in mm |
-| `grip_notch_depth` | `12.0` | Depth of bottom finger scoop cutout under blade in mm |
+| `grip_notch_depth` | `0` | Depth of bottom finger scoop channel in mm (0 for full depth extending to rear wall) |
 | `shelf_extension` | `6.0` | Forward extension of front resting shelf in mm |
 | `opening_flare_width` | `22.0` | Bottom width of outward flared opening ramp in mm |
 | `opening_flare_height` | `12.0` | Vertical height of outward flared opening ramp in mm |

@@ -71,18 +71,23 @@ module exit_gate(
   }
 }
 
-// Generates the rounded finger scoop notch under the bottom blade for pinch-grip extraction.
+// Generates the rounded finger scoop notch under the bottom blade for slide-out extraction.
 module finger_scoop(
   x_center,
+  chute_d = effective_metal_depth,
   scoop_w = grip_notch_width,
   scoop_d = grip_notch_depth,
   floor_t = floor_thickness,
   back_t = backplate_thickness,
   tower_d = tower_depth,
+  front_w = front_wall_thickness,
   shelf_ext = shelf_extension
 ) {
   y_front = back_t + tower_d + shelf_ext + EPSILON;
-  r = min(4.0, scoop_w / 4);
+  y_back = back_t + tower_d - front_w - chute_d;
+  full_d = y_front - y_back;
+  actual_scoop_d = (scoop_d > 0) ? scoop_d : full_d;
+  r = min(3.0, scoop_w / 4);
   h_cut = floor_t + 2 * EPSILON;
 
   translate([x_center, y_front, -EPSILON]) {
@@ -91,9 +96,9 @@ module finger_scoop(
         hull() {
           translate([-scoop_w / 2, 0])
             square([scoop_w, EPSILON]);
-          translate([-scoop_w / 2 + r, scoop_d - r])
+          translate([-scoop_w / 2 + r, actual_scoop_d - r])
             circle(r = r);
-          translate([scoop_w / 2 - r, scoop_d - r])
+          translate([scoop_w / 2 - r, actual_scoop_d - r])
             circle(r = r);
         }
       }
@@ -173,7 +178,7 @@ module slot_cutouts(index, x_center) {
   exit_h = slot_exit_height(index);
   chute_cavity(x_center, d = d);
   exit_gate(x_center, exit_h, d = d);
-  finger_scoop(x_center);
+  finger_scoop(x_center, chute_d = d);
   sight_slot(x_center, z_bottom = floor_thickness + exit_h);
   tower_top_funnel(x_center, chute_d = d);
 

@@ -45,8 +45,8 @@ chute_depth = 0;
 // Width of bottom finger scoop cutout in mm
 grip_notch_width = 22.0;
 
-// Depth of bottom finger scoop cutout under blade in mm
-grip_notch_depth = 12.0;
+// Depth of bottom finger scoop cutout in mm (0 extends all the way back to chute rear wall)
+grip_notch_depth = 0;
 
 // Forward extension of front resting shelf in mm
 shelf_extension = 6.0;
