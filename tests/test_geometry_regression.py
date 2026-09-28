@@ -2,9 +2,16 @@
 
 Renders a small, representative parameter matrix for ryobi_40v_battery_holder and
 razor_blade_dispenser and compares each against a checked-in fingerprint (triangle
-count, volume, bbox). Exists because commit e55c1f6 silently changed span_2 lower-pin
-placement while extracting lib/pegboard/pegs.scad, and the STL-diff check relied on at
-the time only covered each model's default configuration.
+count as a coarse sanity bound, volume and bbox as the real signal). Exists because
+commit e55c1f6 silently changed span_2 lower-pin placement while extracting
+lib/pegboard/pegs.scad, and the STL-diff check relied on at the time only covered each
+model's default configuration.
+
+Known gap: a feature (e.g. a peg) relocating to a different height within an
+otherwise-unchanged part conserves volume and bbox, so this test as it stands would
+NOT catch a repeat of that exact regression -- see the section_areas_mm2 note in
+GeometryRegressionTestCase._check_case for why that metric exists in the fingerprint
+but isn't asserted yet, and what it needs before it can be.
 
 Requires the `openscad` binary; skips (not fails) when it isn't on PATH, so this file
 must run after OpenSCAD is installed in CI, not before.
@@ -31,21 +38,22 @@ from geometry_fingerprint import render_fingerprint  # noqa: E402
 
 FIXTURES_PATH = os.path.join(os.path.dirname(__file__), "fixtures", "geometry_fixtures.json")
 
-# Volume/bbox/section-area come from a floating-point boolean render; allow a tight
-# relative tolerance for solver/version drift while still catching real geometry
-# changes (the span_2 regression this test guards against moved a pin by several mm,
-# changing volume and section areas by well over 1%).
+# Volume/bbox come from a floating-point boolean render; allow a tight relative
+# tolerance for solver/version drift while still catching real geometry changes
+# (the span_2 regression this test guards against moved a pin by several mm,
+# changing volume by well over 1%). Confirmed robust against real cross-environment
+# drift: these two passed cleanly on GitHub's actual runner even where triangle
+# count and section-area sampling (below) did not.
 VOLUME_REL_TOL = 0.005
 BBOX_ABS_TOL_MM = 0.05
-SECTION_AREA_REL_TOL = 0.03
 
 # Triangle count is NOT a reliable cross-environment signal: two different Ubuntu
 # noble CGAL/OpenSCAD apt package snapshots (a local `docker run ubuntu:noble` pull
 # vs. GitHub's actual ubuntu-latest runner image) triangulated the same geometry with
 # a consistent ~3-5% difference (e.g. 9426 vs 9762 triangles for the same part), even
-# though volume/bbox/section-area all agreed to within a fraction of a percent between
-# them. Kept only as a coarse sanity bound (catches a doubled or missing mesh, not a
-# precise regression) -- volume/bbox/section-area are the real signal.
+# though volume/bbox agreed to within a fraction of a percent between them. Kept only
+# as a coarse sanity bound (catches a doubled or missing mesh, not a precise
+# regression) -- volume/bbox are the real signal.
 TRIANGLE_REL_TOL = 0.25
 
 
@@ -79,12 +87,17 @@ class GeometryRegressionTestCase(unittest.TestCase):
                     f"({expect['bbox_size_mm'][i]} -> {actual['bbox_size_mm'][i]} mm)"
                 )
 
-        for i, (a, e) in enumerate(zip(actual["section_areas_mm2"], expect["section_areas_mm2"])):
-            if abs(a - e) > max(e * SECTION_AREA_REL_TOL, 1.0):
-                problems.append(
-                    f"cross-section area at sample point {i} changed ({e} -> {a} mm2) "
-                    "-- a feature likely moved to a different height without changing total volume/bbox"
-                )
+        # section_areas_mm2 is deliberately NOT asserted here. It samples the
+        # cross-sectional area at fixed *fractions* of the part's bbox height, which
+        # is landmine-prone: any small cross-environment jitter in the bbox (still
+        # within BBOX_ABS_TOL_MM) shifts every sample point, and a sample landing a
+        # fraction of a mm from a feature edge (a peg, a hole boundary) swings that
+        # slice's area by 100%+ even though nothing regressed -- confirmed against
+        # GitHub's real runner, where triangle count and volume/bbox all held within
+        # tolerance but several section samples did not, on unchanged geometry. It
+        # would need sampling over a band and averaging (or a feature-aware, not
+        # bbox-fraction-based, sample position) to be a reliable gate; until then it
+        # stays in the fingerprint as diagnostic data only, not asserted.
 
         if problems:
             self.fail(f"{name}: " + "; ".join(problems))
