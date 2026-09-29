@@ -117,7 +117,8 @@ module sight_slot(
   back_t = backplate_thickness,
   tower_d = tower_depth,
   front_w = front_wall_thickness,
-  shelf_ext = shelf_extension
+  shelf_ext = shelf_extension,
+  top_chamfer = slot_top_chamfer
 ) {
   if (enable_sight_slots && (z_end > z_bottom + slot_w)) {
     top_r = slot_w / 2;
@@ -127,6 +128,8 @@ module sight_slot(
     cut_depth = front_w + shelf_ext + 10.0;
     delta_w = (actual_flare_w - slot_w) / 2;
     steps = 40;
+    is_open_top = (z_end >= dispenser_height - EPSILON);
+    top_c = is_open_top ? top_chamfer : 0;
 
     translate([x_center, y_start, 0]) {
       rotate([-90, 0, 0]) {
@@ -142,12 +145,22 @@ module sight_slot(
               )
               [x, -z]
           ];
-          pts_r_straight = [[slot_w / 2, -(z_end - top_r)]];
-          // 2. Top semi-circular arch
-          pts_top = [
-            for (a = [0 : 6 : 180])
-              [top_r * cos(a), -((z_end - top_r) + top_r * sin(a))]
-          ];
+          pts_r_straight = is_open_top
+            ? [[slot_w / 2, -(dispenser_height - top_c)]]
+            : [[slot_w / 2, -(z_end - top_r)]];
+          // 2. Top section: open-top lead-in chamfer or semi-circular arch
+          pts_top = is_open_top
+            ? [
+                [slot_w / 2 + top_c, -dispenser_height],
+                [slot_w / 2 + top_c, -(dispenser_height + 5.0)],
+                [-slot_w / 2 - top_c, -(dispenser_height + 5.0)],
+                [-slot_w / 2 - top_c, -dispenser_height],
+                [-slot_w / 2, -(dispenser_height - top_c)]
+              ]
+            : [
+                for (a = [0 : 6 : 180])
+                  [top_r * cos(a), -((z_end - top_r) + top_r * sin(a))]
+              ];
           pts_l_straight = [[-slot_w / 2, -(z_bottom + actual_flare_h)]];
           // 3. Left curve: tangent to vertical slot at top, tangent to horizontal ceiling at bottom
           pts_l_curve = [

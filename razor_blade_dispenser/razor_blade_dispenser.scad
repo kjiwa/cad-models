@@ -3,6 +3,10 @@
  * Sized for metal and plastic utility blades on standard 1/4" pegboard.
  */
 
+/* [Component Selection] */
+// Component part to generate
+part = "dispenser"; // [dispenser: Main Dispenser, assembly: Dispenser & Followers, follower_metal: Metal Follower Only, follower_plastic: Plastic Follower Only, followers: Both Followers]
+
 /* [Dispenser Configuration] */
 // Slot configuration pattern: M for Metal blade, P for Plastic scraper blade (e.g. "MP", "M", "P", "MMMMPPMMM")
 slot_pattern = "MP";
@@ -52,7 +56,7 @@ grip_notch_depth = 0;
 shelf_extension = 6.0;
 
 // Bottom width of outward flared opening ramp in mm
-opening_flare_width = 22.0; // [14.0:1.0:30.0]
+opening_flare_width = 26.0; // [20.0:1.0:32.0]
 
 // Vertical height of outward flared opening ramp in mm
 opening_flare_height = 12.0; // [6.0:1.0:25.0]
@@ -61,16 +65,41 @@ opening_flare_height = 12.0; // [6.0:1.0:25.0]
 enable_sight_slots = true;
 
 // Width of front sight slot in mm
-sight_slot_width = 10.0;
+sight_slot_width = 20.0;
+
+// Corner lead-in chamfer for top entry into the front slot in mm
+slot_top_chamfer = 2.0; // [0.5:0.5:4.0]
 
 // Enable debossed "METAL" / "PLASTIC" identification badges on front face
 enable_badge_labels = true;
 
 // Font size for front debossed text badges in mm
-badge_text_size = 4.0;
+badge_text_size = 3.2;
 
 // Deboss depth for front badges in mm
 badge_deboss_depth = 0.6;
+
+/* [Gravity Follower Weight] */
+// Vertical thickness of follower weight in mm
+follower_height = 12.0; // [8.0:1.0:20.0]
+
+// Perimeter clearance between follower and chute pocket in mm
+follower_clearance = 0.5; // [0.2:0.05:1.0]
+
+// Protrusion of front indicator tab beyond dispenser front face in mm
+follower_tab_lead = 1.5; // [0.5:0.5:3.0]
+
+// Include internal ballast pocket for standard coins (pennies) or hex nuts
+include_ballast_pocket = true;
+
+// Width of internal ballast pocket in mm
+ballast_pocket_width = 22.0;
+
+// Depth of internal ballast pocket in mm
+ballast_pocket_depth = 12.0;
+
+// Height of internal ballast pocket in mm
+ballast_pocket_height = 8.0;
 
 /* [Pegboard & Wall Mounting] */
 // Include rear pegboard mounting hooks and pins (false for flush wall mounting)
@@ -126,14 +155,14 @@ tower_corner_radius = 4.0;
 top_corner_radius = 4.0;
 
 // Top funnel lead-in chamfer depth in mm
-top_funnel_lead = 1.6;
+top_funnel_lead = 2.5;
 
 /* [Component Inspection & Labels] */
 // Show 3D text labels for components in preview
 show_labels = true;
 
 // Component to inspect (or "all" for full assembly)
-view_component = "all"; // [all: All Components, backplate: Backplate, towers: Dispenser Towers, chutes: Negative Chute Space, upper_hooks: Upper Hooks, lower_pins: Lower Pins]
+view_component = "all"; // [all: All Components, backplate: Backplate, towers: Dispenser Towers, chutes: Negative Chute Space, upper_hooks: Upper Hooks, lower_pins: Lower Pins, followers: Gravity Followers]
 
 // Label text size in mm
 label_size = 4.5;
@@ -164,18 +193,19 @@ z_plate_top = backplate_height;
 z_top_peg = z_plate_top - peg_top_margin;
 lowest_peg_k = max(floor((z_top_peg - pin_diameter / 2 - 2.0) / peg_hole_spacing), 1);
 
-badge_z_position = dispenser_height - 12.0;
+badge_z_position = dispenser_height - 18.0;
 sight_slot_z_start = floor_thickness;
-sight_slot_z_end = badge_z_position - 6.0;
+sight_slot_z_end = dispenser_height + EPSILON;
 
 include <components/labels.scad>
 include <components/pegs.scad>
 include <components/backplate.scad>
 include <components/tower_body.scad>
 include <components/dispensing_chute.scad>
+include <components/follower.scad>
 
-// Top-level assembly orchestrator.
-module razor_blade_dispenser() {
+// Top-level dispenser body assembly.
+module razor_blade_dispenser_body() {
   union() {
     difference() {
       union() {
@@ -213,6 +243,31 @@ module razor_blade_dispenser() {
     }
 
     mounting_pegs();
+  }
+}
+
+// Top-level assembly orchestrator with follower rendering support.
+module razor_blade_dispenser() {
+  if (part == "follower_metal") {
+    blade_follower("metal");
+  } else if (part == "follower_plastic") {
+    blade_follower("plastic");
+  } else if (part == "followers") {
+    sep = follower_width() / 2 + 4.0;
+    translate([-sep, 0, 0]) blade_follower("metal");
+    translate([sep, 0, 0]) blade_follower("plastic");
+  } else if (part == "assembly") {
+    if (view_component != "followers") {
+      razor_blade_dispenser_body();
+    }
+    if (is_visible("all") || is_visible("followers")) {
+      for (i = [0 : actual_dispenser_count - 1]) {
+        x_c = ((actual_dispenser_count - 1) / 2 - i) * slot_spacing;
+        chute_follower_instance(i, x_c, dispenser_height - follower_height - 6.0);
+      }
+    }
+  } else {
+    razor_blade_dispenser_body();
   }
 }
 

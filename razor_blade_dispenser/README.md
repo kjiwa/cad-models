@@ -9,6 +9,8 @@ A parametric, 3D-printable pegboard dispenser for single-edge utility razor blad
 - **Parametric Capacity & Count**: Configurable dispenser height (`dispenser_height`) and number of side-by-side towers (`dispenser_count`).
 - **Calibrated Single-Blade Exit Gates**: Independent exit gate heights for metal blades (`1.7 mm`, matching ~1.2 mm sleeved blade) and plastic blades (`2.1 mm`, matching ~1.6 mm body), preventing double feeding.
 - **Support-Free Internal Bridging**: 45-degree lead-in chamfer on the exit gate ceiling prevents sagging during bridging so chutes print cleanly without internal support.
+- **Full-Height Open-Top Finger Loading Channel**: 20 mm wide front channel extends completely through the top rim with rounded entry lead-in chamfers, enabling an index finger to support the bottom of a blade stack from entry all the way to the floor without blades tumbling or jamming.
+- **Drop-In Gravity Follower Weights**: Low-profile (12.0 mm tall) follower weights slide freely inside each chute, applying consistent downward normal force on the blade stack for positive traction on the bottom blade, eliminating blade shifting during extraction, and dampening workshop vibration. Features an ergonomic top pull fin, a front indicator tab that tracks inventory through the front channel, debossed badges (`M` / `P` on front, `METAL` / `PLASTIC` on top), and an optional ballast pocket for standard coins (pennies) or hex nuts.
 - **Full-Depth Slide-Out Channel & Front Shelf**: Bottom finger channel extends all the way to the chute rear wall, exposing the full blade underside so the user can easily push the bottom blade forward from underneath onto the front resting shelf for pinch-grip extraction.
 - **Smooth Bellmouth Flared Front Opening**: Parametric flared opening profile blending seamlessly from the vertical sight slot into the exit gate. Provides continuous G1/G2 tangent curvature that eliminates sharp corners, directional kinks, and inward pinch points for comfortable downward thumb feed and blade extraction.
 - **Dual Pegboard & Wall Mounting**: Standard 1/4" pegboard hooks with heel relief, plus countersunk #8 screw mounting clearance holes with front driver pass-through tunnels and an `include_pegs` toggle for flush wall or cabinet mounting.
@@ -32,6 +34,7 @@ razor_blade_dispenser/
 └── components/
     ├── backplate.scad              # Mounting backplate, screw holes, and weight-relief windows
     ├── dispensing_chute.scad       # Blade cavity, calibrated exit gates, finger scoop, and sight slot
+    ├── follower.scad               # Parametric gravity follower weights with indicator tab & ballast pocket
     ├── labels.scad                 # Component visibility filters and 3D preview inspection labels
     ├── pegs.scad                   # Pegboard hook and pin layout orchestrator
     └── tower_body.scad             # Monolithic dispenser shell, front shelf, top funnel, debossed text
@@ -41,6 +44,11 @@ razor_blade_dispenser/
 ---
 
 ## Customizer Parameters
+
+### `[Component Selection]`
+| Parameter | Default | Description |
+|---|---|---|
+| `part` | `dispenser` | Component part to generate (`dispenser`, `assembly`, `follower_metal`, `follower_plastic`, `followers`) |
 
 ### `[Dispenser Configuration]`
 | Parameter | Default | Description |
@@ -68,13 +76,25 @@ razor_blade_dispenser/
 | `grip_notch_width` | `22.0` | Width of bottom finger scoop cutout in mm |
 | `grip_notch_depth` | `0` | Depth of bottom finger scoop channel in mm (0 for full depth extending to rear wall) |
 | `shelf_extension` | `6.0` | Forward extension of front resting shelf in mm |
-| `opening_flare_width` | `22.0` | Bottom width of outward flared opening ramp in mm |
+| `opening_flare_width` | `26.0` | Bottom width of outward flared opening ramp in mm |
 | `opening_flare_height` | `12.0` | Vertical height of outward flared opening ramp in mm |
 | `enable_sight_slots` | `true` | Enable front vertical sight slots for inventory |
-| `sight_slot_width` | `10.0` | Width of front sight slot in mm |
+| `sight_slot_width` | `20.0` | Width of front finger loading channel and sight slot in mm |
+| `slot_top_chamfer` | `2.0` | Lead-in corner chamfer for top entry into the front slot in mm |
 | `enable_badge_labels` | `true` | Enable debossed front text badges |
-| `badge_text_size` | `4.0` | Font size for front debossed text badges in mm |
+| `badge_text_size` | `3.2` | Font size for debossed text badges in mm |
 | `badge_deboss_depth` | `0.6` | Deboss depth into front face in mm |
+
+### `[Gravity Follower Weight]`
+| Parameter | Default | Description |
+|---|---|---|
+| `follower_height` | `12.0` | Vertical thickness of follower weight in mm |
+| `follower_clearance` | `0.5` | Perimeter clearance between follower and chute pocket in mm |
+| `follower_tab_lead` | `1.5` | Protrusion of front indicator tab beyond dispenser front face in mm |
+| `include_ballast_pocket` | `true` | Include internal ballast pocket for standard coins (pennies) or hex nuts |
+| `ballast_pocket_width` | `22.0` | Width of internal ballast pocket in mm |
+| `ballast_pocket_depth` | `12.0` | Depth of internal ballast pocket in mm |
+| `ballast_pocket_height` | `8.0` | Height of internal ballast pocket in mm |
 
 ### `[Pegboard & Wall Mounting]`
 | Parameter | Default | Description |
@@ -100,7 +120,7 @@ razor_blade_dispenser/
 | `front_wall_thickness` | `3.5` | Front wall thickness in mm |
 | `tower_corner_radius` | `4.0` | Corner radius for outer tower body in mm |
 | `top_corner_radius` | `4.0` | Radius for softening top-left and top-right shoulders in mm |
-| `top_funnel_lead` | `1.6` | Chamfer depth for top loading funnel in mm |
+| `top_funnel_lead` | `2.5` | Chamfer depth for top loading funnel in mm |
 
 ---
 

@@ -29,6 +29,15 @@
             "slot_pattern": "MMPP",
             "dispenser_count": "0",
             "dispenser_height": "100.0"
+        },
+        "Follower_Metal": {
+            "part": "follower_metal"
+        },
+        "Follower_Plastic": {
+            "part": "follower_plastic"
+        },
+        "Followers_Dual": {
+            "part": "followers"
         }
     },
     "fileFormatVersion": "1"

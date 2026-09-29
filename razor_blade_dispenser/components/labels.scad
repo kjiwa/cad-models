@@ -7,7 +7,8 @@ function is_visible(comp) =
   (view_component == "all") ||
   (view_component == comp) ||
   (view_component == "towers" && (comp == "tower_body" || comp == "dispenser")) ||
-  (view_component == "pegs" && (comp == "upper_hooks" || comp == "lower_pins"));
+  (view_component == "pegs" && (comp == "upper_hooks" || comp == "lower_pins")) ||
+  (view_component == "followers" && comp == "followers");
 
 // Renders an oriented 3D text label during OpenSCAD preview inspection.
 module component_label(txt, pos, rot = [90, 0, 180]) {

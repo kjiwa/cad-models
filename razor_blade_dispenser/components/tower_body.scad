@@ -88,20 +88,41 @@ module tower_top_funnel(
   }
 }
 
-// Generates debossed identification text on the front face above the exit gate.
+// Generates debossed identification text on the front face.
 module tower_debossed_text(
   x_center,
   label_text,
   y_front = backplate_thickness + tower_depth,
   z_pos = badge_z_position,
   text_sz = badge_text_size,
-  deboss_d = badge_deboss_depth
+  deboss_d = badge_deboss_depth,
+  slot_w = sight_slot_width,
+  chute_w = chute_width,
+  is_open = (sight_slot_z_end >= dispenser_height - EPSILON)
 ) {
-  translate([x_center, y_front + EPSILON, z_pos]) {
-    rotate([90, 0, 0]) {
-      mirror([1, 0, 0]) {
-        linear_extrude(height = deboss_d + 2 * EPSILON) {
-          text(label_text, size = text_sz, font = "Liberation Sans:style=Bold", halign = "center", valign = "center");
+  if (is_open || slot_w >= 14.0) {
+    x_flank = x_center + (slot_w / 2 + chute_w / 2) / 2;
+    z_flank = dispenser_height - 18.0;
+    actual_sz = min(text_sz, 3.2);
+
+    translate([x_flank, y_front + EPSILON, z_flank]) {
+      rotate([90, 0, 0]) {
+        mirror([1, 0, 0]) {
+          rotate([0, 0, -90]) {
+            linear_extrude(height = deboss_d + 2 * EPSILON) {
+              text(label_text, size = actual_sz, font = "Liberation Sans:style=Bold", halign = "center", valign = "center");
+            }
+          }
+        }
+      }
+    }
+  } else {
+    translate([x_center, y_front + EPSILON, z_pos]) {
+      rotate([90, 0, 0]) {
+        mirror([1, 0, 0]) {
+          linear_extrude(height = deboss_d + 2 * EPSILON) {
+            text(label_text, size = text_sz, font = "Liberation Sans:style=Bold", halign = "center", valign = "center");
+          }
         }
       }
     }
