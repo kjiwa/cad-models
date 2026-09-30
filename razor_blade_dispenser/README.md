@@ -10,7 +10,7 @@ A parametric, 3D-printable pegboard dispenser for single-edge utility razor blad
 - **Calibrated Single-Blade Exit Gates**: Independent exit gate heights for metal blades (`1.7 mm`, matching ~1.2 mm sleeved blade) and plastic blades (`2.1 mm`, matching ~1.6 mm body), preventing double feeding.
 - **Support-Free Internal Bridging**: 45-degree lead-in chamfer on the exit gate ceiling prevents sagging during bridging so chutes print cleanly without internal support.
 - **Full-Height Open-Top Finger Loading Channel**: 20 mm wide front channel extends completely through the top rim with rounded entry lead-in chamfers, enabling an index finger to support the bottom of a blade stack from entry all the way to the floor without blades tumbling or jamming.
-- **Drop-In Gravity Follower Weights**: Low-profile (12.0 mm tall) follower weights slide freely inside each chute, applying consistent downward normal force on the blade stack for positive traction on the bottom blade, eliminating blade shifting during extraction, and dampening workshop vibration. Features an ergonomic top pull fin, a front indicator tab that tracks inventory through the front channel, debossed badges (`M` / `P` on front, `METAL` / `PLASTIC` on top), and an optional ballast pocket for standard coins (pennies) or hex nuts.
+- **Drop-In Gravity Follower Weights**: Low-profile follower weights slide freely inside each chute, applying consistent downward normal force on the blade stack for positive traction on the bottom blade, eliminating blade shifting during extraction, and dampening workshop vibration. Features an ergonomic top pull fin, a front indicator tab that tracks inventory through the front channel, debossed badges (`M` / `P` on front, `METAL` / `PLASTIC` on top when printed solid), and a conforming cylindrical coin cradle optimized for standard currency (pennies default, with nickels and quarters supported) that eliminates dead-space voids and prevents rattling.
 - **Full-Depth Slide-Out Channel & Front Shelf**: Bottom finger channel extends all the way to the chute rear wall, exposing the full blade underside so the user can easily push the bottom blade forward from underneath onto the front resting shelf for pinch-grip extraction.
 - **Smooth Bellmouth Flared Front Opening**: Parametric flared opening profile blending seamlessly from the vertical sight slot into the exit gate. Provides continuous G1/G2 tangent curvature that eliminates sharp corners, directional kinks, and inward pinch points for comfortable downward thumb feed and blade extraction.
 - **Dual Pegboard & Wall Mounting**: Standard 1/4" pegboard hooks with heel relief, plus countersunk #8 screw mounting clearance holes with front driver pass-through tunnels and an `include_pegs` toggle for flush wall or cabinet mounting.
@@ -88,13 +88,14 @@ razor_blade_dispenser/
 ### `[Gravity Follower Weight]`
 | Parameter | Default | Description |
 |---|---|---|
-| `follower_height` | `12.0` | Vertical thickness of follower weight in mm |
+| `coin_type` | `penny` | Standard coin type for drop-in ballast (`penny`, `nickel`, `quarter`, `custom`) |
+| `follower_height` | `0` | Vertical thickness of follower in mm (0 auto-calculates minimum height for `coin_type` + 2.5 mm floor) |
 | `follower_clearance` | `0.5` | Perimeter clearance between follower and chute pocket in mm |
 | `follower_tab_lead` | `1.5` | Protrusion of front indicator tab beyond dispenser front face in mm |
-| `include_ballast_pocket` | `true` | Include internal ballast pocket for standard coins (pennies) or hex nuts |
-| `ballast_pocket_width` | `22.0` | Width of internal ballast pocket in mm |
-| `ballast_pocket_depth` | `12.0` | Depth of internal ballast pocket in mm |
-| `ballast_pocket_height` | `8.0` | Height of internal ballast pocket in mm |
+| `include_ballast_pocket` | `true` | Include internal ballast pocket for coins or custom filler |
+| `ballast_pocket_width` | `22.0` | Custom ballast pocket width in mm (used when `coin_type = "custom"`) |
+| `ballast_pocket_depth` | `12.0` | Custom ballast pocket depth in mm (used when `coin_type = "custom"`) |
+| `ballast_pocket_height` | `8.0` | Custom ballast pocket height in mm (used when `coin_type = "custom"`) |
 
 ### `[Pegboard & Wall Mounting]`
 | Parameter | Default | Description |
@@ -121,6 +122,13 @@ razor_blade_dispenser/
 | `tower_corner_radius` | `4.0` | Corner radius for outer tower body in mm |
 | `top_corner_radius` | `4.0` | Radius for softening top-left and top-right shoulders in mm |
 | `top_funnel_lead` | `2.5` | Chamfer depth for top loading funnel in mm |
+
+### `[Component Inspection & Labels]`
+| Parameter | Default | Description |
+|---|---|---|
+| `show_labels` | `true` | Display 3D component name labels in OpenSCAD preview |
+| `view_component` | `all` | Component to inspect (`all`, `backplate`, `towers`, `chutes`, `upper_hooks`, `lower_pins`, `followers`) |
+| `label_size` | `4.5` | Font size for 3D component text labels in mm |
 
 ---
 
@@ -157,3 +165,57 @@ make clean
 - **Top / Bottom Solid Layers**: 5 layers minimum (1.0 mm thickness at 0.2 mm layer height) for rigid floors and clean ceiling bridging.
 - **Supports**: Set supports to **"Touching buildplate only"** with **Tree Supports** (or Organic Supports) under the rear pegboard hooks and pins. Ensure *"Don't support bridges"* is enabled so no support material is placed inside the vertical blade chutes or exit gates—the internal 45-degree chamfers bridge completely support-free.
 - **Extrusion Temperature & Cooling**: Print at the higher end of the filament manufacturer's temperature range (e.g. 240°C–245°C for PETG) with moderate cooling fan speed (30%–50%) to maximize inter-layer fusion across horizontal hook layers.
+
+---
+
+### Gravity Follower Print Settings & Ballast Guide
+
+The gravity followers slide freely on top of the razor blade stacks to apply downward normal force, preventing blades from lifting or tilting during extraction and eliminating vibration rattle when only a few blades remain.
+
+#### Infill & Print Settings
+- **Infill**: Set to **100% solid infill** (aligned rectilinear or monotonic). Followers are only 22.0 mm to 27.2 mm tall; solid printing takes under 25 minutes, consumes only ~$0.06 in filament, and provides vital baseline tare weight (~15–20 g). Solid plastic also ensures that if adhesives are used with loose media, liquid cannot leak into internal infill voids.
+- **Orientation**: Print flat on the bottom base ($Z = 0$) with the top pull fin pointing upward. Zero support material is required.
+- **Perimeters**: 4 to 5 walls (min 1.6 mm - 2.0 mm total wall thickness) for durable side surfaces and crisp debossed badges.
+- **Layer Height**: 0.20 mm standard (or 0.16 mm for high-definition debossed badges).
+
+#### Material Comparison: PLA vs. PETG
+Both PLA and PETG are 100% viable for follower printing:
+
+| Consideration | PLA / PLA+ | PETG | Impact on Follower Performance |
+|---|---|---|---|
+| **Material Density** | $1.24\text{ g/cm}^3$ | $1.27\text{ g/cm}^3$ | PETG is ~2.4% denser, adding ~0.4 g of tare weight. |
+| **Surface Sliding Friction** | Low / Hard | Moderate | PLA slides with slightly less resistance; however, with the built-in 0.5 mm perimeter clearance, PETG slides smoothly without binding. |
+| **Drop Impact Resistance** | Moderate (can chip on concrete) | High (tough, absorbs impact) | PETG survives drops onto concrete shop floors when removing followers during reloads. |
+| **Thermal Resistance** | ~55°C | ~75°C | PETG resists deformation in hot, unconditioned summer garages or sheds. |
+| **Aesthetic Match** | Sharp debossed text | Matches dispenser body | Printing in PETG matches the dispenser body filament. |
+
+#### Conforming Cylindrical Coin Cradle
+Standardizing on coins provides immediate, low-cost ballast using spare pocket change. Rather than a flat pocket floor where circular coins touch at a single tangent point and leave empty corner voids, the follower floor features a concave cylindrical cradle matching the coin's curvature ($r = \text{diameter}/2 + 0.4\text{ mm}$):
+- **Flush Contact**: The entire bottom rim of each coin rests directly against the printed floor with zero void space.
+- **Anti-Rattle & Self-Centering**: Coins automatically center in the trough and cannot rock, tilt, or rattle side-to-side during blade extraction.
+- **Support-Free Internal Bridging**: The upward-curving cradle prints cleanly without supports because every layer builds upon solid plastic below.
+- **Unobstructed Loading**: The top pull fin is mounted forward on the solid front wall shoulder, allowing coins to drop straight down into the magazine from above.
+
+#### Coin Ballast Comparison Table
+
+Follower dimensions auto-calculate from `coin_type` to minimize height and preserve dispenser capacity:
+
+| Coin Standard | Follower Height | Usable Chute Space (100mm tower) | Plastic Chute Capacity & Added Ballast | Metal Chute Capacity & Added Ballast | Total Follower Mass (PETG) | User Experience & Cost |
+|---|---|---|---|---|---|---|
+| **Penny** *(Default)* | **22.0 mm** | **86.5 mm** (~53 metal / ~40 plastic blades) | **8 pennies** ($20.0\text{ g}$ zinc / $24.9\text{ g}$ copper) | **10 pennies** ($25.0\text{ g}$ zinc / $31.1\text{ g}$ copper) | **38.4 g (P) / 45.4 g (M)** | **Recommended Sweet Spot**: Preserves capacity for a full 50-blade retail pack with $0.08–$0.10 in pocket change. |
+| **Nickel** | **24.2 mm** | **84.3 mm** (~51 metal / ~38 plastic blades) | **6 nickels** ($30.0\text{ g}$) | **7 nickels** ($35.0\text{ g}$) | **49.7 g (P) / 57.3 g (M)** | **Substantial Ballast**: $0.30–$0.35 in nickels; standard circulating currency in US & Canada. |
+| **Quarter** | **27.2 mm** | **81.3 mm** (~49 metal / ~36 plastic blades) | **7 quarters** ($39.7\text{ g}$) | **8 quarters** ($45.4\text{ g}$) | **60.3 g (P) / 69.0 g (M)** | **Maximum Weight**: Heavyweight glide, but consumes 5.2 mm more vertical chute space. |
+
+*(Note: In zinc pennies, total mass is 38.4 g Plastic / 45.4 g Metal; with pre-1982 copper pennies, total mass is 43.3 g Plastic / 51.5 g Metal. In PLA, followers are ~0.4 g lighter).*
+
+#### Alternative Fillers (Custom Cavity or Non-Coin Options)
+
+For non-coin ballast, `include_ballast_pocket = false` prints a solid 100% infill follower, or `coin_type = "custom"` enables custom rectangular pocket dimensions:
+
+| Option | Preparation | Added Mass | Total Follower Mass (PETG) | Evaluation |
+|---|---|---|---|---|
+| **Solid Plastic (No Pocket)** | Print with `include_ballast_pocket = false` at 100% infill | 0.0 g | **18.4 g (P) / 20.4 g (M)** | **Minimum Viable Option**: $0 hardware cost, functional baseline. |
+| **Steel Hex Nuts (M5 / M6)** | Drop 4x M5 or 2x M6 nuts into custom pocket | ~5.0 g | **23.4 g (P) / 25.4 g (M)** | Readily available workshop scrap; slight rattle unless bedded in blutack. |
+| **Steel Micro-Shot (2 mm)** | Fill cavity and lock with thin cyanoacrylate (CA) glue | ~15–20 g | **33–38 g (P) / 35–40 g (M)** | Dense, rattle-free composite block; requires liquid CA glue. |
+| **Tungsten Putty** | Press moldable pinewood derby putty into cavity | ~25–35 g | **43–53 g (P) / 45–55 g (M)** | Non-toxic, self-retaining, zero mess, ultra-dense feel. |
+| **Tungsten Super Shot (TSS)** | Pour 1.5–2.5 mm beads and wick with thin CA glue | ~30–45 g | **48–63 g (P) / 50–65 g (M)** | Maximum attainable density; requires CA glue to prevent loose bead spill. |

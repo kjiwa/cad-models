@@ -80,8 +80,11 @@ badge_text_size = 3.2;
 badge_deboss_depth = 0.6;
 
 /* [Gravity Follower Weight] */
-// Vertical thickness of follower weight in mm
-follower_height = 12.0; // [8.0:1.0:20.0]
+// Standard coin type for drop-in ballast (auto-calculates conforming cradle and minimum height)
+coin_type = "penny"; // [penny: US/Canadian Penny (19.05mm), nickel: US Nickel (21.21mm), quarter: US/Canadian Quarter (24.26mm), custom: Custom Cavity Dimensions]
+
+// Vertical thickness of follower weight in mm (0 automatically sizes to coin diameter + 2.5mm floor)
+follower_height = 0; // [0:1:35]
 
 // Perimeter clearance between follower and chute pocket in mm
 follower_clearance = 0.5; // [0.2:0.05:1.0]
@@ -89,16 +92,16 @@ follower_clearance = 0.5; // [0.2:0.05:1.0]
 // Protrusion of front indicator tab beyond dispenser front face in mm
 follower_tab_lead = 1.5; // [0.5:0.5:3.0]
 
-// Include internal ballast pocket for standard coins (pennies) or hex nuts
+// Include internal ballast pocket for coins or custom ballast
 include_ballast_pocket = true;
 
-// Width of internal ballast pocket in mm
+// Custom internal ballast pocket width in mm (used when coin_type = "custom")
 ballast_pocket_width = 22.0;
 
-// Depth of internal ballast pocket in mm
+// Custom internal ballast pocket depth in mm (used when coin_type = "custom")
 ballast_pocket_depth = 12.0;
 
-// Height of internal ballast pocket in mm
+// Custom internal ballast pocket height in mm (used when coin_type = "custom")
 ballast_pocket_height = 8.0;
 
 /* [Pegboard & Wall Mounting] */
@@ -263,7 +266,7 @@ module razor_blade_dispenser() {
     if (is_visible("all") || is_visible("followers")) {
       for (i = [0 : actual_dispenser_count - 1]) {
         x_c = ((actual_dispenser_count - 1) / 2 - i) * slot_spacing;
-        chute_follower_instance(i, x_c, dispenser_height - follower_height - 6.0);
+        chute_follower_instance(i, x_c, dispenser_height - follower_effective_height(coin_type, follower_height) - 6.0);
       }
     }
   } else {

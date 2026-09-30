@@ -38,6 +38,18 @@
         },
         "Followers_Dual": {
             "part": "followers"
+        },
+        "Followers_Penny": {
+            "part": "followers",
+            "coin_type": "penny"
+        },
+        "Followers_Nickel": {
+            "part": "followers",
+            "coin_type": "nickel"
+        },
+        "Followers_Quarter": {
+            "part": "followers",
+            "coin_type": "quarter"
         }
     },
     "fileFormatVersion": "1"
