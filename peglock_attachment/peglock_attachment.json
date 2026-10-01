@@ -13,11 +13,11 @@
             "Peg_Spacing": "25.4",
             "Pegboard_Thickness": "6.35"
         },
-        "Potting Bench (Thin Metal)": {
+        "Thin Metal (5/8\" Spacing - 5.7mm Fit)": {
             "Hook_Rise": "6",
-            "Peg_Diameter": "4.5",
-            "Peg_Spacing": "12.7",
-            "Pegboard_Thickness": "1.2"
+            "Peg_Diameter": "5.7",
+            "Peg_Spacing": "15.875",
+            "Pegboard_Thickness": "1.5875"
         }
     }
 }

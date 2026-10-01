@@ -223,5 +223,71 @@
         382.8
       ]
     }
+  },
+  "peglock_hook_default": {
+    "scad": "peglock_hook/peglock_hook.scad",
+    "params": {},
+    "expect": {
+      "triangles": 2236,
+      "volume_mm3": 4874.5,
+      "bbox_size_mm": [
+        22.0,
+        17.09,
+        35.4
+      ],
+      "section_areas_mm2": [
+        69.2,
+        157.3,
+        83.5,
+        72.7,
+        58.0,
+        44.5,
+        19.2
+      ]
+    }
+  },
+  "peglock_holder_default": {
+    "scad": "peglock_holder/peglock_holder.scad",
+    "params": {},
+    "expect": {
+      "triangles": 2000,
+      "volume_mm3": 4605.3,
+      "bbox_size_mm": [
+        22.0,
+        15.5,
+        35.4
+      ],
+      "section_areas_mm2": [
+        46.0,
+        123.0,
+        116.8,
+        91.4,
+        58.0,
+        44.5,
+        19.2
+      ]
+    }
+  },
+  "peglock_attachment_default": {
+    "scad": "peglock_attachment/peglock_attachment.scad",
+    "params": {},
+    "expect": {
+      "triangles": 6412,
+      "volume_mm3": 2274.7,
+      "bbox_size_mm": [
+        43.39,
+        47.25,
+        10.67
+      ],
+      "section_areas_mm2": [
+        621.1,
+        484.7,
+        149.7,
+        88.5,
+        52.3,
+        48.3,
+        6.7
+      ]
+    }
   }
 }

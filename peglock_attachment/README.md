@@ -32,7 +32,7 @@ peglock_attachment/
 
 1. Open `peglock_attachment.scad` in OpenSCAD.
 2. In the top menu, ensure **Window -> Customizer** is checked.
-3. Select a preset (e.g. `Default (Standard 1/4" - 5.7mm Fit)`, `Sy's Original (6.0mm)`, or `Potting Bench (Thin Metal)`) from the preset dropdown, or customize parameters.
+3. Select a preset (e.g. `Default (Standard 1/4" - 5.7mm Fit)`, `Sy's Original (6.0mm)`, or `Thin Metal (5/8" Spacing - 5.7mm Fit)`) from the preset dropdown, or customize parameters.
 4. Press `F5` to preview or `F6` to render, then `F7` to export to STL.
 
 ---
@@ -65,8 +65,12 @@ make clean
 
 ## 3D Printing Recommendations
 
-- **Material**: PETG is recommended for flexibility and fatigue resistance in the living hinge. Tough PLA or standard PLA also works well if folded slowly when warm.
-- **First Layer Height**: 0.20 mm (critical for ensuring the living hinge is exactly one layer thick).
-- **Perimeters / Walls**: 3–4 perimeters so that the pins and hooks print mostly or fully solid.
-- **Infill**: 20–30% Gyroid or Grid.
-- **Orientation**: Print flat on the build plate (pegs pointing upward, hinge flat on the bed). Zero supports needed.
+- **Orientation**: Print flat on the build plate (pegs pointing upward, hinge flat on the bed). Zero supports needed. Layer lines run parallel to the peg shank, maximizing shear resistance under load.
+- **First Layer Height**: Exactly `0.20 mm` (critical for ensuring the 0.20 mm living hinge is extruded as a single continuous layer of filament).
+- **First Layer Speed**: 20–25 mm/s to ensure clean bed adhesion across the narrow 0.5 mm hinge gap.
+- **Perimeters / Walls**: 4–5 perimeters. The pegs and retention hooks should be 100% solid perimeters with no interior infill voids for maximum shear strength.
+- **Infill**: 20–30% Gyroid or Grid for the wedge body.
+- **Material Selection**:
+  - **PETG**: Highly recommended. PETG offers high elongation at break and fatigue endurance, allowing the 0.2 mm living hinge to fold 180° repeatedly without stress-whitening or snapping.
+  - **PLA / Tough PLA**: Can be used with proper handling. Fold the hinge immediately upon print completion while the bed/part is still warm (~50–60°C), or run the hinge line under hot tap water before the initial 180° fold.
+- **Assembly**: Fold the clip 180° in half so the two wedge halves face together, insert the upper hook and lower peg into the pegboard holes, then slide an accessory (`peglock_hook`, `peglock_holder`) downward over the male wedge to lock both halves firmly into the board.
