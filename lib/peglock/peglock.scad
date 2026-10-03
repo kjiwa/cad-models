@@ -201,10 +201,10 @@ module PeglockHalfAttachment(
 
 // Scales peg reach down for thinner pegboard so the folded pegs don't overshoot the back face.
 function scaled_lower_stickout(pegboard_thickness) =
-  (pegboard_thickness >= 6.0) ? 8.0 : max(pegboard_thickness + 1.65, 3.0);
+  (pegboard_thickness >= 6.0) ? 8.0 : max(pegboard_thickness + 1.65, 0);
 
 function scaled_upper_stickout(pegboard_thickness) =
-  (pegboard_thickness >= 6.0) ? 4.6 : max(pegboard_thickness + 0.8, 2.0);
+  (pegboard_thickness >= 6.0) ? 4.6 : max(pegboard_thickness + 0.8, 0);
 
 /**
  * Complete printable board attachment clip: two mirrored wedge+peg halves
