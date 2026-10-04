@@ -67,7 +67,7 @@ All dimensions are in millimeters unless otherwise noted.
 | `Holder_Front_Lip_Height` | `3.175` | Height of the retaining lip along the front opening |
 | `Holder_Wall_Thickness` | `1.5875` | Thickness of the walls separating pockets |
 | `Holder_Backer_Thickness` | `1.5875` | Thickness of the backplate behind the pockets; thicker stiffens the joint where the pockets meet the plate under heavy loads (no load rating is claimed) |
-| `Holder_Vertical_Align` | `"bottom"` | Where the pockets sit on the backplate: `"bottom"` or `"center"` |
+| `Holder_Vertical_Align` | `"bottom"` | Where the pockets sit on the backplate: `"bottom"` (near the plate bottom, centered once the body nearly fills the plate) or `"center"` |
 | `Holder_Roundover` | `3.175` | Fillet radius applied to backer and pocket edges |
 | `Holder_Bottom_Roundover` | `0` | Radius rounding the pocket body's underside edges, except where it meets the plate; limited to `Holder_Wall_Thickness` (0 to disable) |
 | `Holder_Tilt_Angle` | `0` | Forward tilt of the pockets in degrees, 0 to 45 (0 for vertical) |

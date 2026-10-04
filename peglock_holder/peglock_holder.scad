@@ -29,8 +29,8 @@ Holder_Front_Lip_Height = 3.175;
 Holder_Wall_Thickness = 1.5875;
 // Thickness of the backplate behind the pockets; thicker resists flex under heavy loads
 Holder_Backer_Thickness = 1.5875;
-// Where the pockets sit on the backplate
-Holder_Vertical_Align = "bottom"; // [bottom: Pockets at plate bottom, center: Pockets centered on plate]
+// Where the pockets sit on the backplate; bottom is centered once the body nearly fills the plate
+Holder_Vertical_Align = "bottom"; // [bottom: Pockets near plate bottom, center: Pockets centered on plate]
 Holder_Roundover = 3.175;
 // Rounds the pocket body's underside edges, except where it meets the plate (0 to disable)
 Holder_Bottom_Roundover = 0;
