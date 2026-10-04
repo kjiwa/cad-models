@@ -14,9 +14,12 @@ OPENSCAD_BACKEND := $(shell $(OPENSCAD) --help 2>&1 | grep -q -- '--backend' && 
 OPENSCAD_FLAGS ?= --render $(OPENSCAD_BACKEND)
 RENDER_FLAGS   ?= --autocenter --viewall --imgsize=1024,768 --colorscheme=Tomorrow
 
+ONESCAD ?= uvx onescad==0.1.0
+DIST_DIR ?= $(REPO_ROOT)/dist
+
 PRESET_BUILDER := $(REPO_ROOT)/scripts/build_presets.py
 
-.PHONY: all stl 3mf preview presets clean help
+.PHONY: all stl 3mf preview presets bundle clean help
 
 all: stl 3mf preview presets
 
@@ -51,6 +54,10 @@ presets: $(SCAD_FILE) $(COMPONENTS)
 			--target all; \
 	fi
 
+bundle: $(SCAD_FILE) $(COMPONENTS)
+	@mkdir -p $(DIST_DIR)
+	OPENSCADPATH=$(REPO_ROOT)/lib $(ONESCAD) $(SCAD_FILE) -o $(DIST_DIR)/$(SCAD_FILE) --verify
+
 clean:
 	rm -rf $(BUILD_DIR)
 
@@ -61,4 +68,5 @@ help:
 	@echo "  3mf      - Export default 3MF"
 	@echo "  preview  - Export rendered PNG preview image"
 	@echo "  presets  - Build all parameter presets from $(JSON_FILE) (if present)"
+	@echo "  bundle   - Inline includes into a single verified $(SCAD_FILE) in dist/ (needs uv)"
 	@echo "  clean    - Remove build artifacts"
