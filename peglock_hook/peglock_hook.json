@@ -62,6 +62,31 @@
             "Peglock_Roundover": "3.175",
             "Peglock_Spacing": "25.4",
             "Peglock_Width": "22"
+        },
+        "Tilted_Vertical_Lip": {
+            "$fn": "128",
+            "Hook_Column_Spacing": "26",
+            "Hook_Columns": "3",
+            "Hook_Depth": "18",
+            "Hook_Height": "6.35",
+            "Hook_Item_Quantity": "1",
+            "Hook_Lip_Height": "9",
+            "Hook_Lip_Thickness": "4",
+            "Hook_Roundover": "1.5875",
+            "Hook_Root_Fillet": "1.5",
+            "Hook_Row_Spacing": "19.05",
+            "Hook_Rows": "1",
+            "Hook_Shape": "Square",
+            "Hook_Wall_Thickness": "1.5875",
+            "Hook_Width": "12",
+            "Hook_Tilt_Angle": "20",
+            "Hook_Lip_Orientation": "\"vertical\"",
+            "Hook_Vertical_Align": "\"center\"",
+            "Peglock_Depth": "6",
+            "Peglock_Height": "35.4",
+            "Peglock_Roundover": "3.175",
+            "Peglock_Spacing": "25.4",
+            "Peglock_Width": "22"
         }
     },
     "fileFormatVersion": "1"

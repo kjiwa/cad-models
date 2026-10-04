@@ -75,6 +75,30 @@
             "Peglock_Roundover": "3.175",
             "Peglock_Spacing": "25.4",
             "Peglock_Width": "22"
+        },
+        "Showpiece_Tilted": {
+            "$fn": "128",
+            "Holder_Columns": "2",
+            "Holder_Rows": "3",
+            "Holder_Width": "12.7",
+            "Holder_Depth": "6.35",
+            "Holder_Height": "12.7",
+            "Holder_Closed_Bottom": "true",
+            "Holder_Front_Opening": "6.35",
+            "Holder_Front_Lip_Thickness": "3.175",
+            "Holder_Front_Lip_Height": "3.175",
+            "Holder_Wall_Thickness": "1.5875",
+            "Holder_Roundover": "3.175",
+            "Holder_Tilt_Angle": "15",
+            "Holder_Backer_Thickness": "3.175",
+            "Holder_Vertical_Align": "\"center\"",
+            "Holder_Bottom_Roundover": "1.5",
+            "Holder_Junction_Gusset": "5",
+            "Peglock_Depth": "6",
+            "Peglock_Height": "35.4",
+            "Peglock_Roundover": "3.175",
+            "Peglock_Spacing": "25.4",
+            "Peglock_Width": "22"
         }
     },
     "fileFormatVersion": "1"

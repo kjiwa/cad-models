@@ -31,7 +31,7 @@ peglock_holder/
 
 1. Open `peglock_holder.scad` in OpenSCAD.
 2. In the top menu, ensure **Window -> Customizer** is checked.
-3. Select a preset (e.g. `Single_Slot`, `Dual_Slot`, `Organizer_4_Slot`, `Deep_Bin`) or customize parameters.
+3. Select a preset (e.g. `Single_Slot`, `Dual_Slot`, `Organizer_4_Slot`, `Deep_Bin`, `Showpiece_Tilted`) or customize parameters.
 4. Press `F5` to preview or `F6` to render, then `F7` to export to STL.
 
 ---
@@ -65,9 +65,13 @@ All dimensions are in millimeters unless otherwise noted.
 | `Holder_Opening_Bevel` | `1.0` | Front opening lead-in bevel/chamfer in mm (0 to disable) |
 | `Holder_Front_Lip_Thickness` | `3.175` | Thickness of the retaining lip along the front opening |
 | `Holder_Front_Lip_Height` | `3.175` | Height of the retaining lip along the front opening |
-| `Holder_Wall_Thickness` | `1.5875` | Thickness of the walls separating pockets and the backer plate |
+| `Holder_Wall_Thickness` | `1.5875` | Thickness of the walls separating pockets |
+| `Holder_Backer_Thickness` | `1.5875` | Thickness of the backplate behind the pockets; thicker stiffens the joint where the pockets meet the plate under heavy loads (no load rating is claimed) |
+| `Holder_Vertical_Align` | `"bottom"` | Where the pockets sit on the backplate: `"bottom"` (near the plate bottom, centered once the body nearly fills the plate) or `"center"` |
 | `Holder_Roundover` | `3.175` | Fillet radius applied to backer and pocket edges |
+| `Holder_Bottom_Roundover` | `0` | Radius rounding the pocket body's underside edges, except where it meets the plate; limited to `Holder_Wall_Thickness` (0 to disable) |
 | `Holder_Tilt_Angle` | `0` | Forward tilt of the pockets in degrees, 0 to 45 (0 for vertical) |
+| `Holder_Junction_Gusset` | `0` | Size of a triangular web under the pockets where they meet the plate, limited to the plate below them; open-bottom pockets cut through it (0 to disable) |
 | `Holder_Rows` | `1` | Number of pocket rows stacked vertically |
 | `Holder_Columns` | `1` | Number of pocket columns arranged side by side |
 
