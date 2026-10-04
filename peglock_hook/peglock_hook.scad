@@ -30,6 +30,8 @@ Hook_Root_Fillet = 0; // Stress relief root fillet (0 for standard/tested profil
 Hook_Tilt_Angle = 0; // [0:5:45]
 // Orientation of the retaining lip when the arm is tilted
 Hook_Lip_Orientation = "perpendicular"; // [perpendicular: Square to hook arm, vertical: Parallel to backplate]
+// Where the hooks sit on the backplate
+Hook_Vertical_Align = "bottom"; // [bottom: Hooks at plate bottom, center: Hooks centered on plate]
 Hook_Rows = 1;
 Hook_Columns = 1;
 Hook_Item_Quantity = 1;
@@ -67,10 +69,16 @@ fillet_flare_z = min(Hook_Root_Fillet, fillet_max_height);
 fillet_flare_x = min(Hook_Root_Fillet, fillet_max_width);
 
 arm_slice_drop = Hook_Height * (1 / cos(Hook_Tilt_Angle) - 1);
-tilt_root_drop = max(0, arm_slice_drop - fillet_flare_z);
+tilt_root_drop = arm_slice_drop;
+arm_pivot_z = Hook_Height / 2;
+arm_extra_back = Hook_Height * tan(Hook_Tilt_Angle) + 1;
+arm_trim = arm_extra_back + Hook_Height + 1;
+
+root_height = gridHeight + 2 * fillet_flare_z + tilt_root_drop;
 
 backerWidth = max(gridWidth + 2 * fillet_flare_x, (Mount_Type == "peglock" ? peglockBaseWidth : effective_spacing));
-backerHeight = max(gridHeight + fillet_flare_z + tilt_root_drop, (Mount_Type == "peglock" ? Peglock_Height : effective_spacing + 10));
+backerHeight = max(root_height, (Mount_Type == "peglock" ? Peglock_Height : effective_spacing + 10));
+align_shift = Hook_Vertical_Align == "center" ? (backerHeight - root_height) / 2 : 0;
 
 if (Hook_Columns > 1) assert(Hook_Column_Spacing >= (Hook_Width));
 if (Hook_Rows > 1) assert(Hook_Row_Spacing * cos(Hook_Tilt_Angle) >= (Hook_Height + Hook_Lip_Height));
@@ -156,19 +164,44 @@ module SingleHook() {
   translate([0, Hook_Depth, 0]) HookLip();
 }
 
+// The arm tilted about its top-back edge and extended backward so it passes through the backplate face
+module TiltedArm() {
+  translate([0, 0, arm_pivot_z])
+    rotate([Hook_Tilt_Angle, 0, 0])
+      translate([0, -arm_extra_back, -arm_pivot_z])
+        HookProfile(Hook_Depth + arm_extra_back);
+}
+
+module ArmSlice(y) {
+  intersection() {
+    TiltedArm();
+    translate([-Hook_Width, y, -arm_trim]) cube([2 * Hook_Width, 0.01, 2 * arm_trim]);
+  }
+}
+
+// Root fillet for a tilted arm: the arm's cross-section at the backplate, flared about its
+// centre, hulled with the plain cross-section where the fillet ends.
+module TiltedRootFillet() {
+  slice_height = Hook_Height / cos(Hook_Tilt_Angle);
+  center_z = -arm_slice_drop / 2;
+  hull() {
+    translate([0, 0, center_z])
+      scale([(Hook_Width + 2 * fillet_flare_x) / Hook_Width, 1, (slice_height + 2 * fillet_flare_z) / slice_height])
+        translate([0, 0, -center_z])
+          ArmSlice(0);
+    ArmSlice(fillet_reach_y);
+  }
+}
+
 // One grid cell: Hook_Item_Quantity hooks tilted about the arm's top-back edge. The arm is
 // extended backward and trimmed at the backplate face so the root stays flush at any angle.
 module HookArm() {
-  extra_back = Hook_Height * tan(Hook_Tilt_Angle) + 1;
-  trim = extra_back + Hook_Height + 1;
-  pivot_z = Hook_Height / 2;
-
   difference() {
     union() {
-      translate([0, 0, pivot_z])
+      translate([0, 0, arm_pivot_z])
         rotate([Hook_Tilt_Angle, 0, 0])
-          translate([0, 0, -pivot_z]) {
-            translate([0, -extra_back, 0]) HookProfile(Hook_Depth + extra_back);
+          translate([0, 0, -arm_pivot_z]) {
+            translate([0, -arm_extra_back, 0]) HookProfile(Hook_Depth + arm_extra_back);
             translate([0, Hook_Depth, 0]) HookLip();
             if (Hook_Item_Quantity > 1) {
               for (k = [2:Hook_Item_Quantity]) {
@@ -176,15 +209,16 @@ module HookArm() {
               }
             }
           }
-      HookRootFillet();
+      if (Hook_Tilt_Angle > 0 && Hook_Root_Fillet > 0) TiltedRootFillet();
+      else HookRootFillet();
     }
-    translate([-(Hook_Width + 2) / 2, -trim, -trim]) cube([Hook_Width + 2, trim, 2 * trim]);
+    translate([-(Hook_Width + 2) / 2, -arm_trim, -arm_trim]) cube([Hook_Width + 2, arm_trim, 2 * arm_trim]);
   }
 }
 
 module HookGrid() {
   x = (Hook_Columns - 1) * Hook_Column_Spacing;
-  z_base = -backerHeight / 2 + Hook_Height / 2 + fillet_flare_z + tilt_root_drop;
+  z_base = -backerHeight / 2 + Hook_Height / 2 + fillet_flare_z + tilt_root_drop + align_shift;
 
   translate([-x / 2, 0, z_base])
     for (i=[1:Hook_Columns]) {

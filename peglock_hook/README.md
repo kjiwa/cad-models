@@ -8,7 +8,7 @@ Parametric, 3D-printable tool hooks and socket racks for Sy's Peglock modular pe
 - **Custom Hook Profiles**: Circle, Square, Triangle, and RightTriangle profiles.
 - **Configurable Grid Layout**: Parametric row and column counts, spacing, depth, and item capacity.
 - **Stress-Relief Root Fillet**: Optional parametric fillet at the hook arm root to resist cantilever shear.
-- **Presets Included**: Pre-configured JSON parameter sets for socket racks (`Sockets (1/4)`, `Sockets (3/8)`, `Sockets (1/2)`).
+- **Presets Included**: Pre-configured JSON parameter sets for socket racks (`Sockets (1/4)`, `Sockets (3/8)`, `Sockets (1/2)`) and a tilted vertical-lip hook (`Tilted_Vertical_Lip`).
 - **Automated CLI Build**: `Makefile` support to render base models and all JSON parameter presets.
 
 ---
@@ -68,6 +68,7 @@ All dimensions are in millimeters unless otherwise noted.
 | `Hook_Root_Fillet` | `0` | Fillet radius at hook arm root to eliminate stress concentration (0 to disable; proportionally clamped to hook depth and lip height) |
 | `Hook_Tilt_Angle` | `0` | Upward tilt of the hook arm in degrees, 0 to 45 (0 for horizontal) |
 | `Hook_Lip_Orientation` | `"perpendicular"` | Retaining lip orientation when tilted: `"perpendicular"` (square to the arm) or `"vertical"` (parallel to the backplate); no effect at 0 degrees |
+| `Hook_Vertical_Align` | `"bottom"` | Where the hooks sit on the backplate: `"bottom"` or `"center"` |
 | `Hook_Rows` | `1` | Number of hook rows stacked vertically |
 | `Hook_Columns` | `1` | Number of hook columns arranged side by side |
 | `Hook_Item_Quantity` | `1` | Number of hooks printed back-to-back at each grid position, for hanging multiple items per socket |
