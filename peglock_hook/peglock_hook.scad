@@ -26,11 +26,17 @@ Hook_Lip_Thickness = 3.175;
 Hook_Lip_Height = 3.175;
 Hook_Roundover = 1.5875;
 Hook_Root_Fillet = 0; // Stress relief root fillet (0 for standard/tested profile, >0 to strengthen)
+// Upward tilt of the hook arm in degrees (0 for horizontal)
+Hook_Tilt_Angle = 0; // [0:5:45]
+// Orientation of the retaining lip when the arm is tilted
+Hook_Lip_Orientation = "perpendicular"; // [perpendicular: Square to hook arm, vertical: Parallel to backplate]
 Hook_Rows = 1;
 Hook_Columns = 1;
 Hook_Item_Quantity = 1;
 Hook_Row_Spacing = 19.05;
 Hook_Column_Spacing = 19.05;
+
+assert(Hook_Tilt_Angle >= 0 && Hook_Tilt_Angle <= 45, "Hook_Tilt_Angle must be between 0 and 45");
 
 /* [Peglock] */
 Peglock_Width = SOCKET_WIDTH;
@@ -60,11 +66,14 @@ fillet_reach_y = min(Hook_Root_Fillet, fillet_max_depth);
 fillet_flare_z = min(Hook_Root_Fillet, fillet_max_height);
 fillet_flare_x = min(Hook_Root_Fillet, fillet_max_width);
 
+arm_slice_drop = Hook_Height * (1 / cos(Hook_Tilt_Angle) - 1);
+tilt_root_drop = max(0, arm_slice_drop - fillet_flare_z);
+
 backerWidth = max(gridWidth + 2 * fillet_flare_x, (Mount_Type == "peglock" ? peglockBaseWidth : effective_spacing));
-backerHeight = max(gridHeight + fillet_flare_z, (Mount_Type == "peglock" ? Peglock_Height : effective_spacing + 10));
+backerHeight = max(gridHeight + fillet_flare_z + tilt_root_drop, (Mount_Type == "peglock" ? Peglock_Height : effective_spacing + 10));
 
 if (Hook_Columns > 1) assert(Hook_Column_Spacing >= (Hook_Width));
-if (Hook_Rows > 1) assert(Hook_Row_Spacing >= (Hook_Height + Hook_Lip_Height));
+if (Hook_Rows > 1) assert(Hook_Row_Spacing * cos(Hook_Tilt_Angle) >= (Hook_Height + Hook_Lip_Height));
 
 module RoundedTriangle(w, h, r = 0) {
   translate([0, h / 2, 0]) {
@@ -121,10 +130,23 @@ module HookRootFillet() {
   }
 }
 
-module HookLip() {
+module HookLipBody() {
   hull() {
     HookProfile(Hook_Lip_Thickness);
     translate([0, 0, Hook_Lip_Height]) HookProfile(Hook_Lip_Thickness);
+  }
+}
+
+// Inside the tilted arm frame, counter-rotating the lip makes it parallel to the backplate;
+// the hull with the arm's end face bridges the wedge that opens between them.
+module HookLip() {
+  if (Hook_Lip_Orientation == "vertical" && Hook_Tilt_Angle > 0) {
+    hull() {
+      translate([0, -0.01, 0]) HookProfile(0.01);
+      rotate([-Hook_Tilt_Angle, 0, 0]) HookLipBody();
+    }
+  } else {
+    HookLipBody();
   }
 }
 
@@ -134,17 +156,40 @@ module SingleHook() {
   translate([0, Hook_Depth, 0]) HookLip();
 }
 
+// One grid cell: Hook_Item_Quantity hooks tilted about the arm's top-back edge. The arm is
+// extended backward and trimmed at the backplate face so the root stays flush at any angle.
+module HookArm() {
+  extra_back = Hook_Height * tan(Hook_Tilt_Angle) + 1;
+  trim = extra_back + Hook_Height + 1;
+  pivot_z = Hook_Height / 2;
+
+  difference() {
+    union() {
+      translate([0, 0, pivot_z])
+        rotate([Hook_Tilt_Angle, 0, 0])
+          translate([0, 0, -pivot_z]) {
+            translate([0, -extra_back, 0]) HookProfile(Hook_Depth + extra_back);
+            translate([0, Hook_Depth, 0]) HookLip();
+            if (Hook_Item_Quantity > 1) {
+              for (k = [2:Hook_Item_Quantity]) {
+                translate([0, (k - 1) * (Hook_Depth + Hook_Lip_Thickness), 0]) SingleHook();
+              }
+            }
+          }
+      HookRootFillet();
+    }
+    translate([-(Hook_Width + 2) / 2, -trim, -trim]) cube([Hook_Width + 2, trim, 2 * trim]);
+  }
+}
+
 module HookGrid() {
   x = (Hook_Columns - 1) * Hook_Column_Spacing;
-  z_base = -backerHeight / 2 + Hook_Height / 2 + fillet_flare_z;
+  z_base = -backerHeight / 2 + Hook_Height / 2 + fillet_flare_z + tilt_root_drop;
 
   translate([-x / 2, 0, z_base])
     for (i=[1:Hook_Columns]) {
       for (j=[1:Hook_Rows]) {
-        for (k=[1:Hook_Item_Quantity]) {
-          translate([(i - 1) * Hook_Column_Spacing, (k - 1) * (Hook_Depth + Hook_Lip_Thickness), (j - 1) * Hook_Row_Spacing])
-            SingleHook();
-        }
+        translate([(i - 1) * Hook_Column_Spacing, 0, (j - 1) * Hook_Row_Spacing]) HookArm();
       }
     }
 }

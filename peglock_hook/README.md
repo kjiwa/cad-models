@@ -66,6 +66,8 @@ All dimensions are in millimeters unless otherwise noted.
 | `Hook_Lip_Height` | `3.175` | Height the retaining lip rises above the hook arm to catch hung items |
 | `Hook_Roundover` | `1.5875` | Fillet radius applied to hook and backer edges |
 | `Hook_Root_Fillet` | `0` | Fillet radius at hook arm root to eliminate stress concentration (0 to disable; proportionally clamped to hook depth and lip height) |
+| `Hook_Tilt_Angle` | `0` | Upward tilt of the hook arm in degrees, 0 to 45 (0 for horizontal) |
+| `Hook_Lip_Orientation` | `"perpendicular"` | Retaining lip orientation when tilted: `"perpendicular"` (square to the arm) or `"vertical"` (parallel to the backplate); no effect at 0 degrees |
 | `Hook_Rows` | `1` | Number of hook rows stacked vertically |
 | `Hook_Columns` | `1` | Number of hook columns arranged side by side |
 | `Hook_Item_Quantity` | `1` | Number of hooks printed back-to-back at each grid position, for hanging multiple items per socket |

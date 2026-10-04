@@ -103,7 +103,7 @@ def detect_backend_flag(openscad="openscad"):
     return []
 
 
-def render_fingerprint(scad_path, params, openscad="openscad", openscadpath=None):
+def render_triangles(scad_path, params, openscad="openscad", openscadpath=None):
     env = dict(os.environ)
     if openscadpath:
         env["OPENSCADPATH"] = openscadpath
@@ -118,7 +118,11 @@ def render_fingerprint(scad_path, params, openscad="openscad", openscadpath=None
             raise RuntimeError(
                 f"openscad failed ({' '.join(cmd)}):\nstdout: {result.stdout}\nstderr: {result.stderr}"
             )
-        return fingerprint(read_stl_triangles(out))
+        return read_stl_triangles(out)
+
+
+def render_fingerprint(scad_path, params, openscad="openscad", openscadpath=None):
+    return fingerprint(render_triangles(scad_path, params, openscad, openscadpath))
 
 
 def main():
