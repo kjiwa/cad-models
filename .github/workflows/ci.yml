@@ -17,9 +17,6 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      APPIMAGE_EXTRACT_AND_RUN: '1'
-      QT_QPA_PLATFORM: offscreen
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -29,6 +26,11 @@ jobs:
           persist-credentials: false
 
       - name: Install OpenSCAD and Xvfb
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends openscad xvfb
+
+      - name: Install OpenSCAD snapshot
         uses: ./.github/actions/setup-openscad
 
       - name: Install uv
@@ -42,7 +44,9 @@ jobs:
       - name: Bundle and verify models
         env:
           OPENSCADPATH: ${{ github.workspace }}/lib
-        run: make bundle
+          APPIMAGE_EXTRACT_AND_RUN: '1'
+          QT_QPA_PLATFORM: offscreen
+        run: PATH="$HOME/openscad-snapshot:$PATH" xvfb-run -a make bundle
 
       - name: Build models
         env:
