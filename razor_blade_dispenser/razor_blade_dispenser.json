@@ -1,55 +1,55 @@
 {
     "parameterSets": {
         "Dual_Metal_and_Plastic": {
-            "slot_pattern": "MP",
-            "dispenser_count": "0",
-            "dispenser_height": "100.0"
+            "Slot_Pattern": "MP",
+            "Tower_Count": "0",
+            "Tower_Height": "100.0"
         },
         "Single_Metal": {
-            "slot_pattern": "M",
-            "dispenser_count": "0",
-            "dispenser_height": "100.0"
+            "Slot_Pattern": "M",
+            "Tower_Count": "0",
+            "Tower_Height": "100.0"
         },
         "Single_Plastic": {
-            "slot_pattern": "P",
-            "dispenser_count": "0",
-            "dispenser_height": "100.0"
+            "Slot_Pattern": "P",
+            "Tower_Count": "0",
+            "Tower_Height": "100.0"
         },
         "High_Capacity_Dual": {
-            "slot_pattern": "MP",
-            "dispenser_count": "0",
-            "dispenser_height": "150.0"
+            "Slot_Pattern": "MP",
+            "Tower_Count": "0",
+            "Tower_Height": "150.0"
         },
         "Compact_Dual": {
-            "slot_pattern": "MP",
-            "dispenser_count": "0",
-            "dispenser_height": "75.0"
+            "Slot_Pattern": "MP",
+            "Tower_Count": "0",
+            "Tower_Height": "75.0"
         },
         "Organizer_4_Slot": {
-            "slot_pattern": "MMPP",
-            "dispenser_count": "0",
-            "dispenser_height": "100.0"
+            "Slot_Pattern": "MMPP",
+            "Tower_Count": "0",
+            "Tower_Height": "100.0"
         },
         "Follower_Metal": {
-            "part": "follower_metal"
+            "Part": "follower_metal"
         },
         "Follower_Plastic": {
-            "part": "follower_plastic"
+            "Part": "follower_plastic"
         },
         "Followers_Dual": {
-            "part": "followers"
+            "Part": "followers"
         },
         "Followers_Penny": {
-            "part": "followers",
-            "coin_type": "penny"
+            "Part": "followers",
+            "Coin_Type": "penny"
         },
         "Followers_Nickel": {
-            "part": "followers",
-            "coin_type": "nickel"
+            "Part": "followers",
+            "Coin_Type": "nickel"
         },
         "Followers_Quarter": {
-            "part": "followers",
-            "coin_type": "quarter"
+            "Part": "followers",
+            "Coin_Type": "quarter"
         }
     },
     "fileFormatVersion": "1"

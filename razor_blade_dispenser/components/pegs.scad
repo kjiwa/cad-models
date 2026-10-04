@@ -8,40 +8,40 @@ include <pegboard/pegs.scad>
 module lower_pins_at_pos(x_pos) {
   lowest_k = max(lowest_peg_k, 1);
 
-  if (stabilizing_peg_pattern == "bottom") {
-    translate([x_pos, 0, z_top_peg - lowest_k * peg_hole_spacing])
-      pegboard_lower_pin();
-  } else if (stabilizing_peg_pattern == "top_and_bottom") {
-    translate([x_pos, 0, z_top_peg - peg_hole_spacing])
-      pegboard_lower_pin();
+  if (Stabilizing_Pin_Pattern == "bottom") {
+    translate([x_pos, 0, z_top_peg - lowest_k * Hole_Spacing])
+      pegboard_lower_pin(pin_d = Pin_Diameter, board_t = Pegboard_Thickness, backplate_t = Backplate_Thickness);
+  } else if (Stabilizing_Pin_Pattern == "top_and_bottom") {
+    translate([x_pos, 0, z_top_peg - Hole_Spacing])
+      pegboard_lower_pin(pin_d = Pin_Diameter, board_t = Pegboard_Thickness, backplate_t = Backplate_Thickness);
     if (lowest_k > 1) {
-      translate([x_pos, 0, z_top_peg - lowest_k * peg_hole_spacing])
-        pegboard_lower_pin();
+      translate([x_pos, 0, z_top_peg - lowest_k * Hole_Spacing])
+        pegboard_lower_pin(pin_d = Pin_Diameter, board_t = Pegboard_Thickness, backplate_t = Backplate_Thickness);
     }
-  } else if (stabilizing_peg_pattern == "all") {
+  } else if (Stabilizing_Pin_Pattern == "all") {
     for (k = [1 : lowest_k]) {
-      translate([x_pos, 0, z_top_peg - k * peg_hole_spacing])
-        pegboard_lower_pin();
+      translate([x_pos, 0, z_top_peg - k * Hole_Spacing])
+        pegboard_lower_pin(pin_d = Pin_Diameter, board_t = Pegboard_Thickness, backplate_t = Backplate_Thickness);
     }
-  } else if (stabilizing_peg_pattern == "span_1") {
-    translate([x_pos, 0, z_top_peg - peg_hole_spacing])
-      pegboard_lower_pin();
-  } else if (stabilizing_peg_pattern == "span_2") {
-    translate([x_pos, 0, z_top_peg - 2 * peg_hole_spacing])
-      pegboard_lower_pin();
+  } else if (Stabilizing_Pin_Pattern == "span_1") {
+    translate([x_pos, 0, z_top_peg - Hole_Spacing])
+      pegboard_lower_pin(pin_d = Pin_Diameter, board_t = Pegboard_Thickness, backplate_t = Backplate_Thickness);
+  } else if (Stabilizing_Pin_Pattern == "span_2") {
+    translate([x_pos, 0, z_top_peg - 2 * Hole_Spacing])
+      pegboard_lower_pin(pin_d = Pin_Diameter, board_t = Pegboard_Thickness, backplate_t = Backplate_Thickness);
   }
 }
 
 // Generates upper hook and lower pins for one pegboard column if within plate bounds.
 module slot_pegs_column(x_pos, max_x) {
   if (abs(x_pos) <= max_x) {
-    if (is_visible("upper_hooks")) {
+    if (is_visible("retention_hooks")) {
       color("Crimson")
         translate([x_pos, 0, z_top_peg])
-          pegboard_upper_hook();
+          pegboard_upper_hook(pin_d = Pin_Diameter, board_t = Pegboard_Thickness, rise = Retention_Hook_Rise, backplate_t = Backplate_Thickness);
     }
 
-    if (is_visible("lower_pins")) {
+    if (is_visible("stabilizing_pins")) {
       color("Tomato")
         lower_pins_at_pos(x_pos);
     }
@@ -50,27 +50,27 @@ module slot_pegs_column(x_pos, max_x) {
 
 // Generates all pegboard hooks and pins across columns for a single dispenser slot.
 module slot_pegs(x_center, max_x) {
-  for (k = [-(slot_spacing_pegs - 1) / 2 : (slot_spacing_pegs - 1) / 2]) {
-    slot_pegs_column(x_center + k * peg_hole_spacing, max_x);
+  for (k = [-(Slot_Spacing_Holes - 1) / 2 : (Slot_Spacing_Holes - 1) / 2]) {
+    slot_pegs_column(x_center + k * Hole_Spacing, max_x);
   }
 }
 
 // Orchestrates mounting hooks and pins across all slots and positions inspection labels.
 module mounting_pegs() {
-  if (include_pegs) {
-    max_x_peg = total_width / 2 - pin_diameter / 2 - 1.0;
+  if (Include_Pegs) {
+    max_x_peg = total_width / 2 - Pin_Diameter / 2 - 1.0;
 
     for (i = [0 : actual_dispenser_count - 1]) {
       x_c = ((actual_dispenser_count - 1) / 2 - i) * slot_spacing;
       slot_pegs(x_c, max_x_peg);
     }
 
-    if (is_visible("upper_hooks")) {
-      component_label("Upper Hooks", [0, -pegboard_thickness - 6, z_top_peg + hook_rise + 4], [90, 0, 0]);
+    if (is_visible("retention_hooks")) {
+      component_label("Retention Hooks", [0, -Pegboard_Thickness - 6, z_top_peg + Retention_Hook_Rise + 4], [90, 0, 0]);
     }
-    if (is_visible("lower_pins")) {
-      z_label_pin = (stabilizing_peg_pattern == "span_1") ? (z_top_peg - peg_hole_spacing - 4) : (z_top_peg - max(lowest_peg_k, 1) * peg_hole_spacing - 4);
-      component_label("Lower Pins", [0, -pegboard_thickness - 6, z_label_pin], [90, 0, 0]);
+    if (is_visible("stabilizing_pins")) {
+      z_label_pin = (Stabilizing_Pin_Pattern == "span_1") ? (z_top_peg - Hole_Spacing - 4) : (z_top_peg - max(lowest_peg_k, 1) * Hole_Spacing - 4);
+      component_label("Stabilizing Pins", [0, -Pegboard_Thickness - 6, z_label_pin], [90, 0, 0]);
     }
   }
 }

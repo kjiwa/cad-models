@@ -3,7 +3,7 @@
  */
 
 // Generates the solid rectangular backplate slab with rounded top corners.
-module backplate_blank(width = total_width, height = backplate_height, thickness = backplate_thickness, corner_radius = backplate_corner_radius) {
+module backplate_blank(width = total_width, height = backplate_height, thickness = Backplate_Thickness, corner_radius = Backplate_Corner_Radius) {
   z_center = (z_plate_top + z_plate_bottom) / 2;
   r = min(corner_radius, height / 4, width / 4);
 
@@ -28,14 +28,14 @@ module backplate_blank(width = total_width, height = backplate_height, thickness
 }
 
 // Generates the 45-degree top-rear chamfer cutter for pegboard swing-in clearance.
-module backplate_tilt_chamfer(width = total_width, chamfer = tilt_chamfer) {
+module backplate_tilt_chamfer(width = total_width, chamfer = Insertion_Chamfer) {
   translate([0, 0, z_plate_top])
     rotate([45, 0, 0])
       cube([width + 2 * EPSILON, chamfer * sqrt(2), chamfer * sqrt(2)], center = true);
 }
 
 // Generates a single countersunk screw clearance through-hole.
-module countersunk_screw_hole(screw_d = screw_hole_diameter, cs_d = countersink_diameter, thickness = backplate_thickness) {
+module countersunk_screw_hole(screw_d = Screw_Hole_Diameter, cs_d = Countersink_Diameter, thickness = Backplate_Thickness) {
   rotate([-90, 0, 0]) {
     cylinder(d = screw_d, h = thickness + 2 * EPSILON);
     translate([0, 0, thickness - (cs_d - screw_d) / 2])
@@ -44,7 +44,7 @@ module countersunk_screw_hole(screw_d = screw_hole_diameter, cs_d = countersink_
 }
 
 // Generates countersunk screw clearance holes centered above each battery slot.
-module backplate_screw_holes(count = battery_count, spacing = slot_spacing, screw_z = z_top_peg - peg_hole_spacing, screw_d = screw_hole_diameter, cs_d = countersink_diameter, thickness = backplate_thickness) {
+module backplate_screw_holes(count = Battery_Count, spacing = slot_spacing, screw_z = z_top_peg - Hole_Spacing, screw_d = Screw_Hole_Diameter, cs_d = Countersink_Diameter, thickness = Backplate_Thickness) {
   for (i = [0 : count - 1]) {
     x_c = (i - (count - 1) / 2) * spacing;
     translate([x_c, -EPSILON, screw_z])
@@ -62,7 +62,7 @@ module stadium_cutout_2d(width, height) {
 }
 
 // Generates stadium-shaped weight-relief through-holes between adjacent battery slots.
-module backplate_relief_windows(count = battery_count, spacing = slot_spacing, z_center = (z_plate_top + z_plate_bottom) / 2, thickness = backplate_thickness, height = backplate_height) {
+module backplate_relief_windows(count = Battery_Count, spacing = slot_spacing, z_center = (z_plate_top + z_plate_bottom) / 2, thickness = Backplate_Thickness, height = backplate_height) {
   if (count > 1) {
     win_w = 14.0;
     win_h = height - 24.0;
@@ -86,7 +86,7 @@ module backplate() {
     backplate_blank();
     backplate_tilt_chamfer();
 
-    if (include_screw_holes) {
+    if (Include_Screw_Holes) {
       backplate_screw_holes();
     }
 

@@ -37,6 +37,20 @@ peglock_attachment/
 
 ---
 
+## Parameters Reference
+
+All lengths are in millimeters unless noted.
+
+### `[Pegboard]`
+| Parameter | Default | Options | Description |
+|---|---|---|---|
+| `Hole_Spacing` | `25.4` | | Pegboard hole center spacing (25.4 for 1" standard, 15.875 for 5/8" metal) |
+| `Pin_Diameter` | `5.7` | | Pin diameter (5.7 for standard 1/4" hole fit, 6.0 for original Sy fit) |
+| `Pegboard_Thickness` | `6.35` | | Pegboard thickness (6.35 for 1/4" board, 1.5875 for 1/16" thin metal) |
+| `Retention_Hook_Rise` | `6.0` | | Height of the retention hook tab behind the pegboard |
+
+---
+
 ## CLI Build & Automation
 
 Run `make` commands from this directory or from the root repository directory:

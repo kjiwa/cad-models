@@ -1,19 +1,19 @@
 {
     "parameterSets": {
         "DeWalt_DW618": {
-            "dust_port_diameter": "34.5",
-            "makita_dust_extractor_port_diameter": "37",
-            "hose_adapter_thickness": "2"
+            "Tool_Port_Diameter": "34.5",
+            "Hose_Port_Diameter": "37",
+            "Wall_Thickness": "2"
         },
         "Ryobi_P411": {
-            "dust_port_diameter": "31.5",
-            "makita_dust_extractor_port_diameter": "37",
-            "hose_adapter_thickness": "2"
+            "Tool_Port_Diameter": "31.5",
+            "Hose_Port_Diameter": "37",
+            "Wall_Thickness": "2"
         },
         "Kreg_K4": {
-            "dust_port_diameter": "30.5",
-            "makita_dust_extractor_port_diameter": "37",
-            "hose_adapter_thickness": "2"
+            "Tool_Port_Diameter": "30.5",
+            "Hose_Port_Diameter": "37",
+            "Wall_Thickness": "2"
         }
     },
     "fileFormatVersion": "1"

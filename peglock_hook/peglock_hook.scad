@@ -2,86 +2,113 @@ include <BOSL2/std.scad>
 include <peglock/peglock.scad>
 include <pegboard/pegs.scad>
 
-/* [Mounting] */
+/* [Layout] */
+// Number of hook columns
+Columns = 1;
+
+// Number of hook rows
+Rows = 1;
+
+// Center-to-center distance between hook columns (at least Arm_Width)
+Column_Spacing = 19.05;
+
+// Center-to-center distance between hook rows
+Row_Spacing = 19.05;
+
+// Where the hooks sit on the backplate
+Vertical_Alignment = "bottom"; // [bottom: Hooks at plate bottom, center: Hooks centered on plate]
+
+/* [Arm] */
+// Cross-section profile of the hook arm
+Arm_Shape = "square"; // [circle: Circle, square: Square, triangle: Triangle, right_triangle: Right Triangle]
+
+// Width of the hook arm
+Arm_Width = 12.7;
+
+// Length of the hook arm from the backplate to the lip
+Arm_Length = 6.35;
+
+// Height of the hook arm
+Arm_Height = 6.35;
+
+// Upward tilt of the hook arm in degrees (0 for horizontal)
+Arm_Tilt_Angle = 0; // [0:5:45]
+
+// Radius of the rounded arm edges
+Arm_Edge_Radius = 1.5875;
+
+// Number of hooks chained along each arm
+Hooks_Per_Arm = 1; // [1:1:5]
+
+/* [Lip] */
+// Height of the retaining lip above the arm
+Lip_Height = 3.175;
+
+// Thickness of the retaining lip
+Lip_Thickness = 3.175;
+
+// Orientation of the retaining lip when the arm is tilted
+Lip_Orientation = "perpendicular"; // [perpendicular: Square to hook arm, vertical: Parallel to backplate]
+
+/* [Backplate] */
+// Thickness of the mounting backplate
+Backplate_Thickness = 1.5875;
+
+// Stress relief fillet radius at the arm root (0 for standard/tested profile, above 0 to strengthen)
+Root_Fillet_Radius = 0;
+
+/* [Pegboard] */
 // Mounting interface: modular Peglock wedge socket or monolithic integrated pegboard pegs
 Mount_Type = "peglock"; // [peglock: Modular Peglock Socket, monolithic: Integrated Pegboard Pegs]
 
-/* [Pegboard] */
-// Center-to-center hole spacing in mm (25.4 for 1" standard, 15.875 for 5/8" metal)
-Peg_Spacing = 25.4;
-// Pegboard hole diameter in mm (5.7 for standard 1/4" fit, 6.0 for original Sy fit)
-Peg_Diameter = 5.7;
-// Pegboard sheet thickness in mm (6.35 for 1/4" board, 1.5875 for 1/16" thin metal)
+// Pegboard hole center spacing (25.4 for 1" standard, 15.875 for 5/8" metal)
+Hole_Spacing = 25.4;
+
+// Pin diameter (5.7 for standard 1/4" hole fit, 6.0 for original Sy fit)
+Pin_Diameter = 5.7;
+
+// Pegboard thickness (6.35 for 1/4" board, 1.5875 for 1/16" thin metal)
 Pegboard_Thickness = 6.35;
-// Retention hook tab rise height in mm
-Hook_Rise = 3.5;
 
-/* [Hook] */
-Hook_Shape = "Square";  // [Circle, Square, Triangle, RightTriangle]
-Hook_Width = 12.7;
-Hook_Height = 6.35;
-Hook_Depth = 6.35;
-Hook_Wall_Thickness = 1.5875;
-Hook_Lip_Thickness = 3.175;
-Hook_Lip_Height = 3.175;
-Hook_Roundover = 1.5875;
-Hook_Root_Fillet = 0; // Stress relief root fillet (0 for standard/tested profile, >0 to strengthen)
-// Upward tilt of the hook arm in degrees (0 for horizontal)
-Hook_Tilt_Angle = 0; // [0:5:45]
-// Orientation of the retaining lip when the arm is tilted
-Hook_Lip_Orientation = "perpendicular"; // [perpendicular: Square to hook arm, vertical: Parallel to backplate]
-// Where the hooks sit on the backplate
-Hook_Vertical_Align = "bottom"; // [bottom: Hooks at plate bottom, center: Hooks centered on plate]
-Hook_Rows = 1;
-Hook_Columns = 1;
-Hook_Item_Quantity = 1;
-Hook_Row_Spacing = 19.05;
-Hook_Column_Spacing = 19.05;
-
-assert(Hook_Tilt_Angle >= 0 && Hook_Tilt_Angle <= 45, "Hook_Tilt_Angle must be between 0 and 45");
-
-/* [Peglock] */
-Peglock_Width = SOCKET_WIDTH;
-Peglock_Height = SOCKET_HEIGHT;
-Peglock_Depth = SOCKET_DEPTH;
-Peglock_Spacing = 25.4;
-Peglock_Roundover = SOCKET_ROUNDOVER;
+// Height of the retention hook tab behind the pegboard
+Retention_Hook_Rise = 3.5;
 
 /* [Hidden] */
 $fn = 128;
 EPSILON = 0.02;
 
-overallHookHeight = Hook_Height + 2 * Hook_Lip_Height;
-overallHookWidth = Hook_Width;
-gridWidth = (Hook_Columns - 1) * Hook_Column_Spacing + Hook_Width;
-gridHeight = (Hook_Rows - 1) * Hook_Row_Spacing + Hook_Height;
+assert(Arm_Tilt_Angle >= 0 && Arm_Tilt_Angle <= 45, "Arm_Tilt_Angle must be between 0 and 45");
 
-effective_spacing = (Peglock_Spacing != 25.4 && Peg_Spacing == 25.4) ? Peglock_Spacing : Peg_Spacing;
-numPeglocks = max(floor(max(gridWidth, Peglock_Width) / Peglock_Width), 1);
-peglockBaseWidth = peglock_base_width(numPeglocks, Peglock_Width, effective_spacing);
+overallHookHeight = Arm_Height + 2 * Lip_Height;
+overallHookWidth = Arm_Width;
+gridWidth = (Columns - 1) * Column_Spacing + Arm_Width;
+gridHeight = (Rows - 1) * Row_Spacing + Arm_Height;
 
-fillet_max_depth = Hook_Depth * 0.35;
-fillet_max_height = min(Hook_Lip_Height * 0.4, Hook_Height * 0.35);
-fillet_max_width = Hook_Width * 0.35;
+numPeglocks = max(floor(max(gridWidth, SOCKET_WIDTH) / SOCKET_WIDTH), 1);
+peglockBaseWidth = peglock_base_width(numPeglocks, SOCKET_WIDTH, Hole_Spacing);
 
-fillet_reach_y = min(Hook_Root_Fillet, fillet_max_depth);
-fillet_flare_z = min(Hook_Root_Fillet, fillet_max_height);
-fillet_flare_x = min(Hook_Root_Fillet, fillet_max_width);
+fillet_max_depth = Arm_Length * 0.35;
+fillet_max_height = min(Lip_Height * 0.4, Arm_Height * 0.35);
+fillet_max_width = Arm_Width * 0.35;
 
-arm_slice_drop = Hook_Height * (1 / cos(Hook_Tilt_Angle) - 1);
+fillet_reach_y = min(Root_Fillet_Radius, fillet_max_depth);
+fillet_flare_z = min(Root_Fillet_Radius, fillet_max_height);
+fillet_flare_x = min(Root_Fillet_Radius, fillet_max_width);
+
+arm_slice_drop = Arm_Height * (1 / cos(Arm_Tilt_Angle) - 1);
 tilt_root_drop = arm_slice_drop;
-arm_pivot_z = Hook_Height / 2;
-arm_extra_back = Hook_Height * tan(Hook_Tilt_Angle) + 1;
-arm_trim = arm_extra_back + Hook_Height + 1;
+arm_pivot_z = Arm_Height / 2;
+arm_extra_back = Arm_Height * tan(Arm_Tilt_Angle) + 1;
+arm_trim = arm_extra_back + Arm_Height + 1;
 
 root_height = gridHeight + 2 * fillet_flare_z + tilt_root_drop;
 
-backerWidth = max(gridWidth + 2 * fillet_flare_x, (Mount_Type == "peglock" ? peglockBaseWidth : effective_spacing));
-backerHeight = max(root_height, (Mount_Type == "peglock" ? Peglock_Height : effective_spacing + 10));
-align_shift = Hook_Vertical_Align == "center" ? (backerHeight - root_height) / 2 : 0;
+backerWidth = max(gridWidth + 2 * fillet_flare_x, (Mount_Type == "peglock" ? peglockBaseWidth : Hole_Spacing));
+backerHeight = max(root_height, (Mount_Type == "peglock" ? SOCKET_HEIGHT : Hole_Spacing + 10));
+align_shift = Vertical_Alignment == "center" ? (backerHeight - root_height) / 2 : 0;
 
-if (Hook_Columns > 1) assert(Hook_Column_Spacing >= (Hook_Width));
-if (Hook_Rows > 1) assert(Hook_Row_Spacing * cos(Hook_Tilt_Angle) >= (Hook_Height + Hook_Lip_Height));
+if (Columns > 1) assert(Column_Spacing >= Arm_Width, "Column_Spacing must be at least Arm_Width");
+if (Rows > 1) assert(Row_Spacing * cos(Arm_Tilt_Angle) >= Arm_Height + Lip_Height, "Row_Spacing is too small for Arm_Height + Lip_Height");
 
 module RoundedTriangle(w, h, r = 0) {
   translate([0, h / 2, 0]) {
@@ -111,26 +138,26 @@ module RoundedRightTriangle(l, h, d, cr) {
 }
 
 module HookProfile(depth) {
-  if (Hook_Shape == "Circle") {
-    scale([Hook_Width, 1, Hook_Height])
+  if (Arm_Shape == "circle") {
+    scale([Arm_Width, 1, Arm_Height])
       rotate([-90, 0, 0])
       cylinder(d=1, h=depth);
-  } else if (Hook_Shape == "Square") {
+  } else if (Arm_Shape == "square") {
     translate([0, depth / 2, 0])
-      cuboid([Hook_Width, depth, Hook_Height], rounding=Hook_Roundover, except=[FRONT, BACK]);
-  } else if (Hook_Shape == "RightTriangle") {
-    RoundedRightTriangle(Hook_Width, Hook_Height, depth, Hook_Roundover);
-  } else if (Hook_Shape == "Triangle") {
+      cuboid([Arm_Width, depth, Arm_Height], rounding=Arm_Edge_Radius, except=[FRONT, BACK]);
+  } else if (Arm_Shape == "right_triangle") {
+    RoundedRightTriangle(Arm_Width, Arm_Height, depth, Arm_Edge_Radius);
+  } else if (Arm_Shape == "triangle") {
     rotate([-90, 0, 0])
       linear_extrude(depth)
-      RoundedTriangle(Hook_Width, Hook_Height, Hook_Roundover);
+      RoundedTriangle(Arm_Width, Arm_Height, Arm_Edge_Radius);
   }
 }
 
 module HookRootFillet() {
-  if (Hook_Root_Fillet > 0) {
+  if (Root_Fillet_Radius > 0) {
     hull() {
-      scale([(Hook_Width + 2 * fillet_flare_x) / Hook_Width, 1, (Hook_Height + 2 * fillet_flare_z) / Hook_Height])
+      scale([(Arm_Width + 2 * fillet_flare_x) / Arm_Width, 1, (Arm_Height + 2 * fillet_flare_z) / Arm_Height])
         HookProfile(0.01);
       translate([0, fillet_reach_y, 0])
         HookProfile(0.01);
@@ -140,18 +167,18 @@ module HookRootFillet() {
 
 module HookLipBody() {
   hull() {
-    HookProfile(Hook_Lip_Thickness);
-    translate([0, 0, Hook_Lip_Height]) HookProfile(Hook_Lip_Thickness);
+    HookProfile(Lip_Thickness);
+    translate([0, 0, Lip_Height]) HookProfile(Lip_Thickness);
   }
 }
 
 // Inside the tilted arm frame, counter-rotating the lip makes it parallel to the backplate;
 // the hull with the arm's end face bridges the wedge that opens between them.
 module HookLip() {
-  if (Hook_Lip_Orientation == "vertical" && Hook_Tilt_Angle > 0) {
+  if (Lip_Orientation == "vertical" && Arm_Tilt_Angle > 0) {
     hull() {
       translate([0, -0.01, 0]) HookProfile(0.01);
-      rotate([-Hook_Tilt_Angle, 0, 0]) HookLipBody();
+      rotate([-Arm_Tilt_Angle, 0, 0]) HookLipBody();
     }
   } else {
     HookLipBody();
@@ -159,119 +186,119 @@ module HookLip() {
 }
 
 module SingleHook() {
-  HookProfile(Hook_Depth);
+  HookProfile(Arm_Length);
   HookRootFillet();
-  translate([0, Hook_Depth, 0]) HookLip();
+  translate([0, Arm_Length, 0]) HookLip();
 }
 
 // The arm tilted about its top-back edge and extended backward so it passes through the backplate face
 module TiltedArm() {
   translate([0, 0, arm_pivot_z])
-    rotate([Hook_Tilt_Angle, 0, 0])
+    rotate([Arm_Tilt_Angle, 0, 0])
       translate([0, -arm_extra_back, -arm_pivot_z])
-        HookProfile(Hook_Depth + arm_extra_back);
+        HookProfile(Arm_Length + arm_extra_back);
 }
 
 module ArmSlice(y) {
   intersection() {
     TiltedArm();
-    translate([-Hook_Width, y, -arm_trim]) cube([2 * Hook_Width, 0.01, 2 * arm_trim]);
+    translate([-Arm_Width, y, -arm_trim]) cube([2 * Arm_Width, 0.01, 2 * arm_trim]);
   }
 }
 
 // Root fillet for a tilted arm: the arm's cross-section at the backplate, flared about its
 // centre, hulled with the plain cross-section where the fillet ends.
 module TiltedRootFillet() {
-  slice_height = Hook_Height / cos(Hook_Tilt_Angle);
+  slice_height = Arm_Height / cos(Arm_Tilt_Angle);
   center_z = -arm_slice_drop / 2;
   hull() {
     translate([0, 0, center_z])
-      scale([(Hook_Width + 2 * fillet_flare_x) / Hook_Width, 1, (slice_height + 2 * fillet_flare_z) / slice_height])
+      scale([(Arm_Width + 2 * fillet_flare_x) / Arm_Width, 1, (slice_height + 2 * fillet_flare_z) / slice_height])
         translate([0, 0, -center_z])
           ArmSlice(0);
     ArmSlice(fillet_reach_y);
   }
 }
 
-// One grid cell: Hook_Item_Quantity hooks tilted about the arm's top-back edge. The arm is
+// One grid cell: Hooks_Per_Arm hooks tilted about the arm's top-back edge. The arm is
 // extended backward and trimmed at the backplate face so the root stays flush at any angle.
 module HookArm() {
   difference() {
     union() {
       translate([0, 0, arm_pivot_z])
-        rotate([Hook_Tilt_Angle, 0, 0])
+        rotate([Arm_Tilt_Angle, 0, 0])
           translate([0, 0, -arm_pivot_z]) {
-            translate([0, -arm_extra_back, 0]) HookProfile(Hook_Depth + arm_extra_back);
-            translate([0, Hook_Depth, 0]) HookLip();
-            if (Hook_Item_Quantity > 1) {
-              for (k = [2:Hook_Item_Quantity]) {
-                translate([0, (k - 1) * (Hook_Depth + Hook_Lip_Thickness), 0]) SingleHook();
+            translate([0, -arm_extra_back, 0]) HookProfile(Arm_Length + arm_extra_back);
+            translate([0, Arm_Length, 0]) HookLip();
+            if (Hooks_Per_Arm > 1) {
+              for (k = [2:Hooks_Per_Arm]) {
+                translate([0, (k - 1) * (Arm_Length + Lip_Thickness), 0]) SingleHook();
               }
             }
           }
-      if (Hook_Tilt_Angle > 0 && Hook_Root_Fillet > 0) TiltedRootFillet();
+      if (Arm_Tilt_Angle > 0 && Root_Fillet_Radius > 0) TiltedRootFillet();
       else HookRootFillet();
     }
-    translate([-(Hook_Width + 2) / 2, -arm_trim, -arm_trim]) cube([Hook_Width + 2, arm_trim, 2 * arm_trim]);
+    translate([-(Arm_Width + 2) / 2, -arm_trim, -arm_trim]) cube([Arm_Width + 2, arm_trim, 2 * arm_trim]);
   }
 }
 
 module HookGrid() {
-  x = (Hook_Columns - 1) * Hook_Column_Spacing;
-  z_base = -backerHeight / 2 + Hook_Height / 2 + fillet_flare_z + tilt_root_drop + align_shift;
+  x = (Columns - 1) * Column_Spacing;
+  z_base = -backerHeight / 2 + Arm_Height / 2 + fillet_flare_z + tilt_root_drop + align_shift;
 
   translate([-x / 2, 0, z_base])
-    for (i=[1:Hook_Columns]) {
-      for (j=[1:Hook_Rows]) {
-        translate([(i - 1) * Hook_Column_Spacing, 0, (j - 1) * Hook_Row_Spacing]) HookArm();
+    for (i=[1:Columns]) {
+      for (j=[1:Rows]) {
+        translate([(i - 1) * Column_Spacing, 0, (j - 1) * Row_Spacing]) HookArm();
       }
     }
 }
 
 module MonolithicPegs() {
-  cols = max(floor((backerWidth - Peg_Diameter) / effective_spacing) + 1, 1);
-  num_peg_intervals = max(floor((backerHeight - 10) / effective_spacing), 1);
-  z_top = num_peg_intervals * effective_spacing / 2;
+  cols = max(floor((backerWidth - Pin_Diameter) / Hole_Spacing) + 1, 1);
+  num_peg_intervals = max(floor((backerHeight - 10) / Hole_Spacing), 1);
+  z_top = num_peg_intervals * Hole_Spacing / 2;
 
   for (c = [0 : cols - 1]) {
-    x = (cols == 1) ? 0 : (c - (cols - 1) / 2) * effective_spacing;
-    translate([x, -Hook_Wall_Thickness, z_top])
+    x = (cols == 1) ? 0 : (c - (cols - 1) / 2) * Hole_Spacing;
+    translate([x, -Backplate_Thickness, z_top])
       pegboard_upper_hook(
-        pin_d = Peg_Diameter,
+        pin_d = Pin_Diameter,
         board_t = Pegboard_Thickness,
-        rise = Hook_Rise,
-        backplate_t = Hook_Wall_Thickness
+        rise = Retention_Hook_Rise,
+        backplate_t = Backplate_Thickness
       );
     for (k = [1 : num_peg_intervals]) {
-      translate([x, -Hook_Wall_Thickness, z_top - k * effective_spacing])
+      translate([x, -Backplate_Thickness, z_top - k * Hole_Spacing])
         pegboard_lower_pin(
-          pin_d = Peg_Diameter,
+          pin_d = Pin_Diameter,
           board_t = Pegboard_Thickness,
-          backplate_t = Hook_Wall_Thickness
+          backplate_t = Backplate_Thickness
         );
     }
   }
 }
 
 module HookBacker() {
-  cuboid([backerWidth, Hook_Wall_Thickness, backerHeight], rounding=Peglock_Roundover, except=[FRONT, BACK]);
+  cuboid([backerWidth, Backplate_Thickness, backerHeight], rounding=SOCKET_ROUNDOVER, except=[FRONT, BACK]);
 }
 
 module Hook() {
   if (Mount_Type == "peglock") {
-    translate([0, -Hook_Wall_Thickness + EPSILON, 0])
+    translate([0, -Backplate_Thickness + EPSILON, 0])
       PeglockBase(
         count = numPeglocks,
-        width = Peglock_Width,
-        height = Peglock_Height,
-        depth = Peglock_Depth,
-        spacing = effective_spacing,
-        roundover = Peglock_Roundover
+        width = SOCKET_WIDTH,
+        height = SOCKET_HEIGHT,
+        depth = SOCKET_DEPTH,
+        spacing = Hole_Spacing,
+        roundover = SOCKET_ROUNDOVER
       );
   } else if (Mount_Type == "monolithic") {
     MonolithicPegs();
   }
-  translate([0, -Hook_Wall_Thickness / 2, 0]) HookBacker();
+  translate([0, -Backplate_Thickness / 2, 0]) HookBacker();
   HookGrid();
 }
 

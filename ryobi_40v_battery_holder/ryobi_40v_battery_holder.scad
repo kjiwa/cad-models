@@ -3,149 +3,148 @@
  * Designed for 1/4\" pegboard with 1\" hole spacing and 1/4\" wall clearance.
  */
 
-/* [Holder Configuration] */
-// Number of battery slots side-by-side
-battery_count = 2; // [1:1:6]
+/* [Layout] */
+// Number of battery slots side by side
+Battery_Count = 2; // [1:1:6]
 
-// Forward tilt angle from vertical to clear pegboard above
-tilt_angle = 15; // [0:5:45]
+// Slot center-to-center spacing in pegboard holes
+Slot_Spacing_Holes = 4; // [3:1:8]
 
-// Center-to-center spacing between slots in pegboard hole increments
-slot_spacing_pegs = 4; // [3:1:8]
+// Forward tilt from vertical in degrees
+Tilt_Angle = 15; // [0:5:45]
 
-/* [Component Inspection & Labels] */
-// Show 3D text labels for components in preview
-show_labels = true;
+/* [Battery Rails] */
+// Width across the outer edges of the battery slide rails
+Rail_Width = 62.0;
 
-// Component to inspect (or "all" for full assembly)
-view_component = "all"; // [all: All Components, backplate: Backplate, cradle: Full Cradle, slide_bed: Slide Bed, bottom_shelf: Bottom Shelf, slide_rails: Slide Rails, gussets: Gussets, upper_hooks: Upper Hooks, lower_pins: Lower Pins]
+// Length of rail engagement along the slide bed
+Rail_Length = 80.0;
 
-// Label text size in mm
-label_size = 4.5; // [2:0.5:10]
+// Thickness of the battery slide flange
+Rail_Thickness = 5.5;
 
-/* [Ryobi 40V Battery Interface] */
-// Width across outer edges of battery slide rails in mm
-rail_width = 62.0;
+// Thickness of the retaining lip
+Rail_Lip_Thickness = 2.0;
 
-// Thickness of the battery slide flange in mm
-rail_thickness = 5.5;
+// Undercut depth of the retaining lip
+Rail_Lip_Depth = 4.5;
 
-// Thickness of the retaining rail lip in mm
-rail_lip_thickness = 2.0;
+// Fit gap around the rails
+Rail_Clearance = 0.5;
 
-// Undercut depth of the rail lip in mm
-rail_lip_depth = 4.5;
+// Fillet radius on the rail lips
+Rail_Lip_Radius = 1.4;
 
-// Slide rail engagement length in mm
-rail_length = 80.0;
+// Stress-relief fillet radius at the rail root
+Rail_Root_Radius = 0.6;
 
-// Fit tolerance gap around rails in mm
-rail_clearance = 0.5;
+// Include the central slide rails
+Include_Rails = true;
 
-// Slide bed and bottom shelf width in mm
-bed_width = 76.0;
+/* [Slide Bed & Shelf] */
+// Width of the slide bed and bottom shelf
+Bed_Width = 76.0;
 
-// Depth of bottom support shelf in mm
-bottom_shelf_depth = 8.0;
+// Thickness of the angled slide bed
+Bed_Thickness = 5.0;
 
-// Thickness of bottom support shelf in mm
-bottom_shelf_thickness = 6.0;
+// Top corner radius of the slide bed
+Bed_Corner_Radius = 6.0;
 
-// Include central slide rails
-enable_rails = true;
+// Depth of the bottom support shelf
+Shelf_Depth = 8.0;
 
-/* [Pegboard Mounting] */
-// Pegboard hole center spacing in inches
-peg_hole_spacing_in = 1.0;
+// Thickness of the bottom support shelf
+Shelf_Thickness = 6.0;
 
-// Pegboard thickness in inches
-pegboard_thickness_in = 0.25;
+// Front corner radius of the bottom shelf
+Shelf_Corner_Radius = 5.0;
 
-// Pin diameter in mm (sized for 1/4\" holes with print tolerance)
-pin_diameter = 5.7;
+// Height of the integrated front toe
+Toe_Height = 3.5;
 
-// Stabilizing peg pattern below upper hooks
-stabilizing_peg_pattern = "all"; // [all: All Available Rows (1-in and 2-in), span_2: 2-in Below Only, span_1: 1-in Below Only]
+// Bottom front edge radius of the toe
+Toe_Radius = 1.6;
 
-// Height of retention hook tab behind pegboard in mm
-hook_rise = 3.5;
+/* [Gussets] */
+// Gusset style
+Gusset_Style = "full_wedge"; // [full_wedge: Full-Width Sculpted Wedge, swept_ribs: Swept Architectural Ribs, buttress_wings: Sculpted Buttress Wings, classic: Classic Flat Wedges]
 
-// Top margin above upper hooks in mm
-peg_top_margin = 6.35;
+// Thickness of the gusset ribs
+Gusset_Thickness = 5.0;
 
-// Rear top chamfer size for pegboard insertion clearance in mm
-tilt_chamfer = 2.0;
+// Hollow out the wedge cavity, otherwise slicer infill fills it (full_wedge only)
+Hollow_Wedge = false;
 
+/* [Backplate] */
+// Thickness of the mounting backplate
+Backplate_Thickness = 5.0;
+
+// Corner radius of the backplate perimeter
+Backplate_Corner_Radius = 6.0;
+
+// Rear top chamfer that clears the pegboard during insertion
+Insertion_Chamfer = 2.0;
+
+/* [Pegboard] */
+// Pegboard hole center spacing (25.4 for 1" standard, 15.875 for 5/8" metal)
+Hole_Spacing = 25.4;
+
+// Pin diameter (5.7 for standard 1/4" hole fit, 6.0 for original Sy fit)
+Pin_Diameter = 5.7;
+
+// Pegboard thickness (6.35 for 1/4" board, 1.5875 for 1/16" thin metal)
+Pegboard_Thickness = 6.35;
+
+// Height of the retention hook tab behind the pegboard
+Retention_Hook_Rise = 3.5;
+
+// Distance from the backplate top to the retention hooks
+Retention_Hook_Margin = 6.35;
+
+// Stabilizing pins below the retention hooks
+Stabilizing_Pin_Pattern = "all"; // [all: All Available Rows (1-in and 2-in), span_2: 2-in Below Only, span_1: 1-in Below Only]
+
+/* [Screw Holes] */
 // Include countersunk screw clearance holes
-include_screw_holes = true;
+Include_Screw_Holes = true;
 
-// Screw shank clearance hole diameter in mm (#8 screw)
-screw_hole_diameter = 4.5;
+// Screw shank clearance hole diameter (#8 screw)
+Screw_Hole_Diameter = 4.5;
 
-// Screw countersink head diameter in mm
-countersink_diameter = 9.0;
+// Screw countersink head diameter
+Countersink_Diameter = 9.0;
 
-/* [Structure & Reinforcement] */
-// Thickness of mounting backplate in mm
-backplate_thickness = 5.0;
+/* [Preview] */
+// Component to show, or all for the full assembly
+Show_Component = "all"; // [all: All Components, backplate: Backplate, cradle: Full Cradle, slide_bed: Slide Bed, bottom_shelf: Bottom Shelf, slide_rails: Slide Rails, gussets: Gussets, retention_hooks: Retention Hooks, stabilizing_pins: Stabilizing Pins]
 
-// Thickness of support gusset ribs in mm
-bracket_thickness = 5.0;
+// Show 3D component labels in preview
+Show_Labels = true;
 
-// Thickness of angled slide bed in mm
-bed_thickness = 5.0;
-
-// Corner radius for mounting backplate perimeter in mm
-backplate_corner_radius = 6.0;
-
-// Top corner radius for battery slide bed in mm
-bed_corner_radius = 6.0;
-
-// Front corner radius for bottom resting shelf in mm
-shelf_corner_radius = 5.0;
-
-// Internal fillet radius for slide rail lips in mm
-rail_fillet_radius = 1.4;
-
-// Internal stress-relief fillet radius at slide rail root in mm
-rail_root_fillet = 0.6;
-
-// Vertical height of integrated front toe in mm
-toe_height = 3.5;
-
-// Bottom front roundover chamfer in mm
-toe_roundover = 1.6;
-
-/* [Gusset Styling & Aesthetics] */
-// Gusset reinforcement and aesthetic styling
-gusset_style = "full_wedge"; // [full_wedge: Full-Width Sculpted Wedge, swept_ribs: Swept Architectural Ribs, buttress_wings: Sculpted Buttress Wings, classic: Classic Flat Wedges]
-
-// Hollow out central monocoque cavity in full-width wedge (false uses slicer infill)
-wedge_cored = false;
+// Label text size
+Label_Size = 4.5; // [2:0.5:10]
 
 /* [Hidden] */
 $fn = 36;
 render_labels = false;
 
 EPSILON = 0.02;
-INCH_TO_MM = 25.4;
 
-peg_hole_spacing = peg_hole_spacing_in * INCH_TO_MM;
-pegboard_thickness = pegboard_thickness_in * INCH_TO_MM;
-slot_spacing = slot_spacing_pegs * peg_hole_spacing;
+slot_spacing = Slot_Spacing_Holes * Hole_Spacing;
 
-total_width = (battery_count - 1) * slot_spacing + bed_width;
+total_width = (Battery_Count - 1) * slot_spacing + Bed_Width;
 
-cradle_drop = (bed_thickness + bottom_shelf_depth) * sin(tilt_angle);
+cradle_drop = (Bed_Thickness + Shelf_Depth) * sin(Tilt_Angle);
 z_plate_bottom = 0;
-z_shelf = z_plate_bottom + cradle_drop + toe_height;
+z_shelf = z_plate_bottom + cradle_drop + Toe_Height;
 
-h_cradle = rail_length * cos(tilt_angle);
-w_cradle = rail_length * sin(tilt_angle);
+h_cradle = Rail_Length * cos(Tilt_Angle);
+w_cradle = Rail_Length * sin(Tilt_Angle);
 
 z_plate_top = z_shelf + h_cradle;
 backplate_height = z_plate_top - z_plate_bottom;
-z_top_peg = z_plate_top - peg_top_margin;
+z_top_peg = z_plate_top - Retention_Hook_Margin;
 
 include <components/labels.scad>
 include <components/pegs.scad>
@@ -161,13 +160,13 @@ module ryobi_40v_battery_holder() {
   union() {
     if (is_visible("backplate")) {
       color("SlateGray") backplate();
-      component_label("Backplate", [0, backplate_thickness + 0.5, z_plate_top + 6]);
+      component_label("Backplate", [0, Backplate_Thickness + 0.5, z_plate_top + 6]);
     }
 
     mounting_pegs();
 
-    for (i = [0 : battery_count - 1]) {
-      x_center = (i - (battery_count - 1) / 2) * slot_spacing;
+    for (i = [0 : Battery_Count - 1]) {
+      x_center = (i - (Battery_Count - 1) / 2) * slot_spacing;
       is_first = (i == 0);
       slot_cradle(x_center, is_first);
     }

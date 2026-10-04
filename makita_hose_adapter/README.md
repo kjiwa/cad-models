@@ -25,13 +25,14 @@ makita_hose_adapter/
 
 All dimensions are in millimeters.
 
+### `[Adapter]`
 | Parameter | Default | Description |
 |---|---|---|
-| `END_SECTION_HEIGHT` | `20` | Insertion depth of the end sections |
-| `MIDDLE_SECTION_HEIGHT` | `10` | Height of the tapered transition section |
-| `hose_adapter_thickness` | `2` | Wall thickness of the adapter shell |
-| `makita_dust_extractor_port_diameter` | `37` | Inside diameter of Makita vacuum hose connection |
-| `dust_port_diameter` | `34.5` | Inside diameter of the tool dust port |
+| `Tool_Port_Diameter` | `34.5` | Inside diameter of the tool dust port |
+| `Hose_Port_Diameter` | `37` | Inside diameter of the Makita vacuum hose connection |
+| `Wall_Thickness` | `2` | Wall thickness of the adapter shell |
+| `End_Length` | `20` | Length of each cylindrical end section |
+| `Taper_Length` | `10` | Length of the tapered middle section |
 
 ### Common Tool Port Diameters
 

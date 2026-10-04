@@ -4,7 +4,7 @@
 
 // Returns true if the slot at index (0-based) is configured for plastic blades.
 function slot_is_plastic(index) =
-  (index < len(slot_pattern)) ? (slot_pattern[index] == "P" || slot_pattern[index] == "p") : false;
+  (index < len(Slot_Pattern)) ? (Slot_Pattern[index] == "P" || Slot_Pattern[index] == "p") : false;
 
 // Returns the slot type ("metal" or "plastic") for a given slot index.
 function slot_type(index) =
@@ -12,7 +12,7 @@ function slot_type(index) =
 
 // Returns the calibrated exit gate height for a given slot index.
 function slot_exit_height(index) =
-  slot_is_plastic(index) ? plastic_exit_height : metal_exit_height;
+  slot_is_plastic(index) ? Plastic_Exit_Height : Metal_Exit_Height;
 
 // Returns the calibrated internal cavity depth for a given slot index.
 function slot_chute_depth(index) =
@@ -25,13 +25,13 @@ function slot_badge_text(index) =
 // Generates the internal vertical chute cavity for a single slot.
 module chute_cavity(
   x_center,
-  w = chute_width,
+  w = Chute_Width,
   d = effective_metal_depth,
-  h = dispenser_height,
-  floor_t = floor_thickness,
-  back_t = backplate_thickness,
+  h = Tower_Height,
+  floor_t = Floor_Thickness,
+  back_t = Backplate_Thickness,
   tower_d = tower_depth,
-  front_w = front_wall_thickness
+  front_w = Front_Wall_Thickness
 ) {
   y_front_inner = back_t + tower_d - front_w;
   y_c = y_front_inner - d / 2;
@@ -46,13 +46,13 @@ module chute_cavity(
 module exit_gate(
   x_center,
   exit_h,
-  w = chute_width + 1.2,
+  w = Chute_Width + 1.2,
   d = effective_metal_depth,
-  floor_t = floor_thickness,
-  back_t = backplate_thickness,
+  floor_t = Floor_Thickness,
+  back_t = Backplate_Thickness,
   tower_d = tower_depth,
-  front_w = front_wall_thickness,
-  shelf_ext = shelf_extension
+  front_w = Front_Wall_Thickness,
+  shelf_ext = Front_Shelf_Depth
 ) {
   y_front_inner = back_t + tower_d - front_w;
   y_start = y_front_inner - d;
@@ -75,13 +75,13 @@ module exit_gate(
 module finger_scoop(
   x_center,
   chute_d = effective_metal_depth,
-  scoop_w = grip_notch_width,
-  scoop_d = grip_notch_depth,
-  floor_t = floor_thickness,
-  back_t = backplate_thickness,
+  scoop_w = Finger_Notch_Width,
+  scoop_d = Finger_Notch_Depth,
+  floor_t = Floor_Thickness,
+  back_t = Backplate_Thickness,
   tower_d = tower_depth,
-  front_w = front_wall_thickness,
-  shelf_ext = shelf_extension
+  front_w = Front_Wall_Thickness,
+  shelf_ext = Front_Shelf_Depth
 ) {
   y_front = back_t + tower_d + shelf_ext + EPSILON;
   y_back = back_t + tower_d - front_w - chute_d;
@@ -109,18 +109,18 @@ module finger_scoop(
 // Generates the front vertical sight slot with smooth bellmouth flared opening.
 module sight_slot(
   x_center,
-  slot_w = sight_slot_width,
-  z_bottom = floor_thickness + metal_exit_height,
+  slot_w = Sight_Slot_Width,
+  z_bottom = Floor_Thickness + Metal_Exit_Height,
   z_end = sight_slot_z_end,
-  flare_w = opening_flare_width,
-  flare_h = opening_flare_height,
-  back_t = backplate_thickness,
+  flare_w = Opening_Flare_Width,
+  flare_h = Opening_Flare_Height,
+  back_t = Backplate_Thickness,
   tower_d = tower_depth,
-  front_w = front_wall_thickness,
-  shelf_ext = shelf_extension,
-  top_chamfer = slot_top_chamfer
+  front_w = Front_Wall_Thickness,
+  shelf_ext = Front_Shelf_Depth,
+  top_chamfer = Sight_Slot_Top_Chamfer
 ) {
-  if (enable_sight_slots && (z_end > z_bottom + slot_w)) {
+  if (Include_Sight_Slots && (z_end > z_bottom + slot_w)) {
     top_r = slot_w / 2;
     actual_flare_w = max(flare_w, slot_w + 2.0);
     actual_flare_h = max(flare_h, 4.0);
@@ -128,7 +128,7 @@ module sight_slot(
     cut_depth = front_w + shelf_ext + 10.0;
     delta_w = (actual_flare_w - slot_w) / 2;
     steps = 40;
-    is_open_top = (z_end >= dispenser_height - EPSILON);
+    is_open_top = (z_end >= Tower_Height - EPSILON);
     top_c = is_open_top ? top_chamfer : 0;
 
     translate([x_center, y_start, 0]) {
@@ -146,16 +146,16 @@ module sight_slot(
               [x, -z]
           ];
           pts_r_straight = is_open_top
-            ? [[slot_w / 2, -(dispenser_height - top_c)]]
+            ? [[slot_w / 2, -(Tower_Height - top_c)]]
             : [[slot_w / 2, -(z_end - top_r)]];
           // 2. Top section: open-top lead-in chamfer or semi-circular arch
           pts_top = is_open_top
             ? [
-                [slot_w / 2 + top_c, -dispenser_height],
-                [slot_w / 2 + top_c, -(dispenser_height + 5.0)],
-                [-slot_w / 2 - top_c, -(dispenser_height + 5.0)],
-                [-slot_w / 2 - top_c, -dispenser_height],
-                [-slot_w / 2, -(dispenser_height - top_c)]
+                [slot_w / 2 + top_c, -Tower_Height],
+                [slot_w / 2 + top_c, -(Tower_Height + 5.0)],
+                [-slot_w / 2 - top_c, -(Tower_Height + 5.0)],
+                [-slot_w / 2 - top_c, -Tower_Height],
+                [-slot_w / 2, -(Tower_Height - top_c)]
               ]
             : [
                 for (a = [0 : 6 : 180])
@@ -174,8 +174,8 @@ module sight_slot(
           ];
           // Extend cut down into exit gate to eliminate zero-thickness boundary facet
           pts_bottom_ext = [
-            [-actual_flare_w / 2, -(floor_thickness - 1.0)],
-            [actual_flare_w / 2, -(floor_thickness - 1.0)]
+            [-actual_flare_w / 2, -(Floor_Thickness - 1.0)],
+            [actual_flare_w / 2, -(Floor_Thickness - 1.0)]
           ];
 
           polygon(points = concat(pts_r_curve, pts_r_straight, pts_top, pts_l_straight, pts_l_curve, pts_bottom_ext));
@@ -192,10 +192,10 @@ module slot_cutouts(index, x_center) {
   chute_cavity(x_center, d = d);
   exit_gate(x_center, exit_h, d = d);
   finger_scoop(x_center, chute_d = d);
-  sight_slot(x_center, z_bottom = floor_thickness + exit_h);
+  sight_slot(x_center, z_bottom = Floor_Thickness + exit_h);
   tower_top_funnel(x_center, chute_d = d);
 
-  if (enable_badge_labels) {
+  if (Include_Badges) {
     tower_debossed_text(x_center, slot_badge_text(index));
   }
 }

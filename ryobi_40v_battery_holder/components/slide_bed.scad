@@ -3,7 +3,7 @@
  */
 
 // Generates the solid backing bed plate with rounded top corners.
-module slide_bed_blank(width = bed_width, length = rail_length, thickness = bed_thickness, corner_radius = bed_corner_radius) {
+module slide_bed_blank(width = Bed_Width, length = Rail_Length, thickness = Bed_Thickness, corner_radius = Bed_Corner_Radius) {
   r = min(corner_radius, width / 4);
 
   translate([0, thickness, 0]) {
@@ -28,7 +28,7 @@ module slide_bed_blank(width = bed_width, length = rail_length, thickness = bed_
 }
 
 // Generates the recessed pocket cutting into the bed face to reduce contact friction.
-module slide_bed_friction_relief(length = rail_length, thickness = bed_thickness, shelf_thickness = bottom_shelf_thickness) {
+module slide_bed_friction_relief(length = Rail_Length, thickness = Bed_Thickness, shelf_thickness = Shelf_Thickness) {
   relief_w = 30.0;
   relief_d = 1.5;
   relief_r = 4.0;
@@ -52,7 +52,7 @@ module slide_bed_friction_relief(length = rail_length, thickness = bed_thickness
 }
 
 // Generates debossed model text cutter in the relief pocket.
-module slide_bed_debossed_text(text_str = "40V", length = rail_length, thickness = bed_thickness) {
+module slide_bed_debossed_text(text_str = "40V", length = Rail_Length, thickness = Bed_Thickness) {
   relief_d = 1.5;
   relief_z_end = length - 8.0;
 

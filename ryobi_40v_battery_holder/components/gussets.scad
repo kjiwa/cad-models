@@ -31,8 +31,8 @@ module gusset_rib_profile_2d(h_plate, h_bed, w_bed, style) {
 module gusset_truss_window_2d(h_plate_attach) {
   v_bot = 35.0;
   v_top = h_plate_attach - 8.0;
-  u_bot = 0.5 * v_bot * tan(tilt_angle);
-  u_top = 0.5 * v_top * tan(tilt_angle);
+  u_bot = 0.5 * v_bot * tan(Tilt_Angle);
+  u_top = 0.5 * v_top * tan(Tilt_Angle);
 
   hull() {
     translate([u_bot, v_bot]) circle(d = 4.0);
@@ -44,7 +44,7 @@ module gusset_truss_window_2d(h_plate_attach) {
 module gusset_full_wedge(x_center, w, z_bot, h_plate_attach, h_contact, w_contact, cored) {
   translate([x_center, 0, 0]) {
     difference() {
-      translate([0, backplate_thickness - EPSILON, z_bot]) {
+      translate([0, Backplate_Thickness - EPSILON, z_bot]) {
         rotate([90, 0, 90]) {
           linear_extrude(height = w, center = true) {
             gusset_rib_profile_2d(h_plate_attach, h_contact, w_contact, "swept");
@@ -55,7 +55,7 @@ module gusset_full_wedge(x_center, w, z_bot, h_plate_attach, h_contact, w_contac
       if (cored) {
         wall_t = 6.5;
         core_w = w - 2 * wall_t;
-        translate([0, backplate_thickness + 2.5, z_bot + 4.0]) {
+        translate([0, Backplate_Thickness + 2.5, z_bot + 4.0]) {
           rotate([90, 0, 90]) {
             linear_extrude(height = core_w, center = true) {
               polygon(points = [
@@ -80,17 +80,17 @@ module gusset_buttress_wings(x_center, span, w, z_bot, h_plate_attach, h_contact
     x_outer = x_center + side * (w / 2);
 
     hull() {
-      translate([x_inner, backplate_thickness - EPSILON, z_bot]) {
+      translate([x_inner, Backplate_Thickness - EPSILON, z_bot]) {
         rotate([90, 0, 90]) {
-          linear_extrude(height = bracket_thickness, center = true) {
+          linear_extrude(height = Gusset_Thickness, center = true) {
             gusset_rib_profile_2d(h_plate_attach, h_contact, w_contact, "swept");
           }
         }
       }
 
-      translate([x_outer - side * (bracket_thickness / 2), backplate_thickness - EPSILON, z_bot]) {
+      translate([x_outer - side * (Gusset_Thickness / 2), Backplate_Thickness - EPSILON, z_bot]) {
         rotate([90, 0, 90]) {
-          linear_extrude(height = bracket_thickness, center = true) {
+          linear_extrude(height = Gusset_Thickness, center = true) {
             gusset_rib_profile_2d(h_plate_attach * 0.90, h_contact * 0.90, w_contact * 0.90, "swept");
           }
         }
@@ -103,9 +103,9 @@ module gusset_buttress_wings(x_center, span, w, z_bot, h_plate_attach, h_contact
 module gusset_rib_pair(x_center, span, z_bot, h_plate_attach, h_contact, w_contact, h_gusset, w_gusset, style) {
   for (side = [-1, 1]) {
     x_rib = x_center + side * (span / 2);
-    translate([x_rib, backplate_thickness - EPSILON, z_bot]) {
+    translate([x_rib, Backplate_Thickness - EPSILON, z_bot]) {
       rotate([90, 0, 90]) {
-        linear_extrude(height = bracket_thickness, center = true) {
+        linear_extrude(height = Gusset_Thickness, center = true) {
           difference() {
             gusset_rib_profile_2d(h_plate_attach, h_contact, w_contact, style);
 
@@ -121,24 +121,24 @@ module gusset_rib_pair(x_center, span, z_bot, h_plate_attach, h_contact, w_conta
 
 // Orchestrates structural cradle reinforcement gussets based on the configured style.
 module gusset_ribs(x_center) {
-  w = bed_width;
-  gusset_span = (slot_spacing_pegs % 2 == 0) ? peg_hole_spacing : 2 * peg_hole_spacing;
+  w = Bed_Width;
+  gusset_span = (Slot_Spacing_Holes % 2 == 0) ? Hole_Spacing : 2 * Hole_Spacing;
   z_gusset_bot = z_shelf;
   h_gusset = z_plate_top - z_gusset_bot;
-  w_gusset = h_gusset * tan(tilt_angle);
+  w_gusset = h_gusset * tan(Tilt_Angle);
 
-  h_plate_attach = (gusset_style == "classic") ? h_gusset : (h_gusset - 4.5);
-  contact_ratio = (gusset_style == "classic") ? 1.0 : 0.86;
+  h_plate_attach = (Gusset_Style == "classic") ? h_gusset : (h_gusset - 4.5);
+  contact_ratio = (Gusset_Style == "classic") ? 1.0 : 0.86;
   h_contact = h_gusset * contact_ratio;
   w_contact = w_gusset * contact_ratio;
 
-  if (tilt_angle > 0) {
-    if (gusset_style == "full_wedge") {
-      gusset_full_wedge(x_center, w, z_gusset_bot, h_plate_attach, h_contact, w_contact, wedge_cored);
-    } else if (gusset_style == "buttress_wings") {
+  if (Tilt_Angle > 0) {
+    if (Gusset_Style == "full_wedge") {
+      gusset_full_wedge(x_center, w, z_gusset_bot, h_plate_attach, h_contact, w_contact, Hollow_Wedge);
+    } else if (Gusset_Style == "buttress_wings") {
       gusset_buttress_wings(x_center, gusset_span, w, z_gusset_bot, h_plate_attach, h_contact, w_contact);
     } else {
-      gusset_rib_pair(x_center, gusset_span, z_gusset_bot, h_plate_attach, h_contact, w_contact, h_gusset, w_gusset, gusset_style);
+      gusset_rib_pair(x_center, gusset_span, z_gusset_bot, h_plate_attach, h_contact, w_contact, h_gusset, w_gusset, Gusset_Style);
     }
   }
 }

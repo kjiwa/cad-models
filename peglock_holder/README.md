@@ -38,51 +38,50 @@ peglock_holder/
 
 ## Parameters Reference
 
-All dimensions are in millimeters unless otherwise noted.
+All lengths are in millimeters unless noted.
 
-### `[Mounting]`
-| Parameter | Default | Description |
-|---|---|---|
-| `Mount_Type` | `"peglock"` | Mounting interface: `"peglock"` for modular socket, `"monolithic"` for integrated pins |
+### `[Layout]`
+| Parameter | Default | Options | Description |
+|---|---|---|---|
+| `Columns` | `1` | | Number of pocket columns |
+| `Rows` | `1` | | Number of pocket rows |
+| `Vertical_Alignment` | `bottom` | `bottom`, `center` | Where the pockets sit on the backplate; bottom is centered once the body nearly fills the plate |
+
+### `[Pocket]`
+| Parameter | Default | Options | Description |
+|---|---|---|---|
+| `Pocket_Width` | `12.7` | | Inner width of each pocket |
+| `Pocket_Depth` | `6.35` | | Inner depth of each pocket |
+| `Pocket_Height` | `12.7` | | Inner height of each pocket |
+| `Tilt_Angle` | `0` | | Forward tilt of the pockets in degrees, 0 to 45 (0 for vertical) |
+| `Closed_Bottom` | `true` | | Close the pocket bottoms |
+| `Wall_Thickness` | `1.5875` | | Thickness of the pocket walls |
+| `Corner_Radius` | `3.175` | | Radius of the rounded pocket body corners |
+| `Bottom_Edge_Radius` | `0` | | Rounds the pocket body's underside edges, except where it meets the plate; limited to `Wall_Thickness` (0 to disable) |
+
+### `[Front]`
+| Parameter | Default | Options | Description |
+|---|---|---|---|
+| `Lip_Height` | `3.175` | | Height of the front lip |
+| `Lip_Thickness` | `3.175` | | Thickness of the front lip |
+| `Opening_Width` | `6.35` | | Width of the front access opening (0 for none) |
+| `Opening_Chamfer` | `1.0` | | Front opening lead-in chamfer (0 to disable) |
+| `Opening_Front_Row_Only` | `false` | | Only cut the front access opening on the front-most row when multi-row |
+
+### `[Backplate]`
+| Parameter | Default | Options | Description |
+|---|---|---|---|
+| `Backplate_Thickness` | `1.5875` | | Thickness of the backplate behind the pockets; thicker resists flex under heavy loads (no load rating is claimed) |
+| `Junction_Gusset` | `0` | | Size of a triangular web under the pockets where they meet the plate, clamped to the plate below them; open-bottom pockets cut through it (0 to disable) |
 
 ### `[Pegboard]`
-| Parameter | Default | Description |
-|---|---|---|
-| `Peg_Spacing` | `25.4` | Center-to-center pegboard hole spacing in mm (25.4 for 1" standard, 15.875 for 5/8" metal) |
-| `Peg_Diameter` | `5.7` | Pegboard hole / pin diameter in mm (sized for 1/4" holes with print tolerance) |
-| `Pegboard_Thickness` | `6.35` | Pegboard sheet thickness in mm (standard 1/4" board, 1.5875 for thin metal) |
-| `Hook_Rise` | `3.5` | Retention hook tab rise height behind the pegboard |
-
-### `[Holder]`
-| Parameter | Default | Description |
-|---|---|---|
-| `Holder_Width` | `12.7` | Interior pocket width of each bin cell |
-| `Holder_Depth` | `6.35` | Interior pocket depth (front-to-back) of each bin cell |
-| `Holder_Height` | `12.7` | Interior pocket height of each bin cell |
-| `Holder_Closed_Bottom` | `true` | Adds a solid floor to each pocket when true; leaves the pocket open-bottom when false |
-| `Holder_Front_Opening` | `6.35` | Width of the front access opening cut into each pocket |
-| `Holder_Front_Opening_Front_Only` | `false` | When true, only cuts front opening on the front-most row, keeping multi-row divider walls solid |
-| `Holder_Opening_Bevel` | `1.0` | Front opening lead-in bevel/chamfer in mm (0 to disable) |
-| `Holder_Front_Lip_Thickness` | `3.175` | Thickness of the retaining lip along the front opening |
-| `Holder_Front_Lip_Height` | `3.175` | Height of the retaining lip along the front opening |
-| `Holder_Wall_Thickness` | `1.5875` | Thickness of the walls separating pockets |
-| `Holder_Backer_Thickness` | `1.5875` | Thickness of the backplate behind the pockets; thicker stiffens the joint where the pockets meet the plate under heavy loads (no load rating is claimed) |
-| `Holder_Vertical_Align` | `"bottom"` | Where the pockets sit on the backplate: `"bottom"` (near the plate bottom, centered once the body nearly fills the plate) or `"center"` |
-| `Holder_Roundover` | `3.175` | Fillet radius applied to backer and pocket edges |
-| `Holder_Bottom_Roundover` | `0` | Radius rounding the pocket body's underside edges, except where it meets the plate; limited to `Holder_Wall_Thickness` (0 to disable) |
-| `Holder_Tilt_Angle` | `0` | Forward tilt of the pockets in degrees, 0 to 45 (0 for vertical) |
-| `Holder_Junction_Gusset` | `0` | Size of a triangular web under the pockets where they meet the plate, limited to the plate below them; open-bottom pockets cut through it (0 to disable) |
-| `Holder_Rows` | `1` | Number of pocket rows stacked vertically |
-| `Holder_Columns` | `1` | Number of pocket columns arranged side by side |
-
-### `[Peglock]`
-| Parameter | Default | Description |
-|---|---|---|
-| `Peglock_Width` | `22` | Width of each Peglock wedge mounting socket |
-| `Peglock_Height` | `35.4` | Height of each Peglock wedge mounting socket |
-| `Peglock_Depth` | `6` | Depth (front-to-back) of each Peglock wedge mounting socket |
-| `Peglock_Spacing` | `25.4` | Center-to-center spacing between adjacent Peglock sockets (backward-compatible alias for `Peg_Spacing`) |
-| `Peglock_Roundover` | `3.175` | Fillet radius applied to Peglock socket edges |
+| Parameter | Default | Options | Description |
+|---|---|---|---|
+| `Mount_Type` | `peglock` | `peglock`, `monolithic` | Mounting interface: modular Peglock wedge socket or monolithic integrated pegboard pegs |
+| `Hole_Spacing` | `25.4` | | Pegboard hole center spacing (25.4 for 1" standard, 15.875 for 5/8" metal) |
+| `Pin_Diameter` | `5.7` | | Pin diameter (5.7 for standard 1/4" hole fit, 6.0 for original Sy fit) |
+| `Pegboard_Thickness` | `6.35` | | Pegboard thickness (6.35 for 1/4" board, 1.5875 for 1/16" thin metal) |
+| `Retention_Hook_Rise` | `3.5` | | Height of the retention hook tab behind the pegboard |
 
 ---
 

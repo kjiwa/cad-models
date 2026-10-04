@@ -1,37 +1,65 @@
 /**
  * Parametric mounting plate to secure curtain rod brackets to walls or trim.
- * Dimensions are specified in inches and scaled to millimeters on export.
+ * All dimensions are in millimeters.
  */
 
-/* [Dimensions] */
-plate_width = 6.0;       // Width of the mounting plate in inches
-plate_height = 4.0;      // Height of the mounting plate in inches
-plate_thickness = 0.25;  // Thickness of the mounting plate in inches
-chamfer_size = 0.125;    // Chamfer size along top edges in inches
+/* [Plate] */
+// Width of the mounting plate
+Plate_Width = 152.4;
 
-/* [Mounting Holes] */
-screw_hole_diameter = 0.1875;  // Diameter of screw clearance holes in inches (#8 screw diameter ~5/32")
-hole_side_margin = 0.5;        // Distance from side edge to screw hole centers in inches
-holes_per_column = 2;          // Number of screw holes per side column [1:1:10]
-hole_spacing = 3.0;            // Vertical center-to-center spacing between outermost holes in inches
+// Height of the mounting plate
+Plate_Height = 101.6;
 
-/* [Hex Nut Boss] */
-boss_height = 1.5;             // Height of the boss block in inches
-boss_width = 0.5;              // Width of the boss block in inches
-boss_thickness = 0.25;         // Thickness of the boss block in inches
-boss_x_offset = 0.0;           // Offset of the boss along X axis from center in inches
-hex_nut_flats_dia = 0.328125;  // Distance across flats for hex nut in inches
-hex_nut_depth = 0.125;         // Depth of hex nut pocket in inches
-hex_nut_count = 2;             // Number of hex nut pockets [1:1:10]
-hex_nut_spacing = 0.875;       // Vertical center-to-center spacing between outermost hex nuts in inches
+// Thickness of the mounting plate
+Plate_Thickness = 6.35;
+
+// Chamfer size along the top edges
+Edge_Chamfer = 3.175;
+
+/* [Screw Holes] */
+// Diameter of the wall screw holes and bracket screw holes through the boss (4.7625 for #8 screws)
+Screw_Hole_Diameter = 4.7625;
+
+// Number of wall screw holes per side
+Holes_Per_Side = 2; // [1:1:10]
+
+// Vertical center-to-center distance between the outermost holes on each side
+Hole_Span = 76.2;
+
+// Distance from the side edge to the screw hole centers
+Hole_Edge_Inset = 12.7;
+
+/* [Nut Boss] */
+// Width of the boss block
+Boss_Width = 12.7;
+
+// Height of the boss block
+Boss_Height = 38.1;
+
+// Rear protrusion of the boss block
+Boss_Thickness = 6.35;
+
+// Offset of the boss along X from the plate center
+Boss_Offset = 0;
+
+// Number of hex nut pockets
+Nut_Count = 2; // [1:1:10]
+
+// Vertical center-to-center distance between the outermost nut pockets
+Nut_Span = 22.225;
+
+// Distance across the flats of the hex nut
+Nut_Width_Across_Flats = 8.334375;
+
+// Depth of each hex nut pocket
+Nut_Pocket_Depth = 3.175;
 
 /* [Hidden] */
 $fn = 64;
-EPSILON = 0.01;     // Small offset to ensure clean manifold boolean cuts
-INCH_TO_MM = 25.4;  // Conversion factor from inches to millimeters
+EPSILON = 0.254;
 
 // Generates the base plate with top-edge chamfers via convex hull.
-module chamfered_plate(width = plate_width, height = plate_height, thickness = plate_thickness, chamfer = chamfer_size) {
+module chamfered_plate(width = Plate_Width, height = Plate_Height, thickness = Plate_Thickness, chamfer = Edge_Chamfer) {
   if (chamfer > 0 && chamfer < min(width / 2, height / 2, thickness)) {
     hull() {
       translate([0, 0, (thickness - chamfer) / 2])
@@ -46,7 +74,7 @@ module chamfered_plate(width = plate_width, height = plate_height, thickness = p
 }
 
 // Generates wall mounting screw clearance holes along left and right margins.
-module mounting_hole_pattern(width = plate_width, thickness = plate_thickness, hole_dia = screw_hole_diameter, side_margin = hole_side_margin, count = holes_per_column, spacing = hole_spacing) {
+module mounting_hole_pattern(width = Plate_Width, thickness = Plate_Thickness, hole_dia = Screw_Hole_Diameter, side_margin = Hole_Edge_Inset, count = Holes_Per_Side, spacing = Hole_Span) {
   x_positions = [-width / 2 + side_margin, width / 2 - side_margin];
 
   for (x = x_positions) {
@@ -64,13 +92,13 @@ module mounting_hole_pattern(width = plate_width, thickness = plate_thickness, h
 }
 
 // Generates the raised rear boss block to house hex nuts for bracket mounting screws.
-module hex_nut_boss(width = boss_width, height = boss_height, thickness = boss_thickness, x_offset = boss_x_offset) {
+module hex_nut_boss(width = Boss_Width, height = Boss_Height, thickness = Boss_Thickness, x_offset = Boss_Offset) {
   translate([x_offset, 0, -thickness / 2])
     cube([width, height, thickness], center = true);
 }
 
 // Generates hex nut pockets and screw clearance through-holes in the boss.
-module hex_nut_boss_pattern(thickness = boss_thickness, plate_thick = plate_thickness, x_offset = boss_x_offset, flats_dia = hex_nut_flats_dia, nut_depth = hex_nut_depth, count = hex_nut_count, spacing = hex_nut_spacing, screw_dia = screw_hole_diameter) {
+module hex_nut_boss_pattern(thickness = Boss_Thickness, plate_thick = Plate_Thickness, x_offset = Boss_Offset, flats_dia = Nut_Width_Across_Flats, nut_depth = Nut_Pocket_Depth, count = Nut_Count, spacing = Nut_Span, screw_dia = Screw_Hole_Diameter) {
   // Convert distance across flats to circumscribed cylinder diameter for 6-sided cylinder
   hex_outer_dia = flats_dia / cos(30);
 
@@ -102,7 +130,4 @@ module curtain_rod_mounting_plate() {
   }
 }
 
-// Convert from inch design units to standard millimeters for 3D printing
-scale([INCH_TO_MM, INCH_TO_MM, INCH_TO_MM]) {
-  curtain_rod_mounting_plate();
-}
+curtain_rod_mounting_plate();

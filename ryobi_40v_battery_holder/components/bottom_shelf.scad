@@ -3,7 +3,7 @@
  */
 
 // Generates the bottom resting shelf with rounded front corners supporting battery weight.
-module bottom_shelf(width = bed_width, depth = bottom_shelf_depth, thickness = bottom_shelf_thickness, bed_thick = bed_thickness, corner_radius = shelf_corner_radius) {
+module bottom_shelf(width = Bed_Width, depth = Shelf_Depth, thickness = Shelf_Thickness, bed_thick = Bed_Thickness, corner_radius = Shelf_Corner_Radius) {
   r = min(corner_radius, depth / 2, width / 4);
 
   translate([0, bed_thick, 0]) {
@@ -28,8 +28,8 @@ module bottom_shelf(width = bed_width, depth = bottom_shelf_depth, thickness = b
 // Generates the lofted transition volume connecting the tilted cradle to the build plate.
 module cradle_base_foot_hull(w, r, bt, d, y_front) {
   hull() {
-    translate([0, backplate_thickness, z_shelf]) {
-      rotate([-tilt_angle, 0, 0]) {
+    translate([0, Backplate_Thickness, z_shelf]) {
+      rotate([-Tilt_Angle, 0, 0]) {
         linear_extrude(height = 0.2) {
           hull() {
             translate([-w / 2 + r, 0]) circle(r = r);
@@ -44,8 +44,8 @@ module cradle_base_foot_hull(w, r, bt, d, y_front) {
     translate([0, 0, 0]) {
       linear_extrude(height = 0.2) {
         hull() {
-          translate([-w / 2 + r, backplate_thickness]) circle(r = r);
-          translate([w / 2 - r, backplate_thickness]) circle(r = r);
+          translate([-w / 2 + r, Backplate_Thickness]) circle(r = r);
+          translate([w / 2 - r, Backplate_Thickness]) circle(r = r);
           translate([-w / 2 + r, y_front - r]) circle(r = r);
           translate([w / 2 - r, y_front - r]) circle(r = r);
         }
@@ -66,22 +66,22 @@ module cradle_base_foot_roundover(w, y_front, roundover) {
 
 // Generates the solid base foot supporting the cradle flush with the build plate and backplate.
 module cradle_base_foot(x_center) {
-  w = bed_width;
-  r = min(shelf_corner_radius, bottom_shelf_depth / 2, bed_width / 4);
-  d = bottom_shelf_depth;
-  bt = bed_thickness;
-  y_front = backplate_thickness + (bt + d) * cos(tilt_angle);
+  w = Bed_Width;
+  r = min(Shelf_Corner_Radius, Shelf_Depth / 2, Bed_Width / 4);
+  d = Shelf_Depth;
+  bt = Bed_Thickness;
+  y_front = Backplate_Thickness + (bt + d) * cos(Tilt_Angle);
 
   translate([x_center, 0, 0]) {
     difference() {
       cradle_base_foot_hull(w, r, bt, d, y_front);
-      cradle_base_foot_roundover(w, y_front, toe_roundover);
+      cradle_base_foot_roundover(w, y_front, Toe_Radius);
 
       // Clean cuts to ensure exact bounds
       translate([-w, -20, -50])
         cube([2 * w, 100, 50]);
       translate([-w, -50, -10])
-        cube([2 * w, 50 + backplate_thickness, 100]);
+        cube([2 * w, 50 + Backplate_Thickness, 100]);
     }
   }
 }

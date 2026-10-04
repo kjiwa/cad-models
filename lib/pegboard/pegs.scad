@@ -9,11 +9,11 @@ DEFAULT_BACKPLATE_THICKNESS = 5.0;
 
 // Generates an upper retention hook with contoured bend, heel relief, and lead-in chamfer.
 module pegboard_upper_hook(
-  pin_d = (is_undef(pin_diameter) ? DEFAULT_PIN_DIAMETER : pin_diameter),
-  board_t = (is_undef(pegboard_thickness) ? DEFAULT_PEGBOARD_THICKNESS : pegboard_thickness),
-  rise = (is_undef(hook_rise) ? DEFAULT_HOOK_RISE : hook_rise),
-  backplate_t = (is_undef(backplate_thickness) ? DEFAULT_BACKPLATE_THICKNESS : backplate_thickness),
-  eps = (is_undef(EPSILON) ? 0.02 : EPSILON)
+  pin_d = DEFAULT_PIN_DIAMETER,
+  board_t = DEFAULT_PEGBOARD_THICKNESS,
+  rise = DEFAULT_HOOK_RISE,
+  backplate_t = DEFAULT_BACKPLATE_THICKNESS,
+  eps = 0.02
 ) {
   shank_len = board_t + 0.8;
   hook_t = 3.0;
@@ -53,11 +53,11 @@ module pegboard_upper_hook(
 
 // Generates a lower stabilizing pin with a lead-in insertion chamfer.
 module pegboard_lower_pin(
-  pin_d = (is_undef(pin_diameter) ? DEFAULT_PIN_DIAMETER : pin_diameter),
-  board_t = (is_undef(pegboard_thickness) ? DEFAULT_PEGBOARD_THICKNESS : pegboard_thickness),
+  pin_d = DEFAULT_PIN_DIAMETER,
+  board_t = DEFAULT_PEGBOARD_THICKNESS,
   chamfer = 1.2,
-  backplate_t = (is_undef(backplate_thickness) ? DEFAULT_BACKPLATE_THICKNESS : backplate_thickness),
-  eps = (is_undef(EPSILON) ? 0.02 : EPSILON)
+  backplate_t = DEFAULT_BACKPLATE_THICKNESS,
+  eps = 0.02
 ) {
   len = board_t - 0.8;
   body_len = max(len - chamfer, 1.0);

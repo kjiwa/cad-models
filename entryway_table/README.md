@@ -23,21 +23,33 @@ entryway_table/
 
 ## Parameters Reference
 
-All dimensions are in inches.
+All dimensions are in millimeters.
 
+### `[Tabletop]`
 | Parameter | Default | Description |
 |---|---|---|
-| `board_thickness` | `0.75` | Thickness of plywood stock |
-| `board_layers` | `5` | Number of plies in plywood visualization |
-| `leg_height` | `36` | Height of the table legs |
-| `leg_width` | `2` | Width of the leg boards |
-| `top_length` | `48` | Length of the table top |
-| `top_width` | `11` | Width of the table top |
-| `top_overhang` | `1.5` | Top overhang over the leg frame |
-| `apron_length` | `41` | Length of front and back apron boards |
-| `apron_width` | `8` | Width (vertical height) of apron boards |
-| `apron_depth` | `5` | Length of side apron boards |
+| `Top_Length` | `1219.2` | Tabletop length along X (48") |
+| `Top_Depth` | `279.4` | Tabletop depth along Y (11") |
+| `Top_Overhang` | `38.1` | Tabletop overhang beyond the leg outer faces (1-1/2") |
 
+### `[Legs]`
+| Parameter | Default | Description |
+|---|---|---|
+| `Leg_Height` | `914.4` | Leg height from floor to underside of the top (36") |
+| `Leg_Board_Width` | `50.8` | Width of each board in the L-shaped leg (2") |
+
+### `[Apron]`
+| Parameter | Default | Description |
+|---|---|---|
+| `Apron_Height` | `203.2` | Height of the apron boards (8") |
+| `Apron_Length` | `0` | Length of the front and back apron boards (0 = auto: `Top_Length - 2 * Top_Overhang - 2 * Leg_Board_Width`, 1041.4 by default) |
+| `Apron_Depth` | `0` | Depth of the side apron boards (0 = auto: `Top_Depth - 2 * Top_Overhang - 76.2`, 127 by default) |
+
+### `[Plywood]`
+| Parameter | Default | Description |
+|---|---|---|
+| `Board_Thickness` | `19.05` | Plywood sheet thickness (3/4") |
+| `Ply_Count` | `5` | Number of plies for alternating veneer visualization |
 ---
 
 ## CLI Build & Automation

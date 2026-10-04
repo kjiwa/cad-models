@@ -3,7 +3,7 @@
  */
 
 // Generates the solid rectangular backplate slab with flush side flanks matching the tower body.
-module backplate_blank(width = total_width, height = backplate_height, thickness = backplate_thickness) {
+module backplate_blank(width = total_width, height = backplate_height, thickness = Backplate_Thickness) {
   z_center = (z_plate_top + z_plate_bottom) / 2;
 
   translate([0, thickness, z_center]) {
@@ -16,7 +16,7 @@ module backplate_blank(width = total_width, height = backplate_height, thickness
 }
 
 // Generates the 45-degree top-rear chamfer cutter for pegboard swing-in clearance.
-module backplate_tilt_chamfer(width = total_width, chamfer = tilt_chamfer) {
+module backplate_tilt_chamfer(width = total_width, chamfer = Insertion_Chamfer) {
   translate([0, 0, z_plate_top])
     rotate([45, 0, 0])
       cube([width + 2 * EPSILON, chamfer * sqrt(2), chamfer * sqrt(2)], center = true);
@@ -33,9 +33,9 @@ module stadium_cutout_2d(width, height) {
 
 // Generates a single countersunk screw clearance through-hole.
 module countersunk_screw_hole(
-  screw_d = screw_hole_diameter,
-  cs_d = countersink_diameter,
-  thickness = backplate_thickness
+  screw_d = Screw_Hole_Diameter,
+  cs_d = Countersink_Diameter,
+  thickness = Backplate_Thickness
 ) {
   cs_depth = (cs_d - screw_d) / 2;
   actual_cs_depth = min(cs_depth, thickness - 1.0);
@@ -52,13 +52,13 @@ module countersunk_screw_hole(
 module backplate_screw_holes(
   count = actual_dispenser_count,
   spacing = slot_spacing,
-  thickness = backplate_thickness,
-  screw_d = screw_hole_diameter,
-  cs_d = countersink_diameter,
+  thickness = Backplate_Thickness,
+  screw_d = Screw_Hole_Diameter,
+  cs_d = Countersink_Diameter,
   z_top = z_plate_top,
   z_bottom = z_plate_bottom
 ) {
-  if (include_screw_holes && count > 1) {
+  if (Include_Screw_Holes && count > 1) {
     for (i = [0 : count - 2]) {
       x_win = (i + 0.5 - (count - 1) / 2) * spacing;
       translate([x_win, 0, z_top - 10.0])
@@ -70,11 +70,11 @@ module backplate_screw_holes(
 }
 
 // Generates stadium-shaped weight-relief through-holes between adjacent dispenser slots.
-module backplate_relief_windows(count = actual_dispenser_count, spacing = slot_spacing, thickness = backplate_thickness, height = backplate_height) {
+module backplate_relief_windows(count = actual_dispenser_count, spacing = slot_spacing, thickness = Backplate_Thickness, height = backplate_height) {
   if (count > 1) {
     win_w = 12.0;
-    margin_top = include_screw_holes ? 20.0 : 15.0;
-    margin_bot = include_screw_holes ? 24.0 : 15.0;
+    margin_top = Include_Screw_Holes ? 20.0 : 15.0;
+    margin_bot = Include_Screw_Holes ? 24.0 : 15.0;
     win_h = max(height - margin_top - margin_bot, 10.0);
     z_win_center = (height - margin_top + margin_bot) / 2;
 

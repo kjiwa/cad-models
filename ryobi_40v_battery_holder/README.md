@@ -4,9 +4,9 @@ A parametric, 3D-printable pegboard holder for Ryobi 40V batteries with an angle
 
 ## Features
 
-- **Parametric Battery Capacity**: Configurable number of side-by-side battery slots (`battery_count`, defaulting to 2).
+- **Parametric Battery Capacity**: Configurable number of side-by-side battery slots (`Battery_Count`, defaulting to 2).
 - **Forward Tilt**: Angled 15 degrees forward so batteries pull out diagonally away from the pegboard, eliminating clearance constraints directly above.
-- **Pegboard Locking Hooks**: Sized for 1/4" pegboard (1/4" thick, 1" hole spacing, 1/4" diameter holes) with rear retention tabs that lock within 1/4" clearance behind the board.
+- **Pegboard Locking Hooks**: Sized for 1/4" pegboard (6.35 mm thick, 25.4 mm hole spacing, 1/4" diameter holes) with rear retention tabs that lock within 1/4" clearance behind the board.
 - **Secure Retention**: Combines slide rails for the battery's slide grooves and a bottom resting shelf to support battery weight without restricting pack width.
 - **Reinforced Structure**: Full-width monolithic cradle wedge solidly backs the slide bed and rails across their entire width and height while transferring cantilevered loads directly into the backplate and pegboard hooks.
 - **Optimized Fit & Finish**: Fully filleted and chamfered perimeter, continuous flush cradle flanks matching the slide bed and resting shelf, swept concave top styling, internal stress-relief rail fillets, and a central slide bed relief with debossed 40V identification.
@@ -28,7 +28,7 @@ ryobi_40v_battery_holder/
     ├── bottom_shelf.scad           # Battery resting shelf and build-plate base foot
     ├── gussets.scad                # Structural reinforcement gusset styles and ribs
     ├── labels.scad                 # Component visibility filters and 3D preview labels
-    ├── pegs.scad                   # Pegboard upper retention hooks and stabilizing pins
+    ├── pegs.scad                   # Pegboard retention hooks and stabilizing pins
     ├── slide_bed.scad              # Angled battery slide bed with friction relief and debossed text
     ├── slide_rails.scad            # Battery slide retention rails with lead-in flares
     └── slot_cradle.scad            # Slot cradle assembly and screwdriver access channel
@@ -51,7 +51,7 @@ The model is organized into single-responsibility geometric components and pure 
 1. Open `ryobi_40v_battery_holder.scad` in OpenSCAD.
 2. In the top menu, ensure **Window -> Customizer** is checked.
 3. Uncheck **Design -> Hide Customizer** if visible.
-4. Expand the parameter tabs (`Holder Configuration`, `Component Inspection & Labels`, `Ryobi 40V Battery Interface`, `Pegboard Mounting`, `Structure & Reinforcement`, `Gusset Styling & Aesthetics`) in the Customizer panel on the right.
+4. Expand the parameter tabs (`Layout`, `Battery Rails`, `Slide Bed & Shelf`, `Gussets`, `Backplate`, `Pegboard`, `Screw Holes`, `Preview`) in the Customizer panel on the right.
 5. Adjust parameters to match your battery count or custom tolerances.
 6. Press `F5` to preview or `F6` to render, then `F7` to export to STL.
 
@@ -59,67 +59,77 @@ The model is organized into single-responsibility geometric components and pure 
 
 ## Parameters Reference
 
-### `[Holder Configuration]`
+All lengths are in millimeters unless noted.
+
+### `[Layout]`
 | Parameter | Default | Range | Description |
 |---|---|---|---|
-| `battery_count` | `2` | `1` - `6` | Number of batteries held side-by-side |
-| `tilt_angle` | `15` | `0` - `45` deg | Forward tilt angle from vertical |
-| `slot_spacing_pegs` | `4` | `3` - `8` | Slot center-to-center spacing in pegboard holes (4" = 101.6 mm) |
+| `Battery_Count` | `2` | `1` - `6` | Number of battery slots side by side |
+| `Slot_Spacing_Holes` | `4` | `3` - `8` | Slot center-to-center spacing in pegboard holes |
+| `Tilt_Angle` | `15` | `0` - `45`, degrees | Forward tilt from vertical |
 
-### `[Component Inspection & Labels]`
-| Parameter | Default | Range / Options | Description |
-|---|---|---|---|
-| `show_labels` | `true` | bool | Display 3D component name labels in OpenSCAD preview |
-| `view_component` | `all` | `all`, `backplate`, `cradle`, `slide_bed`, `bottom_shelf`, `slide_rails`, `gussets`, `upper_hooks`, `lower_pins` | Isolate a specific component or view full assembly |
-| `label_size` | `4.5` | `2.0` - `10.0` mm | Font size for 3D component text labels |
+### `[Battery Rails]`
+| Parameter | Default | Description |
+|---|---|---|
+| `Rail_Width` | `62.0` | Width across the outer edges of the battery slide rails |
+| `Rail_Length` | `80.0` | Length of rail engagement along the slide bed |
+| `Rail_Thickness` | `5.5` | Thickness of the battery slide flange |
+| `Rail_Lip_Thickness` | `2.0` | Thickness of the retaining lip |
+| `Rail_Lip_Depth` | `4.5` | Undercut depth of the retaining lip |
+| `Rail_Clearance` | `0.5` | Fit gap around the rails |
+| `Rail_Lip_Radius` | `1.4` | Fillet radius on the rail lips |
+| `Rail_Root_Radius` | `0.6` | Stress-relief fillet radius at the rail root |
+| `Include_Rails` | `true` | Include the central slide rails |
 
-### `[Ryobi 40V Battery Interface]`
-| Parameter | Default | Units | Description |
-|---|---|---|---|
-| `rail_width` | `62.0` | mm | Outer width across battery slide rails |
-| `rail_thickness` | `5.5` | mm | Thickness of battery slide flange |
-| `rail_lip_thickness` | `2.0` | mm | Thickness of retaining rail lip |
-| `rail_lip_depth` | `4.5` | mm | Undercut depth of rail lip |
-| `rail_length` | `80.0` | mm | Slide rail engagement length |
-| `rail_clearance` | `0.5` | mm | Fit tolerance gap around rails |
-| `bed_width` | `76.0` | mm | Slide bed and bottom shelf width |
-| `bottom_shelf_depth` | `8.0` | mm | Depth of bottom resting shelf |
-| `bottom_shelf_thickness` | `6.0` | mm | Thickness of bottom resting shelf |
-| `enable_rails` | `true` | bool | Include central slide rails |
+### `[Slide Bed & Shelf]`
+| Parameter | Default | Description |
+|---|---|---|
+| `Bed_Width` | `76.0` | Width of the slide bed and bottom shelf |
+| `Bed_Thickness` | `5.0` | Thickness of the angled slide bed |
+| `Bed_Corner_Radius` | `6.0` | Top corner radius of the slide bed |
+| `Shelf_Depth` | `8.0` | Depth of the bottom support shelf |
+| `Shelf_Thickness` | `6.0` | Thickness of the bottom support shelf |
+| `Shelf_Corner_Radius` | `5.0` | Front corner radius of the bottom shelf |
+| `Toe_Height` | `3.5` | Height of the integrated front toe |
+| `Toe_Radius` | `1.6` | Bottom front edge radius of the toe |
 
-### `[Pegboard Mounting]`
-| Parameter | Default | Units | Description |
+### `[Gussets]`
+| Parameter | Default | Options | Description |
 |---|---|---|---|
-| `peg_hole_spacing_in` | `1.0` | in | Pegboard hole center-to-center spacing |
-| `pegboard_thickness_in` | `0.25` | in | Pegboard thickness |
-| `pin_diameter` | `5.7` | mm | Pin diameter (tolerance fit for 1/4" / 6.35 mm hole) |
-| `stabilizing_peg_pattern` | `all` | options | Stabilizing peg pattern below upper hooks (`all`, `span_2`, `span_1`) |
-| `hook_rise` | `3.5` | mm | Vertical rise of hook tab behind pegboard |
-| `peg_top_margin` | `6.35` | mm | Top margin above upper hooks |
-| `tilt_chamfer` | `2.0` | mm | Rear top chamfer size for pegboard insertion clearance |
-| `include_screw_holes` | `true` | bool | Include countersunk screw clearance holes |
-| `screw_hole_diameter` | `4.5` | mm | Screw shank clearance diameter (#8 screw) |
-| `countersink_diameter` | `9.0` | mm | Screw countersink head diameter |
+| `Gusset_Style` | `full_wedge` | `full_wedge`, `swept_ribs`, `buttress_wings`, `classic` | Gusset style |
+| `Gusset_Thickness` | `5.0` | | Thickness of the gusset ribs |
+| `Hollow_Wedge` | `false` | bool | Hollow out the wedge cavity, otherwise slicer infill fills it (`full_wedge` only) |
 
-### `[Structure & Reinforcement]`
-| Parameter | Default | Units | Description |
-|---|---|---|---|
-| `backplate_thickness` | `5.0` | mm | Thickness of mounting backplate |
-| `bracket_thickness` | `5.0` | mm | Thickness of support gusset ribs |
-| `bed_thickness` | `5.0` | mm | Thickness of angled slide bed |
-| `toe_height` | `3.5` | mm | Vertical height of integrated front toe |
-| `toe_roundover` | `1.6` | mm | Bottom front roundover chamfer |
-| `backplate_corner_radius` | `6.0` | mm | Corner radius for mounting backplate perimeter |
-| `bed_corner_radius` | `6.0` | mm | Top corner radius for battery slide bed |
-| `shelf_corner_radius` | `5.0` | mm | Front corner radius for bottom resting shelf |
-| `rail_fillet_radius` | `1.4` | mm | Internal stress-relief fillet radius for slide rail lips |
-| `rail_root_fillet` | `0.6` | mm | Internal stress-relief fillet radius at slide rail root |
+### `[Backplate]`
+| Parameter | Default | Description |
+|---|---|---|
+| `Backplate_Thickness` | `5.0` | Thickness of the mounting backplate |
+| `Backplate_Corner_Radius` | `6.0` | Corner radius of the backplate perimeter |
+| `Insertion_Chamfer` | `2.0` | Rear top chamfer that clears the pegboard during insertion |
 
-### `[Gusset Styling & Aesthetics]`
-| Parameter | Default | Range / Options | Description |
+### `[Pegboard]`
+| Parameter | Default | Options | Description |
 |---|---|---|---|
-| `gusset_style` | `full_wedge` | options | Reinforcement & aesthetic style (`full_wedge`, `swept_ribs`, `buttress_wings`, `classic`) |
-| `wedge_cored` | `false` | bool | Hollow out central monocoque cavity in full-width wedge (false uses slicer infill) |
+| `Hole_Spacing` | `25.4` | | Pegboard hole center spacing (25.4 for 1" standard, 15.875 for 5/8" metal) |
+| `Pin_Diameter` | `5.7` | | Pin diameter (5.7 for standard 1/4" hole fit, 6.0 for original Sy fit) |
+| `Pegboard_Thickness` | `6.35` | | Pegboard thickness (6.35 for 1/4" board, 1.5875 for 1/16" thin metal) |
+| `Retention_Hook_Rise` | `3.5` | | Height of the retention hook tab behind the pegboard |
+| `Retention_Hook_Margin` | `6.35` | | Distance from the backplate top to the retention hooks |
+| `Stabilizing_Pin_Pattern` | `all` | `all`, `span_2`, `span_1` | Stabilizing pins below the retention hooks |
+
+### `[Screw Holes]`
+| Parameter | Default | Description |
+|---|---|---|
+| `Include_Screw_Holes` | `true` | Include countersunk screw clearance holes |
+| `Screw_Hole_Diameter` | `4.5` | Screw shank clearance hole diameter (#8 screw) |
+| `Countersink_Diameter` | `9.0` | Screw countersink head diameter |
+
+### `[Preview]`
+| Parameter | Default | Options | Description |
+|---|---|---|---|
+| `Show_Component` | `all` | `all`, `backplate`, `cradle`, `slide_bed`, `bottom_shelf`, `slide_rails`, `gussets`, `retention_hooks`, `stabilizing_pins` | Component to show, or all for the full assembly |
+| `Show_Labels` | `true` | bool | Show 3D component labels in preview |
+| `Label_Size` | `4.5` | `2.0` - `10.0` | Label text size |
 
 ---
 

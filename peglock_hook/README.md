@@ -5,8 +5,8 @@ Parametric, 3D-printable tool hooks and socket racks for Sy's Peglock modular pe
 ## Features
 
 - **Dual Mounting Modes**: Toggle between Sy's Peglock modular locking wedge sockets and monolithic integrated pegboard pegs.
-- **Custom Hook Profiles**: Circle, Square, Triangle, and RightTriangle profiles.
-- **Configurable Grid Layout**: Parametric row and column counts, spacing, depth, and item capacity.
+- **Custom Hook Profiles**: Circle, square, triangle, and right triangle arm profiles.
+- **Configurable Grid Layout**: Parametric row and column counts, spacing, arm length, and hooks per arm.
 - **Stress-Relief Root Fillet**: Optional parametric fillet at the hook arm root to resist cantilever shear.
 - **Presets Included**: Pre-configured JSON parameter sets for socket racks (`Sockets (1/4)`, `Sockets (3/8)`, `Sockets (1/2)`) and a tilted vertical-lip hook (`Tilted_Vertical_Lip`).
 - **Automated CLI Build**: `Makefile` support to render base models and all JSON parameter presets.
@@ -39,50 +39,49 @@ peglock_hook/
 
 ## Parameters Reference
 
-All dimensions are in millimeters unless otherwise noted.
+All lengths are in millimeters unless noted.
 
-### `[Mounting]`
-| Parameter | Default | Description |
-|---|---|---|
-| `Mount_Type` | `"peglock"` | Mounting interface: `"peglock"` for modular socket, `"monolithic"` for integrated pins |
+### `[Layout]`
+| Parameter | Default | Options | Description |
+|---|---|---|---|
+| `Columns` | `1` | | Number of hook columns |
+| `Rows` | `1` | | Number of hook rows |
+| `Column_Spacing` | `19.05` | | Center-to-center distance between hook columns (at least `Arm_Width`) |
+| `Row_Spacing` | `19.05` | | Center-to-center distance between hook rows |
+| `Vertical_Alignment` | `bottom` | `bottom`, `center` | Where the hooks sit on the backplate |
+
+### `[Arm]`
+| Parameter | Default | Options | Description |
+|---|---|---|---|
+| `Arm_Shape` | `square` | `circle`, `square`, `triangle`, `right_triangle` | Cross-section profile of the hook arm |
+| `Arm_Width` | `12.7` | | Width of the hook arm |
+| `Arm_Length` | `6.35` | | Length of the hook arm from the backplate to the lip |
+| `Arm_Height` | `6.35` | | Height of the hook arm |
+| `Arm_Tilt_Angle` | `0` | | Upward tilt of the hook arm in degrees, 0 to 45 (0 for horizontal) |
+| `Arm_Edge_Radius` | `1.5875` | | Radius of the rounded arm edges |
+| `Hooks_Per_Arm` | `1` | | Number of hooks chained along each arm (1 to 5) |
+
+### `[Lip]`
+| Parameter | Default | Options | Description |
+|---|---|---|---|
+| `Lip_Height` | `3.175` | | Height of the retaining lip above the arm |
+| `Lip_Thickness` | `3.175` | | Thickness of the retaining lip |
+| `Lip_Orientation` | `perpendicular` | `perpendicular`, `vertical` | Orientation of the retaining lip when the arm is tilted: square to the arm or parallel to the backplate; no effect at 0 degrees |
+
+### `[Backplate]`
+| Parameter | Default | Options | Description |
+|---|---|---|---|
+| `Backplate_Thickness` | `1.5875` | | Thickness of the mounting backplate |
+| `Root_Fillet_Radius` | `0` | | Stress relief fillet radius at the arm root (0 for standard/tested profile, above 0 to strengthen; proportionally clamped to arm length and lip height) |
 
 ### `[Pegboard]`
-| Parameter | Default | Description |
-|---|---|---|
-| `Peg_Spacing` | `25.4` | Center-to-center pegboard hole spacing in mm (25.4 for 1" standard, 15.875 for 5/8" metal) |
-| `Peg_Diameter` | `5.7` | Pegboard hole / pin diameter in mm (sized for 1/4" holes with print tolerance) |
-| `Pegboard_Thickness` | `6.35` | Pegboard sheet thickness in mm (standard 1/4" board, 1.5875 for thin metal) |
-| `Hook_Rise` | `3.5` | Retention hook tab rise height behind the pegboard |
-
-### `[Hook]`
-| Parameter | Default | Description |
-|---|---|---|
-| `Hook_Shape` | `"Square"` | Cross-sectional profile of the hook: `Circle`, `Square`, `Triangle`, or `RightTriangle` |
-| `Hook_Width` | `12.7` | Width of each hook arm |
-| `Hook_Height` | `6.35` | Height of each hook arm |
-| `Hook_Depth` | `6.35` | Depth (front-to-back) of each hook arm's straight section |
-| `Hook_Wall_Thickness` | `1.5875` | Thickness of the backer plate behind the hooks |
-| `Hook_Lip_Thickness` | `3.175` | Thickness of the retaining lip capping each hook arm |
-| `Hook_Lip_Height` | `3.175` | Height the retaining lip rises above the hook arm to catch hung items |
-| `Hook_Roundover` | `1.5875` | Fillet radius applied to hook and backer edges |
-| `Hook_Root_Fillet` | `0` | Fillet radius at hook arm root to eliminate stress concentration (0 to disable; proportionally clamped to hook depth and lip height) |
-| `Hook_Tilt_Angle` | `0` | Upward tilt of the hook arm in degrees, 0 to 45 (0 for horizontal) |
-| `Hook_Lip_Orientation` | `"perpendicular"` | Retaining lip orientation when tilted: `"perpendicular"` (square to the arm) or `"vertical"` (parallel to the backplate); no effect at 0 degrees |
-| `Hook_Vertical_Align` | `"bottom"` | Where the hooks sit on the backplate: `"bottom"` or `"center"` |
-| `Hook_Rows` | `1` | Number of hook rows stacked vertically |
-| `Hook_Columns` | `1` | Number of hook columns arranged side by side |
-| `Hook_Item_Quantity` | `1` | Number of hooks printed back-to-back at each grid position, for hanging multiple items per socket |
-| `Hook_Row_Spacing` | `19.05` | Center-to-center vertical spacing between hook rows |
-| `Hook_Column_Spacing` | `19.05` | Center-to-center horizontal spacing between hook columns |
-
-### `[Peglock]`
-| Parameter | Default | Description |
-|---|---|---|
-| `Peglock_Width` | `22` | Width of each Peglock wedge mounting socket |
-| `Peglock_Height` | `35.4` | Height of each Peglock wedge mounting socket |
-| `Peglock_Depth` | `6` | Depth (front-to-back) of each Peglock wedge mounting socket |
-| `Peglock_Spacing` | `25.4` | Center-to-center spacing between adjacent Peglock sockets (backward-compatible alias for `Peg_Spacing`) |
-| `Peglock_Roundover` | `3.175` | Fillet radius applied to Peglock socket edges |
+| Parameter | Default | Options | Description |
+|---|---|---|---|
+| `Mount_Type` | `peglock` | `peglock`, `monolithic` | Mounting interface: modular Peglock wedge socket or monolithic integrated pegboard pegs |
+| `Hole_Spacing` | `25.4` | | Pegboard hole center spacing (25.4 for 1" standard, 15.875 for 5/8" metal) |
+| `Pin_Diameter` | `5.7` | | Pin diameter (5.7 for standard 1/4" hole fit, 6.0 for original Sy fit) |
+| `Pegboard_Thickness` | `6.35` | | Pegboard thickness (6.35 for 1/4" board, 1.5875 for 1/16" thin metal) |
+| `Retention_Hook_Rise` | `3.5` | | Height of the retention hook tab behind the pegboard |
 
 ---
 
@@ -95,7 +94,7 @@ All dimensions are in millimeters unless otherwise noted.
 - **Material Selection**:
   - **PETG**: Recommended for workshop durability and impact resistance.
   - **PLA / Tough PLA**: Excellent stiffness and dimensional accuracy for socket racks and lighter tools. Increase hotend temperature by +5°C to maximize Z-layer tensile adhesion at the hook root.
-- **Root Strengthening**: For hanging heavier tools, set `Hook_Root_Fillet = 1.6` to eliminate the sharp 90° corner where the hook meets the backplate.
+- **Root Strengthening**: For hanging heavier tools, set `Root_Fillet_Radius = 1.6` to eliminate the sharp 90° corner where the hook meets the backplate.
 
 ---
 
