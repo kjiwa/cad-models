@@ -3,7 +3,7 @@
 # Discover all subdirectories containing a Makefile (stripped of trailing slash)
 PROJECTS := $(patsubst %/,%,$(dir $(wildcard */Makefile)))
 
-.PHONY: all clean setup dist help $(PROJECTS) stl 3mf preview presets
+.PHONY: all clean setup dist help $(PROJECTS) stl 3mf preview presets bundle
 
 all: $(PROJECTS)
 
@@ -11,13 +11,13 @@ $(PROJECTS):
 	@echo "==> Building in $@"
 	@$(MAKE) -C $@ all
 
-stl 3mf preview presets:
+stl 3mf preview presets bundle:
 	@for dir in $(PROJECTS); do \
 		echo "==> Building $@ in $$dir"; \
 		$(MAKE) -C $$dir $@ || exit 1; \
 	done
 
-dist: all
+dist: all bundle
 	@mkdir -p dist
 	@for dir in $(PROJECTS); do \
 		if [ -d "$$dir/build" ]; then \
@@ -60,7 +60,8 @@ help:
 	@echo "  3mf      - Export default 3MF for all models"
 	@echo "  preview  - Export preview PNG images for all models"
 	@echo "  presets  - Build all parameter presets across models"
-	@echo "  dist     - Build all models and package artifacts into dist/"
+	@echo "  bundle   - Write verified single-file .scad (plus .json) per model into dist/"
+	@echo "  dist     - Build all models and package artifacts, bundles included, into dist/"
 	@echo "  setup    - Symlink lib/ into user OpenSCAD libraries directory"
 	@echo "  clean    - Remove build and dist artifacts"
 	@echo "  <model>  - Build a specific model (e.g. make ryobi_40v_battery_holder)"
