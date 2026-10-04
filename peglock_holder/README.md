@@ -67,6 +67,7 @@ All dimensions are in millimeters unless otherwise noted.
 | `Holder_Front_Lip_Height` | `3.175` | Height of the retaining lip along the front opening |
 | `Holder_Wall_Thickness` | `1.5875` | Thickness of the walls separating pockets and the backer plate |
 | `Holder_Roundover` | `3.175` | Fillet radius applied to backer and pocket edges |
+| `Holder_Tilt_Angle` | `0` | Forward tilt of the pockets in degrees, 0 to 45 (0 for vertical) |
 | `Holder_Rows` | `1` | Number of pocket rows stacked vertically |
 | `Holder_Columns` | `1` | Number of pocket columns arranged side by side |
 

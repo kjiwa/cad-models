@@ -28,8 +28,12 @@ Holder_Front_Lip_Thickness = 3.175;
 Holder_Front_Lip_Height = 3.175;
 Holder_Wall_Thickness = 1.5875;
 Holder_Roundover = 3.175;
+// Forward tilt of the pockets in degrees (0 for vertical)
+Holder_Tilt_Angle = 0; // [0:5:45]
 Holder_Rows = 1;
 Holder_Columns = 1;
+
+assert(Holder_Tilt_Angle >= 0 && Holder_Tilt_Angle <= 45, "Holder_Tilt_Angle must be between 0 and 45");
 
 /* [Peglock] */
 Peglock_Width = SOCKET_WIDTH;
@@ -49,8 +53,11 @@ effective_spacing = (Peglock_Spacing != 25.4 && Peg_Spacing == 25.4) ? Peglock_S
 numPeglocks = max(floor(overallHolderWidth / Peglock_Width), 1);
 peglockBaseWidth = peglock_base_width(numPeglocks, Peglock_Width, effective_spacing);
 
+h = Holder_Height + (Holder_Closed_Bottom ? Holder_Wall_Thickness : 0);
+tilted_height = h * cos(Holder_Tilt_Angle) + overallHolderDepth * sin(Holder_Tilt_Angle);
+
 backerWidth = max(overallHolderWidth, (Mount_Type == "peglock" ? peglockBaseWidth : effective_spacing));
-backerHeight = max(Holder_Height, (Mount_Type == "peglock" ? Peglock_Height : effective_spacing + 10));
+backerHeight = max(Holder_Height + tilted_height - h, (Mount_Type == "peglock" ? Peglock_Height : effective_spacing + 10));
 
 module HolderLip() {
   translate([0, -Holder_Front_Lip_Thickness / 2, Holder_Front_Lip_Height / 2])
@@ -84,23 +91,45 @@ module SingleHolderInside(cut_front_opening = true) {
   }
 }
 
+module HolderBody() {
+  translate([0, overallHolderDepth / 2, 0])
+    cuboid([overallHolderWidth, overallHolderDepth, h], rounding=Holder_Roundover, except=[TOP, BOTTOM, FRONT]);
+}
+
+// Rotates children forward about the bottom edge where the holder meets the backer
+module Tilted() {
+  translate([0, 0, -h / 2]) rotate([-Holder_Tilt_Angle, 0, 0]) translate([0, 0, h / 2]) children();
+}
+
+// Fills the wedge between the backer and the tilted back wall; the strip stops short of the
+// rounded back corners so the fill never leaves the body's own outline.
+module HolderRearFill() {
+  hull() {
+    Tilted() HolderBody();
+    translate([-overallHolderWidth / 2 + Holder_Roundover, 0, -h / 2])
+      cube([overallHolderWidth - 2 * Holder_Roundover, 0.01, h * cos(Holder_Tilt_Angle)]);
+  }
+}
+
 module HolderGrid() {
-  z = Holder_Height + (Holder_Closed_Bottom ? Holder_Wall_Thickness : 0);
   difference() {
     union() {
-      translate([0, overallHolderDepth / 2, 0])
-        cuboid([overallHolderWidth, overallHolderDepth, z], rounding=Holder_Roundover, except=[TOP, BOTTOM, FRONT]);
-      translate([0, overallHolderDepth, z / 2]) HolderLip();
+      Tilted() {
+        HolderBody();
+        translate([0, overallHolderDepth, h / 2]) HolderLip();
+      }
+      if (Holder_Tilt_Angle > 0) HolderRearFill();
     }
 
-    for (i=[1:Holder_Columns]) {
-      tx = (i - 1) * (Holder_Width + Holder_Wall_Thickness) + (Holder_Width - overallHolderWidth) / 2 + Holder_Wall_Thickness;
-      for (j=[1:Holder_Rows]) {
-        ty = (j - 1) * (Holder_Depth + Holder_Wall_Thickness);
-        cut_opening = (!Holder_Front_Opening_Front_Only || j == Holder_Rows);
-        translate([tx, ty, Holder_Front_Lip_Height / 2]) SingleHolderInside(cut_opening);
+    Tilted()
+      for (i=[1:Holder_Columns]) {
+        tx = (i - 1) * (Holder_Width + Holder_Wall_Thickness) + (Holder_Width - overallHolderWidth) / 2 + Holder_Wall_Thickness;
+        for (j=[1:Holder_Rows]) {
+          ty = (j - 1) * (Holder_Depth + Holder_Wall_Thickness);
+          cut_opening = (!Holder_Front_Opening_Front_Only || j == Holder_Rows);
+          translate([tx, ty, Holder_Front_Lip_Height / 2]) SingleHolderInside(cut_opening);
+        }
       }
-    }
   }
 }
 
@@ -135,8 +164,10 @@ module HolderBacker() {
 }
 
 module Holder() {
-  h = Holder_Height + (Holder_Closed_Bottom ? Holder_Wall_Thickness : 0);
-  tz = (h - Peglock_Height) / 2 + Peglock_Roundover;
+  tilt_drop = overallHolderDepth * sin(Holder_Tilt_Angle);
+  tz = tilted_height < (Peglock_Height - 2 * Peglock_Roundover)
+    ? (h - Peglock_Height) / 2 + Peglock_Roundover + tilt_drop
+    : (h * (1 - cos(Holder_Tilt_Angle)) + tilt_drop) / 2;
   if (Mount_Type == "peglock") {
     translate([0, -Holder_Wall_Thickness + EPSILON, 0])
       PeglockBase(
@@ -151,7 +182,7 @@ module Holder() {
     MonolithicPegs();
   }
   translate([0, -Holder_Wall_Thickness, 0]) HolderBacker();
-  translate([0, 0, h < (Peglock_Height - 2 * Peglock_Roundover) ? tz : 0]) HolderGrid();
+  translate([0, 0, tz]) HolderGrid();
 }
 
 rotate([0, 0, 180]) {
