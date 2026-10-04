@@ -24,9 +24,9 @@
   "ryobi_all_n1_t15": {
     "scad": "ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
     "params": {
-      "battery_count": "1",
-      "tilt_angle": "15",
-      "stabilizing_peg_pattern": "\"all\""
+      "Battery_Count": "1",
+      "Tilt_Angle": "15",
+      "Stabilizing_Pin_Pattern": "\"all\""
     },
     "expect": {
       "triangles": 3722,
@@ -50,10 +50,10 @@
   "ryobi_span2_n2_t0_l110": {
     "scad": "ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
     "params": {
-      "battery_count": "2",
-      "tilt_angle": "0",
-      "rail_length": "110.0",
-      "stabilizing_peg_pattern": "\"span_2\""
+      "Battery_Count": "2",
+      "Tilt_Angle": "0",
+      "Rail_Length": "110.0",
+      "Stabilizing_Pin_Pattern": "\"span_2\""
     },
     "expect": {
       "triangles": 6884,
@@ -77,9 +77,9 @@
   "ryobi_span1_n2_t30": {
     "scad": "ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
     "params": {
-      "battery_count": "2",
-      "tilt_angle": "30",
-      "stabilizing_peg_pattern": "\"span_1\""
+      "Battery_Count": "2",
+      "Tilt_Angle": "30",
+      "Stabilizing_Pin_Pattern": "\"span_1\""
     },
     "expect": {
       "triangles": 7708,
@@ -103,10 +103,10 @@
   "ryobi_all_n2_t15_l110": {
     "scad": "ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
     "params": {
-      "battery_count": "2",
-      "tilt_angle": "15",
-      "rail_length": "110.0",
-      "stabilizing_peg_pattern": "\"all\""
+      "Battery_Count": "2",
+      "Tilt_Angle": "15",
+      "Rail_Length": "110.0",
+      "Stabilizing_Pin_Pattern": "\"all\""
     },
     "expect": {
       "triangles": 9420,
@@ -152,8 +152,8 @@
   "razor_all_h150": {
     "scad": "razor_blade_dispenser/razor_blade_dispenser.scad",
     "params": {
-      "stabilizing_peg_pattern": "\"all\"",
-      "dispenser_height": "150.0"
+      "Stabilizing_Pin_Pattern": "\"all\"",
+      "Tower_Height": "150.0"
     },
     "expect": {
       "triangles": 10942,
@@ -177,8 +177,8 @@
   "razor_top_and_bottom_h75": {
     "scad": "razor_blade_dispenser/razor_blade_dispenser.scad",
     "params": {
-      "stabilizing_peg_pattern": "\"top_and_bottom\"",
-      "dispenser_height": "75.0"
+      "Stabilizing_Pin_Pattern": "\"top_and_bottom\"",
+      "Tower_Height": "75.0"
     },
     "expect": {
       "triangles": 7480,
@@ -202,8 +202,8 @@
   "razor_none_single": {
     "scad": "razor_blade_dispenser/razor_blade_dispenser.scad",
     "params": {
-      "stabilizing_peg_pattern": "\"none\"",
-      "slot_pattern": "\"M\""
+      "Stabilizing_Pin_Pattern": "\"none\"",
+      "Slot_Pattern": "\"M\""
     },
     "expect": {
       "triangles": 1786,
@@ -293,7 +293,7 @@
   "peglock_hook_fillet2": {
     "scad": "peglock_hook/peglock_hook.scad",
     "params": {
-      "Hook_Root_Fillet": "2"
+      "Root_Fillet_Radius": "2"
     },
     "expect": {
       "triangles": 2500,
@@ -317,7 +317,7 @@
   "peglock_hook_fillet10": {
     "scad": "peglock_hook/peglock_hook.scad",
     "params": {
-      "Hook_Root_Fillet": "10"
+      "Root_Fillet_Radius": "10"
     },
     "expect": {
       "triangles": 2500,
@@ -341,8 +341,8 @@
   "peglock_hook_qty2_fillet2": {
     "scad": "peglock_hook/peglock_hook.scad",
     "params": {
-      "Hook_Item_Quantity": "2",
-      "Hook_Root_Fillet": "2"
+      "Hooks_Per_Arm": "2",
+      "Root_Fillet_Radius": "2"
     },
     "expect": {
       "triangles": 4076,
@@ -366,8 +366,8 @@
   "peglock_hook_grid2x2": {
     "scad": "peglock_hook/peglock_hook.scad",
     "params": {
-      "Hook_Rows": "2",
-      "Hook_Columns": "2"
+      "Rows": "2",
+      "Columns": "2"
     },
     "expect": {
       "triangles": 5296,
@@ -391,7 +391,7 @@
   "peglock_hook_circle": {
     "scad": "peglock_hook/peglock_hook.scad",
     "params": {
-      "Hook_Shape": "\"Circle\""
+      "Arm_Shape": "\"circle\""
     },
     "expect": {
       "triangles": 1694,
@@ -415,7 +415,7 @@
   "peglock_hook_triangle": {
     "scad": "peglock_hook/peglock_hook.scad",
     "params": {
-      "Hook_Shape": "\"Triangle\""
+      "Arm_Shape": "\"triangle\""
     },
     "expect": {
       "triangles": 1140,
@@ -439,7 +439,7 @@
   "peglock_hook_righttriangle": {
     "scad": "peglock_hook/peglock_hook.scad",
     "params": {
-      "Hook_Shape": "\"RightTriangle\""
+      "Arm_Shape": "\"right_triangle\""
     },
     "expect": {
       "triangles": 1710,
@@ -487,7 +487,7 @@
   "peglock_holder_open_bottom": {
     "scad": "peglock_holder/peglock_holder.scad",
     "params": {
-      "Holder_Closed_Bottom": "false"
+      "Closed_Bottom": "false"
     },
     "expect": {
       "triangles": 2228,
@@ -511,8 +511,8 @@
   "peglock_holder_rows2_front_only": {
     "scad": "peglock_holder/peglock_holder.scad",
     "params": {
-      "Holder_Rows": "2",
-      "Holder_Front_Opening_Front_Only": "true"
+      "Rows": "2",
+      "Opening_Front_Row_Only": "true"
     },
     "expect": {
       "triangles": 2574,
@@ -536,7 +536,7 @@
   "peglock_holder_cols3": {
     "scad": "peglock_holder/peglock_holder.scad",
     "params": {
-      "Holder_Columns": "3"
+      "Columns": "3"
     },
     "expect": {
       "triangles": 3310,
@@ -560,7 +560,7 @@
   "peglock_holder_h5": {
     "scad": "peglock_holder/peglock_holder.scad",
     "params": {
-      "Holder_Height": "5"
+      "Pocket_Height": "5"
     },
     "expect": {
       "triangles": 2242,
@@ -584,7 +584,7 @@
   "peglock_holder_h50": {
     "scad": "peglock_holder/peglock_holder.scad",
     "params": {
-      "Holder_Height": "50"
+      "Pocket_Height": "50"
     },
     "expect": {
       "triangles": 2420,
@@ -608,7 +608,7 @@
   "peglock_holder_no_opening": {
     "scad": "peglock_holder/peglock_holder.scad",
     "params": {
-      "Holder_Front_Opening": "0"
+      "Opening_Width": "0"
     },
     "expect": {
       "triangles": 2184,

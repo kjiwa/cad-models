@@ -4,12 +4,12 @@
  */
 
 function follower_width() =
-  chute_width - 2 * follower_clearance;
+  Chute_Width - 2 * Follower_Clearance;
 
 function follower_chute_depth(type) =
   (type == "plastic") ?
-    (effective_plastic_depth - 2 * follower_clearance) :
-    (effective_metal_depth - 2 * follower_clearance);
+    (effective_plastic_depth - 2 * Follower_Clearance) :
+    (effective_metal_depth - 2 * Follower_Clearance);
 
 function follower_badge_label(type) =
   (type == "plastic") ? "PLASTIC" : "METAL";
@@ -152,21 +152,21 @@ module follower_top_text(label_text, w, d, h, deboss_d = 0.6) {
   }
 }
 
-module blade_follower(type = "metal", ballast = include_ballast_pocket) {
+module blade_follower(type = "metal", ballast = Include_Ballast_Pocket) {
   w = follower_width();
   d = follower_chute_depth(type);
-  h = follower_effective_height(coin_type, follower_height);
-  tab_w = min(sight_slot_width - 1.5, w - 4.0);
-  tab_ext = front_wall_thickness + follower_tab_lead;
+  h = follower_effective_height(Coin_Type, Follower_Height);
+  tab_w = min(Sight_Slot_Width - 1.5, w - 4.0);
+  tab_ext = Front_Wall_Thickness + Follower_Tab_Protrusion;
   fin_d = 3.0;
   fin_y = d / 2 - fin_d / 2 - 0.5;
 
-  c_d = coin_diameter(coin_type);
-  c_t = coin_thickness(coin_type);
-  n_coins = coin_capacity(coin_type, type);
+  c_d = coin_diameter(Coin_Type);
+  c_t = coin_thickness(Coin_Type);
+  n_coins = coin_capacity(Coin_Type, type);
   slot_d = n_coins * c_t + 0.6;
   slot_y = fin_y - fin_d / 2 - slot_d / 2 - 1.0;
-  pocket_y = -d / 2 + ballast_pocket_depth / 2 + 3.0;
+  pocket_y = -d / 2 + Custom_Pocket_Depth / 2 + 3.0;
 
   color("DarkOrange") {
     difference() {
@@ -177,9 +177,9 @@ module blade_follower(type = "metal", ballast = include_ballast_pocket) {
       }
 
       if (ballast) {
-        if (coin_type == "custom") {
+        if (Coin_Type == "custom") {
           translate([0, pocket_y, 0])
-            follower_ballast_cutout(w, d, h, ballast_pocket_width, ballast_pocket_depth, ballast_pocket_height);
+            follower_ballast_cutout(w, d, h, Custom_Pocket_Width, Custom_Pocket_Depth, Custom_Pocket_Height);
         } else {
           translate([0, slot_y, 0])
             follower_coin_cradle(c_d, slot_d, h);
@@ -198,7 +198,7 @@ module blade_follower(type = "metal", ballast = include_ballast_pocket) {
 module chute_follower_instance(index, x_center, z_pos) {
   type = slot_type(index);
   chute_d = slot_chute_depth(index);
-  y_front_inner = backplate_thickness + tower_depth - front_wall_thickness;
+  y_front_inner = Backplate_Thickness + tower_depth - Front_Wall_Thickness;
   y_c = y_front_inner - chute_d / 2;
 
   translate([x_center, y_c, z_pos])

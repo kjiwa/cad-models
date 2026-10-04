@@ -2,14 +2,14 @@
     "parameterSets": {
         "5.25in": {
             "Riser_Height": "133.35",
-            "Riser_Or_Nut": "Riser"
+            "Part": "riser"
         },
         "6in": {
             "Riser_Height": "152.4",
-            "Riser_Or_Nut": "Riser"
+            "Part": "riser"
         },
         "Nut": {
-            "Riser_Or_Nut": "Nut"
+            "Part": "nut"
         }
     },
     "fileFormatVersion": "1"

@@ -2,21 +2,21 @@
     "fileFormatVersion": "1",
     "parameterSets": {
         "Default (Standard 1/4\" - 5.7mm Fit)": {
-            "Hook_Rise": "6",
-            "Peg_Diameter": "5.7",
-            "Peg_Spacing": "25.4",
+            "Retention_Hook_Rise": "6",
+            "Pin_Diameter": "5.7",
+            "Hole_Spacing": "25.4",
             "Pegboard_Thickness": "6.35"
         },
         "Sy's Original (6.0mm)": {
-            "Hook_Rise": "6",
-            "Peg_Diameter": "6",
-            "Peg_Spacing": "25.4",
+            "Retention_Hook_Rise": "6",
+            "Pin_Diameter": "6",
+            "Hole_Spacing": "25.4",
             "Pegboard_Thickness": "6.35"
         },
         "Thin Metal (5/8\" Spacing - 5.7mm Fit)": {
-            "Hook_Rise": "6",
-            "Peg_Diameter": "5.7",
-            "Peg_Spacing": "15.875",
+            "Retention_Hook_Rise": "6",
+            "Pin_Diameter": "5.7",
+            "Hole_Spacing": "15.875",
             "Pegboard_Thickness": "1.5875"
         }
     }

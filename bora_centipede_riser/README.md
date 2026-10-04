@@ -43,82 +43,86 @@ bora_centipede_riser/
 
 All dimensions are in millimeters unless otherwise noted.
 
-### `[General]`
+### `[Part]`
 | Parameter | Default | Description |
 |---|---|---|
-| `Riser_Or_Nut` | `"Riser"` | Component to render: `"Riser"` or `"Nut"` |
+| `Part` | `"riser"` | Component to render: `"riser"` or `"nut"` |
 
-### `[Riser]`
+### `[Riser Body]`
 | Parameter | Default | Description |
 |---|---|---|
-| `Riser_Height` | `152.4` | Overall riser height (6 inches = 152.4 mm; 5.25 inches = 133.35 mm) |
+| `Riser_Height` | `152.4` | Overall riser height (152.4 for 6", 133.35 for 5.25") |
 | `Riser_Diameter` | `66` | Outside diameter of the riser body |
 
-### `[Riser Top Cap]`
+### `[Riser Top]`
 | Parameter | Default | Description |
 |---|---|---|
-| `Riser_Top_Thickness` | `4` | Top cap plate thickness |
-| `Riser_Top_Thread_Platform_Diameter` | `15` | Diameter of the raised thread boss |
-| `Riser_Top_Thread_Platform_Height` | `6` | Height of the raised thread boss |
-| `Riser_Top_Thread_Pitch` | `2` | Thread pitch in mm |
-| `Riser_Top_Thread_Height` | `10` | Height of the threaded stud |
-| `Riser_Top_Thread_Width` | `12.5` | Outer diameter of the threaded stud |
+| `Top_Thickness` | `4` | Thickness of the top plate |
+| `Stud_Base_Diameter` | `15` | Diameter of the raised boss under the threaded stud |
+| `Stud_Base_Height` | `6` | Height of the raised boss under the threaded stud |
 
-### `[Riser Bottom Cap]`
+### `[Riser Bottom]`
 | Parameter | Default | Description |
 |---|---|---|
-| `Riser_Bottom_Thickness` | `6` | Bottom cap plate thickness |
-| `Riser_Bottom_Screw_Cutout_Diameter` | `16` | Clearance hole for mounting screw |
-| `Riser_Bottom_Nut_Cutout_Diameter` | `27` | Recess diameter for stand nut |
-| `Riser_Bottom_Nut_Cutout_Height` | `32.75` | Depth of bottom nut cavity |
-| `Riser_Bottom_Nut_Cutout_Corner_Radius` | `6.25` | Fillet radius for bottom cavity |
+| `Bottom_Thickness` | `6` | Thickness of the bottom plate |
+| `Bolt_Hole_Diameter` | `16` | Diameter of the mounting bolt clearance hole |
+| `Nut_Recess_Diameter` | `27` | Diameter of the stand nut recess |
+| `Nut_Recess_Height` | `32.75` | Depth of the stand nut recess |
+| `Nut_Recess_Radius` | `6.25` | Corner radius of the stand nut recess |
 
-### `[Supports]`
+### `[Reinforcement]`
 | Parameter | Default | Description |
 |---|---|---|
-| `Riser_Reinforcement_Style` | `"Flared_Ribs"` | Reinforcement style: `"Flared_Ribs"` (open truss), `"Conical_Vault"` (architectural column), or `"None"` (unreinforced) |
-| `Riser_Support_Thickness` | `3.6` | Wall thickness of crossed vertical ribs |
-| `Riser_Support_Inner_Diameter` | `46` | Inner diameter of rib cutouts |
-| `Riser_Support_Inner_Cutout_Offset` | `4` | Offset for rib cutouts from caps |
-| `Riser_Rib_Flare_Width` | `4` | Lateral flare added to each rib side at plate interfaces (`Flared_Ribs` style) |
-| `Riser_Rib_Flare_Height` | `10` | Vertical span of the rib flare transition (`Flared_Ribs` style) |
-| `Riser_Cone_Height` | `8` | Vertical height of capital and base cones (`Conical_Vault` style) |
-| `Riser_Cone_Top_Diameter` | `36` | Inner base diameter of top capital cone (`Conical_Vault` style) |
-| `Riser_Cone_Bottom_Diameter` | `40` | Apex diameter of bottom base cone (`Conical_Vault` style) |
+| `Reinforcement_Style` | `"flared_ribs"` | Reinforcement between the plates: `"flared_ribs"` (open truss), `"conical_vault"` (architectural column), or `"none"` (unreinforced) |
+| `Web_Thickness` | `3.6` | Thickness of the crossed vertical webs |
+| `Arch_Inner_Diameter` | `46` | Diameter of the arched cutouts between the webs |
+| `Arch_End_Margin` | `4` | Distance from each plate to the ends of the arched cutouts |
+| `Rib_Flare_Width` | `4` | Sideways flare added to each web at the plates (`flared_ribs` only) |
+| `Rib_Flare_Height` | `10` | Height of the web flare transition (`flared_ribs` only) |
+| `Cone_Height` | `8` | Height of the top and bottom cones (`conical_vault` only) |
+| `Cone_Top_Diameter` | `36` | Narrow end diameter of the top cone (`conical_vault` only) |
+| `Cone_Bottom_Diameter` | `40` | Narrow end diameter of the bottom cone (`conical_vault` only) |
+
+### `[Thread]`
+| Parameter | Default | Description |
+|---|---|---|
+| `Thread_Pitch` | `2` | Thread pitch shared by the stud and the nut |
+| `Stud_Thread_Diameter` | `12.5` | Outer diameter of the threaded stud |
+| `Stud_Thread_Length` | `10` | Length of the threaded stud |
+| `Nut_Thread_Diameter` | `13.5` | Nominal diameter of the nut thread, including clearance |
 
 ### `[Nut]`
 | Parameter | Default | Description |
 |---|---|---|
-| `Nut_Diameter` | `22` | Outer diameter of the locking nut |
+| `Nut_Diameter` | `22` | Outside diameter of the locking nut |
 | `Nut_Height` | `6.35` | Thickness of the locking nut (1/4 inch) |
-| `Nut_Thread_Width` | `13.5` | Inner thread diameter (includes clearance) |
-| `Nut_Knurl_Count` | `15` | Number of grip notches on perimeter |
-| `Nut_Knurl_Diameter` | `1` | Diameter of knurl cutout cylinder |
+| `Knurl_Count` | `15` | Number of grip notches around the perimeter |
+| `Knurl_Diameter` | `1` | Diameter of each grip notch |
 
 ---
 
 ## Reinforcement Styles & Trade-Offs
 
-The model provides three selectable reinforcement styles via `Riser_Reinforcement_Style`:
+The model provides three selectable reinforcement styles via `Reinforcement_Style`:
 
-### 1. `Flared_Ribs` (Default — Open Cruciform Truss)
+### 1. `flared_ribs` (Default — Open Cruciform Truss)
 * **Aesthetic**: 100% faithful to the open-air Bora Centipede truss design. The quadrants between the four vertical spines remain completely open and transparent from top to bottom.
 * **Mechanics**: Each rib smoothly widens in thickness (from 3.6 mm at the waist to 11.6 mm at the plate junctions) over a 10 mm ramp. This triples the contact surface area at the plates (from 387 mm² to 1,120 mm² at the top; 234 mm² to 700 mm² at the bottom) and eliminates the sharp 90° notch where layer delamination starts under lateral bending.
 * **Filament & Print Time**: 93.5 cm³ (~116 g solid PLA, or ~55 g sliced at 20% infill). Adds only ~12 g of filament over the unreinforced model.
 * **Best For**: General woodworking and job-site use where retaining the lightweight, open-air aesthetic of the original risers is desired.
 
-### 2. `Conical_Vault` (Architectural Column)
+### 2. `conical_vault` (Architectural Column)
 * **Aesthetic**: Sculpted architectural column aesthetic reminiscent of a classical Tuscan or Doric order capital and plinth. Under the top circular plate, a continuous 45° revolved cone flares from 36 mm to 66 mm. Above the bottom plate, a matching inverted cone tapers from 66 mm to 40 mm. The center between the cones remains completely open.
 * **Mechanics**: Maximum possible bending and shear strength ($5\times$ to $8\times$ over unreinforced). The continuous 360° conical vault provides unbroken perimeter support beneath the entire rim of the top plate. This prevents plate flexure or diaphragm peeling when heavy dog clamps, edge vises, or workpieces exert off-axis forces between the spines. At the base, the cone acts as a rigid collar around the nut cavity.
-* **Filament & Print Time**: 111.5 cm³ (~138 g solid PLA, or ~65 g sliced at 20% infill). Adds ~25 g over unreinforced (+10 g over `Flared_Ribs`).
+* **Filament & Print Time**: 111.5 cm³ (~138 g solid PLA, or ~65 g sliced at 20% infill). Adds ~25 g over unreinforced (+10 g over `flared_ribs`).
 * **Best For**: Heavy-duty workshop environments with extreme lateral racking, heavy timber, or off-axis clamping forces.
 
-### 3. `None` (Unreinforced Original)
+### 3. `none` (Unreinforced Original)
 * **Aesthetic**: Pure geometric replica of the original injection-molded part with straight 3.6 mm ribs meeting the plates at 90°.
 * **Filament & Print Time**: 74.3 cm³ (~92 g solid PLA, or ~45 g sliced at 20% infill).
 * **Note**: In upright FDM printing, horizontal layer lines at the sharp 90° spine-to-plate transition are susceptible to tensile shear delamination under lateral loads.
 
-**A note on testing**: `Flared_Ribs` (the default) targets a real field-reported failure mode — the top plate peeling off the ribs, i.e. delamination at the 90° rib-to-plate joint — by replacing that butt joint with a filleted ramp, but this reinforcement has not yet been physically load-tested. `None` reproduces the original, field-tested Printables geometry exactly (byte-identical except for a 3mm→4mm top-thickness bump and a screw-cutout epsilon fix) for anyone who wants the known-working part while `Flared_Ribs`/`Conical_Vault` are validated.
+**A note on testing**: `flared_ribs` (the default) targets a real field-reported failure mode — the top plate peeling off the ribs, i.e. delamination at the 90° rib-to-plate joint — by replacing that butt joint with a filleted ramp, but this reinforcement has not yet been physically load-tested. `none` reproduces the original, field-tested Printables geometry exactly (byte-identical except for a 3mm→4mm top-thickness bump and a screw-cutout epsilon fix) for anyone who wants the known-working part while `flared_ribs`/`conical_vault` are validated.
 
 ---
 

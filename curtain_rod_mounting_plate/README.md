@@ -1,12 +1,12 @@
 # Curtain Rod Mounting Plate
 
 Parametric 3D-printable mounting plate to secure curtain rod brackets to walls or window trim.
-Designed in inches and automatically scaled to millimeters on export for 3D printing.
+All dimensions are in millimeters.
 
 ## Features
 
 - **Hex Nut Boss**: Raised rear boss block with captive hexagonal pockets to capture bracket mounting nuts flush behind the plate.
-- **Dual Column Wall Mounting**: Symmetrical screw clearance holes on left and right margins with configurable hole counts and vertical spacing.
+- **Dual Column Wall Mounting**: Symmetrical screw clearance holes on left and right margins with configurable hole counts and vertical span.
 - **Top Edge Chamfers**: Clean architectural bevel along the front perimeter.
 - **Customizer Compatible**: Documented parameters for the OpenSCAD Customizer GUI.
 - **Automated CLI Build**: `Makefile` targets to export STL, 3MF, and PNG preview renders.
@@ -35,36 +35,35 @@ curtain_rod_mounting_plate/
 
 ## Parameters Reference
 
-All dimensional parameters in the model are defined in inches and scaled by 25.4 on export.
+All dimensions are in millimeters.
 
-### `[Dimensions]`
+### `[Plate]`
 | Parameter | Default | Description |
 |---|---|---|
-| `plate_width` | `6.0` | Total width of the plate in inches |
-| `plate_height` | `4.0` | Total height of the plate in inches |
-| `plate_thickness` | `0.25` | Plate thickness in inches |
-| `chamfer_size` | `0.125` | Chamfer size along top edges in inches |
+| `Plate_Width` | `152.4` | Width of the mounting plate (6") |
+| `Plate_Height` | `101.6` | Height of the mounting plate (4") |
+| `Plate_Thickness` | `6.35` | Thickness of the mounting plate (1/4") |
+| `Edge_Chamfer` | `3.175` | Chamfer size along the top edges (1/8") |
 
-### `[Mounting Holes]`
+### `[Screw Holes]`
 | Parameter | Default | Description |
 |---|---|---|
-| `screw_hole_diameter` | `0.1875` | Screw clearance hole diameter in inches (#8 clearance ~5/32") |
-| `hole_side_margin` | `0.5` | Inset from side edges to screw hole centers in inches |
-| `holes_per_column` | `2` | Number of screw holes per side column |
-| `hole_spacing` | `3.0` | Vertical center-to-center spacing between outermost holes in inches |
+| `Screw_Hole_Diameter` | `4.7625` | Diameter of the wall screw holes and bracket screw holes through the boss (3/16", #8 screws) |
+| `Holes_Per_Side` | `2` | Number of wall screw holes per side |
+| `Hole_Span` | `76.2` | Vertical center-to-center distance between the outermost holes on each side (3") |
+| `Hole_Edge_Inset` | `12.7` | Distance from the side edge to the screw hole centers (1/2") |
 
-### `[Hex Nut Boss]`
+### `[Nut Boss]`
 | Parameter | Default | Description |
 |---|---|---|
-| `boss_height` | `1.5` | Height of the boss block in inches |
-| `boss_width` | `0.5` | Width of the boss block in inches |
-| `boss_thickness` | `0.25` | Rear protrusion of the boss block in inches |
-| `boss_x_offset` | `0.0` | Lateral offset of the boss along X axis in inches |
-| `hex_nut_flats_dia` | `0.328125` | Distance across flats for hex nut in inches (~5/16") |
-| `hex_nut_depth` | `0.125` | Depth of captive hex nut pockets in inches |
-| `hex_nut_count` | `2` | Number of captive hex nut pockets |
-| `hex_nut_spacing` | `0.875` | Vertical center-to-center spacing between outermost hex nuts in inches |
-
+| `Boss_Width` | `12.7` | Width of the boss block (1/2") |
+| `Boss_Height` | `38.1` | Height of the boss block (1-1/2") |
+| `Boss_Thickness` | `6.35` | Rear protrusion of the boss block (1/4") |
+| `Boss_Offset` | `0` | Offset of the boss along X from the plate center |
+| `Nut_Count` | `2` | Number of hex nut pockets |
+| `Nut_Span` | `22.225` | Vertical center-to-center distance between the outermost nut pockets (7/8") |
+| `Nut_Width_Across_Flats` | `8.334375` | Distance across the flats of the hex nut (21/64") |
+| `Nut_Pocket_Depth` | `3.175` | Depth of each hex nut pocket (1/8") |
 ---
 
 ## CLI Build & Automation

@@ -6,9 +6,9 @@
 module tower_block_blank(
   width = total_width,
   depth = tower_depth,
-  height = dispenser_height,
-  back_t = backplate_thickness,
-  corner_r = tower_corner_radius
+  height = Tower_Height,
+  back_t = Backplate_Thickness,
+  corner_r = Tower_Corner_Radius
 ) {
   r = min(corner_r, depth / 4, width / 4);
 
@@ -35,10 +35,10 @@ module tower_block_blank(
 module tower_front_shelf(
   width = total_width,
   depth = tower_depth,
-  shelf_ext = shelf_extension,
-  shelf_h = floor_thickness,
-  back_t = backplate_thickness,
-  corner_r = tower_corner_radius
+  shelf_ext = Front_Shelf_Depth,
+  shelf_h = Floor_Thickness,
+  back_t = Backplate_Thickness,
+  corner_r = Tower_Corner_Radius
 ) {
   if (shelf_ext > 0) {
     r = min(corner_r, shelf_ext, width / 4);
@@ -67,16 +67,16 @@ module tower_front_shelf(
 // Generates the top lead-in funnel bevel cutter for drop-in loading.
 module tower_top_funnel(
   x_center,
-  chute_w = chute_width,
+  chute_w = Chute_Width,
   chute_d = effective_metal_depth,
-  back_t = backplate_thickness,
+  back_t = Backplate_Thickness,
   tower_d = tower_depth,
-  front_w = front_wall_thickness,
-  lead = top_funnel_lead
+  front_w = Front_Wall_Thickness,
+  lead = Top_Funnel_Chamfer
 ) {
   y_front_inner = back_t + tower_d - front_w;
   y_c = y_front_inner - chute_d / 2;
-  z_top = dispenser_height;
+  z_top = Tower_Height;
 
   translate([x_center, y_c, z_top - lead + EPSILON]) {
     hull() {
@@ -92,17 +92,17 @@ module tower_top_funnel(
 module tower_debossed_text(
   x_center,
   label_text,
-  y_front = backplate_thickness + tower_depth,
+  y_front = Backplate_Thickness + tower_depth,
   z_pos = badge_z_position,
-  text_sz = badge_text_size,
-  deboss_d = badge_deboss_depth,
-  slot_w = sight_slot_width,
-  chute_w = chute_width,
-  is_open = (sight_slot_z_end >= dispenser_height - EPSILON)
+  text_sz = Badge_Text_Size,
+  deboss_d = Badge_Depth,
+  slot_w = Sight_Slot_Width,
+  chute_w = Chute_Width,
+  is_open = (sight_slot_z_end >= Tower_Height - EPSILON)
 ) {
   if (is_open || slot_w >= 14.0) {
     x_flank = x_center + (slot_w / 2 + chute_w / 2) / 2;
-    z_flank = dispenser_height - 18.0;
+    z_flank = Tower_Height - 18.0;
     actual_sz = min(text_sz, 3.2);
 
     translate([x_flank, y_front + EPSILON, z_flank]) {
@@ -133,14 +133,14 @@ module tower_debossed_text(
 module tower_screw_access_holes(
   count = actual_dispenser_count,
   spacing = slot_spacing,
-  hole_d = countersink_diameter,
-  back_t = backplate_thickness,
+  hole_d = Countersink_Diameter,
+  back_t = Backplate_Thickness,
   tower_d = tower_depth,
-  shelf_ext = shelf_extension,
+  shelf_ext = Front_Shelf_Depth,
   z_top = z_plate_top,
   z_bottom = z_plate_bottom
 ) {
-  if (include_screw_holes && count > 1) {
+  if (Include_Screw_Holes && count > 1) {
     cut_len = tower_d + shelf_ext + 10.0;
     for (i = [0 : count - 2]) {
       x_win = (i + 0.5 - (count - 1) / 2) * spacing;
@@ -158,9 +158,9 @@ module tower_screw_access_holes(
 // Generates a continuous cylindrical fillet cutter rounding the top-left and top-right shoulders across the full Y-depth.
 module top_corner_cutter(
   width = total_width,
-  height = dispenser_height,
-  depth = backplate_thickness + tower_depth + 20.0,
-  r = top_corner_radius
+  height = Tower_Height,
+  depth = Backplate_Thickness + tower_depth + 20.0,
+  r = Shoulder_Radius
 ) {
   if (r > 0) {
     box_sz = r + 2.0;
