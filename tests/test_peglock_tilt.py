@@ -166,6 +166,13 @@ class TiltAngleBoundsTestCase(unittest.TestCase):
                 with self.subTest(param=param, value=value):
                     self._assert_rejected(scad, param, value)
 
+    def test_tilted_rows_must_not_overlap(self):
+        # Parallel arms sit Hook_Row_Spacing * cos(tilt) apart and need Hook_Height + Hook_Lip_Height of room.
+        params = {"Hook_Rows": "2", "Hook_Row_Spacing": "10", "Hook_Tilt_Angle": "0"}
+        render_triangles(HOOK_SCAD, params, openscadpath=os.path.join(REPO_ROOT, "lib"))
+        with self.assertRaises(RuntimeError):
+            render_triangles(HOOK_SCAD, {**params, "Hook_Tilt_Angle": "45"}, openscadpath=os.path.join(REPO_ROOT, "lib"))
+
 
 if __name__ == "__main__":
     unittest.main()

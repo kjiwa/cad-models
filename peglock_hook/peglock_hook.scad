@@ -73,7 +73,7 @@ backerWidth = max(gridWidth + 2 * fillet_flare_x, (Mount_Type == "peglock" ? peg
 backerHeight = max(gridHeight + fillet_flare_z + tilt_root_drop, (Mount_Type == "peglock" ? Peglock_Height : effective_spacing + 10));
 
 if (Hook_Columns > 1) assert(Hook_Column_Spacing >= (Hook_Width));
-if (Hook_Rows > 1) assert(Hook_Row_Spacing >= (Hook_Height + Hook_Lip_Height));
+if (Hook_Rows > 1) assert(Hook_Row_Spacing * cos(Hook_Tilt_Angle) >= (Hook_Height + Hook_Lip_Height));
 
 module RoundedTriangle(w, h, r = 0) {
   translate([0, h / 2, 0]) {
