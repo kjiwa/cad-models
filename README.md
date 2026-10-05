@@ -10,6 +10,7 @@ Parametric, 3D-printable OpenSCAD models, each in its own directory with a `.sca
 - `peglock_attachment` — board attachment clips for Sy's Peglock pegboard system
 - `peglock_holder` — bin/organizer for Sy's Peglock pegboard system
 - `peglock_hook` — hooks and socket racks for Sy's Peglock pegboard system
+- `peglock_magnet_mount` — magnet pockets and mount for Sy's Peglock pegboard system
 - `razor_blade_dispenser` — pegboard dispenser for single-edge razor blades
 - `ryobi_40v_battery_holder` — pegboard holder for Ryobi 40V batteries
 
@@ -45,5 +46,5 @@ licenses and are not covered by this repository's LICENSE:
 
 - `lib/BOSL2` ([BelfrySCAD/BOSL2](https://github.com/BelfrySCAD/BOSL2)) — BSD-2-Clause
 - `lib/threads-scad` ([rcolyer/threads-scad](https://github.com/rcolyer/threads-scad)) — CC0-1.0
-- `lib/peglock`, `peglock_attachment`, `peglock_holder`, and `peglock_hook` interface with Sy's Peglock modular pegboard mounting
-  system, CC-BY; only the mounting interface is reused, credited here
+- `lib/peglock`, `peglock_attachment`, `peglock_holder`, `peglock_hook`, and `peglock_magnet_mount` interface with Sy's Peglock modular pegboard mounting
+  system, [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) ([Printables 249871](https://www.printables.com/model/249871)); only the mounting interface is reused, credited here

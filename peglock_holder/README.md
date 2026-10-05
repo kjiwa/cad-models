@@ -73,7 +73,7 @@ All lengths are in millimeters unless noted.
 | Parameter | Default | Options | Description |
 |---|---|---|---|
 | `Backplate_Thickness` | `1.5875` | | Thickness of the backplate behind the pockets; thicker resists flex under heavy loads (no load rating is claimed) |
-| `Junction_Gusset` | `0` | | Size of a triangular web under the pockets where they meet the plate, clamped to the plate below them; open-bottom pockets cut through it (0 to disable) |
+| `Junction_Gusset` | `0` | | Size of the triangular web under the pockets where they meet the plate, clamped to the plate below them; open-bottom pockets cut through it (0 to disable) |
 
 ### `[Pegboard]`
 | Parameter | Default | Options | Description |
