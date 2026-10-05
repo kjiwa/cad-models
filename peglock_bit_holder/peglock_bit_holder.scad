@@ -128,7 +128,7 @@ module BitTiers() {
 }
 
 module BitHolder() {
-  BoardMount(
+  translate([0, 0, wedgeRise - backerSize[1] / 2]) BoardMount(
     type = Mount_Type,
     size = backerSize,
     sockets = numPeglocks,

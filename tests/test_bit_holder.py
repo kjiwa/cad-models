@@ -1,4 +1,4 @@
-"""Property tests for peglock_bit_holder: tier pitch, hexagon pockets, grip relief, entry chamfer.
+"""Property tests for peglock_bit_holder: tier pitch, hexagon pockets, grip relief, entry chamfer, plate seat.
 
 In exported STL coordinates the model is rotated 180 degrees about Z, so the plate sits at +Y,
 the tiers extend toward -Y, and model X is mirrored. Probe points are given in a pocket frame:
@@ -72,7 +72,7 @@ class BitHolderTestCase(unittest.TestCase):
             with self.subTest(rows=rows):
                 bbox = fingerprint(render({"Rows": str(rows)}))["bbox_size_mm"]
                 self.assertAlmostEqual(bbox[0], 10 * cell_size(), delta=0.05)
-                self.assertAlmostEqual(bbox[2], top + max(SOCKET_HEIGHT / 2, (rows - 1) * tier_pitch()), delta=0.05)
+                self.assertAlmostEqual(bbox[2], top + max(SOCKET_HEIGHT - rise(), (rows - 1) * tier_pitch()), delta=0.05)
 
     def test_hexagon_flats_front_and_back_corners_along_row(self):
         tris = render({"Relief_Width": "0"})
@@ -109,6 +109,13 @@ class BitHolderTestCase(unittest.TestCase):
         point = stl_point(x0, u0 + WIDTH / 2 + CHAMFER / 2, WALL + DEPTH - CHAMFER / 4)
         self.assertFalse(contains(render(), point), "no lead-in at the mouth")
         self.assertTrue(contains(render({"Entry_Chamfer": "0"}), point), "mouth is empty without chamfer")
+
+    def test_plate_top_is_flush_with_wedge(self):
+        tris = render()
+        for dz, solid in ((2, False), (-2, True)):
+            with self.subTest(dz=dz):
+                point = (0, 0.5, rise() + dz)
+                self.assertEqual(contains(tris, point), solid, "plate does not end at the wedge top")
 
     def test_variants_render_one_shell(self):
         variants = (
