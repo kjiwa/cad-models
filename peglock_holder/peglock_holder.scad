@@ -16,10 +16,10 @@ Vertical_Alignment = "bottom"; // [bottom: Pockets near plate bottom, center: Po
 // Pocket cross-section
 Pocket_Shape = "rounded_rect"; // [rounded_rect: Rounded Rectangle, hexagon: Hexagon]
 
-// Inner width of each pocket, across flats for a hexagon: one value for every column or one comma-separated value per column (12.7 for 1/2")
+// Inner width of each pocket, across flats for a hexagon (6.75 for a 1/4" bit): one value for every column or one comma-separated value per column (12.7 for 1/2")
 Pocket_Widths = "12.7";
 
-// Inner depth of each pocket, same format as Pocket_Widths; a hexagon sets its own depth, so this is ignored
+// Inner depth of each pocket, same format as Pocket_Widths; a hexagon's depth is its width, so this is ignored
 Pocket_Depths = "6.35";
 
 // Inner height of each pocket
@@ -97,11 +97,10 @@ function column_values(name, text, count) =
   assert(len(values) == 1 || len(values) == count, str(name, " has ", len(values), " values but Columns is ", count))
   len(values) == 1 ? [for (i = [1:count]) values[0]] : values;
 
-pocketWidths = column_values("Pocket_Widths", Pocket_Widths, Columns);
-// Hexagon corner-to-corner distance, with a corner pointing at the front opening
-pocketDepths = Pocket_Shape == "hexagon"
-  ? [for (w = pocketWidths) 2 * w / sqrt(3)]
-  : column_values("Pocket_Depths", Pocket_Depths, Columns);
+sizes = column_values("Pocket_Widths", Pocket_Widths, Columns);
+// A hexagon has flats facing front and back and corners pointing along the row, so its column is corner to corner wide
+pocketWidths = Pocket_Shape == "hexagon" ? [for (w = sizes) 2 * w / sqrt(3)] : sizes;
+pocketDepths = Pocket_Shape == "hexagon" ? sizes : column_values("Pocket_Depths", Pocket_Depths, Columns);
 maxPocketDepth = max(pocketDepths);
 
 overallHolderWidth = sum(pocketWidths) + (Columns + 1) * Wall_Thickness;
@@ -136,7 +135,7 @@ module HolderLip() {
 module PocketCutout(width, depth, height) {
   translate([0, depth / 2, 0]) {
     if (Pocket_Shape == "hexagon") {
-      rotate([0, 0, 90]) cylinder(d=2 * width / sqrt(3), h=height, center=true, $fn=6);
+      cylinder(d=width, h=height, center=true, $fn=6);
     } else {
       cuboid([width, depth, height], rounding=Corner_Radius, except=[TOP, BOTTOM, FRONT]);
     }

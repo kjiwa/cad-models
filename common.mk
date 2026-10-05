@@ -19,6 +19,8 @@ DIST_DIR ?= $(REPO_ROOT)/dist
 
 PRESET_BUILDER := $(REPO_ROOT)/scripts/build_presets.py
 
+export OPENSCADPATH ?= $(REPO_ROOT)/lib
+
 .PHONY: all stl 3mf preview presets bundle clean help
 
 all: stl 3mf preview presets

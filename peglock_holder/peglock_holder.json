@@ -66,7 +66,7 @@
             "Corner_Radius": "3.175",
             "Tilt_Angle": "15",
             "Backplate_Thickness": "3.175",
-            "Vertical_Alignment": "\"center\"",
+            "Vertical_Alignment": "center",
             "Bottom_Edge_Radius": "1.5",
             "Junction_Gusset": "5"
         },
@@ -111,7 +111,7 @@
             "Pocket_Widths": "6.75",
             "Pocket_Height": "15",
             "Closed_Bottom": "true",
-            "Wall_Thickness": "6.4",
+            "Wall_Thickness": "5.356",
             "Tilt_Angle": "15",
             "Lip_Height": "0",
             "Opening_Width": "1.5875"

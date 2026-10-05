@@ -51,8 +51,8 @@ All lengths are in millimeters unless noted.
 | Parameter | Default | Options | Description |
 |---|---|---|---|
 | `Pocket_Shape` | `rounded_rect` | `rounded_rect`, `hexagon` | Pocket cross-section |
-| `Pocket_Widths` | `12.7` | | Inner width of each pocket, across flats for a hexagon: one value for every column or one comma-separated value per column (12.7 for 1/2") |
-| `Pocket_Depths` | `6.35` | | Inner depth of each pocket, same format as `Pocket_Widths`; a hexagon sets its own depth, so this is ignored |
+| `Pocket_Widths` | `12.7` | | Inner width of each pocket, across flats for a hexagon (6.75 for a 1/4" bit): one value for every column or one comma-separated value per column (12.7 for 1/2") |
+| `Pocket_Depths` | `6.35` | | Inner depth of each pocket, same format as `Pocket_Widths`; a hexagon's depth is its width, so this is ignored |
 | `Pocket_Height` | `12.7` | | Inner height of each pocket |
 | `Tilt_Angle` | `0` | | Forward tilt of the pockets in degrees, 0 to 45 (0 for vertical) |
 | `Closed_Bottom` | `true` | | Close the pocket bottoms |

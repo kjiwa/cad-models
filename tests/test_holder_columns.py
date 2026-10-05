@@ -127,9 +127,9 @@ class HolderColumnsTestCase(unittest.TestCase):
                     {"Columns": "2", param: '"12,13,14"'}, f"{param} has 3 values but Columns is 2"
                 )
 
-    def test_hexagon_flats_face_neighbours_and_corner_faces_front(self):
+    def test_hexagon_flats_face_front_and_corners_point_along_row(self):
         w = 6.75
-        circumradius = w / math.sqrt(3)
+        d = 2 * w / math.sqrt(3)
         tris = render({
             "Pocket_Shape": '"hexagon"',
             "Pocket_Widths": f'"{w}"',
@@ -137,16 +137,22 @@ class HolderColumnsTestCase(unittest.TestCase):
             "Opening_Width": "0",
             "Vertical_Alignment": '"center"',
         })
-        y, z = circumradius, 2.0
-        self.assertFalse(contains(tris, stl_point(w / 2 - 0.1, y, z)), "inside the flat is solid")
-        self.assertTrue(contains(tris, stl_point(w / 2 + 0.1, y, z)), "outside the flat is empty")
-        self.assertFalse(contains(tris, stl_point(-(w / 2 - 0.1), y, z)), "inside the opposite flat is solid")
-        self.assertTrue(contains(tris, stl_point(-(w / 2 + 0.1), y, z)), "outside the opposite flat is empty")
-        self.assertFalse(contains(tris, stl_point(0, 2 * circumradius - 0.1, z)), "front corner is solid")
-        self.assertTrue(contains(tris, stl_point(0, 2 * circumradius + 0.1, z)), "front wall is empty")
-        self.assertTrue(
-            contains(tris, stl_point(w / 2 - 0.1, 2 * circumradius - 0.5, z)), "hexagon is not pointed at the front"
-        )
+        z = 2.0
+        self.assertFalse(contains(tris, stl_point(0, w - 0.1, z)), "inside the front flat is solid")
+        self.assertTrue(contains(tris, stl_point(0, w + 0.1, z)), "outside the front flat is empty")
+        self.assertFalse(contains(tris, stl_point(d / 2 - 0.1, w / 2, z)), "inside the corner is solid")
+        self.assertTrue(contains(tris, stl_point(d / 2 + 0.1, w / 2, z)), "outside the corner is empty")
+        self.assertFalse(contains(tris, stl_point(-(d / 2 - 0.1), w / 2, z)), "inside the opposite corner is solid")
+        self.assertTrue(contains(tris, stl_point(d / 2 - 0.1, w / 2 + 1.5, z)), "hexagon is not pointed along the row")
+
+    def test_hexagon_column_is_corner_to_corner_wide(self):
+        w = 6.75
+        tris = render({
+            "Pocket_Shape": '"hexagon"', "Pocket_Widths": f'"{w}"', "Columns": "10", "Wall_Thickness": "5.356",
+            "Mount_Type": '"monolithic"', "Pocket_Height": "15",
+        })
+        expected = 10 * 13.15 + 5.356
+        self.assertAlmostEqual(fingerprint(tris)["bbox_size_mm"][0], expected, delta=0.05)
 
     def test_hexagon_ignores_pocket_depths(self):
         base = {"Pocket_Shape": '"hexagon"', "Pocket_Widths": '"6.75"', "Pocket_Height": "15"}
