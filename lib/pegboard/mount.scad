@@ -3,19 +3,18 @@ include <pegs.scad>
 
 MOUNT_EPSILON = 0.02;
 
-// Sockets that fit across a body of the given width
-function peglock_socket_count(content_width) = max(floor(content_width / SOCKET_WIDTH), 1);
+// Hole columns the mount engages: the request, or by default the most whose base fits within the content width
+function board_hole_columns(requested, content_width, hole_spacing) = requested > 0
+  ? requested
+  : max(floor((content_width + hole_spacing - SOCKET_WIDTH) / hole_spacing), 1);
 
 // Backer plate size [width, height]: the content size, grown to fit the mount interface.
-function board_mount_size(type, content_size, sockets, hole_spacing) = [
-  max(content_size[0], type == "peglock"
-    ? peglock_base_width(sockets, SOCKET_WIDTH, hole_spacing)
-    : hole_spacing),
+function board_mount_size(type, content_size, columns, hole_spacing) = [
+  max(content_size[0], peglock_base_width(columns, SOCKET_WIDTH, hole_spacing)),
   max(content_size[1], type == "peglock" ? SOCKET_HEIGHT : hole_spacing + 10)
 ];
 
-module MonolithicPegs(size, backplate_t, hole_spacing, pin_d, board_t, rise) {
-  cols = max(floor((size[0] - pin_d) / hole_spacing) + 1, 1);
+module MonolithicPegs(size, cols, backplate_t, hole_spacing, pin_d, board_t, rise) {
   num_peg_intervals = max(floor((size[1] - 10) / hole_spacing), 1);
   z_top = num_peg_intervals * hole_spacing / 2;
 
@@ -31,11 +30,11 @@ module MonolithicPegs(size, backplate_t, hole_spacing, pin_d, board_t, rise) {
 }
 
 // Backer plate spanning y from -backplate_t to 0, plus Peglock sockets or monolithic pegs behind it.
-module BoardMount(type, size, sockets, backplate_t, hole_spacing, pin_d, board_t, rise) {
+module BoardMount(type, size, columns, backplate_t, hole_spacing, pin_d, board_t, rise) {
   if (type == "peglock") {
     translate([0, -backplate_t + MOUNT_EPSILON, 0])
       PeglockBase(
-        count = sockets,
+        count = columns,
         width = SOCKET_WIDTH,
         height = SOCKET_HEIGHT,
         depth = SOCKET_DEPTH,
@@ -43,7 +42,7 @@ module BoardMount(type, size, sockets, backplate_t, hole_spacing, pin_d, board_t
         roundover = SOCKET_ROUNDOVER
       );
   } else if (type == "monolithic") {
-    MonolithicPegs(size, backplate_t, hole_spacing, pin_d, board_t, rise);
+    MonolithicPegs(size, columns, backplate_t, hole_spacing, pin_d, board_t, rise);
   }
   translate([0, -backplate_t / 2, 0])
     cuboid([size[0], backplate_t, size[1]], rounding = SOCKET_ROUNDOVER, except = [FRONT, BACK]);
