@@ -1,4 +1,4 @@
-"""Property tests for peglock_bit_holder: tier pitch, hexagon pockets, grip relief, entry chamfer, plate seat.
+"""Property tests for peglock_bit_holder: tier pitch, hexagon pockets, grip relief, entry chamfer, plate seat, rounding.
 
 In exported STL coordinates the model is rotated 180 degrees about Z, so the plate sits at +Y,
 the tiers extend toward -Y, and model X is mirrored. Probe points are given in a pocket frame:
@@ -25,6 +25,7 @@ PRESETS_PATH = os.path.join(MODEL_DIR, "peglock_bit_holder.json")
 FAST = {"$fn": "32"}
 SOCKET_HEIGHT = 35.4
 WIDTH, WALL, DEPTH, TILT, CHAMFER = 6.75, 2.68, 15.0, 15.0, 0.5
+RADIUS, PLATE = 1.0, 1.5875
 
 _cache = {}
 
@@ -60,6 +61,38 @@ def stl_point(x, u, v, tier=0):
     return (-x, -y, z)
 
 
+def mouth_height():
+    return DEPTH + WALL
+
+
+def profile_corner(kind):
+    """Convex corner of the side profile: its [y, z] vertex and unit directions along both edges.
+
+    Front-bottom, front-top and bottom-back belong to the lowest tier, back-top to the top tier.
+    """
+    t = math.radians(TILT)
+    s, c = math.sin(t), math.cos(t)
+    depth = cell_size() * c
+    low = -tier_pitch()
+    h = mouth_height()
+    return {
+        "front-bottom": ((depth, low), (s, c), (-1, 0)),
+        "front-top": ((depth + h * s, low + h * c), (-s, -c), (-c, s)),
+        "back-top": ((h * s, rise() + h * c), (c, -s), (-s, -c)),
+        "bottom-back": ((0, low), (0, 1), (1, 0)),
+    }[kind]
+
+
+def rounded_corner_probe(kind, x_model):
+    """STL point on a corner's bisector, half way from the vertex to where a radius-1 rounding starts."""
+    (y, z), e1, e2 = profile_corner(kind)
+    bx, bz = e1[0] + e2[0], e1[1] + e2[1]
+    norm = math.hypot(bx, bz)
+    half = math.asin(math.hypot(e1[0] - e2[0], e1[1] - e2[1]) / 2)
+    reach = 0.5 * RADIUS * (1 / math.sin(half) - 1)
+    return (-x_model, -(y + bx / norm * reach), z + bz / norm * reach)
+
+
 def centre(v=WALL + DEPTH / 2):
     return cell_size() / 2, v
 
@@ -70,7 +103,7 @@ class BitHolderTestCase(unittest.TestCase):
         top = rise() + (DEPTH + WALL) * math.cos(math.radians(TILT))
         for rows in (1, 2):
             with self.subTest(rows=rows):
-                bbox = fingerprint(render({"Rows": str(rows)}))["bbox_size_mm"]
+                bbox = fingerprint(render({"Rows": str(rows), "Corner_Radius": "0"}))["bbox_size_mm"]
                 self.assertAlmostEqual(bbox[0], 10 * cell_size(), delta=0.05)
                 self.assertAlmostEqual(bbox[2], top + max(SOCKET_HEIGHT - rise(), (rows - 1) * tier_pitch()), delta=0.05)
 
@@ -116,6 +149,16 @@ class BitHolderTestCase(unittest.TestCase):
             with self.subTest(dz=dz):
                 point = (0, 0.5, rise() + dz)
                 self.assertEqual(contains(tris, point), solid, "plate does not end at the wedge top")
+
+    def test_profile_corners_are_rounded_along_the_row(self):
+        end = 10 * cell_size() / 2
+        kinds = ("front-bottom", "front-top", "back-top", "bottom-back")
+        for kind in kinds:
+            for label, x_model in (("end", end - 0.3 * RADIUS), ("mid", 0.0)):
+                with self.subTest(corner=kind, at=label):
+                    point = rounded_corner_probe(kind, x_model)
+                    self.assertFalse(contains(render(), point), "corner is square")
+                    self.assertTrue(contains(render({"Corner_Radius": "0"}), point), "probe is outside the body")
 
     def test_variants_render_one_shell(self):
         variants = (

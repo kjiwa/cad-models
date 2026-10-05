@@ -28,7 +28,7 @@ Tilt_Angle = 15; // [5:5:45]
 // Lead-in at each pocket mouth (0 to disable)
 Entry_Chamfer = 0.5;
 
-// Radius of the rounded outer edges of the pocket body (0 for square edges)
+// Radius of the rounded outer edges of the body, except where it meets the plate (0 for square edges)
 Corner_Radius = 1;
 
 /* [Backplate] */
@@ -100,31 +100,54 @@ module ReliefSlot() {
     cube([rowWidth + 1, Relief_Width, cellHeight]);
 }
 
-// Row of pockets with the back-bottom edge at the origin, opening toward +z
-module PocketRow() {
-  difference() {
-    cuboid([rowWidth, cellSize, cellHeight], rounding = Corner_Radius, except = [FRONT, BOTTOM], anchor = [0, -1, -1]);
-    for (i = [0:Columns - 1])
-      translate([column_x(i), cellSize / 2, Wall_Thickness]) PocketCutter();
-    if (Relief_Width > 0) ReliefSlot();
+module TierCuts() {
+  for (i = [0:Columns - 1])
+    translate([column_x(i), cellSize / 2, Wall_Thickness]) PocketCutter();
+  if (Relief_Width > 0) ReliefSlot();
+}
+
+// Tier 0 is the lowest; the top tier's base sits at z = 0
+function tier_base(i) = (i - (Rows - 1)) * tierPitch;
+
+function tier_front_top(i) = [wedgeDepth + cellHeight * sin(Tilt_Angle), tier_base(i) + cellHeight * cos(Tilt_Angle)];
+
+function tier_back_top(i) = [cellHeight * sin(Tilt_Angle), tier_base(i) + wedgeRise + cellHeight * cos(Tilt_Angle)];
+
+// Side silhouette of all tiers in [y, z]. Each tier's back face is collinear with the next tier's front face.
+function body_profile() = concat(
+  [[wedgeDepth, tier_base(0)]],
+  [for (i = [0:Rows - 1]) each [tier_front_top(i), tier_back_top(i)]],
+  [[0, wedgeRise], [0, tier_base(0)]]
+);
+
+// Corner_Radius on every outer corner; sharp where the body meets the plate and in the notches between tiers
+function body_radii() = concat(
+  [Corner_Radius],
+  [for (i = [0:Rows - 1]) each [Corner_Radius, i == Rows - 1 ? Corner_Radius : 0]],
+  [0, tier_base(0) > wedgeRise - backerSize[1] ? 0 : Corner_Radius]
+);
+
+// Side profile swept across the row, rounded along the profile and around both end faces
+module BodyBlock() {
+  translate([-rowWidth / 2, 0, 0]) rotate([90, 0, 90]) {
+    if (Corner_Radius > 0)
+      offset_sweep(
+        round_corners(body_profile(), method = "circle", radius = body_radii()),
+        height = rowWidth,
+        top = os_circle(r = Corner_Radius),
+        bottom = os_circle(r = Corner_Radius)
+      );
+    else
+      linear_extrude(height = rowWidth) polygon(body_profile());
   }
 }
 
-// Extrudes a polygon given in [y, z] across the row width
-module ProfileAcrossRow(points) {
-  translate([-rowWidth / 2, 0, 0])
-    rotate([90, 0, 90]) linear_extrude(height = rowWidth) polygon(points);
-}
-
-module Tier(is_top) {
-  ProfileAcrossRow([[0, 0], [wedgeDepth, 0], [0, wedgeRise]]);
-  translate([0, 0, wedgeRise]) rotate([-Tilt_Angle, 0, 0]) PocketRow();
-  if (!is_top) ProfileAcrossRow([[0, wedgeRise], [0, tierPitch], [wedgeDepth, tierPitch]]);
-}
-
 module BitTiers() {
-  for (i = [0:Rows - 1])
-    translate([0, 0, (i - (Rows - 1)) * tierPitch]) Tier(i == Rows - 1);
+  difference() {
+    BodyBlock();
+    for (i = [0:Rows - 1])
+      translate([0, 0, tier_base(i) + wedgeRise]) rotate([-Tilt_Angle, 0, 0]) TierCuts();
+  }
 }
 
 module BitHolder() {

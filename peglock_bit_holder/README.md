@@ -56,7 +56,7 @@ All lengths are in millimeters unless noted.
 | `Relief_Width` | `1.5875` | | Width of the grip slot along each row (0 to disable) |
 | `Tilt_Angle` | `15` | `5` to `45`, step `5` | Forward tilt of each tier in degrees |
 | `Entry_Chamfer` | `0.5` | | Lead-in at each pocket mouth (0 to disable) |
-| `Corner_Radius` | `1` | | Radius of the rounded outer edges of the pocket body (0 for square edges) |
+| `Corner_Radius` | `1` | | Radius of the rounded outer edges of the body, except where it meets the plate (0 for square edges) |
 
 ### `[Backplate]`
 | Parameter | Default | Options | Description |
