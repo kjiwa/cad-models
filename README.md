@@ -8,6 +8,7 @@ Parametric, 3D-printable OpenSCAD models, each in its own directory with a `.sca
 - `entryway_table` — plywood entryway table with angled legs
 - `makita_hose_adapter` — dust extraction hose adapter for Makita tools
 - `peglock_attachment` — board attachment clips for Sy's Peglock pegboard system
+- `peglock_bit_holder` — hex bit rack for Sy's Peglock pegboard system
 - `peglock_holder` — bin/organizer for Sy's Peglock pegboard system
 - `peglock_hook` — hooks and socket racks for Sy's Peglock pegboard system
 - `peglock_magnet_mount` — magnet pockets and mount for Sy's Peglock pegboard system
@@ -46,5 +47,5 @@ licenses and are not covered by this repository's LICENSE:
 
 - `lib/BOSL2` ([BelfrySCAD/BOSL2](https://github.com/BelfrySCAD/BOSL2)) — BSD-2-Clause
 - `lib/threads-scad` ([rcolyer/threads-scad](https://github.com/rcolyer/threads-scad)) — CC0-1.0
-- `lib/peglock`, `peglock_attachment`, `peglock_holder`, `peglock_hook`, and `peglock_magnet_mount` interface with Sy's Peglock modular pegboard mounting
+- `lib/peglock`, `peglock_attachment`, `peglock_bit_holder`, `peglock_holder`, `peglock_hook`, and `peglock_magnet_mount` interface with Sy's Peglock modular pegboard mounting
   system, [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) ([Printables 249871](https://www.printables.com/model/249871)); only the mounting interface is reused, credited here

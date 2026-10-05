@@ -830,5 +830,76 @@
         261.0
       ]
     }
+  },
+  "peglock_bit_holder_default": {
+    "scad": "peglock_bit_holder/peglock_bit_holder.scad",
+    "params": {},
+    "expect": {
+      "triangles": 8044,
+      "volume_mm3": 116100.5,
+      "bbox_size_mm": [
+        131.54,
+        24.62,
+        71.31
+      ],
+      "section_areas_mm2": [
+        653.9,
+        229.2,
+        293.3,
+        919.7,
+        829.6,
+        254.3,
+        696.3
+      ]
+    }
+  },
+  "peglock_bit_holder_rows1_no_relief": {
+    "scad": "peglock_bit_holder/peglock_bit_holder.scad",
+    "params": {
+      "Rows": "1",
+      "Relief_Width": "0"
+    },
+    "expect": {
+      "triangles": 4128,
+      "volume_mm3": 51786.2,
+      "bbox_size_mm": [
+        131.54,
+        24.62,
+        38.18
+      ],
+      "section_areas_mm2": [
+        763.0,
+        125.3,
+        85.0,
+        1740.1,
+        61.2,
+        1201.5,
+        420.0
+      ]
+    }
+  },
+  "peglock_bit_holder_monolithic": {
+    "scad": "peglock_bit_holder/peglock_bit_holder.scad",
+    "params": {
+      "Mount_Type": "\"monolithic\""
+    },
+    "expect": {
+      "triangles": 21680,
+      "volume_mm3": 101221.1,
+      "bbox_size_mm": [
+        131.54,
+        28.79,
+        71.31
+      ],
+      "section_areas_mm2": [
+        653.9,
+        229.2,
+        293.3,
+        11.1,
+        758.3,
+        211.6,
+        1066.5
+      ]
+    }
   }
 }
