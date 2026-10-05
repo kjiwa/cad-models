@@ -128,10 +128,18 @@ class BitHolderTestCase(unittest.TestCase):
             params = json.load(f)["parameterSets"]["Hex_Bit_1_4in"]
         self.assertEqual(shell_count(render(params)), 1)
 
-    def test_zero_tilt_asserts(self):
-        with self.assertRaises(RuntimeError) as ctx:
-            render_triangles(BIT_SCAD, {**FAST, "Tilt_Angle": "0"}, openscadpath=os.path.join(REPO_ROOT, "lib"))
-        self.assertIn("Tilt_Angle must be greater than 0", str(ctx.exception))
+    def test_out_of_range_parameters_assert(self):
+        cases = [
+            ({"Tilt_Angle": "0"}, "Tilt_Angle must be greater than 0"),
+            ({"Tilt_Angle": "90"}, "Tilt_Angle must not exceed 45"),
+            ({"Relief_Width": "6.75"}, "Relief_Width must be less than Bit_Width"),
+            ({"Entry_Chamfer": "2.5"}, "Entry_Chamfer is too large for Wall_Thickness"),
+        ]
+        for params, message in cases:
+            with self.subTest(params=params):
+                with self.assertRaises(RuntimeError) as ctx:
+                    render_triangles(BIT_SCAD, {**FAST, **params}, openscadpath=os.path.join(REPO_ROOT, "lib"))
+                self.assertIn(message, str(ctx.exception))
 
 
 if __name__ == "__main__":

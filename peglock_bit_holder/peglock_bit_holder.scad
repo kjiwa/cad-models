@@ -60,9 +60,11 @@ assert(Bit_Width > 0, "Bit_Width must be greater than 0");
 assert(Pocket_Height > 0, "Pocket_Height must be greater than 0");
 assert(Wall_Thickness > 0, "Wall_Thickness must be greater than 0");
 assert(Relief_Width >= 0, "Relief_Width must not be negative");
+assert(Relief_Width < Bit_Width, "Relief_Width must be less than Bit_Width");
 assert(Tilt_Angle > 0, "Tilt_Angle must be greater than 0");
+assert(Tilt_Angle <= 45, "Tilt_Angle must not exceed 45");
 assert(Entry_Chamfer >= 0, "Entry_Chamfer must not be negative");
-assert(Entry_Chamfer < Wall_Thickness, "Entry_Chamfer must be less than Wall_Thickness");
+assert((Entry_Chamfer + 0.1) * 2 / sqrt(3) < Wall_Thickness, "Entry_Chamfer is too large for Wall_Thickness");
 assert(Corner_Radius >= 0, "Corner_Radius must not be negative");
 assert(Corner_Radius <= Wall_Thickness, "Corner_Radius must not exceed Wall_Thickness");
 
