@@ -831,36 +831,74 @@
       ]
     }
   },
-  "peglock_holder_hex_bit_rack_1_4in": {
-    "scad": "peglock_holder/peglock_holder.scad",
-    "params": {
-      "Columns": "10",
-      "Rows": "2",
-      "Pocket_Shape": "\"hexagon\"",
-      "Pocket_Widths": "\"6.75\"",
-      "Pocket_Height": "15",
-      "Closed_Bottom": "true",
-      "Wall_Thickness": "5.356",
-      "Tilt_Angle": "15",
-      "Lip_Height": "0",
-      "Opening_Width": "1.5875"
-    },
+  "peglock_bit_holder_default": {
+    "scad": "peglock_bit_holder/peglock_bit_holder.scad",
+    "params": {},
     "expect": {
-      "triangles": 2708,
-      "volume_mm3": 86689.6,
+      "triangles": 16892,
+      "volume_mm3": 115979.7,
       "bbox_size_mm": [
-        149.0,
-        36.22,
-        35.4
+        131.54,
+        24.62,
+        71.08
       ],
       "section_areas_mm2": [
-        995.7,
-        1610.8,
-        929.6,
-        1182.7,
-        478.9,
-        148.6,
-        620.4
+        744.7,
+        243.6,
+        870.6,
+        504.8,
+        579.7,
+        790.0,
+        451.7
+      ]
+    }
+  },
+  "peglock_bit_holder_rows1_no_relief": {
+    "scad": "peglock_bit_holder/peglock_bit_holder.scad",
+    "params": {
+      "Rows": "1",
+      "Relief_Width": "0"
+    },
+    "expect": {
+      "triangles": 7608,
+      "volume_mm3": 51729.1,
+      "bbox_size_mm": [
+        131.54,
+        24.62,
+        52.25
+      ],
+      "section_areas_mm2": [
+        482.6,
+        37.0,
+        46.0,
+        94.6,
+        78.9,
+        218.9,
+        113.1
+      ]
+    }
+  },
+  "peglock_bit_holder_monolithic": {
+    "scad": "peglock_bit_holder/peglock_bit_holder.scad",
+    "params": {
+      "Mount_Type": "\"monolithic\""
+    },
+    "expect": {
+      "triangles": 30528,
+      "volume_mm3": 101100.3,
+      "bbox_size_mm": [
+        131.54,
+        28.79,
+        71.08
+      ],
+      "section_areas_mm2": [
+        744.7,
+        243.6,
+        146.3,
+        435.6,
+        338.3,
+        790.0,
+        451.7
       ]
     }
   }

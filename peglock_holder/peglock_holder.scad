@@ -13,13 +13,10 @@ Rows = 1;
 Vertical_Alignment = "bottom"; // [bottom: Pockets near plate bottom, center: Pockets centered on plate]
 
 /* [Pocket] */
-// Pocket cross-section
-Pocket_Shape = "rounded_rect"; // [rounded_rect: Rounded Rectangle, hexagon: Hexagon]
-
-// Inner width of each pocket, across flats for a hexagon (6.75 for a 1/4" bit): one value for every column or one comma-separated value per column (12.7 for 1/2")
+// Inner width of each pocket: one value for every column or one comma-separated value per column (12.7 for 1/2")
 Pocket_Widths = "12.7";
 
-// Inner depth of each pocket, same format as Pocket_Widths; a hexagon's depth is its width, so this is ignored
+// Inner depth of each pocket, same format as Pocket_Widths
 Pocket_Depths = "6.35";
 
 // Inner height of each pocket
@@ -84,7 +81,6 @@ $fn = 128;
 EPSILON = 0.02;
 
 assert(Tilt_Angle >= 0 && Tilt_Angle <= 45, "Tilt_Angle must be between 0 and 45");
-assert(Pocket_Shape == "rounded_rect" || Pocket_Shape == "hexagon", "Pocket_Shape must be rounded_rect or hexagon");
 
 function positive_entry(name, text) =
   let(entry = str_strip(text, " "), value = parse_num(entry))
@@ -97,10 +93,8 @@ function column_values(name, text, count) =
   assert(len(values) == 1 || len(values) == count, str(name, " has ", len(values), " values but Columns is ", count))
   len(values) == 1 ? [for (i = [1:count]) values[0]] : values;
 
-sizes = column_values("Pocket_Widths", Pocket_Widths, Columns);
-// A hexagon has flats facing front and back and corners pointing along the row, so its column is corner to corner wide
-pocketWidths = Pocket_Shape == "hexagon" ? [for (w = sizes) 2 * w / sqrt(3)] : sizes;
-pocketDepths = Pocket_Shape == "hexagon" ? sizes : column_values("Pocket_Depths", Pocket_Depths, Columns);
+pocketWidths = column_values("Pocket_Widths", Pocket_Widths, Columns);
+pocketDepths = column_values("Pocket_Depths", Pocket_Depths, Columns);
 maxPocketDepth = max(pocketDepths);
 
 overallHolderWidth = sum(pocketWidths) + (Columns + 1) * Wall_Thickness;
@@ -133,14 +127,8 @@ module HolderLip() {
 }
 
 module PocketCutout(width, depth, height) {
-  translate([0, depth / 2, 0]) {
-    if (Pocket_Shape == "hexagon") {
-      linear_extrude(height=height, center=true)
-        polygon([for (i = [0:5]) [width / 2 * cos(60 * i), width / 2 * sin(60 * i)]]);
-    } else {
-      cuboid([width, depth, height], rounding=Corner_Radius, except=[TOP, BOTTOM, FRONT]);
-    }
-  }
+  translate([0, depth / 2, 0])
+    cuboid([width, depth, height], rounding=Corner_Radius, except=[TOP, BOTTOM, FRONT]);
 }
 
 module SingleHolderInside(width, depth, cut_front_opening = true) {

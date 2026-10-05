@@ -1,11 +1,10 @@
-"""Property tests for peglock_holder per-column pockets, hexagon pockets and zero-disable parameters.
+"""Property tests for peglock_holder per-column pockets and zero-disable parameters.
 
 In exported STL coordinates the model is rotated 180 degrees about Z, so the backer sits at +Y,
 pockets extend toward -Y, and model X is mirrored.
 """
 
 import json
-import math
 import os
 import shutil
 import sys
@@ -126,40 +125,6 @@ class HolderColumnsTestCase(unittest.TestCase):
                 self._assert_render_fails(
                     {"Columns": "2", param: '"12,13,14"'}, f"{param} has 3 values but Columns is 2"
                 )
-
-    def test_hexagon_flats_face_front_and_corners_point_along_row(self):
-        w = 6.75
-        d = 2 * w / math.sqrt(3)
-        tris = render({
-            "Pocket_Shape": '"hexagon"',
-            "Pocket_Widths": f'"{w}"',
-            "Pocket_Height": "15",
-            "Opening_Width": "0",
-            "Vertical_Alignment": '"center"',
-        })
-        z = 2.0
-        self.assertFalse(contains(tris, stl_point(0, w - 0.1, z)), "inside the front flat is solid")
-        self.assertTrue(contains(tris, stl_point(0, w + 0.1, z)), "outside the front flat is empty")
-        self.assertFalse(contains(tris, stl_point(d / 2 - 0.1, w / 2, z)), "inside the corner is solid")
-        self.assertTrue(contains(tris, stl_point(d / 2 + 0.1, w / 2, z)), "outside the corner is empty")
-        self.assertFalse(contains(tris, stl_point(-(d / 2 - 0.1), w / 2, z)), "inside the opposite corner is solid")
-        self.assertTrue(contains(tris, stl_point(d / 2 - 0.1, w / 2 + 1.5, z)), "hexagon is not pointed along the row")
-
-    def test_hexagon_column_is_corner_to_corner_wide(self):
-        w = 6.75
-        tris = render({
-            "Pocket_Shape": '"hexagon"', "Pocket_Widths": f'"{w}"', "Columns": "10", "Wall_Thickness": "5.356",
-            "Mount_Type": '"monolithic"', "Pocket_Height": "15",
-        })
-        expected = 10 * 13.15 + 5.356
-        self.assertAlmostEqual(fingerprint(tris)["bbox_size_mm"][0], expected, delta=0.05)
-
-    def test_hexagon_ignores_pocket_depths(self):
-        base = {"Pocket_Shape": '"hexagon"', "Pocket_Widths": '"6.75"', "Pocket_Height": "15"}
-        a = fingerprint(render({**base, "Pocket_Depths": '"6.35"'}))
-        b = fingerprint(render({**base, "Pocket_Depths": '"30"'}))
-        self.assertEqual(a["bbox_size_mm"], b["bbox_size_mm"])
-        self.assertAlmostEqual(a["volume_mm3"], b["volume_mm3"], delta=0.5)
 
     def test_zero_disable_parameters_render_one_shell(self):
         for param in ZERO_DISABLE_PARAMS:
