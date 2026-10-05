@@ -5,7 +5,7 @@ Parametric, 3D-printable open-front bin and organizer for Sy's Peglock modular p
 ## Features
 
 - **Dual Mounting Modes**: Toggle between Sy's Peglock modular locking wedge sockets and monolithic integrated pegboard pegs.
-- **Parametric Capacity**: Configurable pocket dimensions (width, depth, height, rows, and columns).
+- **Parametric Capacity**: Configurable pocket dimensions (width, depth, height, rows, and columns), with a separate width and depth per column and rounded-rectangle or hexagon pockets.
 - **Multi-Row Organization**: Independent pockets with intact internal partitions or continuous open slots.
 - **Customizer Compatible**: Designed for use in the OpenSCAD Customizer with parameter controls.
 - **Automated CLI Build**: `Makefile` support to render STL, 3MF, presets, and PNG preview images.
@@ -31,7 +31,7 @@ peglock_holder/
 
 1. Open `peglock_holder.scad` in OpenSCAD.
 2. In the top menu, ensure **Window -> Customizer** is checked.
-3. Select a preset (e.g. `Single_Slot`, `Dual_Slot`, `Organizer_4_Slot`, `Deep_Bin`, `Showpiece_Tilted`) or customize parameters.
+3. Select a preset (e.g. `Single_Slot`, `Dual_Slot`, `Organizer_4_Slot`, `Deep_Bin`, `Showpiece_Tilted`, `Knife_Holder`, `Olfa_Knife_Holder`, `Thin_Olfa_Knife_Holder`, `Hex_Bit_Rack_1_4in`) or customize parameters.
 4. Press `F5` to preview or `F6` to render, then `F7` to export to STL.
 
 ---
@@ -50,19 +50,20 @@ All lengths are in millimeters unless noted.
 ### `[Pocket]`
 | Parameter | Default | Options | Description |
 |---|---|---|---|
-| `Pocket_Width` | `12.7` | | Inner width of each pocket |
-| `Pocket_Depth` | `6.35` | | Inner depth of each pocket |
+| `Pocket_Shape` | `rounded_rect` | `rounded_rect`, `hexagon` | Pocket cross-section |
+| `Pocket_Widths` | `12.7` | | Inner width of each pocket, across flats for a hexagon (6.75 for a 1/4" bit): one value for every column or one comma-separated value per column (12.7 for 1/2") |
+| `Pocket_Depths` | `6.35` | | Inner depth of each pocket, same format as `Pocket_Widths`; a hexagon's depth is its width, so this is ignored |
 | `Pocket_Height` | `12.7` | | Inner height of each pocket |
 | `Tilt_Angle` | `0` | | Forward tilt of the pockets in degrees, 0 to 45 (0 for vertical) |
 | `Closed_Bottom` | `true` | | Close the pocket bottoms |
 | `Wall_Thickness` | `1.5875` | | Thickness of the pocket walls |
-| `Corner_Radius` | `3.175` | | Radius of the rounded pocket body corners |
+| `Corner_Radius` | `3.175` | | Radius of the rounded pocket body corners (0 for square corners) |
 | `Bottom_Edge_Radius` | `0` | | Rounds the pocket body's underside edges, except where it meets the plate; limited to `Wall_Thickness` (0 to disable) |
 
 ### `[Front]`
 | Parameter | Default | Options | Description |
 |---|---|---|---|
-| `Lip_Height` | `3.175` | | Height of the front lip |
+| `Lip_Height` | `3.175` | | Height of the front lip (0 for no lip) |
 | `Lip_Thickness` | `3.175` | | Thickness of the front lip |
 | `Opening_Width` | `6.35` | | Width of the front access opening (0 for none) |
 | `Opening_Chamfer` | `1.0` | | Front opening lead-in chamfer (0 to disable) |
@@ -72,7 +73,7 @@ All lengths are in millimeters unless noted.
 | Parameter | Default | Options | Description |
 |---|---|---|---|
 | `Backplate_Thickness` | `1.5875` | | Thickness of the backplate behind the pockets; thicker resists flex under heavy loads (no load rating is claimed) |
-| `Junction_Gusset` | `0` | | Size of a triangular web under the pockets where they meet the plate, clamped to the plate below them; open-bottom pockets cut through it (0 to disable) |
+| `Junction_Gusset` | `0` | | Size of the triangular web under the pockets where they meet the plate, clamped to the plate below them; open-bottom pockets cut through it (0 to disable) |
 
 ### `[Pegboard]`
 | Parameter | Default | Options | Description |

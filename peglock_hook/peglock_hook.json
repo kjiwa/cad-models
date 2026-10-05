@@ -61,8 +61,8 @@
             "Backplate_Thickness": "1.5875",
             "Arm_Width": "12",
             "Arm_Tilt_Angle": "20",
-            "Lip_Orientation": "\"vertical\"",
-            "Vertical_Alignment": "\"center\""
+            "Lip_Orientation": "vertical",
+            "Vertical_Alignment": "center"
         }
     },
     "fileFormatVersion": "1"
