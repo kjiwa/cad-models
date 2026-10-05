@@ -1,5 +1,5 @@
 include <peglock/peglock.scad>
-include <pegboard/pegs.scad>
+include <pegs.scad>
 
 MOUNT_EPSILON = 0.02;
 
