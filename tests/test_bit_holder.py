@@ -184,6 +184,7 @@ class BitHolderTestCase(unittest.TestCase):
             ({"Tilt_Angle": "90"}, "Tilt_Angle must not exceed 45"),
             ({"Relief_Width": "6.75"}, "Relief_Width must be less than Bit_Width"),
             ({"Entry_Chamfer": "2.5"}, "Entry_Chamfer is too large for Wall_Thickness"),
+            ({"Pocket_Height": "0.3", "Entry_Chamfer": "0.4"}, "Entry_Chamfer must not exceed Pocket_Height"),
         ]
         for params, message in cases:
             with self.subTest(params=params):

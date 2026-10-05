@@ -65,6 +65,7 @@ assert(Tilt_Angle > 0, "Tilt_Angle must be greater than 0");
 assert(Tilt_Angle <= 45, "Tilt_Angle must not exceed 45");
 assert(Entry_Chamfer >= 0, "Entry_Chamfer must not be negative");
 assert((Entry_Chamfer + 0.1) * 2 / sqrt(3) < Wall_Thickness, "Entry_Chamfer is too large for Wall_Thickness");
+assert(Entry_Chamfer <= Pocket_Height, "Entry_Chamfer must not exceed Pocket_Height");
 assert(Corner_Radius >= 0, "Corner_Radius must not be negative");
 assert(Corner_Radius <= Wall_Thickness, "Corner_Radius must not exceed Wall_Thickness");
 
