@@ -14,7 +14,7 @@ OPENSCAD_BACKEND := $(shell $(OPENSCAD) --help 2>&1 | grep -q -- '--backend' && 
 OPENSCAD_FLAGS ?= --render $(OPENSCAD_BACKEND)
 RENDER_FLAGS   ?= --autocenter --viewall --imgsize=1024,768 --colorscheme=Tomorrow
 
-ONESCAD ?= uvx onescad==0.1.0
+ONESCAD ?= uvx onescad==0.3.0
 DIST_DIR ?= $(REPO_ROOT)/dist
 
 PRESET_BUILDER := $(REPO_ROOT)/scripts/build_presets.py
