@@ -135,7 +135,8 @@ module HolderLip() {
 module PocketCutout(width, depth, height) {
   translate([0, depth / 2, 0]) {
     if (Pocket_Shape == "hexagon") {
-      cylinder(d=width, h=height, center=true, $fn=6);
+      linear_extrude(height=height, center=true)
+        polygon([for (i = [0:5]) [width / 2 * cos(60 * i), width / 2 * sin(60 * i)]]);
     } else {
       cuboid([width, depth, height], rounding=Corner_Radius, except=[TOP, BOTTOM, FRONT]);
     }
