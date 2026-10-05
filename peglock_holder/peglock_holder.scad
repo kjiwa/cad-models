@@ -13,11 +13,14 @@ Rows = 1;
 Vertical_Alignment = "bottom"; // [bottom: Pockets near plate bottom, center: Pockets centered on plate]
 
 /* [Pocket] */
-// Inner width of each pocket
-Pocket_Width = 12.7;
+// Pocket cross-section
+Pocket_Shape = "rounded_rect"; // [rounded_rect: Rounded Rectangle, hexagon: Hexagon]
 
-// Inner depth of each pocket
-Pocket_Depth = 6.35;
+// Inner width of each pocket, across flats for a hexagon: one value for every column or one comma-separated value per column (12.7 for 1/2")
+Pocket_Widths = "12.7";
+
+// Inner depth of each pocket, same format as Pocket_Widths; a hexagon sets its own depth, so this is ignored
+Pocket_Depths = "6.35";
 
 // Inner height of each pocket
 Pocket_Height = 12.7;
@@ -31,14 +34,14 @@ Closed_Bottom = true;
 // Thickness of the pocket walls
 Wall_Thickness = 1.5875;
 
-// Radius of the rounded pocket body corners
+// Radius of the rounded pocket body corners (0 for square corners)
 Corner_Radius = 3.175;
 
 // Rounds the pocket body's underside edges, except where it meets the plate (0 to disable)
 Bottom_Edge_Radius = 0;
 
 /* [Front] */
-// Height of the front lip
+// Height of the front lip (0 for no lip)
 Lip_Height = 3.175;
 
 // Thickness of the front lip
@@ -81,9 +84,32 @@ $fn = 128;
 EPSILON = 0.02;
 
 assert(Tilt_Angle >= 0 && Tilt_Angle <= 45, "Tilt_Angle must be between 0 and 45");
+assert(Pocket_Shape == "rounded_rect" || Pocket_Shape == "hexagon", "Pocket_Shape must be rounded_rect or hexagon");
 
-overallHolderWidth = Columns * (Pocket_Width + Wall_Thickness) + Wall_Thickness;
-overallHolderDepth = Rows * (Pocket_Depth + Wall_Thickness);
+function positive_entry(name, text) =
+  let(entry = str_strip(text, " "), value = parse_num(entry))
+  assert(value > 0, str(name, " entry '", entry, "' is not a positive number"))
+  value;
+
+// One value per column from a comma-separated string; a single value applies to every column
+function column_values(name, text, count) =
+  let(values = [for (part = str_split(text, ",")) positive_entry(name, part)])
+  assert(len(values) == 1 || len(values) == count, str(name, " has ", len(values), " values but Columns is ", count))
+  len(values) == 1 ? [for (i = [1:count]) values[0]] : values;
+
+pocketWidths = column_values("Pocket_Widths", Pocket_Widths, Columns);
+// Hexagon corner-to-corner distance, with a corner pointing at the front opening
+pocketDepths = Pocket_Shape == "hexagon"
+  ? [for (w = pocketWidths) 2 * w / sqrt(3)]
+  : column_values("Pocket_Depths", Pocket_Depths, Columns);
+maxPocketDepth = max(pocketDepths);
+
+overallHolderWidth = sum(pocketWidths) + (Columns + 1) * Wall_Thickness;
+overallHolderDepth = Rows * (maxPocketDepth + Wall_Thickness);
+
+function column_center_x(i) =
+  -overallHolderWidth / 2 + Wall_Thickness + (i > 0 ? sum([for (k = [0:i - 1]) pocketWidths[k]]) + i * Wall_Thickness : 0)
+    + pocketWidths[i] / 2;
 
 h = Pocket_Height + (Closed_Bottom ? Wall_Thickness : 0);
 tilted_height = h * cos(Tilt_Angle) + overallHolderDepth * sin(Tilt_Angle);
@@ -98,27 +124,37 @@ backerSize = board_mount_size(Mount_Type, [overallHolderWidth, tilted_height], n
 backerHeight = backerSize[1];
 
 module HolderLip() {
+  rounding_depth = max(2 * Corner_Radius, Lip_Thickness);
   translate([0, -Lip_Thickness / 2, Lip_Height / 2])
     intersection() {
       cuboid([overallHolderWidth, Lip_Thickness, Lip_Height], rounding=0, edges=[FRONT]);
-      translate([0, -Corner_Radius + Lip_Thickness / 2, 0])
-        cuboid([overallHolderWidth, 2 * Corner_Radius, Lip_Height], rounding=Corner_Radius, edges=[BACK+LEFT, BACK+RIGHT]);
+      translate([0, (Lip_Thickness - rounding_depth) / 2, 0])
+        cuboid([overallHolderWidth, rounding_depth, Lip_Height], rounding=Corner_Radius, edges=[BACK+LEFT, BACK+RIGHT]);
     }
 }
 
-module SingleHolderInside(cut_front_opening = true) {
+module PocketCutout(width, depth, height) {
+  translate([0, depth / 2, 0]) {
+    if (Pocket_Shape == "hexagon") {
+      rotate([0, 0, 90]) cylinder(d=2 * width / sqrt(3), h=height, center=true, $fn=6);
+    } else {
+      cuboid([width, depth, height], rounding=Corner_Radius, except=[TOP, BOTTOM, FRONT]);
+    }
+  }
+}
+
+module SingleHolderInside(width, depth, cut_front_opening = true) {
   z = Pocket_Height + Lip_Height + 2 + (Closed_Bottom ? Wall_Thickness : 0);
   tz = 1 + (Closed_Bottom ? Wall_Thickness : -1);
-  translate([0, Pocket_Depth / 2, tz])
-    cuboid([Pocket_Width, Pocket_Depth, z], rounding=Corner_Radius, except=[TOP, BOTTOM, FRONT]);
-  if (cut_front_opening) {
-    cut_depth = Wall_Thickness + 3 * Pocket_Depth / 2;
+  translate([0, 0, tz]) PocketCutout(width, depth, z);
+  if (cut_front_opening && Opening_Width > 0) {
+    cut_depth = Wall_Thickness + 3 * maxPocketDepth / 2;
     translate([-Opening_Width / 2, 0, -z / 2])
       cube([Opening_Width, cut_depth, z]);
 
     if (Opening_Chamfer > 0) {
       b = min(Opening_Chamfer, Opening_Width / 4);
-      y_entry = Pocket_Depth + Wall_Thickness;
+      y_entry = maxPocketDepth + Wall_Thickness;
       translate([-Opening_Width / 2, y_entry, 0])
         rotate([0, 0, 45])
           cube([b * sqrt(2), b * sqrt(2), z * 2], center=true);
@@ -185,11 +221,11 @@ module HolderGrid() {
 
     Tilted()
       for (i=[1:Columns]) {
-        tx = (i - 1) * (Pocket_Width + Wall_Thickness) + (Pocket_Width - overallHolderWidth) / 2 + Wall_Thickness;
+        tx = column_center_x(i - 1);
         for (j=[1:Rows]) {
-          ty = (j - 1) * (Pocket_Depth + Wall_Thickness);
+          ty = (j - 1) * (maxPocketDepth + Wall_Thickness);
           cut_opening = (!Opening_Front_Row_Only || j == Rows);
-          translate([tx, ty, Lip_Height / 2]) SingleHolderInside(cut_opening);
+          translate([tx, ty, Lip_Height / 2]) SingleHolderInside(pocketWidths[i - 1], pocketDepths[i - 1], cut_opening);
         }
       }
   }

@@ -3,8 +3,8 @@
         "Single_Slot": {
             "Columns": "1",
             "Rows": "1",
-            "Pocket_Width": "12.7",
-            "Pocket_Depth": "6.35",
+            "Pocket_Widths": "12.7",
+            "Pocket_Depths": "6.35",
             "Pocket_Height": "12.7",
             "Closed_Bottom": "true",
             "Opening_Width": "6.35",
@@ -16,8 +16,8 @@
         "Dual_Slot": {
             "Columns": "2",
             "Rows": "1",
-            "Pocket_Width": "12.7",
-            "Pocket_Depth": "6.35",
+            "Pocket_Widths": "12.7",
+            "Pocket_Depths": "6.35",
             "Pocket_Height": "12.7",
             "Closed_Bottom": "true",
             "Opening_Width": "6.35",
@@ -29,8 +29,8 @@
         "Organizer_4_Slot": {
             "Columns": "4",
             "Rows": "1",
-            "Pocket_Width": "12.7",
-            "Pocket_Depth": "6.35",
+            "Pocket_Widths": "12.7",
+            "Pocket_Depths": "6.35",
             "Pocket_Height": "12.7",
             "Closed_Bottom": "true",
             "Opening_Width": "6.35",
@@ -42,8 +42,8 @@
         "Deep_Bin": {
             "Columns": "1",
             "Rows": "2",
-            "Pocket_Width": "19.05",
-            "Pocket_Depth": "12.7",
+            "Pocket_Widths": "19.05",
+            "Pocket_Depths": "12.7",
             "Pocket_Height": "25.4",
             "Closed_Bottom": "true",
             "Opening_Width": "12.7",
@@ -55,8 +55,8 @@
         "Showpiece_Tilted": {
             "Columns": "2",
             "Rows": "3",
-            "Pocket_Width": "12.7",
-            "Pocket_Depth": "6.35",
+            "Pocket_Widths": "12.7",
+            "Pocket_Depths": "6.35",
             "Pocket_Height": "12.7",
             "Closed_Bottom": "true",
             "Opening_Width": "6.35",
@@ -69,6 +69,52 @@
             "Vertical_Alignment": "\"center\"",
             "Bottom_Edge_Radius": "1.5",
             "Junction_Gusset": "5"
+        },
+        "Knife_Holder": {
+            "Columns": "2",
+            "Rows": "1",
+            "Pocket_Widths": "20,71.25",
+            "Pocket_Depths": "31.25",
+            "Pocket_Height": "50",
+            "Closed_Bottom": "true",
+            "Wall_Thickness": "1.5875",
+            "Lip_Height": "0",
+            "Opening_Width": "0"
+        },
+        "Olfa_Knife_Holder": {
+            "Columns": "4",
+            "Rows": "1",
+            "Pocket_Widths": "15,12.5,12.5,12.5",
+            "Pocket_Depths": "31.25,25,25,25",
+            "Pocket_Height": "50",
+            "Closed_Bottom": "true",
+            "Wall_Thickness": "1.5875",
+            "Lip_Height": "0",
+            "Opening_Width": "0"
+        },
+        "Thin_Olfa_Knife_Holder": {
+            "Columns": "2",
+            "Rows": "1",
+            "Pocket_Widths": "5,34",
+            "Pocket_Depths": "12",
+            "Pocket_Height": "50",
+            "Closed_Bottom": "true",
+            "Wall_Thickness": "1.5875",
+            "Lip_Height": "0",
+            "Opening_Width": "0",
+            "Corner_Radius": "0"
+        },
+        "Hex_Bit_Rack_1_4in": {
+            "Columns": "10",
+            "Rows": "2",
+            "Pocket_Shape": "hexagon",
+            "Pocket_Widths": "6.75",
+            "Pocket_Height": "15",
+            "Closed_Bottom": "true",
+            "Wall_Thickness": "6.4",
+            "Tilt_Angle": "15",
+            "Lip_Height": "0",
+            "Opening_Width": "1.5875"
         }
     },
     "fileFormatVersion": "1"
