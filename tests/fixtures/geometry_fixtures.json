@@ -652,5 +652,86 @@
         8.9
       ]
     }
+  },
+  "peglock_magnet_mount_single_12mm": {
+    "scad": "peglock_magnet_mount/peglock_magnet_mount.scad",
+    "params": {
+      "Columns": "1",
+      "Rows": "1",
+      "Magnet_Diameter": "12",
+      "Magnet_Depth": "3.5"
+    },
+    "expect": {
+      "triangles": 1956,
+      "volume_mm3": 4491.7,
+      "bbox_size_mm": [
+        22.0,
+        11.07,
+        35.4
+      ],
+      "section_areas_mm2": [
+        80.0,
+        90.2,
+        108.7,
+        59.1,
+        5.2,
+        16.3,
+        49.9
+      ]
+    }
+  },
+  "peglock_magnet_mount_pair_12mm": {
+    "scad": "peglock_magnet_mount/peglock_magnet_mount.scad",
+    "params": {
+      "Columns": "2",
+      "Rows": "1",
+      "Magnet_Diameter": "12",
+      "Magnet_Depth": "3.5"
+    },
+    "expect": {
+      "triangles": 2628,
+      "volume_mm3": 5329.6,
+      "bbox_size_mm": [
+        30.0,
+        11.07,
+        35.4
+      ],
+      "section_areas_mm2": [
+        82.1,
+        95.6,
+        118.8,
+        24.9,
+        72.9,
+        57.6,
+        42.8
+      ]
+    }
+  },
+  "peglock_magnet_mount_grid_2x2_12mm": {
+    "scad": "peglock_magnet_mount/peglock_magnet_mount.scad",
+    "params": {
+      "Columns": "2",
+      "Rows": "2",
+      "Magnet_Diameter": "12",
+      "Magnet_Depth": "3.5"
+    },
+    "expect": {
+      "triangles": 3660,
+      "volume_mm3": 6008.2,
+      "bbox_size_mm": [
+        30.0,
+        11.07,
+        35.4
+      ],
+      "section_areas_mm2": [
+        82.1,
+        163.4,
+        117.1,
+        23.2,
+        58.1,
+        103.5,
+        42.8
+      ]
+    }
   }
 }
