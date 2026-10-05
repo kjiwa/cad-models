@@ -103,18 +103,6 @@
             "Lip_Height": "0",
             "Opening_Width": "0",
             "Corner_Radius": "0"
-        },
-        "Hex_Bit_Rack_1_4in": {
-            "Columns": "10",
-            "Rows": "2",
-            "Pocket_Shape": "hexagon",
-            "Pocket_Widths": "6.75",
-            "Pocket_Height": "15",
-            "Closed_Bottom": "true",
-            "Wall_Thickness": "5.356",
-            "Tilt_Angle": "15",
-            "Lip_Height": "0",
-            "Opening_Width": "1.5875"
         }
     },
     "fileFormatVersion": "1"

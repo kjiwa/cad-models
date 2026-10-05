@@ -5,7 +5,7 @@ Parametric, 3D-printable open-front bin and organizer for Sy's Peglock modular p
 ## Features
 
 - **Dual Mounting Modes**: Toggle between Sy's Peglock modular locking wedge sockets and monolithic integrated pegboard pegs.
-- **Parametric Capacity**: Configurable pocket dimensions (width, depth, height, rows, and columns), with a separate width and depth per column and rounded-rectangle or hexagon pockets.
+- **Parametric Capacity**: Configurable pocket dimensions (width, depth, height, rows, and columns) and a separate width and depth per column.
 - **Multi-Row Organization**: Independent pockets with intact internal partitions or continuous open slots.
 - **Customizer Compatible**: Designed for use in the OpenSCAD Customizer with parameter controls.
 - **Automated CLI Build**: `Makefile` support to render STL, 3MF, presets, and PNG preview images.
@@ -31,7 +31,7 @@ peglock_holder/
 
 1. Open `peglock_holder.scad` in OpenSCAD.
 2. In the top menu, ensure **Window -> Customizer** is checked.
-3. Select a preset (e.g. `Single_Slot`, `Dual_Slot`, `Organizer_4_Slot`, `Deep_Bin`, `Showpiece_Tilted`, `Knife_Holder`, `Olfa_Knife_Holder`, `Thin_Olfa_Knife_Holder`, `Hex_Bit_Rack_1_4in`) or customize parameters.
+3. Select a preset (e.g. `Single_Slot`, `Dual_Slot`, `Organizer_4_Slot`, `Deep_Bin`, `Showpiece_Tilted`, `Knife_Holder`, `Olfa_Knife_Holder`, `Thin_Olfa_Knife_Holder`) or customize parameters.
 4. Press `F5` to preview or `F6` to render, then `F7` to export to STL.
 
 ---
@@ -50,9 +50,8 @@ All lengths are in millimeters unless noted.
 ### `[Pocket]`
 | Parameter | Default | Options | Description |
 |---|---|---|---|
-| `Pocket_Shape` | `rounded_rect` | `rounded_rect`, `hexagon` | Pocket cross-section |
-| `Pocket_Widths` | `12.7` | | Inner width of each pocket, across flats for a hexagon (6.75 for a 1/4" bit): one value for every column or one comma-separated value per column (12.7 for 1/2") |
-| `Pocket_Depths` | `6.35` | | Inner depth of each pocket, same format as `Pocket_Widths`; a hexagon's depth is its width, so this is ignored |
+| `Pocket_Widths` | `12.7` | | Inner width of each pocket: one value for every column or one comma-separated value per column (12.7 for 1/2") |
+| `Pocket_Depths` | `6.35` | | Inner depth of each pocket, same format as `Pocket_Widths` |
 | `Pocket_Height` | `12.7` | | Inner height of each pocket |
 | `Tilt_Angle` | `0` | | Forward tilt of the pockets in degrees, 0 to 45 (0 for vertical) |
 | `Closed_Bottom` | `true` | | Close the pocket bottoms |

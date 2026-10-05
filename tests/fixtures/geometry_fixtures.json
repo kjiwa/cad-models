@@ -830,38 +830,5 @@
         261.0
       ]
     }
-  },
-  "peglock_holder_hex_bit_rack_1_4in": {
-    "scad": "peglock_holder/peglock_holder.scad",
-    "params": {
-      "Columns": "10",
-      "Rows": "2",
-      "Pocket_Shape": "\"hexagon\"",
-      "Pocket_Widths": "\"6.75\"",
-      "Pocket_Height": "15",
-      "Closed_Bottom": "true",
-      "Wall_Thickness": "5.356",
-      "Tilt_Angle": "15",
-      "Lip_Height": "0",
-      "Opening_Width": "1.5875"
-    },
-    "expect": {
-      "triangles": 2708,
-      "volume_mm3": 86689.6,
-      "bbox_size_mm": [
-        149.0,
-        36.22,
-        35.4
-      ],
-      "section_areas_mm2": [
-        995.7,
-        1610.8,
-        929.6,
-        1182.7,
-        478.9,
-        148.6,
-        620.4
-      ]
-    }
   }
 }
