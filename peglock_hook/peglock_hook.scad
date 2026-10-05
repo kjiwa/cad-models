@@ -1,6 +1,6 @@
 include <BOSL2/std.scad>
 include <peglock/peglock.scad>
-include <pegboard/pegs.scad>
+include <pegboard/mount.scad>
 
 /* [Layout] */
 // Number of hook columns
@@ -84,9 +84,6 @@ overallHookWidth = Arm_Width;
 gridWidth = (Columns - 1) * Column_Spacing + Arm_Width;
 gridHeight = (Rows - 1) * Row_Spacing + Arm_Height;
 
-numPeglocks = max(floor(max(gridWidth, SOCKET_WIDTH) / SOCKET_WIDTH), 1);
-peglockBaseWidth = peglock_base_width(numPeglocks, SOCKET_WIDTH, Hole_Spacing);
-
 fillet_max_depth = Arm_Length * 0.35;
 fillet_max_height = min(Lip_Height * 0.4, Arm_Height * 0.35);
 fillet_max_width = Arm_Width * 0.35;
@@ -103,8 +100,9 @@ arm_trim = arm_extra_back + Arm_Height + 1;
 
 root_height = gridHeight + 2 * fillet_flare_z + tilt_root_drop;
 
-backerWidth = max(gridWidth + 2 * fillet_flare_x, (Mount_Type == "peglock" ? peglockBaseWidth : Hole_Spacing));
-backerHeight = max(root_height, (Mount_Type == "peglock" ? SOCKET_HEIGHT : Hole_Spacing + 10));
+numPeglocks = peglock_socket_count(gridWidth);
+backerSize = board_mount_size(Mount_Type, [gridWidth + 2 * fillet_flare_x, root_height], numPeglocks, Hole_Spacing);
+backerHeight = backerSize[1];
 align_shift = Vertical_Alignment == "center" ? (backerHeight - root_height) / 2 : 0;
 
 if (Columns > 1) assert(Column_Spacing >= Arm_Width, "Column_Spacing must be at least Arm_Width");
@@ -255,50 +253,17 @@ module HookGrid() {
     }
 }
 
-module MonolithicPegs() {
-  cols = max(floor((backerWidth - Pin_Diameter) / Hole_Spacing) + 1, 1);
-  num_peg_intervals = max(floor((backerHeight - 10) / Hole_Spacing), 1);
-  z_top = num_peg_intervals * Hole_Spacing / 2;
-
-  for (c = [0 : cols - 1]) {
-    x = (cols == 1) ? 0 : (c - (cols - 1) / 2) * Hole_Spacing;
-    translate([x, -Backplate_Thickness, z_top])
-      pegboard_upper_hook(
-        pin_d = Pin_Diameter,
-        board_t = Pegboard_Thickness,
-        rise = Retention_Hook_Rise,
-        backplate_t = Backplate_Thickness
-      );
-    for (k = [1 : num_peg_intervals]) {
-      translate([x, -Backplate_Thickness, z_top - k * Hole_Spacing])
-        pegboard_lower_pin(
-          pin_d = Pin_Diameter,
-          board_t = Pegboard_Thickness,
-          backplate_t = Backplate_Thickness
-        );
-    }
-  }
-}
-
-module HookBacker() {
-  cuboid([backerWidth, Backplate_Thickness, backerHeight], rounding=SOCKET_ROUNDOVER, except=[FRONT, BACK]);
-}
-
 module Hook() {
-  if (Mount_Type == "peglock") {
-    translate([0, -Backplate_Thickness + EPSILON, 0])
-      PeglockBase(
-        count = numPeglocks,
-        width = SOCKET_WIDTH,
-        height = SOCKET_HEIGHT,
-        depth = SOCKET_DEPTH,
-        spacing = Hole_Spacing,
-        roundover = SOCKET_ROUNDOVER
-      );
-  } else if (Mount_Type == "monolithic") {
-    MonolithicPegs();
-  }
-  translate([0, -Backplate_Thickness / 2, 0]) HookBacker();
+  BoardMount(
+    type = Mount_Type,
+    size = backerSize,
+    sockets = numPeglocks,
+    backplate_t = Backplate_Thickness,
+    hole_spacing = Hole_Spacing,
+    pin_d = Pin_Diameter,
+    board_t = Pegboard_Thickness,
+    rise = Retention_Hook_Rise
+  );
   HookGrid();
 }
 
