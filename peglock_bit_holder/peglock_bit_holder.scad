@@ -54,6 +54,9 @@ Pegboard_Thickness = 6.35;
 // Height of the retention hook tab behind the pegboard
 Retention_Hook_Rise = 3.5;
 
+// Stabilizing pin rows below the retention hooks (ignored by the Peglock socket mount)
+Stabilizing_Pin_Pattern = "all"; // [all: All Rows, top_and_bottom: Top and Bottom Rows, top: Top Row Only, bottom: Bottom Row Only (Lowest Hole), none: Retention Hooks Only]
+
 /* [Hidden] */
 $fn = 128;
 
@@ -168,7 +171,8 @@ module BitHolder() {
     hole_spacing = Hole_Spacing,
     pin_d = Pin_Diameter,
     board_t = Pegboard_Thickness,
-    rise = Retention_Hook_Rise
+    rise = Retention_Hook_Rise,
+    pin_pattern = Stabilizing_Pin_Pattern
   );
   BitTiers();
 }
