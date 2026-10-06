@@ -166,3 +166,77 @@ Outputs are generated in the `build/` subdirectory:
 - **Solid Layers**: 5 or more top and bottom solid layers for rigid cap diaphragms.
 - **Infill**: 20% Gyroid (provides isotropic shear resistance in the central core and caps).
 - **Print Temperature & Cooling**: Increase nozzle temperature by 5–10°C over nominal and reduce part cooling fan speed (30–50%) to maximize inter-layer weld strength and shear resistance.
+
+<!-- BEGIN GENERATED -->
+
+## Parameters
+
+### Part
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Part` | `"riser"` | Riser, Nut | Component to render |
+
+### Body
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Height` | `152.4` |  | Overall riser height (152.4 for 6", 133.35 for 5.25") |
+| `Diameter` | `66` |  | Outside diameter of the riser body |
+
+### Top
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Top_Thickness` | `4` |  | Thickness of the top plate |
+| `Stud_Base_Diameter` | `15` |  | Diameter of the raised boss under the threaded stud |
+| `Stud_Base_Height` | `6` |  | Height of the raised boss under the threaded stud |
+
+### Bottom
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Bottom_Thickness` | `6` |  | Thickness of the bottom plate |
+| `Bolt_Hole_Diameter` | `16` |  | Diameter of the mounting bolt clearance hole |
+| `Nut_Recess_Diameter` | `27` |  | Diameter of the stand nut recess |
+| `Nut_Recess_Height` | `32.75` |  | Depth of the stand nut recess |
+| `Nut_Recess_Radius` | `6.25` |  | Corner radius of the stand nut recess |
+
+### Reinforcement
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Reinforcement_Style` | `"flared_ribs"` | Flared Ribs, Conical Vault, None | Reinforcement between the top and bottom plates |
+| `Web_Thickness` | `3.6` |  | Thickness of the crossed vertical webs |
+| `Arch_Inner_Diameter` | `46` |  | Diameter of the arched cutouts between the webs |
+| `Arch_End_Margin` | `4` |  | Distance from each plate to the ends of the arched cutouts |
+| `Rib_Flare_Width` | `4.0` |  | Sideways flare added to each web at the plates (flared_ribs only) |
+| `Rib_Flare_Height` | `10.0` |  | Height of the web flare transition (flared_ribs only) |
+| `Cone_Height` | `8.0` |  | Height of the top and bottom cones (conical_vault only) |
+| `Cone_Top_Diameter` | `36.0` |  | Narrow end diameter of the top cone (conical_vault only) |
+| `Cone_Bottom_Diameter` | `40.0` |  | Narrow end diameter of the bottom cone (conical_vault only) |
+
+### Thread
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Thread_Pitch` | `2` |  | Thread pitch shared by the stud and the nut |
+| `Stud_Thread_Diameter` | `12.5` |  | Outer diameter of the threaded stud |
+| `Stud_Thread_Length` | `10` |  | Length of the threaded stud |
+| `Nut_Thread_Diameter` | `13.5` |  | Nominal diameter of the nut thread, including clearance |
+
+### Nut
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Nut_Diameter` | `22` |  | Outside diameter of the locking nut |
+| `Nut_Height` | `6.35` |  | Thickness of the locking nut |
+| `Knurl_Count` | `15` | 3 to 40, step 1 | Number of grip notches around the perimeter |
+| `Knurl_Diameter` | `1` |  | Diameter of each grip notch |
+
+## Presets
+
+- `Riser_5_25in`
+- `Nut`
+
+<!-- END GENERATED -->

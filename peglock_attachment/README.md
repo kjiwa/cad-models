@@ -88,3 +88,23 @@ make clean
   - **PETG**: Highly recommended. PETG offers high elongation at break and fatigue endurance, allowing the 0.2 mm living hinge to fold 180° repeatedly without stress-whitening or snapping.
   - **PLA / Tough PLA**: Can be used with proper handling. Fold the hinge immediately upon print completion while the bed/part is still warm (~50–60°C), or run the hinge line under hot tap water before the initial 180° fold.
 - **Assembly**: Fold the clip 180° in half so the two wedge halves face together, insert the upper hook and lower peg into the pegboard holes, then slide an accessory (`peglock_hook`, `peglock_holder`) downward over the male wedge to lock both halves firmly into the board.
+
+<!-- BEGIN GENERATED -->
+
+## Parameters
+
+### Pegboard
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Hole_Spacing` | `25.4` |  | Pegboard hole center spacing (25.4 for 1" standard, 15.875 for 5/8" metal) |
+| `Pin_Diameter` | `5.7` |  | Pin diameter (5.7 for standard 1/4" hole fit, 6.0 for original Sy fit) |
+| `Pegboard_Thickness` | `6.35` |  | Pegboard thickness (6.35 for 1/4" board, 1.5875 for 1/16" thin metal) |
+| `Retention_Hook_Rise` | `6.0` |  | Height of the retention hook tab behind the pegboard |
+
+## Presets
+
+- `Sys_Original_6mm`
+- `Thin_Metal_5_8in`
+
+<!-- END GENERATED -->

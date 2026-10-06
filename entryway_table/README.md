@@ -74,3 +74,39 @@ make clean
 ```
 
 Outputs are generated in the `build/` subdirectory.
+
+<!-- BEGIN GENERATED -->
+
+## Parameters
+
+### Tabletop
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Top_Width` | `1219.2` |  | Tabletop width along X |
+| `Top_Depth` | `279.4` |  | Tabletop depth along Y |
+| `Top_Overhang` | `38.1` |  | Tabletop overhang beyond the leg outer faces |
+
+### Legs
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Leg_Height` | `914.4` |  | Leg height from floor to underside of the top |
+| `Leg_Board_Width` | `50.8` |  | Width of each board in the L-shaped leg |
+
+### Apron
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Apron_Height` | `203.2` |  | Height of the apron boards |
+| `Apron_Width` | `0` |  | Width of the front and back apron boards (0 = auto) |
+| `Apron_Depth` | `0` |  | Depth of the side apron boards (0 = auto) |
+
+### Plywood
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Board_Thickness` | `19.05` |  | Plywood sheet thickness |
+| `Ply_Count` | `5` | 1 to 10, step 1 | Number of plies for alternating veneer visualization |
+
+<!-- END GENERATED -->

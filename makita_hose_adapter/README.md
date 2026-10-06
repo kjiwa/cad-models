@@ -73,3 +73,24 @@ Outputs are generated in the `build/` subdirectory.
 - **Print Orientation**: Upright on either end section (no supports required).
 - **Walls / Perimeters**: 3 to 4 perimeters for solid walls without infill gaps.
 - **Layer Height**: 0.20 mm or 0.28 mm.
+
+<!-- BEGIN GENERATED -->
+
+## Parameters
+
+### Adapter
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Tool_Port_Diameter` | `34.5` |  | Inside diameter of the tool dust port (the default fits the DeWalt DW618) |
+| `Hose_Port_Diameter` | `37` |  | Inside diameter of the Makita vacuum hose connection |
+| `Wall_Thickness` | `2` |  | Wall thickness of the adapter shell |
+| `End_Length` | `20` |  | Length of each cylindrical end section |
+| `Taper_Length` | `10` |  | Length of the tapered middle section |
+
+## Presets
+
+- `Ryobi_P411`
+- `Kreg_K4`
+
+<!-- END GENERATED -->

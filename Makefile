@@ -3,7 +3,7 @@
 # Discover all subdirectories containing a Makefile (stripped of trailing slash)
 PROJECTS := $(patsubst %/,%,$(dir $(wildcard */Makefile)))
 
-.PHONY: all clean setup dist help $(PROJECTS) stl 3mf preview presets bundle
+.PHONY: all clean setup dist help readme $(PROJECTS) stl 3mf preview presets bundle
 
 all: $(PROJECTS)
 
@@ -26,6 +26,9 @@ dist: all bundle
 	done
 	@echo "==> Packaged distribution artifacts in dist/:"
 	@ls -la dist
+
+readme:
+	@python3 scripts/readme_params.py $(PROJECTS)
 
 clean:
 	@rm -rf dist
@@ -62,6 +65,7 @@ help:
 	@echo "  presets  - Build all parameter presets across models"
 	@echo "  bundle   - Write verified single-file .scad per model into dist/"
 	@echo "  dist     - Build all models and package artifacts, bundles included, into dist/"
+	@echo "  readme   - Regenerate the Parameters and Presets sections of every model README"
 	@echo "  setup    - Symlink lib/ into user OpenSCAD libraries directory"
 	@echo "  clean    - Remove build and dist artifacts"
 	@echo "  <model>  - Build a specific model (e.g. make ryobi_40v_battery_holder)"

@@ -230,3 +230,126 @@ For non-coin ballast, `Include_Ballast_Pocket = false` prints a solid 100% infil
 | **Steel Micro-Shot (2 mm)** | Fill cavity and lock with thin cyanoacrylate (CA) glue | ~15–20 g | **33–38 g (P) / 35–40 g (M)** | Dense, rattle-free composite block; requires liquid CA glue. |
 | **Tungsten Putty** | Press moldable pinewood derby putty into cavity | ~25–35 g | **43–53 g (P) / 45–55 g (M)** | Non-toxic, self-retaining, zero mess, ultra-dense feel. |
 | **Tungsten Super Shot (TSS)** | Pour 1.5–2.5 mm beads and wick with thin CA glue | ~30–45 g | **48–63 g (P) / 50–65 g (M)** | Maximum attainable density; requires CA glue to prevent loose bead spill. |
+
+<!-- BEGIN GENERATED -->
+
+## Parameters
+
+### Part
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Part` | `"dispenser"` | Main Dispenser, Dispenser & Followers, Metal Follower Only, Plastic Follower Only, Both Followers | Part to generate |
+
+### Layout
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Slot_Pattern` | `"MP"` |  | Slot pattern: M for metal blade, P for plastic scraper blade (e.g. "MP", "M", "P", "MMMMPPMMM") |
+| `Tower_Count` | `0` | 0 to 20, step 1 | Number of towers, one per Slot_Pattern character (0 = auto) |
+| `Tower_Height` | `100.0` |  | Total height of the towers and backplate |
+| `Slot_Spacing_Count` | `2` | 2 to 4, step 1 | Tower center-to-center spacing in pegboard holes |
+
+### Blade Chute
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Chute_Width` | `41.0` |  | Blade pocket width (fits 39.15 plastic and 39.9 metal blades) |
+| `Metal_Blade_Packaging` | `"sleeved"` | Paper-Sleeved (22.0 Depth), Bare Unwrapped (19.5 Depth) | Metal blade packaging (sleeved is the standard paper sleeve, bare is an unwrapped blade) |
+| `Sleeved_Metal_Chute_Depth` | `23.0` |  | Blade pocket depth for sleeved metal blades (fits 22.0) |
+| `Bare_Metal_Chute_Depth` | `20.5` |  | Blade pocket depth for bare metal blades (fits 19.5) |
+| `Plastic_Chute_Depth` | `20.0` |  | Blade pocket depth for plastic blades (fits 18.7) |
+| `Metal_Exit_Height` | `1.7` |  | Bottom exit gate height for metal blades (fits a 1.2 sleeved spine) |
+| `Plastic_Exit_Height` | `2.1` |  | Bottom exit gate height for plastic blades (fits a 1.6 blade body) |
+
+### Tower Body
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Floor_Thickness` | `3.5` |  | Thickness of the bottom floor |
+| `Rear_Wall_Thickness` | `3.5` |  | Thickness of the rear wall between chute and backplate |
+| `Front_Wall_Thickness` | `3.5` |  | Thickness of the front wall |
+| `Tower_Corner_Radius` | `4.0` |  | Corner radius of the tower exterior |
+| `Shoulder_Radius` | `4.0` |  | Radius of the top left and right shoulders across the full depth |
+| `Top_Funnel_Chamfer` | `2.5` |  | Lead-in chamfer depth at the top of the chute |
+
+### Front Access
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Front_Shelf_Depth` | `6.0` |  | Forward extension of the front resting shelf |
+| `Finger_Notch_Width` | `22.0` |  | Width of the bottom finger notch |
+| `Finger_Notch_Depth` | `0` |  | Depth of the bottom finger notch, full depth to the chute rear wall (0 = auto) |
+| `Opening_Flare_Width` | `26.0` |  | Bottom width of the flared opening ramp |
+| `Opening_Flare_Height` | `12.0` |  | Height of the flared opening ramp |
+| `Include_Sight_Slots` | `true` |  | Include front vertical sight slots to see the blade inventory |
+| `Sight_Slot_Width` | `20.0` |  | Width of the front sight slot |
+| `Sight_Slot_Top_Chamfer` | `2.0` |  | Lead-in chamfer at the top of the sight slot |
+
+### Badges
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Include_Badges` | `true` |  | Include debossed "METAL" and "PLASTIC" badges on the front face |
+| `Badge_Text_Size` | `3.2` |  | Font size of the badge text |
+| `Badge_Depth` | `0.6` |  | Deboss depth of the badge text |
+
+### Follower
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Coin_Type` | `"penny"` | US/Canadian Penny (19.05), US Nickel (21.21), US/Canadian Quarter (24.26), Custom Pocket Dimensions | Coin used as ballast (sets the cradle size and minimum height) |
+| `Follower_Height` | `0` |  | Follower height, coin diameter plus 2.5 floor (0 = auto) |
+| `Follower_Clearance` | `0.5` |  | Perimeter clearance between the follower and chute pocket |
+| `Follower_Tab_Protrusion` | `1.5` |  | Protrusion of the front indicator tab beyond the dispenser front face |
+| `Include_Ballast_Pocket` | `true` |  | Include an internal ballast pocket for coins or custom ballast |
+| `Custom_Pocket_Width` | `22.0` |  | Ballast pocket width (custom only) |
+| `Custom_Pocket_Depth` | `12.0` |  | Ballast pocket depth (custom only) |
+| `Custom_Pocket_Height` | `8.0` |  | Ballast pocket height (custom only) |
+
+### Backplate
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Backplate_Thickness` | `5.0` |  | Thickness of the mounting backplate |
+| `Insertion_Chamfer` | `2.0` |  | Rear top chamfer that clears the pegboard during insertion |
+
+### Pegboard
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Include_Pegs` | `true` |  | Include rear pegboard retention hooks and stabilizing pins (off for flush wall mounting) |
+| `Hole_Spacing` | `25.4` |  | Pegboard hole center spacing (25.4 for 1" standard, 15.875 for 5/8" metal) |
+| `Pin_Diameter` | `5.7` |  | Pin diameter (5.7 for standard 1/4" hole fit, 6.0 for original Sy fit) |
+| `Pegboard_Thickness` | `6.35` |  | Pegboard thickness (6.35 for 1/4" board, 1.5875 for 1/16" thin metal) |
+| `Retention_Hook_Rise` | `3.5` |  | Height of the retention hook tab behind the pegboard |
+| `Stabilizing_Pin_Pattern` | `"bottom"` | All Rows, Top and Bottom Rows, Top Row Only, Bottom Row Only (Lowest Hole), Retention Hooks Only | Stabilizing pin rows below the retention hooks |
+| `Retention_Hook_Margin` | `6.35` |  | Distance from the backplate top to the retention hooks |
+
+### Screw Holes
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Include_Screw_Holes` | `true` |  | Include countersunk screw clearance holes |
+| `Screw_Hole_Diameter` | `4.5` |  | Screw shank clearance hole diameter (#8 screw) |
+| `Countersink_Diameter` | `9.0` |  | Screw countersink head diameter |
+
+### Preview
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Show_Component` | `"all"` | All Components, Backplate, Dispenser Towers, Negative Chute Space, Retention Hooks, Stabilizing Pins, All Pegs, Gravity Followers | Component to show, or all for the full assembly |
+| `Show_Labels` | `true` |  | Show 3D component labels in preview |
+| `Label_Size` | `4.5` |  | Label text size |
+
+## Presets
+
+- `Single_Metal`
+- `Single_Plastic`
+- `Follower_Metal`
+- `Follower_Plastic`
+- `Followers_Dual`
+- `Followers_Nickel`
+- `Followers_Quarter`
+
+<!-- END GENERATED -->
