@@ -7,8 +7,8 @@
 // Width of the mounting plate
 Plate_Width = 152.4;
 
-// Height of the mounting plate
-Plate_Height = 101.6;
+// Depth of the mounting plate
+Plate_Depth = 101.6;
 
 // Thickness of the mounting plate
 Plate_Thickness = 6.35;
@@ -16,25 +16,12 @@ Plate_Thickness = 6.35;
 // Chamfer size along the top edges
 Edge_Chamfer = 3.175;
 
-/* [Screw Holes] */
-// Diameter of the wall screw holes and bracket screw holes through the boss (4.7625 for #8 screws)
-Screw_Hole_Diameter = 4.7625;
-
-// Number of wall screw holes per side
-Holes_Per_Side = 2; // [1:1:10]
-
-// Vertical center-to-center distance between the outermost holes on each side
-Hole_Span = 76.2;
-
-// Distance from the side edge to the screw hole centers
-Hole_Edge_Inset = 12.7;
-
 /* [Nut Boss] */
 // Width of the boss block
 Boss_Width = 12.7;
 
-// Height of the boss block
-Boss_Height = 38.1;
+// Depth of the boss block
+Boss_Depth = 38.1;
 
 // Rear protrusion of the boss block
 Boss_Thickness = 6.35;
@@ -54,12 +41,25 @@ Nut_Width_Across_Flats = 8.334375;
 // Depth of each hex nut pocket
 Nut_Pocket_Depth = 3.175;
 
+/* [Screw Holes] */
+// Diameter of the wall screw holes and bracket screw holes through the boss (4.7625 for #8 screws)
+Screw_Hole_Diameter = 4.7625;
+
+// Number of wall screw holes per side
+Hole_Count = 2; // [1:1:10]
+
+// Vertical center-to-center distance between the outermost holes per side
+Hole_Span = 76.2;
+
+// Distance from the side edge to the screw hole centers
+Hole_Edge_Inset = 12.7;
+
 /* [Hidden] */
 $fn = 64;
 EPSILON = 0.254;
 
 // Generates the base plate with top-edge chamfers via convex hull.
-module chamfered_plate(width = Plate_Width, height = Plate_Height, thickness = Plate_Thickness, chamfer = Edge_Chamfer) {
+module chamfered_plate(width = Plate_Width, height = Plate_Depth, thickness = Plate_Thickness, chamfer = Edge_Chamfer) {
   if (chamfer > 0 && chamfer < min(width / 2, height / 2, thickness)) {
     hull() {
       translate([0, 0, (thickness - chamfer) / 2])
@@ -74,7 +74,7 @@ module chamfered_plate(width = Plate_Width, height = Plate_Height, thickness = P
 }
 
 // Generates wall mounting screw clearance holes along left and right margins.
-module mounting_hole_pattern(width = Plate_Width, thickness = Plate_Thickness, hole_dia = Screw_Hole_Diameter, side_margin = Hole_Edge_Inset, count = Holes_Per_Side, spacing = Hole_Span) {
+module mounting_hole_pattern(width = Plate_Width, thickness = Plate_Thickness, hole_dia = Screw_Hole_Diameter, side_margin = Hole_Edge_Inset, count = Hole_Count, spacing = Hole_Span) {
   x_positions = [-width / 2 + side_margin, width / 2 - side_margin];
 
   for (x = x_positions) {
@@ -92,7 +92,7 @@ module mounting_hole_pattern(width = Plate_Width, thickness = Plate_Thickness, h
 }
 
 // Generates the raised rear boss block to house hex nuts for bracket mounting screws.
-module hex_nut_boss(width = Boss_Width, height = Boss_Height, thickness = Boss_Thickness, x_offset = Boss_Offset) {
+module hex_nut_boss(width = Boss_Width, height = Boss_Depth, thickness = Boss_Thickness, x_offset = Boss_Offset) {
   translate([x_offset, 0, -thickness / 2])
     cube([width, height, thickness], center = true);
 }
