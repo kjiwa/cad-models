@@ -87,7 +87,6 @@ Stabilizing_Pin_Pattern = "all"; // [all: All Rows, top_and_bottom: Top and Bott
 
 /* [Hidden] */
 $fn = 128;
-EPSILON = 0.02;
 
 assert(Columns >= 1, "Columns must be at least 1");
 assert(Rows >= 1, "Rows must be at least 1");

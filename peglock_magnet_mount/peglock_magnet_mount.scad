@@ -65,7 +65,7 @@ assert(Corner_Radius >= 0, "Corner_Radius must not be negative");
 pitch = Magnet_Diameter + Magnet_Spacing;
 gridWidth = Columns * pitch + Magnet_Spacing;
 gridHeight = Rows * pitch + Magnet_Spacing;
-assert(2 * Corner_Radius <= min(gridWidth, gridHeight, Magnet_Depth), "Corner_Radius is too large for the magnet slab");
+assert(2 * Corner_Radius <= min(gridWidth, gridHeight), "Corner_Radius is too large for the magnet slab");
 
 holeColumns = board_hole_columns(Mount_Type, Hole_Columns, gridWidth, Hole_Spacing, Pin_Diameter);
 backerSize = board_mount_size(Mount_Type, [gridWidth, gridHeight + 2 * SOCKET_ROUNDOVER], holeColumns, Hole_Spacing, Pin_Diameter);

@@ -39,7 +39,7 @@ Nut_Recess_Radius = 6.25;
 
 /* [Reinforcement] */
 // Reinforcement between the top and bottom plates
-Reinforcement_Style = "flared_ribs"; // [flared_ribs: Flared Ribs, conical_vault: Conical Vault, none: None]
+Reinforcement_Style = "flared_ribs"; // [flared_ribs: Flared Ribs, conical_vault: Conical Vault, none: Straight Webs]
 
 // Thickness of the crossed vertical webs
 Web_Thickness = 3.6;
@@ -97,7 +97,7 @@ $fn = 128;
 supportHeight = Height - Top_Thickness - Bottom_Thickness;
 supportCutoutHeight = supportHeight - Nut_Recess_Height - 2 * Arch_End_Margin;
 
-module centeredRoundedCylinderEnd(d, h, cr) {
+module centeredRoundedCylinderEnd(d, cr) {
   cylinder(d=d - (2 * cr), h=2 * cr, center=true);
   rotate_extrude(angle=360) translate([(d / 2) - cr, 0]) circle(r=cr);
 }
@@ -106,8 +106,8 @@ module roundedCylinder(d, h, cr, center=false) {
   translate([0, 0, center ? 0 : h / 2]) {
     innerHeight = h - 2 * cr;
     cylinder(d=d, h=innerHeight, center=true);
-    translate([0, 0, -innerHeight / 2]) centeredRoundedCylinderEnd(d, h, cr);
-    translate([0, 0, innerHeight / 2]) centeredRoundedCylinderEnd(d, h, cr);
+    translate([0, 0, -innerHeight / 2]) centeredRoundedCylinderEnd(d, cr);
+    translate([0, 0, innerHeight / 2]) centeredRoundedCylinderEnd(d, cr);
   }
 }
 

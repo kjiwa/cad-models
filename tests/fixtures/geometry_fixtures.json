@@ -906,21 +906,21 @@
     "scad": "pipe_clamp_wall_mount/pipe_clamp_wall_mount.scad",
     "params": {},
     "expect": {
-      "triangles": 5580,
-      "volume_mm3": 102298.0,
+      "triangles": 7928,
+      "volume_mm3": 100807.1,
       "bbox_size_mm": [
         25.4,
         41.27,
-        180.97
+        182.56
       ],
       "section_areas_mm2": [
-        37.1,
-        170.4,
-        96.0,
-        13.5,
-        148.1,
-        329.4,
-        26.0
+        96.1,
+        74.9,
+        150.4,
+        85.1,
+        78.5,
+        177.9,
+        335.4
       ]
     }
   },
@@ -928,21 +928,21 @@
     "scad": "wheel_tread_cover/wheel_tread_cover.scad",
     "params": {},
     "expect": {
-      "triangles": 6512,
-      "volume_mm3": 68279.3,
+      "triangles": 45720,
+      "volume_mm3": 69461.6,
       "bbox_size_mm": [
         177.8,
         177.8,
-        52.39
+        52.77
       ],
       "section_areas_mm2": [
-        5169.1,
-        9923.6,
-        7753.1,
-        0.0,
-        2292.8,
-        3559.6,
-        1729.9
+        3982.2,
+        4998.1,
+        954.7,
+        2231.3,
+        220.5,
+        2115.7,
+        2706.0
       ]
     }
   },
@@ -950,47 +950,47 @@
     "scad": "keyhole_router_template/keyhole_router_template.scad",
     "params": {},
     "expect": {
-      "triangles": 2832,
-      "volume_mm3": 81991.4,
+      "triangles": 3452,
+      "volume_mm3": 81612.3,
       "bbox_size_mm": [
         228.6,
         76.2,
         6.35
       ],
       "section_areas_mm2": [
-        13362.8,
-        14264.2,
-        15616.4,
-        17419.3,
-        19222.2,
-        20574.4,
-        21475.9
+        13303.1,
+        14204.5,
+        15556.7,
+        17359.6,
+        19162.5,
+        20514.7,
+        21416.2
       ]
     }
   },
   "keyhole_router_template_edge_guide": {
     "scad": "keyhole_router_template/keyhole_router_template.scad",
     "params": {
-      "Style": "edge_guide",
+      "Style": "\"edge_guide\"",
       "Plate_Width": "152.4",
-      "Plate_Depth": "38.1"
+      "Workpiece_Width": "31.75"
     },
     "expect": {
-      "triangles": 976,
-      "volume_mm3": 37284.3,
+      "triangles": 1616,
+      "volume_mm3": 36742.2,
       "bbox_size_mm": [
         152.4,
         38.1,
         12.7
       ],
       "section_areas_mm2": [
-        2093.9,
-        1047.0,
-        523.5,
+        344.8,
+        224.8,
+        44.8,
         0.0,
-        0.0,
-        0.0,
-        0.0
+        315.3,
+        945.1,
+        1785.5
       ]
     }
   },
@@ -1039,6 +1039,81 @@
         30.9,
         11.6,
         52.6
+      ]
+    }
+  },
+  "wheel_tread_cover_no_wrap": {
+    "scad": "wheel_tread_cover/wheel_tread_cover.scad",
+    "params": {
+      "Wrap_Angle": "0"
+    },
+    "expect": {
+      "triangles": 20256,
+      "volume_mm3": 68222.7,
+      "bbox_size_mm": [
+        177.8,
+        177.8,
+        52.39
+      ],
+      "section_areas_mm2": [
+        4284.8,
+        4732.7,
+        162.5,
+        0.0,
+        434.5,
+        1573.6,
+        1153.4
+      ]
+    }
+  },
+  "keyhole_router_template_edge_guide_long": {
+    "scad": "keyhole_router_template/keyhole_router_template.scad",
+    "params": {
+      "Style": "\"edge_guide\"",
+      "Fenced_Slot": "\"long\"",
+      "Plate_Width": "228.6",
+      "Workpiece_Width": "31.75"
+    },
+    "expect": {
+      "triangles": 1624,
+      "volume_mm3": 46824.1,
+      "bbox_size_mm": [
+        228.6,
+        38.1,
+        12.7
+      ],
+      "section_areas_mm2": [
+        805.9,
+        467.5,
+        40.0,
+        0.0,
+        133.6,
+        654.8,
+        1180.5
+      ]
+    }
+  },
+  "pipe_clamp_wall_mount_single": {
+    "scad": "pipe_clamp_wall_mount/pipe_clamp_wall_mount.scad",
+    "params": {
+      "Holder_Count": "1"
+    },
+    "expect": {
+      "triangles": 2024,
+      "volume_mm3": 35029.0,
+      "bbox_size_mm": [
+        25.4,
+        41.27,
+        58.74
+      ],
+      "section_areas_mm2": [
+        65.2,
+        115.7,
+        55.1,
+        204.9,
+        18.7,
+        355.7,
+        31.0
       ]
     }
   }

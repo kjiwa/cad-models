@@ -89,22 +89,13 @@ module socket_cutout(width = SOCKET_WIDTH, height = SOCKET_HEIGHT, depth = SOCKE
   mirrored_pair() socket_half_cutout(width = width, height = height, depth = depth);
 }
 
-// Compatibility wrapper for callers still using the legacy `holder()` name.
-module holder(is_cutting = true) {
-  if (is_cutting) {
-    socket_cutout();
-  } else {
-    socket_half_cutout(lead_in = 0, clearance = 0);
-  }
-}
-
 // Row of evenly spaced socket cutouts for a multi-position mounting base.
-module socket_row(count = 1, width = SOCKET_WIDTH, spacing = SOCKET_SPACING) {
+module socket_row(count = 1, width = SOCKET_WIDTH, spacing = SOCKET_SPACING, height = SOCKET_HEIGHT, depth = SOCKET_DEPTH) {
   translate([width / 2, 0, 0])
     for (i = [1 : count]) {
       translate([(i - 1) * spacing, 0, 0])
         mirror([0, 1, 0])
-        socket_cutout();
+        socket_cutout(width = width, height = height, depth = depth);
     }
 }
 
@@ -124,7 +115,7 @@ module PeglockBase(
     difference() {
       translate([x / 2, -depth / 2, height / 2])
         cuboid([x, depth, height], rounding = roundover, except = [FRONT, BACK]);
-      socket_row(count = count, width = width, spacing = spacing);
+      socket_row(count = count, width = width, spacing = spacing, height = height, depth = depth);
     }
 }
 

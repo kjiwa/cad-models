@@ -85,6 +85,10 @@ class MagnetMountTestCase(unittest.TestCase):
         tris = render({"Corner_Radius": "0"})
         self.assertFalse(contains(tris, stl_point(0, 1.75, 0)))
 
+    def test_corner_radius_above_half_depth_renders(self):
+        tris = render({"Columns": "1", "Rows": "1", "Magnet_Depth": "1", "Corner_Radius": "3"})
+        self.assertTrue(contains(tris, stl_point(0, -PLATE / 2, 0)))
+
     def test_bad_counts_assert(self):
         for param in ("Columns", "Rows"):
             with self.subTest(param=param):

@@ -5,7 +5,7 @@ A parametric model of an entryway table designed for plywood construction with a
 ## Features
 
 - Layered plywood boards with alternating veneer colors, for visualization.
-- Four L-shaped legs of two boards each, with a 3.75 degree taper on the lower inner face and an accent groove below the apron.
+- Four legs of two laminated boards each, with a 3.75 degree taper on the lower inner face and an accent groove below the apron.
 - Front, back, and side apron boards; `Apron_Width` and `Apron_Depth` default to the span between the legs.
 
 <!-- BEGIN GENERATED -->
@@ -25,7 +25,7 @@ A parametric model of an entryway table designed for plywood construction with a
 | Parameter | Default | Options | Description |
 | --- | --- | --- | --- |
 | `Leg_Height` | `914.4` |  | Leg height from floor to underside of the top |
-| `Leg_Board_Width` | `50.8` |  | Width of each board in the L-shaped leg |
+| `Leg_Board_Width` | `50.8` |  | Width of each of the two laminated boards forming a leg |
 
 ### Apron
 

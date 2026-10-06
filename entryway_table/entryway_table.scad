@@ -17,7 +17,7 @@ Top_Overhang = 38.1;
 // Leg height from floor to underside of the top
 Leg_Height = 914.4;
 
-// Width of each board in the L-shaped leg
+// Width of each of the two laminated boards forming a leg
 Leg_Board_Width = 50.8;
 
 /* [Apron] */
@@ -39,6 +39,8 @@ Ply_Count = 5; // [1:1:10]
 
 /* [Hidden] */
 APRON_SIDE_INSET = 76.2;
+ACCENT_GROOVE_DEPTH = 3.175;
+ACCENT_GROOVE_DROP = 38.1;
 apron_width = (Apron_Width > 0) ? Apron_Width : (Top_Width - 2 * Top_Overhang - 2 * Leg_Board_Width);
 apron_depth = (Apron_Depth > 0) ? Apron_Depth : (Top_Depth - 2 * Top_Overhang - APRON_SIDE_INSET);
 
@@ -64,7 +66,7 @@ module top() {
   board(Top_Width, Top_Depth);
 }
 
-// Assembles an L-shaped corner leg from two perpendicular boards.
+// Assembles a leg from two boards laminated face to face.
 module leg() {
   translate([0, 0, Leg_Height / 2]) rotate([0, 90, 90]) {
     translate([0, 0, -Board_Thickness]) board(Leg_Height, Leg_Board_Width);
@@ -79,24 +81,15 @@ module leg_with_angle() {
 
     // Cut from the middle of the bottom of the leg at a 3.75 degree angle
     // towards the inner (left) edge.
-    rotate([0, -90 / 24, 0]) translate([-50.8, -38.1, 0]) cube([Leg_Board_Width, 76.2, Leg_Height]);
+    rotate([0, -90 / 24, 0]) translate([-Leg_Board_Width, -2 * Board_Thickness, 0]) cube([Leg_Board_Width, 4 * Board_Thickness, Leg_Height]);
   }
 }
 
 // Rectangular perimeter cutter for decorative accent grooves.
 module leg_ring() {
-  linear_extrude(height=3.175) difference() {
-    square([101.6, 76.2], center=true);
-    square([44.45, 31.75], center=true);
-  }
-}
-
-// Leg with upper and lower decorative accent grooves.
-module leg_with_rings() {
-  difference() {
-    leg();
-    translate([0, 0, Leg_Height - Apron_Height - 38.1]) leg_ring();
-    translate([0, 0, 114.3]) leg_ring();
+  linear_extrude(height=ACCENT_GROOVE_DEPTH) difference() {
+    square([2 * Leg_Board_Width, 4 * Board_Thickness], center=true);
+    square([Leg_Board_Width - 2 * ACCENT_GROOVE_DEPTH, 2 * Board_Thickness - 2 * ACCENT_GROOVE_DEPTH], center=true);
   }
 }
 
@@ -104,7 +97,7 @@ module leg_with_rings() {
 module leg_with_angle_and_ring() {
   difference() {
     leg_with_angle();
-    translate([0, 0, Leg_Height - Apron_Height - 38.1]) leg_ring();
+    translate([0, 0, Leg_Height - Apron_Height - ACCENT_GROOVE_DROP]) leg_ring();
   }
 }
 
