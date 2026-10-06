@@ -972,8 +972,8 @@
     "scad": "keyhole_router_template/keyhole_router_template.scad",
     "params": {
       "Style": "edge_guide",
-      "Plate_Length": "152.4",
-      "Plate_Width": "38.1"
+      "Plate_Width": "152.4",
+      "Plate_Depth": "38.1"
     },
     "expect": {
       "triangles": 976,
