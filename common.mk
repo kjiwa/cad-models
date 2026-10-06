@@ -12,7 +12,7 @@ BUILD_DIR ?= build
 OPENSCAD_BACKEND := $(shell $(OPENSCAD) --help 2>&1 | grep -q -- '--backend' && echo '--backend=Manifold' || ($(OPENSCAD) --help 2>&1 | grep -q 'manifold' && echo '--enable=manifold'))
 
 OPENSCAD_FLAGS ?= --render $(OPENSCAD_BACKEND)
-RENDER_FLAGS   ?= --autocenter --viewall --imgsize=1024,768 --colorscheme=Tomorrow
+RENDER_FLAGS   ?= --camera=0,0,0,55,0,25,0 --autocenter --viewall --projection=o --imgsize=1024,768 --colorscheme=Tomorrow
 
 ONESCAD ?= uvx onescad==0.3.0
 DIST_DIR ?= $(REPO_ROOT)/dist
