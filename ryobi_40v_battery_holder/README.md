@@ -115,7 +115,7 @@ All lengths are in millimeters unless noted.
 | `Pegboard_Thickness` | `6.35` | | Pegboard thickness (6.35 for 1/4" board, 1.5875 for 1/16" thin metal) |
 | `Retention_Hook_Rise` | `3.5` | | Height of the retention hook tab behind the pegboard |
 | `Retention_Hook_Margin` | `6.35` | | Distance from the backplate top to the retention hooks |
-| `Stabilizing_Pin_Pattern` | `all` | `all`, `span_2`, `span_1` | Stabilizing pins below the retention hooks |
+| `Stabilizing_Pin_Pattern` | `all` | `all`, `top_and_bottom`, `top`, `bottom`, `none` | Stabilizing pin rows below the retention hooks (`bottom` is the lowest hole; the centre column skips the top row when screw holes are on) |
 
 ### `[Screw Holes]`
 | Parameter | Default | Description |
