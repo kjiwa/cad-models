@@ -48,20 +48,20 @@ All dimensions are in millimeters unless otherwise noted.
 |---|---|---|
 | `Part` | `"riser"` | Component to render: `"riser"` or `"nut"` |
 
-### `[Riser Body]`
+### `[Body]`
 | Parameter | Default | Description |
 |---|---|---|
-| `Riser_Height` | `152.4` | Overall riser height (152.4 for 6", 133.35 for 5.25") |
-| `Riser_Diameter` | `66` | Outside diameter of the riser body |
+| `Height` | `152.4` | Overall riser height (152.4 for 6", 133.35 for 5.25") |
+| `Diameter` | `66` | Outside diameter of the riser body |
 
-### `[Riser Top]`
+### `[Top]`
 | Parameter | Default | Description |
 |---|---|---|
 | `Top_Thickness` | `4` | Thickness of the top plate |
 | `Stud_Base_Diameter` | `15` | Diameter of the raised boss under the threaded stud |
 | `Stud_Base_Height` | `6` | Height of the raised boss under the threaded stud |
 
-### `[Riser Bottom]`
+### `[Bottom]`
 | Parameter | Default | Description |
 |---|---|---|
 | `Bottom_Thickness` | `6` | Thickness of the bottom plate |
