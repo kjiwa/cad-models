@@ -101,7 +101,7 @@ Badge_Depth = 0.6;
 // Coin used as ballast (sets the cradle size and minimum height)
 Coin_Type = "penny"; // [penny: US/Canadian Penny (19.05), nickel: US Nickel (21.21), quarter: US/Canadian Quarter (24.26), custom: Custom Pocket Dimensions]
 
-// Follower height, coin diameter plus 2.5 floor (0 = auto)
+// Follower height, coin diameter plus 2.95 (0 = auto)
 Follower_Height = 0;
 
 // Perimeter clearance between the follower and chute pocket
@@ -152,7 +152,7 @@ Stabilizing_Pin_Pattern = "bottom"; // [all: All Rows, top_and_bottom: Top and B
 Retention_Hook_Margin = 6.35;
 
 /* [Screw Holes] */
-// Include countersunk screw clearance holes
+// Include countersunk screw clearance holes between towers (2 or more towers)
 Include_Screw_Holes = true;
 
 // Screw shank clearance hole diameter (#8 screw)
@@ -194,7 +194,6 @@ z_top_peg = z_plate_top - Retention_Hook_Margin;
 lowest_peg_k = max(floor((z_top_peg - Pin_Diameter / 2 - 2.0) / Hole_Spacing), 1);
 
 badge_z_position = Tower_Height - 18.0;
-sight_slot_z_start = Floor_Thickness;
 sight_slot_z_end = Tower_Height + EPSILON;
 
 include <components/labels.scad>

@@ -3,15 +3,15 @@
  */
 
 DEFAULT_PIN_DIAMETER = 5.7;
-DEFAULT_PEGBOARD_THICKNESS = 6.35;
-DEFAULT_HOOK_RISE = 3.5;
+PEGBOARD_DEFAULT_THICKNESS = 6.35;
+PEGBOARD_DEFAULT_HOOK_RISE = 3.5;
 DEFAULT_BACKPLATE_THICKNESS = 5.0;
 
 // Generates an upper retention hook with contoured bend, heel relief, and lead-in chamfer.
 module pegboard_upper_hook(
   pin_d = DEFAULT_PIN_DIAMETER,
-  board_t = DEFAULT_PEGBOARD_THICKNESS,
-  rise = DEFAULT_HOOK_RISE,
+  board_t = PEGBOARD_DEFAULT_THICKNESS,
+  rise = PEGBOARD_DEFAULT_HOOK_RISE,
   backplate_t = DEFAULT_BACKPLATE_THICKNESS,
   eps = 0.02
 ) {
@@ -72,7 +72,7 @@ function pegboard_pin_rows(pattern, lowest, skip = []) =
 // Generates a lower stabilizing pin with a lead-in insertion chamfer.
 module pegboard_lower_pin(
   pin_d = DEFAULT_PIN_DIAMETER,
-  board_t = DEFAULT_PEGBOARD_THICKNESS,
+  board_t = PEGBOARD_DEFAULT_THICKNESS,
   chamfer = 1.2,
   backplate_t = DEFAULT_BACKPLATE_THICKNESS,
   eps = 0.02

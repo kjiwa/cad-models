@@ -9,6 +9,10 @@ import unittest
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, os.path.join(REPO_ROOT, "scripts"))
+sys.path.insert(0, os.path.dirname(__file__))
+
+from geometry_fingerprint import read_stl_triangles  # noqa: E402
+from mesh_probe import contains  # noqa: E402
 
 
 def _eval_scad_expr(expr):
@@ -70,7 +74,7 @@ class PeglockScalingTestCase(unittest.TestCase):
         self.assertLess(low_mid, low_thick)
 
     def test_thin_metal_renders_distinct_geometry(self):
-        from geometry_fingerprint import fingerprint, read_stl_triangles
+        from geometry_fingerprint import fingerprint
 
         scad_path = os.path.join(REPO_ROOT, "peglock_attachment", "peglock_attachment.scad")
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -95,6 +99,24 @@ class PeglockScalingTestCase(unittest.TestCase):
             self.assertNotEqual(fp_079["bbox_size_mm"][0], fp_119["bbox_size_mm"][0])
             self.assertNotEqual(fp_079["volume_mm3"], fp_119["volume_mm3"])
             self.assertGreater(fp_119["volume_mm3"], fp_079["volume_mm3"])
+
+
+@unittest.skipUnless(shutil.which("openscad"), "openscad binary not found on PATH")
+class PeglockBaseSocketTestCase(unittest.TestCase):
+    def test_socket_follows_base_depth(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            scad_path = os.path.join(tmpdir, "base.scad")
+            stl_path = os.path.join(tmpdir, "base.stl")
+            with open(scad_path, "w") as f:
+                f.write("include <peglock/peglock.scad>\nPeglockBase(depth = 10);\n")
+            subprocess.run(
+                ["openscad", "-o", stl_path, scad_path],
+                env=dict(os.environ, OPENSCADPATH=os.path.join(REPO_ROOT, "lib")),
+                check=True,
+                capture_output=True,
+            )
+            tris = read_stl_triangles(stl_path)
+        self.assertFalse(contains(tris, (3.5, -7.0, -15.0)), "socket is shallower than the base")
 
 
 if __name__ == "__main__":

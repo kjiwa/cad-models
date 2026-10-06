@@ -33,7 +33,7 @@ Parametric, 3D-printable tool hooks and socket racks for Sy's Peglock modular pe
 | `Arm_Depth` | `6.35` |  | Depth of the hook arm from the backplate to the lip |
 | `Arm_Height` | `6.35` |  | Height of the hook arm |
 | `Arm_Tilt_Angle` | `0` | 0 to 45, step 5 | Upward tilt of the hook arm in degrees (0 to disable) |
-| `Arm_Edge_Radius` | `1.5875` |  | Radius of the rounded arm edges |
+| `Arm_Edge_Radius` | `1.5875` |  | Radius of the rounded arm edges (0 to disable) |
 | `Root_Fillet_Radius` | `0` |  | Stress relief fillet radius at the arm root (0 to disable) |
 | `Hook_Count` | `1` | 1 to 5, step 1 | Number of hooks chained along each arm |
 

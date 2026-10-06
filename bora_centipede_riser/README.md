@@ -51,7 +51,7 @@ Also posted on [Printables](https://www.printables.com/model/890834-bora-centipe
 
 | Parameter | Default | Options | Description |
 | --- | --- | --- | --- |
-| `Reinforcement_Style` | `"flared_ribs"` | Flared Ribs, Conical Vault, None | Reinforcement between the top and bottom plates |
+| `Reinforcement_Style` | `"flared_ribs"` | Flared Ribs, Conical Vault, Straight Webs | Reinforcement between the top and bottom plates |
 | `Web_Thickness` | `3.6` |  | Thickness of the crossed vertical webs |
 | `Arch_Inner_Diameter` | `46` |  | Diameter of the arched cutouts between the webs |
 | `Arch_End_Margin` | `4` |  | Distance from each plate to the ends of the arched cutouts |
@@ -107,7 +107,7 @@ Also posted on [Printables](https://www.printables.com/model/890834-bora-centipe
 
 ### `conical_vault` (architectural column)
 
-- **Aesthetic**: Classical column capital and plinth. Under the top plate, a continuous 45 degree cone flares from 36 mm to 66 mm; above the bottom plate, a matching inverted cone tapers from 66 mm to 40 mm. The centre between the cones stays open.
+- **Aesthetic**: Classical column capital and plinth. Under the top plate, a continuous cone at 62 degrees from the vertical axis (15 mm of flare over 8 mm of height) flares from 36 mm to 66 mm; above the bottom plate, a matching inverted cone tapers from 66 mm to 40 mm. The centre between the cones stays open.
 - **Mechanics**: Highest bending and shear strength (5x to 8x over unreinforced). The 360 degree vault supports the whole rim of the top plate, preventing plate flexure or peeling under off-axis forces from dog clamps, edge vises, or workpieces. At the base, the cone acts as a rigid collar around the nut cavity.
 - **Filament**: 111.5 cm3 (~138 g solid PLA, ~65 g sliced at 20% infill), ~25 g more than unreinforced.
 - **Best for**: Heavy-duty use with lateral racking, heavy timber, or off-axis clamping forces.

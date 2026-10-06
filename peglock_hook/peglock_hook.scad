@@ -34,7 +34,7 @@ Arm_Height = 6.35;
 // Upward tilt of the hook arm in degrees (0 to disable)
 Arm_Tilt_Angle = 0; // [0:5:45]
 
-// Radius of the rounded arm edges
+// Radius of the rounded arm edges (0 to disable)
 Arm_Edge_Radius = 1.5875;
 
 // Stress relief fillet radius at the arm root (0 to disable)
@@ -81,7 +81,6 @@ Stabilizing_Pin_Pattern = "all"; // [all: All Rows, top_and_bottom: Top and Bott
 
 /* [Hidden] */
 $fn = 128;
-EPSILON = 0.02;
 
 assert(Columns >= 1, "Columns must be at least 1");
 assert(Rows >= 1, "Rows must be at least 1");
@@ -91,8 +90,6 @@ assert(Hole_Columns >= 0, "Hole_Columns must not be negative");
 assert(Hole_Columns == floor(Hole_Columns), "Hole_Columns must be an integer");
 assert(Hole_Columns <= 10, "Hole_Columns must be at most 10");
 
-overallHookHeight = Arm_Height + 2 * Lip_Height;
-overallHookWidth = Arm_Width;
 gridWidth = (Columns - 1) * Column_Spacing + Arm_Width;
 gridHeight = (Rows - 1) * Row_Spacing + Arm_Height;
 
@@ -141,10 +138,14 @@ module RoundedTriangle(w, h, r = 0) {
 module RoundedRightTriangle(l, h, d, cr) {
   translate([-l / 2, 0, h / 2])
     rotate([-90, 0, 0])
-    hull() {
-      translate([l - cr, h - cr]) cylinder(r=cr, h=d);
-      translate([cr, h - cr]) cylinder(r=cr, h=d);
-      translate([cr, cr]) cylinder(r=cr, h=d);
+    if (cr <= 0) {
+      linear_extrude(d) polygon([[0, 0], [0, h], [l, h]]);
+    } else {
+      hull() {
+        translate([l - cr, h - cr]) cylinder(r=cr, h=d);
+        translate([cr, h - cr]) cylinder(r=cr, h=d);
+        translate([cr, cr]) cylinder(r=cr, h=d);
+      }
     }
 }
 

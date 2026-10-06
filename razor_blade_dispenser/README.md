@@ -11,7 +11,7 @@ A parametric, 3D-printable pegboard dispenser for single-edge utility razor blad
 - A 20 mm open-top front channel lets a finger support the bottom of a blade stack, and the bottom channel runs to the chute rear wall so the bottom blade can be pushed forward onto the front shelf for pinch-grip extraction.
 - A bellmouth opening blends from the vertical sight slot into the exit gate for thumb feed, and full-height sight slots show the remaining blades.
 - Drop-in gravity followers press on the blade stack. Each has a top pull fin, a front indicator tab, debossed badges, and a cylindrical coin cradle for ballast.
-- Standard 1/4" pegboard hooks with heel relief and stabilizing pins, or countersunk #8 screw holes with front driver tunnels for flush mounting (`Include_Pegs`).
+- Standard 1/4" pegboard hooks with heel relief and stabilizing pins, or countersunk #8 screw holes between towers (2 or more towers) with front driver tunnels for flush mounting (`Include_Pegs`). Single-tower dispensers mount on pegs.
 - Backplate with top-rear tilt insertion chamfer, rounded corners, and weight-relief windows.
 
 <!-- BEGIN GENERATED -->
@@ -82,7 +82,7 @@ A parametric, 3D-printable pegboard dispenser for single-edge utility razor blad
 | Parameter | Default | Options | Description |
 | --- | --- | --- | --- |
 | `Coin_Type` | `"penny"` | US/Canadian Penny (19.05), US Nickel (21.21), US/Canadian Quarter (24.26), Custom Pocket Dimensions | Coin used as ballast (sets the cradle size and minimum height) |
-| `Follower_Height` | `0` |  | Follower height, coin diameter plus 2.5 floor (0 = auto) |
+| `Follower_Height` | `0` |  | Follower height, coin diameter plus 2.95 (0 = auto) |
 | `Follower_Clearance` | `0.5` |  | Perimeter clearance between the follower and chute pocket |
 | `Follower_Tab_Protrusion` | `1.5` |  | Protrusion of the front indicator tab beyond the dispenser front face |
 | `Include_Ballast_Pocket` | `true` |  | Include an internal ballast pocket for coins or custom ballast |
@@ -113,7 +113,7 @@ A parametric, 3D-printable pegboard dispenser for single-edge utility razor blad
 
 | Parameter | Default | Options | Description |
 | --- | --- | --- | --- |
-| `Include_Screw_Holes` | `true` |  | Include countersunk screw clearance holes |
+| `Include_Screw_Holes` | `true` |  | Include countersunk screw clearance holes between towers (2 or more towers) |
 | `Screw_Hole_Diameter` | `4.5` |  | Screw shank clearance hole diameter (#8 screw) |
 | `Countersink_Diameter` | `9.0` |  | Screw countersink head diameter |
 

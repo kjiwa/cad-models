@@ -73,7 +73,12 @@ Slot_Corner_Radius = 1.5;
 /* [Hidden] */
 $fn = 128;
 
-module roundedCube(x, y, z, r) {
+assert(2 * Side_Relief_Depth < Depth, "Side_Relief_Depth must be less than half of Depth");
+assert(Bore_Setback + Bore_Diameter + Slot_Gap < Width, "Bore_Setback + Bore_Diameter + Slot_Gap must be less than Width");
+assert(Bore_Depth < Height, "Bore_Depth must be less than Height");
+assert(Rear_Cutout_Height < Height, "Rear_Cutout_Height must be less than Height");
+
+module RoundedCube(x, y, z, r) {
   hull() {
     translate([r, r, 0]) cylinder(r=r, h=z);
     translate([x - r, r, 0]) cylinder(r=r, h=z);
@@ -82,12 +87,12 @@ module roundedCube(x, y, z, r) {
   }
 }
 
-module body() {
+module Body() {
   translate([0, 0, Height / 2])
     cube([Width, Depth, Height], center=true);
 }
 
-module frontCutout() {
+module FrontCutout() {
   x = Front_Cutout_Depth + 1;
   y = Depth + 2;
   z = Height + 1;
@@ -95,18 +100,18 @@ module frontCutout() {
     cube([x, y , z]);
 }
 
-module frontAngledCutout() {
-  x = Height * sqrt(2) / 2 + 1;
+module FrontAngledCutout() {
+  x = Height + 1;
   y = Depth + 1;
-  z = Height * sqrt(2) + 1;
+  z = 2 * Height + Front_Cutout_Drop + 1;
 
   translate([(Width / 2) - Height, 0, -Front_Cutout_Drop])
-    rotate([0, 90 - Front_Cutout_Angle, 0])
+    rotate([0, Front_Cutout_Angle, 0])
     translate([x / 2, 0, z / 2])
     cube([x, y, z], center=true);
 }
 
-module rearCutout() {
+module RearCutout() {
   x = Rear_Cutout_Depth + 1;
   y = Depth + 1;
   z = Rear_Cutout_Height + 1;
@@ -115,7 +120,7 @@ module rearCutout() {
     cube([x, y, z]);
 }
 
-module topSideAngledCutouts() {
+module TopSideAngledCutouts() {
   a = atan(Side_Slope_Rise / Side_Slope_Run);
   x = Width;
   y = Depth + 1;
@@ -127,62 +132,64 @@ module topSideAngledCutouts() {
   }
 }
 
-module topSideCutouts() {
+module TopSideCutouts() {
   x = Width + 1;
   y = Side_Relief_Depth + 1;
   z = Height - Rear_Cutout_Height + 1;
 
-  topSideAngledCutouts();
+  TopSideAngledCutouts();
   translate([-(Width + 1) / 2, 0, Rear_Cutout_Height]) {
     translate([0, -(Depth / 2) - 1, 0]) cube([x, y, z]);
     translate([0, (Depth / 2) - Side_Relief_Depth, 0]) cube([x, y, z]);
   }
 }
 
-module topCylindricalCutout() {
+module TopCylindricalCutout() {
   dx = ((Bore_Diameter - Width) / 2) + Bore_Setback;
   dz = Height - Bore_Depth;
   translate([dx, 0, dz])
     cylinder(d=Bore_Diameter, h=Height);
 }
 
-module topRectangularCutout() {
+module TopRectangularCutout() {
   x = Width;
   dx = -Width / 2 + Bore_Setback + Bore_Diameter + Slot_Gap;
 
   translate([dx, -Slot_Width / 2, Height - Slot_Depth])
-    roundedCube(x, Slot_Width, Slot_Depth + 1, Slot_Corner_Radius);
+    RoundedCube(x, Slot_Width, Slot_Depth + 1, Slot_Corner_Radius);
 }
 
-module frontAngledLip() {
+module FrontAngledLip() {
   y = Depth - 2 * Side_Relief_Depth;
+  t = tan(Front_Cutout_Angle);
+  outer_base = Front_Cutout_Drop * t;
 
-  translate([-Height + Width / 2, -y / 2, 0])
-    difference() {
-      intersection() {
-        cube([Height, y, Height]);
-        rotate([0, Front_Cutout_Angle, 0])
-          cube([Height * sqrt(2), y, Height * sqrt(2)]);
-      }
-
-      translate([Front_Cutout_Drop, -1, 0])
-        rotate([0, Front_Cutout_Angle, 0])
-        cube([Height * sqrt(2), y + 2, Height * sqrt(2)]);
+  translate([-Height + Width / 2, 0, 0])
+    rotate([90, 0, 0])
+    linear_extrude(height=y, center=true)
+    intersection() {
+      square([Height, Height]);
+      polygon([
+        [outer_base - Front_Cutout_Drop, 0],
+        [outer_base, 0],
+        [outer_base + Height * t, Height],
+        [outer_base + Height * t - Front_Cutout_Drop, Height],
+      ]);
     }
 }
 
 module MiniClip() {
   difference() {
-    body();
-    frontCutout();
-    frontAngledCutout();
-    rearCutout();
-    topSideCutouts();
-    topCylindricalCutout();
-    topRectangularCutout();
+    Body();
+    FrontCutout();
+    FrontAngledCutout();
+    RearCutout();
+    TopSideCutouts();
+    TopCylindricalCutout();
+    TopRectangularCutout();
   }
 
-  frontAngledLip();
+  FrontAngledLip();
 }
 
 MiniClip();
