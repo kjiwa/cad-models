@@ -1,8 +1,8 @@
 {
     "parameterSets": {
         "Mossberg_12ga_1_75in": {
-            "Length": "35",
-            "Width": "26",
+            "Width": "35",
+            "Depth": "26",
             "Height": "20.5"
         }
     },

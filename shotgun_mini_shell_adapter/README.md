@@ -28,8 +28,8 @@ All lengths are in millimeters.
 ### `[Overall Dimensions]`
 | Parameter | Default | Description |
 |---|---|---|
-| `Length` | `35` | Adapter length along the barrel (X) |
-| `Width` | `26` | Adapter width across the receiver (Y) |
+| `Width` | `35` | Adapter width along the barrel (X) |
+| `Depth` | `26` | Adapter depth across the receiver (Y) |
 | `Height` | `20.5` | Adapter height (Z) |
 
 ### `[Rear Cutout]`
@@ -42,31 +42,31 @@ All lengths are in millimeters.
 | Parameter | Default | Description |
 |---|---|---|
 | `Front_Cutout_Depth` | `7` | Depth of the square notch across the front |
-| `Front_Angled_Cutout_Angle` | `45` | Angle of the sloped front cut from vertical |
-| `Front_Angled_Cutout_Offset_Z` | `4` | Height at which the sloped front cut starts, below the base |
+| `Front_Cutout_Angle` | `45` | Angle of the sloped front cut from vertical |
+| `Front_Cutout_Drop` | `4` | Distance below the base where the sloped front cut starts |
 
-### `[Top Side Cutouts]`
+### `[Side Relief]`
 | Parameter | Default | Description |
 |---|---|---|
-| `Top_Side_Cutout_Depth` | `4.75` | Depth of the relief cut into each side of the top |
-| `Top_Side_Cutout_Slope_Offset_X` | `-2.5` | Position along X where the side slope starts |
-| `Top_Side_Cutout_Slope_Rise` | `2.5` | Rise of the side slope over its run |
-| `Top_Side_Cutout_Slope_Run` | `11` | Run of the side slope over its rise |
+| `Side_Relief_Depth` | `4.75` | Depth of the relief cut into each side of the top |
+| `Side_Slope_Start` | `-2.5` | Position along X where the side slope starts |
+| `Side_Slope_Rise` | `2.5` | Rise of the side slope over its run |
+| `Side_Slope_Run` | `11` | Run of the side slope over its rise |
 
-### `[Top Cylindrical Cutout]`
+### `[Bore]`
 | Parameter | Default | Description |
 |---|---|---|
-| `Top_Cylindrical_Cutout_Diameter` | `12.7` | Diameter of the shell bore (12.7 for 1/2") |
-| `Top_Cylindrical_Cutout_Depth` | `18.35` | Depth of the shell bore |
-| `Top_Cylindrical_Cutout_Offset_X` | `2.5` | Distance from the rear face to the bore edge along X |
+| `Bore_Diameter` | `12.7` | Diameter of the shell bore (12.7 for 1/2") |
+| `Bore_Depth` | `18.35` | Depth of the shell bore |
+| `Bore_Setback` | `2.5` | Distance from the rear face to the bore edge along X |
 
-### `[Top Rectangular Cutout]`
+### `[Slot]`
 | Parameter | Default | Description |
 |---|---|---|
-| `Top_Rectangular_Cutout_Corner_Radius` | `1.5` | Corner radius of the slot ahead of the bore |
-| `Top_Rectangular_Cutout_Width` | `9.9` | Width of the slot (Y) |
-| `Top_Rectangular_Cutout_Depth` | `12.5` | Depth of the slot |
-| `Top_Rectangular_Cutout_Offset_From_Cylinder` | `1` | Gap between the bore and the slot along X |
+| `Slot_Width` | `9.9` | Width of the slot (Y) |
+| `Slot_Depth` | `12.5` | Depth of the slot |
+| `Slot_Gap` | `1` | Gap between the bore and the slot along X |
+| `Slot_Corner_Radius` | `1.5` | Corner radius of the slot ahead of the bore |
 
 ### Presets
 
