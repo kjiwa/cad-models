@@ -39,8 +39,8 @@ Backplate_Thickness = 1.5875;
 // Mounting interface: modular Peglock wedge socket or monolithic integrated pegboard pegs
 Mount_Type = "peglock"; // [peglock: Modular Peglock Socket, monolithic: Integrated Pegboard Pegs]
 
-// Pegboard hole columns the mount engages, as Peglock sockets or peg columns (0 = auto: as many sockets or pegs as fit within the body width)
-Hole_Columns = 0; // [0:1:10]
+// Pegboard hole columns the mount engages (0 = auto)
+Hole_Columns = 0;
 
 // Pegboard hole center spacing (25.4 for 1" standard, 15.875 for 5/8" metal)
 Hole_Spacing = 25.4;
