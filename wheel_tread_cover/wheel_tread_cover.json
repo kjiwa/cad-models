@@ -1,0 +1,9 @@
+{
+    "parameterSets": {
+        "Wheel_6_75in": {
+            "Inner_Diameter": "171.45",
+            "Width": "52.3875"
+        }
+    },
+    "fileFormatVersion": "1"
+}

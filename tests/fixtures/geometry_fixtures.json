@@ -901,5 +901,119 @@
         451.7
       ]
     }
+  },
+  "pipe_clamp_wall_mount_default": {
+    "scad": "pipe_clamp_wall_mount/pipe_clamp_wall_mount.scad",
+    "params": {},
+    "expect": {
+      "triangles": 5580,
+      "volume_mm3": 102298.0,
+      "bbox_size_mm": [
+        25.4,
+        41.27,
+        180.97
+      ],
+      "section_areas_mm2": [
+        37.1,
+        170.4,
+        96.0,
+        13.5,
+        148.1,
+        329.4,
+        26.0
+      ]
+    }
+  },
+  "wheel_tread_cover_default": {
+    "scad": "wheel_tread_cover/wheel_tread_cover.scad",
+    "params": {},
+    "expect": {
+      "triangles": 6512,
+      "volume_mm3": 68279.3,
+      "bbox_size_mm": [
+        177.8,
+        177.8,
+        52.39
+      ],
+      "section_areas_mm2": [
+        5169.1,
+        9923.6,
+        7753.1,
+        0.0,
+        2292.8,
+        3559.6,
+        1729.9
+      ]
+    }
+  },
+  "keyhole_router_template_frame_three_slot": {
+    "scad": "keyhole_router_template/keyhole_router_template.scad",
+    "params": {},
+    "expect": {
+      "triangles": 2832,
+      "volume_mm3": 81991.4,
+      "bbox_size_mm": [
+        228.6,
+        76.2,
+        6.35
+      ],
+      "section_areas_mm2": [
+        13362.8,
+        14264.2,
+        15616.4,
+        17419.3,
+        19222.2,
+        20574.4,
+        21475.9
+      ]
+    }
+  },
+  "keyhole_router_template_edge_guide": {
+    "scad": "keyhole_router_template/keyhole_router_template.scad",
+    "params": {
+      "Style": "edge_guide",
+      "Plate_Length": "152.4",
+      "Plate_Width": "38.1"
+    },
+    "expect": {
+      "triangles": 976,
+      "volume_mm3": 37284.3,
+      "bbox_size_mm": [
+        152.4,
+        38.1,
+        12.7
+      ],
+      "section_areas_mm2": [
+        2093.9,
+        1047.0,
+        523.5,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "shotgun_mini_shell_adapter_default": {
+    "scad": "shotgun_mini_shell_adapter/shotgun_mini_shell_adapter.scad",
+    "params": {},
+    "expect": {
+      "triangles": 844,
+      "volume_mm3": 7022.1,
+      "bbox_size_mm": [
+        35.0,
+        26.0,
+        20.5
+      ],
+      "section_areas_mm2": [
+        168.6,
+        133.1,
+        90.3,
+        186.9,
+        2.5,
+        31.9,
+        320.0
+      ]
+    }
   }
 }
