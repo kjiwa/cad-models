@@ -14,6 +14,7 @@ REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 SHARED_NAMES = (
     "Mount_Type",
+    "Hole_Columns",
     "Hole_Spacing",
     "Pin_Diameter",
     "Pegboard_Thickness",

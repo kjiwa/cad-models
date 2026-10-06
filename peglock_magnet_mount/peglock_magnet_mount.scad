@@ -30,6 +30,9 @@ Corner_Radius = 1.5875;
 // Mounting interface: modular Peglock wedge socket or monolithic integrated pegboard pegs
 Mount_Type = "peglock"; // [peglock: Modular Peglock Socket, monolithic: Integrated Pegboard Pegs]
 
+// Pegboard hole columns the mount engages, as Peglock sockets or peg columns (0 = auto: as many sockets or pegs as fit within the body width)
+Hole_Columns = 0; // [0:1:10]
+
 // Pegboard hole center spacing (25.4 for 1" standard, 15.875 for 5/8" metal)
 Hole_Spacing = 25.4;
 
@@ -47,6 +50,9 @@ $fn = 128;
 
 assert(Columns >= 1, "Columns must be at least 1");
 assert(Rows >= 1, "Rows must be at least 1");
+assert(Hole_Columns >= 0, "Hole_Columns must not be negative");
+assert(Hole_Columns == floor(Hole_Columns), "Hole_Columns must be an integer");
+assert(Hole_Columns <= 10, "Hole_Columns must be at most 10");
 assert(Magnet_Diameter > 0, "Magnet_Diameter must be greater than 0");
 assert(Magnet_Depth > 0, "Magnet_Depth must be greater than 0");
 assert(Magnet_Spacing >= 0, "Magnet_Spacing must not be negative");
@@ -58,8 +64,8 @@ gridWidth = Columns * pitch + Magnet_Spacing;
 gridHeight = Rows * pitch + Magnet_Spacing;
 assert(2 * Corner_Radius <= min(gridWidth, gridHeight, Magnet_Depth), "Corner_Radius is too large for the magnet slab");
 
-numPeglocks = peglock_socket_count(gridWidth);
-backerSize = board_mount_size(Mount_Type, [gridWidth, gridHeight], numPeglocks, Hole_Spacing);
+holeColumns = board_hole_columns(Mount_Type, Hole_Columns, gridWidth, Hole_Spacing, Pin_Diameter);
+backerSize = board_mount_size(Mount_Type, [gridWidth, gridHeight], holeColumns, Hole_Spacing, Pin_Diameter);
 
 function pocket_offset(i, count) = -(count * pitch + Magnet_Spacing) / 2 + Magnet_Diameter / 2 + Magnet_Spacing + i * pitch;
 
@@ -76,7 +82,7 @@ module MagnetMount() {
   BoardMount(
     type = Mount_Type,
     size = backerSize,
-    sockets = numPeglocks,
+    columns = holeColumns,
     backplate_t = Backplate_Thickness,
     hole_spacing = Hole_Spacing,
     pin_d = Pin_Diameter,
