@@ -28,7 +28,7 @@ Tilt_Angle = 15; // [5:5:45]
 // Lead-in at each pocket mouth (0 to disable)
 Entry_Chamfer = 0.5;
 
-// Radius of the rounded outer edges of the body, except where it meets the plate (0 for square edges)
+// Radius of the rounded outer edges of the body, except where it meets the plate; the plate is narrowed by this radius on each side (0 for square edges)
 Corner_Radius = 1;
 
 /* [Backplate] */
@@ -83,8 +83,10 @@ wedgeDepth = cellSize * cos(Tilt_Angle);
 wedgeRise = cellSize * sin(Tilt_Angle);
 tierPitch = wedgeRise + wedgeDepth / tan(Tilt_Angle);
 
-holeColumns = board_hole_columns(Mount_Type, Hole_Columns, rowWidth, Hole_Spacing, Pin_Diameter);
-backerSize = board_mount_size(Mount_Type, [rowWidth, SOCKET_HEIGHT], holeColumns, Hole_Spacing, Pin_Diameter);
+plateWidth = rowWidth - 2 * Corner_Radius;
+
+holeColumns = board_hole_columns(Mount_Type, Hole_Columns, plateWidth, Hole_Spacing, Pin_Diameter);
+backerSize = board_mount_size(Mount_Type, [plateWidth, SOCKET_HEIGHT], holeColumns, Hole_Spacing, Pin_Diameter);
 
 function column_x(i) = -rowWidth / 2 + cellSize / 2 + i * cellSize;
 

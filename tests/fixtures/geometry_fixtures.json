@@ -835,19 +835,19 @@
     "scad": "peglock_bit_holder/peglock_bit_holder.scad",
     "params": {},
     "expect": {
-      "triangles": 16892,
-      "volume_mm3": 115979.7,
+      "triangles": 16884,
+      "volume_mm3": 115867.3,
       "bbox_size_mm": [
         131.54,
         24.62,
         71.08
       ],
       "section_areas_mm2": [
-        744.7,
-        243.6,
-        870.6,
-        504.8,
-        579.7,
+        744.4,
+        243.8,
+        870.5,
+        506.5,
+        579.9,
         790.0,
         451.7
       ]
@@ -860,18 +860,18 @@
       "Relief_Width": "0"
     },
     "expect": {
-      "triangles": 7608,
-      "volume_mm3": 51729.1,
+      "triangles": 7604,
+      "volume_mm3": 51616.8,
       "bbox_size_mm": [
         131.54,
         24.62,
         52.25
       ],
       "section_areas_mm2": [
-        482.6,
-        37.0,
-        46.0,
-        94.6,
+        483.1,
+        109.5,
+        62.2,
+        35.6,
         78.9,
         218.9,
         113.1
@@ -884,19 +884,19 @@
       "Mount_Type": "\"monolithic\""
     },
     "expect": {
-      "triangles": 30528,
-      "volume_mm3": 101100.3,
+      "triangles": 30520,
+      "volume_mm3": 100987.9,
       "bbox_size_mm": [
         131.54,
         28.79,
         71.08
       ],
       "section_areas_mm2": [
-        744.7,
-        243.6,
-        146.3,
-        435.6,
-        338.3,
+        744.4,
+        243.8,
+        146.0,
+        436.6,
+        337.4,
         790.0,
         451.7
       ]
