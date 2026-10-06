@@ -64,7 +64,7 @@ Junction_Gusset = 0;
 // Mounting interface: modular Peglock wedge socket or monolithic integrated pegboard pegs
 Mount_Type = "peglock"; // [peglock: Modular Peglock Socket, monolithic: Integrated Pegboard Pegs]
 
-// Pegboard hole columns the mount engages, as Peglock sockets or peg columns (0 = auto: as many as fit within the body width)
+// Pegboard hole columns the mount engages, as Peglock sockets or peg columns (0 = auto: as many sockets or pegs as fit within the body width)
 Hole_Columns = 0; // [0:1:10]
 
 // Pegboard hole center spacing (25.4 for 1" standard, 15.875 for 5/8" metal)
@@ -85,6 +85,8 @@ EPSILON = 0.02;
 
 assert(Tilt_Angle >= 0 && Tilt_Angle <= 45, "Tilt_Angle must be between 0 and 45");
 assert(Hole_Columns >= 0, "Hole_Columns must not be negative");
+assert(Hole_Columns == floor(Hole_Columns), "Hole_Columns must be an integer");
+assert(Hole_Columns <= 10, "Hole_Columns must be at most 10");
 
 function positive_entry(name, text) =
   let(entry = str_strip(text, " "), value = parse_num(entry))
@@ -116,8 +118,8 @@ grid_tz = (Vertical_Alignment == "bottom" && tilted_height < (SOCKET_HEIGHT - 2 
   ? (h - SOCKET_HEIGHT) / 2 + SOCKET_ROUNDOVER + tilt_drop
   : (h * (1 - cos(Tilt_Angle)) + tilt_drop) / 2;
 
-holeColumns = board_hole_columns(Hole_Columns, overallHolderWidth, Hole_Spacing);
-backerSize = board_mount_size(Mount_Type, [overallHolderWidth, tilted_height], holeColumns, Hole_Spacing);
+holeColumns = board_hole_columns(Mount_Type, Hole_Columns, overallHolderWidth, Hole_Spacing, Pin_Diameter);
+backerSize = board_mount_size(Mount_Type, [overallHolderWidth, tilted_height], holeColumns, Hole_Spacing, Pin_Diameter);
 backerHeight = backerSize[1];
 
 module HolderLip() {

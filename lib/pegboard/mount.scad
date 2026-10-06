@@ -3,14 +3,20 @@ include <pegs.scad>
 
 MOUNT_EPSILON = 0.02;
 
-// Hole columns the mount engages: the request, or by default the most whose base fits within the content width
-function board_hole_columns(requested, content_width, hole_spacing) = requested > 0
+// Hole columns the mount engages: the request, or by default the most that fit within the content width.
+// Peglock counts socket bases; monolithic counts pegs, with at least one.
+function board_hole_columns(type, requested, content_width, hole_spacing, pin_d) = requested > 0
   ? requested
-  : max(floor((content_width + hole_spacing - SOCKET_WIDTH) / hole_spacing), 1);
+  : type == "peglock"
+    ? max(floor((content_width + hole_spacing - SOCKET_WIDTH) / hole_spacing), 1)
+    : max(floor((max(content_width, hole_spacing) - pin_d) / hole_spacing) + 1, 1);
 
 // Backer plate size [width, height]: the content size, grown to fit the mount interface.
-function board_mount_size(type, content_size, columns, hole_spacing) = [
-  max(content_size[0], peglock_base_width(columns, SOCKET_WIDTH, hole_spacing)),
+// Monolithic pegs need hole_spacing and the span of their columns; auto columns never exceed it.
+function board_mount_size(type, content_size, columns, hole_spacing, pin_d) = [
+  max(content_size[0], type == "peglock"
+    ? peglock_base_width(columns, SOCKET_WIDTH, hole_spacing)
+    : max(hole_spacing, (columns - 1) * hole_spacing + pin_d)),
   max(content_size[1], type == "peglock" ? SOCKET_HEIGHT : hole_spacing + 10)
 ];
 

@@ -39,7 +39,7 @@ Backplate_Thickness = 1.5875;
 // Mounting interface: modular Peglock wedge socket or monolithic integrated pegboard pegs
 Mount_Type = "peglock"; // [peglock: Modular Peglock Socket, monolithic: Integrated Pegboard Pegs]
 
-// Pegboard hole columns the mount engages, as Peglock sockets or peg columns (0 = auto: as many as fit within the body width)
+// Pegboard hole columns the mount engages, as Peglock sockets or peg columns (0 = auto: as many sockets or pegs as fit within the body width)
 Hole_Columns = 0; // [0:1:10]
 
 // Pegboard hole center spacing (25.4 for 1" standard, 15.875 for 5/8" metal)
@@ -60,6 +60,8 @@ $fn = 128;
 assert(Columns >= 1, "Columns must be at least 1");
 assert(Rows >= 1, "Rows must be at least 1");
 assert(Hole_Columns >= 0, "Hole_Columns must not be negative");
+assert(Hole_Columns == floor(Hole_Columns), "Hole_Columns must be an integer");
+assert(Hole_Columns <= 10, "Hole_Columns must be at most 10");
 assert(Bit_Width > 0, "Bit_Width must be greater than 0");
 assert(Pocket_Height > 0, "Pocket_Height must be greater than 0");
 assert(Wall_Thickness > 0, "Wall_Thickness must be greater than 0");
@@ -81,8 +83,8 @@ wedgeDepth = cellSize * cos(Tilt_Angle);
 wedgeRise = cellSize * sin(Tilt_Angle);
 tierPitch = wedgeRise + wedgeDepth / tan(Tilt_Angle);
 
-holeColumns = board_hole_columns(Hole_Columns, rowWidth, Hole_Spacing);
-backerSize = board_mount_size(Mount_Type, [rowWidth, SOCKET_HEIGHT], holeColumns, Hole_Spacing);
+holeColumns = board_hole_columns(Mount_Type, Hole_Columns, rowWidth, Hole_Spacing, Pin_Diameter);
+backerSize = board_mount_size(Mount_Type, [rowWidth, SOCKET_HEIGHT], holeColumns, Hole_Spacing, Pin_Diameter);
 
 function column_x(i) = -rowWidth / 2 + cellSize / 2 + i * cellSize;
 
