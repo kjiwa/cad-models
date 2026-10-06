@@ -150,6 +150,17 @@ class BitHolderTestCase(unittest.TestCase):
                 point = (0, 0.5, rise() + dz)
                 self.assertEqual(contains(tris, point), solid, "plate does not end at the wedge top")
 
+    def test_plate_ends_where_the_back_face_turns_into_the_roundover(self):
+        for mount in ('"peglock"', '"monolithic"'):
+            for radius in (0.0, RADIUS, 2.0):
+                flat = 10 * cell_size() / 2 - radius
+                params = {"Mount_Type": mount, "Corner_Radius": str(radius)}
+                for sign in (-1, 1):
+                    with self.subTest(mount=mount, radius=radius, sign=sign):
+                        z = rise() - 5
+                        self.assertTrue(contains(render(params), (sign * (flat - 0.1), 0.5, z)), "plate is too narrow")
+                        self.assertFalse(contains(render(params), (sign * (flat + 0.1), 0.5, z)), "plate overhangs the roundover")
+
     def test_profile_corners_are_rounded_along_the_row(self):
         end = 10 * cell_size() / 2
         kinds = ("front-bottom", "front-top", "back-top", "bottom-back")
