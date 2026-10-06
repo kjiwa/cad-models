@@ -238,6 +238,7 @@ class HookRootAndAlignmentTestCase(unittest.TestCase):
 
     HEIGHT = 6.35
     WIDTH = 12.7
+    PLATE_CLEARANCE = 3.175  # the arm's lowest point sits one plate corner radius above the plate bottom
 
     def test_center_alignment(self):
         for angle in (0, 30):
@@ -257,7 +258,7 @@ class HookRootAndAlignmentTestCase(unittest.TestCase):
                 flare_x = [abs(v[0]) for t in tris for v in t if -0.02 < v[1] < -0.005]
                 self.assertAlmostEqual(max(flare_x), self.WIDTH / 2 + fillet, delta=0.02)
 
-                pivot_z = min_z(tris, in_front=False) + fillet + self.HEIGHT / math.cos(a)
+                pivot_z = min_z(tris, in_front=False) + self.PLATE_CLEARANCE + fillet + self.HEIGHT / math.cos(a)
 
                 def arm_bottom(y):
                     return pivot_z + (y - self.HEIGHT * math.sin(a)) / math.cos(a) * math.sin(a) - self.HEIGHT * math.cos(a)

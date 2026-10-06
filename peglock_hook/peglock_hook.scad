@@ -114,9 +114,9 @@ root_height = gridHeight + 2 * fillet_flare_z + tilt_root_drop;
 
 bodyWidth = gridWidth + 2 * fillet_flare_x;
 holeColumns = board_hole_columns(Mount_Type, Hole_Columns, bodyWidth, Hole_Spacing, Pin_Diameter);
-backerSize = board_mount_size(Mount_Type, [bodyWidth, root_height], holeColumns, Hole_Spacing, Pin_Diameter);
+backerSize = board_mount_size(Mount_Type, [bodyWidth, root_height + 2 * SOCKET_ROUNDOVER], holeColumns, Hole_Spacing, Pin_Diameter);
 backerHeight = backerSize[1];
-align_shift = Vertical_Alignment == "center" ? (backerHeight - root_height) / 2 : 0;
+align_shift = Vertical_Alignment == "center" ? (backerHeight - root_height) / 2 : SOCKET_ROUNDOVER;
 
 if (Columns > 1) assert(Column_Spacing >= Arm_Width, "Column_Spacing must be at least Arm_Width");
 if (Rows > 1) assert(Row_Spacing * cos(Arm_Tilt_Angle) >= Arm_Height + Lip_Height, "Row_Spacing is too small for Arm_Height + Lip_Height");

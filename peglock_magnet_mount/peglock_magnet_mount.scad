@@ -68,7 +68,7 @@ gridHeight = Rows * pitch + Magnet_Spacing;
 assert(2 * Corner_Radius <= min(gridWidth, gridHeight, Magnet_Depth), "Corner_Radius is too large for the magnet slab");
 
 holeColumns = board_hole_columns(Mount_Type, Hole_Columns, gridWidth, Hole_Spacing, Pin_Diameter);
-backerSize = board_mount_size(Mount_Type, [gridWidth, gridHeight], holeColumns, Hole_Spacing, Pin_Diameter);
+backerSize = board_mount_size(Mount_Type, [gridWidth, gridHeight + 2 * SOCKET_ROUNDOVER], holeColumns, Hole_Spacing, Pin_Diameter);
 
 function pocket_offset(i, count) = -(count * pitch + Magnet_Spacing) / 2 + Magnet_Diameter / 2 + Magnet_Spacing + i * pitch;
 
