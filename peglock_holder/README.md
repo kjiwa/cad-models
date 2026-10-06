@@ -53,6 +53,7 @@ All lengths are in millimeters unless noted.
 | `Pocket_Widths` | `12.7` | | Inner width of each pocket: one value for every column or one comma-separated value per column (12.7 for 1/2") |
 | `Pocket_Depths` | `6.35` | | Inner depth of each pocket, same format as `Pocket_Widths` |
 | `Pocket_Height` | `12.7` | | Inner height of each pocket |
+| `Entry_Chamfer` | `0.5` | | Lead-in at each pocket mouth (0 to disable) |
 | `Tilt_Angle` | `0` | | Forward tilt of the pockets in degrees, 0 to 45 (0 for vertical) |
 | `Closed_Bottom` | `true` | | Close the pocket bottoms |
 | `Wall_Thickness` | `1.5875` | | Thickness of the pocket walls |
@@ -69,6 +70,8 @@ All lengths are in millimeters unless noted.
 | `Opening_Front_Row_Only` | `false` | | Only cut the front access opening on the front-most row when multi-row |
 
 ### `[Backplate]`
+The plate is narrower than the body by `Corner_Radius` on each side, so it stays within the flat of the body's back face.
+
 | Parameter | Default | Options | Description |
 |---|---|---|---|
 | `Backplate_Thickness` | `1.5875` | | Thickness of the backplate behind the pockets; thicker resists flex under heavy loads (no load rating is claimed) |

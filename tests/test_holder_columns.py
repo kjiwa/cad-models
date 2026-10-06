@@ -31,6 +31,7 @@ ZERO_DISABLE_PARAMS = (
     "Corner_Radius",
     "Bottom_Edge_Radius",
     "Junction_Gusset",
+    "Entry_Chamfer",
 )
 
 _cache = {}
@@ -110,6 +111,39 @@ class HolderColumnsTestCase(unittest.TestCase):
             render_triangles(HOLDER_SCAD, {**FAST, **params}, openscadpath=os.path.join(REPO_ROOT, "lib"))
         for message in messages:
             self.assertIn(message, str(ctx.exception))
+
+    def test_plate_stays_within_body_back_face(self):
+        for mount in ("peglock", "monolithic"):
+            for columns in (1, 2, 4):
+                with self.subTest(mount=mount, columns=columns):
+                    tris = render({"Columns": str(columns), "Mount_Type": f'"{mount}"'})
+                    body = columns * 12.7 + (columns + 1) * WALL
+                    width = fingerprint(tris)["bbox_size_mm"][0]
+                    self.assertGreaterEqual(width, body - 0.05)
+                    if width > body + 0.05:
+                        continue  # the socket base or peg span is wider than the body
+                    # The plate sits at +Y in STL coordinates; the body's rounded corners start where the plate ends.
+                    self.assertFalse(contains(tris, (body / 2 - 0.1, WALL / 2, 0.0)), "plate reaches into the rounded body corner")
+
+    def test_entry_chamfer_widens_pocket_mouth(self):
+        # Vertical_Alignment center puts the body's top at (Pocket_Height + Wall_Thickness) / 2.
+        chamfer, width, depth = 0.5, 12.7, 6.35
+        top = (12.7 + WALL) / 2
+        tris = render({"Vertical_Alignment": '"center"', "Opening_Width": "0", "Lip_Height": "0"})
+        x = width / 2 + chamfer / 2
+        self.assertFalse(contains(tris, stl_point(x, depth / 2, top - 0.05)), "wall is solid inside the chamfer")
+        self.assertTrue(contains(tris, stl_point(x, depth / 2, top - 2.05)), "wall is empty below the chamfer")
+
+    def test_entry_chamfer_asserts(self):
+        for bad, message in (
+            ("-0.1", "Entry_Chamfer must not be negative"),
+            ("1.6", "Entry_Chamfer must be less than Wall_Thickness"),
+        ):
+            with self.subTest(Entry_Chamfer=bad):
+                self._assert_render_fails({"Entry_Chamfer": bad}, message)
+        self._assert_render_fails(
+            {"Pocket_Height": "0.3", "Entry_Chamfer": "0.4"}, "Entry_Chamfer must not exceed Pocket_Height"
+        )
 
     def test_malformed_entry_asserts(self):
         for param in ("Pocket_Widths", "Pocket_Depths"):
