@@ -10,7 +10,7 @@ Prints flat with an integrated 0.2 mm living hinge. After printing, fold 180° i
 - **Parametric Pegboard Sizing**: Configurable hole spacing, peg diameter, and board thickness.
 - **Living Hinge**: 0.2 mm central hinge folds 180° without hardware.
 - **Tapered Dovetail Wedge**: Forms a solid locking wedge when folded that mates with all Peglock sockets.
-- **Customizer Presets**: Presets for standard 1/4" pegboard (5.7 mm snug fit), Sy's original 6.0 mm model, and thin metal pegboards.
+- **Customizer Presets**: Defaults fit standard 1/4" pegboard (5.7 mm snug fit); presets cover Sy's original 6.0 mm model and thin metal pegboards.
 
 ---
 
@@ -32,7 +32,7 @@ peglock_attachment/
 
 1. Open `peglock_attachment.scad` in OpenSCAD.
 2. In the top menu, ensure **Window -> Customizer** is checked.
-3. Select a preset (e.g. `Default (Standard 1/4" - 5.7mm Fit)`, `Sy's Original (6.0mm)`, or `Thin Metal (5/8" Spacing - 5.7mm Fit)`) from the preset dropdown, or customize parameters.
+3. Select a preset (`Sys_Original_6mm` or `Thin_Metal_5_8in`) from the preset dropdown, or customize parameters.
 4. Press `F5` to preview or `F6` to render, then `F7` to export to STL.
 
 ---

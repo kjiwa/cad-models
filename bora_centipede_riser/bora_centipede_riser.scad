@@ -4,14 +4,14 @@ use <threads-scad/threads.scad>;
 // Component to render
 Part = "riser"; // [riser: Riser, nut: Nut]
 
-/* [Riser Body] */
+/* [Body] */
 // Overall riser height (152.4 for 6", 133.35 for 5.25")
-Riser_Height = 152.4;
+Height = 152.4;
 
 // Outside diameter of the riser body
-Riser_Diameter = 66;
+Diameter = 66;
 
-/* [Riser Top] */
+/* [Top] */
 // Thickness of the top plate
 Top_Thickness = 4;
 
@@ -21,7 +21,7 @@ Stud_Base_Diameter = 15;
 // Height of the raised boss under the threaded stud
 Stud_Base_Height = 6;
 
-/* [Riser Bottom] */
+/* [Bottom] */
 // Thickness of the bottom plate
 Bottom_Thickness = 6;
 
@@ -39,7 +39,7 @@ Nut_Recess_Radius = 6.25;
 
 /* [Reinforcement] */
 // Reinforcement between the top and bottom plates
-Reinforcement_Style = "flared_ribs"; // [flared_ribs: Open Truss, conical_vault: Architectural Column, none: Unreinforced]
+Reinforcement_Style = "flared_ribs"; // [flared_ribs: Flared Ribs, conical_vault: Conical Vault, none: None]
 
 // Thickness of the crossed vertical webs
 Web_Thickness = 3.6;
@@ -86,7 +86,7 @@ Nut_Diameter = 22;
 Nut_Height = 6.35;
 
 // Number of grip notches around the perimeter
-Knurl_Count = 15;
+Knurl_Count = 15; // [3:1:40]
 
 // Diameter of each grip notch
 Knurl_Diameter = 1;
@@ -94,7 +94,7 @@ Knurl_Diameter = 1;
 /* [Hidden] */
 $fn = 128;
 
-supportHeight = Riser_Height - Top_Thickness - Bottom_Thickness;
+supportHeight = Height - Top_Thickness - Bottom_Thickness;
 supportCutoutHeight = supportHeight - Nut_Recess_Height - 2 * Arch_End_Margin;
 
 module centeredRoundedCylinderEnd(d, h, cr) {
@@ -112,9 +112,9 @@ module roundedCylinder(d, h, cr, center=false) {
 }
 
 module supportCutoutHalf(segments=$fn) {
-  a = (Riser_Diameter - Arch_Inner_Diameter) / 2;
+  a = (Diameter - Arch_Inner_Diameter) / 2;
   wl = supportCutoutHeight;
-  dy = Riser_Diameter + 10;
+  dy = Diameter + 10;
   seg = segments > 0 ? segments : 64;
 
   pts = concat(
@@ -134,7 +134,7 @@ module supportCutoutHalf(segments=$fn) {
 }
 
 module supportCutout(segments=$fn) {
-  translate([Riser_Diameter / 2, 0, Nut_Recess_Height / 2])
+  translate([Diameter / 2, 0, Nut_Recess_Height / 2])
     rotate([0, -90, 0]) {
       supportCutoutHalf(segments);
     }
@@ -159,13 +159,13 @@ module singleFlaredRib(len, th, h, f_w, f_h) {
 module topCapital() {
   z_top = supportHeight / 2;
   translate([0, 0, z_top - Cone_Height])
-    cylinder(d1=Cone_Top_Diameter, d2=Riser_Diameter, h=Cone_Height);
+    cylinder(d1=Cone_Top_Diameter, d2=Diameter, h=Cone_Height);
 }
 
 module bottomBase() {
   z_bot = -supportHeight / 2;
   translate([0, 0, z_bot])
-    cylinder(d1=Riser_Diameter, d2=Cone_Bottom_Diameter, h=Cone_Height);
+    cylinder(d1=Diameter, d2=Cone_Bottom_Diameter, h=Cone_Height);
 }
 
 module supports() {
@@ -173,22 +173,22 @@ module supports() {
     union() {
       if (Reinforcement_Style == "flared_ribs") {
         intersection() {
-          cylinder(d=Riser_Diameter, h=supportHeight, center=true);
-          singleFlaredRib(Riser_Diameter, Web_Thickness, supportHeight, Rib_Flare_Width, Rib_Flare_Height);
+          cylinder(d=Diameter, h=supportHeight, center=true);
+          singleFlaredRib(Diameter, Web_Thickness, supportHeight, Rib_Flare_Width, Rib_Flare_Height);
         }
         intersection() {
-          cylinder(d=Riser_Diameter, h=supportHeight, center=true);
+          cylinder(d=Diameter, h=supportHeight, center=true);
           rotate([0, 0, 90])
-            singleFlaredRib(Riser_Diameter, Web_Thickness, supportHeight, Rib_Flare_Width, Rib_Flare_Height);
+            singleFlaredRib(Diameter, Web_Thickness, supportHeight, Rib_Flare_Width, Rib_Flare_Height);
         }
       } else if (Reinforcement_Style == "conical_vault") {
-        cube([Web_Thickness, Riser_Diameter, supportHeight], center=true);
-        cube([Riser_Diameter, Web_Thickness, supportHeight], center=true);
+        cube([Web_Thickness, Diameter, supportHeight], center=true);
+        cube([Diameter, Web_Thickness, supportHeight], center=true);
         topCapital();
         bottomBase();
       } else {
-        cube([Web_Thickness, Riser_Diameter, supportHeight], center=true);
-        cube([Riser_Diameter, Web_Thickness, supportHeight], center=true);
+        cube([Web_Thickness, Diameter, supportHeight], center=true);
+        cube([Diameter, Web_Thickness, supportHeight], center=true);
       }
     }
 
@@ -201,7 +201,7 @@ module supports() {
 
 module topCap() {
   translate([0, 0, supportHeight / 2]) {
-    cylinder(d=Riser_Diameter, h=Top_Thickness);
+    cylinder(d=Diameter, h=Top_Thickness);
     translate([0, 0, Top_Thickness]) cylinder(d=Stud_Base_Diameter, h=Stud_Base_Height);
     translate([0, 0, Top_Thickness + Stud_Base_Height])
       ScrewThread(outer_diam=Stud_Thread_Diameter, height=Stud_Thread_Length, pitch=Thread_Pitch);
@@ -210,7 +210,7 @@ module topCap() {
 
 module bottomCap() {
   translate([0, 0, -Bottom_Thickness - supportHeight / 2])
-    cylinder(d= Riser_Diameter, h=Bottom_Thickness);
+    cylinder(d= Diameter, h=Bottom_Thickness);
 }
 
 module bottomCutout() {

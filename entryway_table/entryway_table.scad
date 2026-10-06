@@ -4,8 +4,8 @@
  */
 
 /* [Tabletop] */
-// Tabletop length along X
-Top_Length = 1219.2;
+// Tabletop width along X
+Top_Width = 1219.2;
 
 // Tabletop depth along Y
 Top_Depth = 279.4;
@@ -24,10 +24,10 @@ Leg_Board_Width = 50.8;
 // Height of the apron boards
 Apron_Height = 203.2;
 
-// Length of the front and back apron boards (0 = auto: Top_Length - 2 * Top_Overhang - 2 * Leg_Board_Width)
-Apron_Length = 0;
+// Width of the front and back apron boards (0 = auto)
+Apron_Width = 0;
 
-// Depth of the side apron boards (0 = auto: Top_Depth - 2 * Top_Overhang - 76.2)
+// Depth of the side apron boards (0 = auto)
 Apron_Depth = 0;
 
 /* [Plywood] */
@@ -35,11 +35,12 @@ Apron_Depth = 0;
 Board_Thickness = 19.05;
 
 // Number of plies for alternating veneer visualization
-Ply_Count = 5;
+Ply_Count = 5; // [1:1:10]
 
 /* [Hidden] */
-apron_length = (Apron_Length > 0) ? Apron_Length : (Top_Length - 2 * Top_Overhang - 2 * Leg_Board_Width);
-apron_depth = (Apron_Depth > 0) ? Apron_Depth : (Top_Depth - 2 * Top_Overhang - 76.2);
+APRON_SIDE_INSET = 76.2;
+apron_width = (Apron_Width > 0) ? Apron_Width : (Top_Width - 2 * Top_Overhang - 2 * Leg_Board_Width);
+apron_depth = (Apron_Depth > 0) ? Apron_Depth : (Top_Depth - 2 * Top_Overhang - APRON_SIDE_INSET);
 
 // Generates a rectangular board with alternating colored veneer layers.
 module plywood(length, width, thickness, layers) {
@@ -60,7 +61,7 @@ module board(length, width) {
 
 // Generates the tabletop board centered at the origin.
 module top() {
-  board(Top_Length, Top_Depth);
+  board(Top_Width, Top_Depth);
 }
 
 // Assembles an L-shaped corner leg from two perpendicular boards.
@@ -109,7 +110,7 @@ module leg_with_angle_and_ring() {
 
 // Front and back apron rail board oriented vertically along the X axis.
 module apron_front() {
-  color("tan") translate([0, 0, Apron_Height / 2]) rotate([-90, 0, 0]) board(apron_length, Apron_Height);
+  color("tan") translate([0, 0, Apron_Height / 2]) rotate([-90, 0, 0]) board(apron_width, Apron_Height);
 }
 
 // Side apron rail board oriented vertically along the Y axis.
@@ -123,7 +124,7 @@ module table() {
   translate([0, 0, Leg_Height]) top();
 
   // legs
-  leg_x_offset = (Top_Length / 2) - Top_Overhang - (Leg_Board_Width / 2);
+  leg_x_offset = (Top_Width / 2) - Top_Overhang - (Leg_Board_Width / 2);
   leg_y_offset = (Top_Depth / 2) - Top_Overhang - Board_Thickness;
   translate([leg_x_offset, leg_y_offset, 0]) leg_with_angle_and_ring();
   translate([leg_x_offset, -leg_y_offset, 0]) leg_with_angle_and_ring();

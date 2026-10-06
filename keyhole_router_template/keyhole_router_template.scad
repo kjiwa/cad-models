@@ -8,16 +8,16 @@
  * both ends so chips can escape. All dimensions are in millimeters.
  */
 
-/* [Part] */
+/* [Style] */
 // Template layout
 Style = "three_slot"; // [three_slot: Three Slots, edge_guide: Single Slot With Side Fences]
 
 /* [Plate] */
-// Plate length along the slots (X) (228.6 for 9" three_slot, 152.4 for 6" edge_guide)
-Plate_Length = 228.6;
+// Plate width along the slots (X) (228.6 for 9" three_slot, 152.4 for 6" edge_guide)
+Plate_Width = 228.6;
 
-// Plate width across the slots (Y), including the fences for edge_guide (76.2 for 3" three_slot, 38.1 for 1-1/2" edge_guide)
-Plate_Width = 76.2;
+// Plate depth across the slots (Y), including the fences for edge_guide (76.2 for 3" three_slot, 38.1 for 1-1/2" edge_guide)
+Plate_Depth = 76.2;
 
 // Plate thickness, which sets the guide bushing engagement (6.35 for 1/4")
 Plate_Thickness = 6.35;
@@ -51,11 +51,11 @@ $fn = 128;
 
 assert(Guide_Width > Venting_Slot_Width, "Guide_Width must exceed Venting_Slot_Width");
 assert(Style != "three_slot" || Long_Slot_Length > Short_Slot_Length, "Long_Slot_Length must exceed Short_Slot_Length");
-assert(Style != "three_slot" || Plate_Width > 2 * Guide_Width, "Plate_Width must exceed twice Guide_Width so both slot rows stay inside the plate");
-assert(Style != "edge_guide" || Plate_Width - 2 * Fence_Thickness > Guide_Width, "Plate_Width minus twice Fence_Thickness must exceed Guide_Width");
+assert(Style != "three_slot" || Plate_Depth > 2 * Guide_Width, "Plate_Depth must exceed twice Guide_Width so both slot rows stay inside the plate");
+assert(Style != "edge_guide" || Plate_Depth - 2 * Fence_Thickness > Guide_Width, "Plate_Depth minus twice Fence_Thickness must exceed Guide_Width");
 assert(
-  (Style == "three_slot" ? Long_Slot_Length : Short_Slot_Length) + Guide_Width + Venting_Slot_Width + 2 * Venting_Slot_Length < Plate_Length,
-  "Plate_Length must be longer than the slots with their venting slots"
+  (Style == "three_slot" ? Long_Slot_Length : Short_Slot_Length) + Guide_Width + Venting_Slot_Width + 2 * Venting_Slot_Length < Plate_Width,
+  "Plate_Width must be longer than the slots with their venting slots"
 );
 
 module KeyholeSlot(center_to_center) {
@@ -75,23 +75,23 @@ module ThreeSlotPlate() {
   x = (Long_Slot_Length - Short_Slot_Length) / 2;
 
   difference() {
-    square([Plate_Length, Plate_Width], center = true);
-    translate([0, Plate_Width / 4]) KeyholeSlot(Long_Slot_Length);
-    translate([-x, -Plate_Width / 4]) KeyholeSlot(Short_Slot_Length);
-    translate([x, -Plate_Width / 4]) KeyholeSlot(Short_Slot_Length);
+    square([Plate_Width, Plate_Depth], center = true);
+    translate([0, Plate_Depth / 4]) KeyholeSlot(Long_Slot_Length);
+    translate([-x, -Plate_Depth / 4]) KeyholeSlot(Short_Slot_Length);
+    translate([x, -Plate_Depth / 4]) KeyholeSlot(Short_Slot_Length);
   }
 }
 
 module EdgeGuidePlate() {
   difference() {
-    square([Plate_Length, Plate_Width], center = true);
+    square([Plate_Width, Plate_Depth], center = true);
     KeyholeSlot(Short_Slot_Length);
   }
 }
 
 module Fence(side) {
-  translate([-Plate_Length / 2, side * (Plate_Width / 2 - Fence_Thickness / 2) - Fence_Thickness / 2, Plate_Thickness])
-    cube([Plate_Length, Fence_Thickness, Fence_Height]);
+  translate([-Plate_Width / 2, side * (Plate_Depth / 2 - Fence_Thickness / 2) - Fence_Thickness / 2, Plate_Thickness])
+    cube([Plate_Width, Fence_Thickness, Fence_Height]);
 }
 
 if (Style == "three_slot") {

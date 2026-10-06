@@ -4,7 +4,6 @@ In exported STL coordinates the model is rotated 180 degrees about Z, so the pla
 the magnet slab extends toward -Y, and model X is mirrored.
 """
 
-import json
 import os
 import shutil
 import sys
@@ -19,17 +18,11 @@ from mesh_probe import contains  # noqa: E402
 
 MODEL_DIR = os.path.join(REPO_ROOT, "peglock_magnet_mount")
 MAGNET_SCAD = os.path.join(MODEL_DIR, "peglock_magnet_mount.scad")
-PRESETS_PATH = os.path.join(MODEL_DIR, "peglock_magnet_mount.json")
 FAST = {"$fn": "32"}
 PLATE = 1.5875
 SOCKET_HEIGHT = 35.4
 
 _cache = {}
-
-
-def preset_params(name):
-    with open(PRESETS_PATH, encoding="utf-8") as f:
-        return json.load(f)["parameterSets"][name]
 
 
 def render(params):
@@ -83,11 +76,8 @@ class MagnetMountTestCase(unittest.TestCase):
     def test_grid_2x2(self):
         self._check_grid(2, 2)
 
-    def test_pair_preset_bbox(self):
-        params = preset_params("Pair_12mm")
-        self.assertEqual(params["Columns"], "2")
-        self.assertEqual(params["Rows"], "1")
-        bbox = fingerprint(render(params))["bbox_size_mm"]
+    def test_pair_bbox(self):
+        bbox = fingerprint(render({"Columns": "2"}))["bbox_size_mm"]
         self.assertAlmostEqual(bbox[0], 2 * (12 + 2) + 2, delta=0.05)
         self.assertAlmostEqual(bbox[2], SOCKET_HEIGHT, delta=0.05)
 

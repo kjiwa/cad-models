@@ -1,10 +1,5 @@
 {
     "parameterSets": {
-        "Dual_Metal_and_Plastic": {
-            "Slot_Pattern": "MP",
-            "Tower_Count": "0",
-            "Tower_Height": "100.0"
-        },
         "Single_Metal": {
             "Slot_Pattern": "M",
             "Tower_Count": "0",
@@ -12,21 +7,6 @@
         },
         "Single_Plastic": {
             "Slot_Pattern": "P",
-            "Tower_Count": "0",
-            "Tower_Height": "100.0"
-        },
-        "High_Capacity_Dual": {
-            "Slot_Pattern": "MP",
-            "Tower_Count": "0",
-            "Tower_Height": "150.0"
-        },
-        "Compact_Dual": {
-            "Slot_Pattern": "MP",
-            "Tower_Count": "0",
-            "Tower_Height": "75.0"
-        },
-        "Organizer_4_Slot": {
-            "Slot_Pattern": "MMPP",
             "Tower_Count": "0",
             "Tower_Height": "100.0"
         },
@@ -39,10 +19,6 @@
         "Followers_Dual": {
             "Part": "followers"
         },
-        "Followers_Penny": {
-            "Part": "followers",
-            "Coin_Type": "penny"
-        },
         "Followers_Nickel": {
             "Part": "followers",
             "Coin_Type": "nickel"
@@ -54,4 +30,3 @@
     },
     "fileFormatVersion": "1"
 }
-

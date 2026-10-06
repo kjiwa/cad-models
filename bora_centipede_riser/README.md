@@ -12,7 +12,7 @@ Also posted on [Printables](https://www.printables.com/model/890834-bora-centipe
 - **Parametric Height & Diameter**: Configurable overall height, web thickness, and cutouts.
 - **Integrated Locking Nut**: Knurled perimeter with internal metric threading.
 - **Truss Web Structure**: Arch cutouts reduce material consumption and print time while preserving axial load capacity.
-- **Customizer Presets**: Predefined configurations for 5.25" risers, 6" risers, and locking nuts.
+- **Customizer Presets**: Predefined configurations for 5.25" risers and locking nuts.
 - **Automated CLI Build**: `Makefile` support to render STL, 3MF, and PNG preview images.
 
 ---
@@ -34,7 +34,7 @@ bora_centipede_riser/
 
 1. Open `bora_centipede_riser.scad` in OpenSCAD.
 2. In the top menu, ensure **Window -> Customizer** is checked.
-3. Select a preset from the dropdown (`5.25in`, `6in`, or `Nut`) or customize parameters.
+3. Select a preset from the dropdown (`Riser_5_25in` or `Nut`) or customize parameters.
 4. Press `F5` to preview or `F6` to render, then `F7` to export to STL.
 
 ---
@@ -48,20 +48,20 @@ All dimensions are in millimeters unless otherwise noted.
 |---|---|---|
 | `Part` | `"riser"` | Component to render: `"riser"` or `"nut"` |
 
-### `[Riser Body]`
+### `[Body]`
 | Parameter | Default | Description |
 |---|---|---|
-| `Riser_Height` | `152.4` | Overall riser height (152.4 for 6", 133.35 for 5.25") |
-| `Riser_Diameter` | `66` | Outside diameter of the riser body |
+| `Height` | `152.4` | Overall riser height (152.4 for 6", 133.35 for 5.25") |
+| `Diameter` | `66` | Outside diameter of the riser body |
 
-### `[Riser Top]`
+### `[Top]`
 | Parameter | Default | Description |
 |---|---|---|
 | `Top_Thickness` | `4` | Thickness of the top plate |
 | `Stud_Base_Diameter` | `15` | Diameter of the raised boss under the threaded stud |
 | `Stud_Base_Height` | `6` | Height of the raised boss under the threaded stud |
 
-### `[Riser Bottom]`
+### `[Bottom]`
 | Parameter | Default | Description |
 |---|---|---|
 | `Bottom_Thickness` | `6` | Thickness of the bottom plate |
@@ -153,7 +153,6 @@ make clean
 Outputs are generated in the `build/` subdirectory:
 - `build/bora_centipede_riser.stl` / `.3mf` / `_preview.png` (default 6" riser)
 - `build/bora_centipede_riser_5_25in.stl` / `.3mf` / `_preview.png` (5.25" riser preset)
-- `build/bora_centipede_riser_6in.stl` / `.3mf` / `_preview.png` (6" riser preset)
 - `build/bora_centipede_riser_Nut.stl` / `.3mf` / `_preview.png` (Nut preset)
 
 ---

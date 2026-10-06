@@ -41,29 +41,30 @@ All dimensions are in millimeters.
 | Parameter | Default | Description |
 |---|---|---|
 | `Plate_Width` | `152.4` | Width of the mounting plate (6") |
-| `Plate_Height` | `101.6` | Height of the mounting plate (4") |
+| `Plate_Depth` | `101.6` | Depth of the mounting plate (4") |
 | `Plate_Thickness` | `6.35` | Thickness of the mounting plate (1/4") |
 | `Edge_Chamfer` | `3.175` | Chamfer size along the top edges (1/8") |
-
-### `[Screw Holes]`
-| Parameter | Default | Description |
-|---|---|---|
-| `Screw_Hole_Diameter` | `4.7625` | Diameter of the wall screw holes and bracket screw holes through the boss (3/16", #8 screws) |
-| `Holes_Per_Side` | `2` | Number of wall screw holes per side |
-| `Hole_Span` | `76.2` | Vertical center-to-center distance between the outermost holes on each side (3") |
-| `Hole_Edge_Inset` | `12.7` | Distance from the side edge to the screw hole centers (1/2") |
 
 ### `[Nut Boss]`
 | Parameter | Default | Description |
 |---|---|---|
 | `Boss_Width` | `12.7` | Width of the boss block (1/2") |
-| `Boss_Height` | `38.1` | Height of the boss block (1-1/2") |
+| `Boss_Depth` | `38.1` | Depth of the boss block (1-1/2") |
 | `Boss_Thickness` | `6.35` | Rear protrusion of the boss block (1/4") |
 | `Boss_Offset` | `0` | Offset of the boss along X from the plate center |
 | `Nut_Count` | `2` | Number of hex nut pockets |
 | `Nut_Span` | `22.225` | Vertical center-to-center distance between the outermost nut pockets (7/8") |
 | `Nut_Width_Across_Flats` | `8.334375` | Distance across the flats of the hex nut (21/64") |
 | `Nut_Pocket_Depth` | `3.175` | Depth of each hex nut pocket (1/8") |
+
+### `[Screw Holes]`
+| Parameter | Default | Description |
+|---|---|---|
+| `Screw_Hole_Diameter` | `4.7625` | Diameter of the wall screw holes and bracket screw holes through the boss (3/16", #8 screws) |
+| `Hole_Count` | `2` | Number of wall screw holes per side |
+| `Hole_Span` | `76.2` | Vertical center-to-center distance between the outermost holes per side (3") |
+| `Hole_Edge_Inset` | `12.7` | Distance from the side edge to the screw hole centers (1/2") |
+
 ---
 
 ## CLI Build & Automation

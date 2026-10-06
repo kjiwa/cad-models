@@ -6,7 +6,7 @@
  */
 
 /* [Adapter] */
-// Inside diameter of the tool dust port
+// Inside diameter of the tool dust port (the default fits the DeWalt DW618)
 Tool_Port_Diameter = 34.5;
 
 // Inside diameter of the Makita vacuum hose connection
@@ -24,6 +24,10 @@ Taper_Length = 10;
 /* [Hidden] */
 $fn = 64;
 EPSILON = 0.02;
+
+assert(Wall_Thickness > 0, "Wall_Thickness must be positive");
+assert(2 * Wall_Thickness < Tool_Port_Diameter, "Wall_Thickness must be less than half Tool_Port_Diameter");
+assert(2 * Wall_Thickness < Hose_Port_Diameter, "Wall_Thickness must be less than half Hose_Port_Diameter");
 
 module hose_adapter(d1, d2, thickness) {
   module shell(d1, d2) {

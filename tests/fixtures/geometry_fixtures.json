@@ -341,7 +341,7 @@
   "peglock_hook_qty2_fillet2": {
     "scad": "peglock_hook/peglock_hook.scad",
     "params": {
-      "Hooks_Per_Arm": "2",
+      "Hook_Count": "2",
       "Root_Fillet_Radius": "2"
     },
     "expect": {
@@ -487,7 +487,7 @@
   "peglock_holder_open_bottom": {
     "scad": "peglock_holder/peglock_holder.scad",
     "params": {
-      "Closed_Bottom": "false"
+      "Include_Bottom": "false"
     },
     "expect": {
       "triangles": 3342,
@@ -512,7 +512,7 @@
     "scad": "peglock_holder/peglock_holder.scad",
     "params": {
       "Rows": "2",
-      "Opening_Front_Row_Only": "true"
+      "Include_Opening_Back_Rows": "false"
     },
     "expect": {
       "triangles": 4210,
@@ -742,7 +742,7 @@
       "Pocket_Widths": "\"20,71.25\"",
       "Pocket_Depths": "\"31.25\"",
       "Pocket_Height": "50",
-      "Closed_Bottom": "true",
+      "Include_Bottom": "true",
       "Wall_Thickness": "1.5875",
       "Lip_Height": "0",
       "Opening_Width": "0"
@@ -774,7 +774,7 @@
       "Pocket_Widths": "\"15,12.5,12.5,12.5\"",
       "Pocket_Depths": "\"31.25,25,25,25\"",
       "Pocket_Height": "50",
-      "Closed_Bottom": "true",
+      "Include_Bottom": "true",
       "Wall_Thickness": "1.5875",
       "Lip_Height": "0",
       "Opening_Width": "0"
@@ -806,7 +806,7 @@
       "Pocket_Widths": "\"5,34\"",
       "Pocket_Depths": "\"12\"",
       "Pocket_Height": "50",
-      "Closed_Bottom": "true",
+      "Include_Bottom": "true",
       "Wall_Thickness": "1.5875",
       "Lip_Height": "0",
       "Opening_Width": "0",
@@ -972,8 +972,8 @@
     "scad": "keyhole_router_template/keyhole_router_template.scad",
     "params": {
       "Style": "edge_guide",
-      "Plate_Length": "152.4",
-      "Plate_Width": "38.1"
+      "Plate_Width": "152.4",
+      "Plate_Depth": "38.1"
     },
     "expect": {
       "triangles": 976,

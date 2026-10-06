@@ -54,9 +54,9 @@ razor_blade_dispenser/
 | Parameter | Default | Description |
 |---|---|---|
 | `Slot_Pattern` | `MP` | Slot pattern: `M` for metal blade, `P` for plastic scraper blade (e.g. `P`, `M`, `MP`, `MMMMPPMMM`) |
-| `Tower_Count` | `0` | Number of towers (0 = one per character of `Slot_Pattern`) |
+| `Tower_Count` | `0` | Number of towers, one per `Slot_Pattern` character (0 = auto) |
 | `Tower_Height` | `100.0` | Total height of the towers and backplate |
-| `Slot_Spacing_Holes` | `2` | Tower center-to-center spacing in pegboard holes |
+| `Slot_Spacing_Count` | `2` | Tower center-to-center spacing in pegboard holes |
 
 ### `[Blade Chute]`
 | Parameter | Default | Description |
@@ -84,7 +84,7 @@ razor_blade_dispenser/
 |---|---|---|
 | `Front_Shelf_Depth` | `6.0` | Forward extension of the front resting shelf |
 | `Finger_Notch_Width` | `22.0` | Width of the bottom finger notch |
-| `Finger_Notch_Depth` | `0` | Depth of the bottom finger notch (0 = full depth to the chute rear wall) |
+| `Finger_Notch_Depth` | `0` | Depth of the bottom finger notch, full depth to the chute rear wall (0 = auto) |
 | `Opening_Flare_Width` | `26.0` | Bottom width of the flared opening ramp |
 | `Opening_Flare_Height` | `12.0` | Height of the flared opening ramp |
 | `Include_Sight_Slots` | `true` | Include front vertical sight slots to see the blade inventory |
@@ -102,7 +102,7 @@ razor_blade_dispenser/
 | Parameter | Default | Description |
 |---|---|---|
 | `Coin_Type` | `penny` | Coin used as ballast (`penny`, `nickel`, `quarter`, `custom`) |
-| `Follower_Height` | `0` | Follower height (0 = coin diameter plus 2.5 floor) |
+| `Follower_Height` | `0` | Follower height, coin diameter plus 2.5 floor (0 = auto) |
 | `Follower_Clearance` | `0.5` | Perimeter clearance between the follower and chute pocket |
 | `Follower_Tab_Protrusion` | `1.5` | Protrusion of the front indicator tab beyond the dispenser front face |
 | `Include_Ballast_Pocket` | `true` | Include an internal ballast pocket for coins or custom ballast |
@@ -137,7 +137,7 @@ razor_blade_dispenser/
 ### `[Preview]`
 | Parameter | Default | Description |
 |---|---|---|
-| `Show_Component` | `all` | Component to show (`all`, `backplate`, `towers`, `chutes`, `retention_hooks`, `stabilizing_pins`, `followers`) |
+| `Show_Component` | `all` | Component to show (`all`, `backplate`, `towers`, `chutes`, `retention_hooks`, `stabilizing_pins`, `pegs`, `followers`) |
 | `Show_Labels` | `true` | Show 3D component labels in preview |
 | `Label_Size` | `4.5` | Label text size |
 

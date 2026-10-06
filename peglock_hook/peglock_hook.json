@@ -1,11 +1,11 @@
 {
     "parameterSets": {
-        "Sockets (1\/4)": {
+        "Sockets_1_4in": {
             "Column_Spacing": "21",
             "Columns": "10",
-            "Arm_Length": "7.35",
+            "Arm_Depth": "7.35",
             "Arm_Height": "6.35",
-            "Hooks_Per_Arm": "1",
+            "Hook_Count": "1",
             "Lip_Height": "6.3",
             "Lip_Thickness": "6.3",
             "Arm_Edge_Radius": "1.5875",
@@ -15,12 +15,12 @@
             "Backplate_Thickness": "1.5875",
             "Arm_Width": "6.3"
         },
-        "Sockets (3\/8)": {
+        "Sockets_3_8in": {
             "Column_Spacing": "30",
             "Columns": "8",
-            "Arm_Length": "10.5",
+            "Arm_Depth": "10.5",
             "Arm_Height": "9.5",
-            "Hooks_Per_Arm": "1",
+            "Hook_Count": "1",
             "Lip_Height": "12.7",
             "Lip_Thickness": "9.5",
             "Arm_Edge_Radius": "1.5875",
@@ -30,12 +30,12 @@
             "Backplate_Thickness": "1.5875",
             "Arm_Width": "9.5"
         },
-        "Sockets (1\/2)": {
+        "Sockets_1_2in": {
             "Column_Spacing": "26",
             "Columns": "6",
-            "Arm_Length": "7",
+            "Arm_Depth": "7",
             "Arm_Height": "6.35",
-            "Hooks_Per_Arm": "1",
+            "Hook_Count": "1",
             "Lip_Height": "12.7",
             "Lip_Thickness": "12",
             "Arm_Edge_Radius": "1.5875",
@@ -44,25 +44,6 @@
             "Arm_Shape": "square",
             "Backplate_Thickness": "1.5875",
             "Arm_Width": "12"
-        },
-        "Tilted_Vertical_Lip": {
-            "Column_Spacing": "26",
-            "Columns": "3",
-            "Arm_Length": "18",
-            "Arm_Height": "6.35",
-            "Hooks_Per_Arm": "1",
-            "Lip_Height": "9",
-            "Lip_Thickness": "4",
-            "Arm_Edge_Radius": "1.5875",
-            "Root_Fillet_Radius": "1.5",
-            "Row_Spacing": "19.05",
-            "Rows": "1",
-            "Arm_Shape": "square",
-            "Backplate_Thickness": "1.5875",
-            "Arm_Width": "12",
-            "Arm_Tilt_Angle": "20",
-            "Lip_Orientation": "vertical",
-            "Vertical_Alignment": "center"
         }
     },
     "fileFormatVersion": "1"

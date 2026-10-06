@@ -15,7 +15,6 @@ A 3D-printable sleeve with a herringbone tread that slips over a wheel to add gr
 wheel_tread_cover/
 ├── Makefile
 ├── README.md
-├── wheel_tread_cover.json     # Customizer preset configurations
 ├── wheel_tread_cover.scad     # Parametric OpenSCAD source model
 └── BOSL2     # Relative symlink to ../lib/BOSL2
 ```
@@ -39,9 +38,7 @@ All lengths are in millimeters.
 | `Tread_Count` | `100` | Number of tread ridges around the circumference |
 | `Tread_Depth` | `1.5875` | Ridge height above the sleeve surface (1.5875 for 1/16") |
 
-### Presets
-
-- `Wheel_6_75in`: 6.75" wheel, 2-1/16" wide (the defaults).
+The defaults fit a 6.75" wheel, 2-1/16" wide.
 
 ---
 

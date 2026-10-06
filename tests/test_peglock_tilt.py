@@ -26,16 +26,16 @@ HOLDER_SCAD = os.path.join(REPO_ROOT, "peglock_holder", "peglock_holder.scad")
 FAST = {"$fn": "32"}
 HOOK_CONFIGS = {
     "default": {},
-    "depth25": {"Arm_Length": "25"},
-    "rows2": {"Rows": "2", "Arm_Length": "25"},
-    "quantity2": {"Hooks_Per_Arm": "2"},
+    "depth25": {"Arm_Depth": "25"},
+    "rows2": {"Rows": "2", "Arm_Depth": "25"},
+    "quantity2": {"Hook_Count": "2"},
     "fillet10": {"Root_Fillet_Radius": "10"},
 }
 HOLDER_CONFIGS = {
     "default": {},
     "tall": {"Pocket_Height": "50"},
     "rows3": {"Rows": "3"},
-    "open_bottom": {"Closed_Bottom": "false"},
+    "open_bottom": {"Include_Bottom": "false"},
     "no_opening": {"Opening_Width": "0"},
 }
 HOOK_TILTS = (15, 45)
@@ -82,7 +82,7 @@ class TiltInvariantsTestCase(unittest.TestCase):
                     self._check_invariants(HOOK_SCAD, "Arm_Tilt_Angle", cfg, angle)
 
     def test_hook_vertical_lip_preserves_shape(self):
-        cfg = {"Lip_Orientation": '"vertical"', "Arm_Length": "25"}
+        cfg = {"Lip_Orientation": '"vertical"', "Arm_Depth": "25"}
         for angle in HOOK_TILTS:
             with self.subTest(angle=angle):
                 self._check_invariants(HOOK_SCAD, "Arm_Tilt_Angle", cfg, angle)
@@ -120,7 +120,7 @@ class TiltInvariantsTestCase(unittest.TestCase):
                     HOLDER_SCAD,
                     {
                         "Pocket_Height": str(height + wall),
-                        "Closed_Bottom": "false",
+                        "Include_Bottom": "false",
                         "Tilt_Angle": str(angle),
                     },
                 )
@@ -131,8 +131,8 @@ class TiltInvariantsTestCase(unittest.TestCase):
                     self.assertAlmostEqual(floors[angle], floors[0], delta=0.1 * floors[0])
 
     def test_hook_arm_rises_with_tilt(self):
-        flat = render(HOOK_SCAD, {"Arm_Length": "25"})
-        tilted = render(HOOK_SCAD, {"Arm_Length": "25", "Arm_Tilt_Angle": "30"})
+        flat = render(HOOK_SCAD, {"Arm_Depth": "25"})
+        tilted = render(HOOK_SCAD, {"Arm_Depth": "25", "Arm_Tilt_Angle": "30"})
         self.assertGreater(max(v[2] for t in tilted for v in t if v[1] < -0.01),
                            max(v[2] for t in flat for v in t if v[1] < -0.01) + 5.0)
 
@@ -152,7 +152,7 @@ class VerticalLipBridgeTestCase(unittest.TestCase):
             with self.subTest(angle=angle):
                 tris = render(
                     HOOK_SCAD,
-                    {"Arm_Tilt_Angle": str(angle), "Lip_Orientation": '"vertical"', "Arm_Length": str(depth)},
+                    {"Arm_Tilt_Angle": str(angle), "Lip_Orientation": '"vertical"', "Arm_Depth": str(depth)},
                 )
                 a = math.radians(angle)
                 backer_bottom = min(v[2] for t in tris for v in t if v[1] > 0.01)
@@ -211,7 +211,7 @@ class HolderBackerThicknessTestCase(unittest.TestCase):
 class HolderSoftenedJunctionTestCase(unittest.TestCase):
     """Bottom roundover and junction gusset change the shape without detaching or overhanging anything."""
 
-    CONFIGS = {"default": {}, "grid": {"Rows": "3", "Columns": "2"}, "open_bottom": {"Closed_Bottom": "false"}}
+    CONFIGS = {"default": {}, "grid": {"Rows": "3", "Columns": "2"}, "open_bottom": {"Include_Bottom": "false"}}
 
     def _compare(self, knob, value, expect_more):
         for name, cfg in self.CONFIGS.items():
@@ -226,7 +226,7 @@ class HolderSoftenedJunctionTestCase(unittest.TestCase):
                     self.assertGreater(delta if expect_more else -delta, 1.0)
 
     def test_junction_gusset_adds_material(self):
-        self._compare("Junction_Gusset", "4", expect_more=True)
+        self._compare("Junction_Gusset_Chamfer", "4", expect_more=True)
 
     def test_bottom_roundover_removes_material(self):
         self._compare("Bottom_Edge_Radius", "1.5", expect_more=False)
@@ -272,7 +272,7 @@ class HookRootAndAlignmentTestCase(unittest.TestCase):
             with self.subTest(angle=angle):
                 tris = render(
                     HOOK_SCAD,
-                    {"Arm_Tilt_Angle": str(angle), "Root_Fillet_Radius": "10", "Rows": "4", "Arm_Length": "10"},
+                    {"Arm_Tilt_Angle": str(angle), "Root_Fillet_Radius": "10", "Rows": "4", "Arm_Depth": "10"},
                 )
                 plate = [v[2] for t in tris for v in t if v[1] > 0.01]
                 root = [v[2] for t in tris for v in t if -0.02 < v[1] < -0.005]

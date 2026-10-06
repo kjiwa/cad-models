@@ -1,6 +1,7 @@
 /**
  * Parametric pegboard dispenser for single-edge utility razor blades.
  * Sized for metal and plastic utility blades on standard 1/4" pegboard.
+ * All dimensions are in millimeters.
  */
 
 /* [Part] */
@@ -11,21 +12,21 @@ Part = "dispenser"; // [dispenser: Main Dispenser, assembly: Dispenser & Followe
 // Slot pattern: M for metal blade, P for plastic scraper blade (e.g. "MP", "M", "P", "MMMMPPMMM")
 Slot_Pattern = "MP";
 
-// Number of towers (0 = one per character of Slot_Pattern)
+// Number of towers, one per Slot_Pattern character (0 = auto)
 Tower_Count = 0; // [0:1:20]
 
 // Total height of the towers and backplate
-Tower_Height = 100.0; // [60:5:200]
+Tower_Height = 100.0;
 
 // Tower center-to-center spacing in pegboard holes
-Slot_Spacing_Holes = 2; // [2:1:4]
+Slot_Spacing_Count = 2; // [2:1:4]
 
 /* [Blade Chute] */
 // Blade pocket width (fits 39.15 plastic and 39.9 metal blades)
 Chute_Width = 41.0;
 
 // Metal blade packaging (sleeved is the standard paper sleeve, bare is an unwrapped blade)
-Metal_Blade_Packaging = "sleeved"; // [sleeved: Paper-Sleeved (22.0 depth), bare: Bare Unwrapped (19.5 depth)]
+Metal_Blade_Packaging = "sleeved"; // [sleeved: Paper-Sleeved (22.0 Depth), bare: Bare Unwrapped (19.5 Depth)]
 
 // Blade pocket depth for sleeved metal blades (fits 22.0)
 Sleeved_Metal_Chute_Depth = 23.0;
@@ -68,14 +69,14 @@ Front_Shelf_Depth = 6.0;
 // Width of the bottom finger notch
 Finger_Notch_Width = 22.0;
 
-// Depth of the bottom finger notch (0 = full depth to the chute rear wall)
+// Depth of the bottom finger notch, full depth to the chute rear wall (0 = auto)
 Finger_Notch_Depth = 0;
 
 // Bottom width of the flared opening ramp
-Opening_Flare_Width = 26.0; // [20.0:1.0:32.0]
+Opening_Flare_Width = 26.0;
 
 // Height of the flared opening ramp
-Opening_Flare_Height = 12.0; // [6.0:1.0:25.0]
+Opening_Flare_Height = 12.0;
 
 // Include front vertical sight slots to see the blade inventory
 Include_Sight_Slots = true;
@@ -84,7 +85,7 @@ Include_Sight_Slots = true;
 Sight_Slot_Width = 20.0;
 
 // Lead-in chamfer at the top of the sight slot
-Sight_Slot_Top_Chamfer = 2.0; // [0.5:0.5:4.0]
+Sight_Slot_Top_Chamfer = 2.0;
 
 /* [Badges] */
 // Include debossed "METAL" and "PLASTIC" badges on the front face
@@ -100,14 +101,14 @@ Badge_Depth = 0.6;
 // Coin used as ballast (sets the cradle size and minimum height)
 Coin_Type = "penny"; // [penny: US/Canadian Penny (19.05), nickel: US Nickel (21.21), quarter: US/Canadian Quarter (24.26), custom: Custom Pocket Dimensions]
 
-// Follower height (0 = coin diameter plus 2.5 floor)
-Follower_Height = 0; // [0:1:35]
+// Follower height, coin diameter plus 2.5 floor (0 = auto)
+Follower_Height = 0;
 
 // Perimeter clearance between the follower and chute pocket
-Follower_Clearance = 0.5; // [0.2:0.05:1.0]
+Follower_Clearance = 0.5;
 
 // Protrusion of the front indicator tab beyond the dispenser front face
-Follower_Tab_Protrusion = 1.5; // [0.5:0.5:3.0]
+Follower_Tab_Protrusion = 1.5;
 
 // Include an internal ballast pocket for coins or custom ballast
 Include_Ballast_Pocket = true;
@@ -144,7 +145,7 @@ Pegboard_Thickness = 6.35;
 // Height of the retention hook tab behind the pegboard
 Retention_Hook_Rise = 3.5;
 
-// Stabilizing pin rows below the retention hooks (ignored by the Peglock socket mount)
+// Stabilizing pin rows below the retention hooks
 Stabilizing_Pin_Pattern = "bottom"; // [all: All Rows, top_and_bottom: Top and Bottom Rows, top: Top Row Only, bottom: Bottom Row Only (Lowest Hole), none: Retention Hooks Only]
 
 // Distance from the backplate top to the retention hooks
@@ -155,14 +156,14 @@ Retention_Hook_Margin = 6.35;
 Include_Screw_Holes = true;
 
 // Screw shank clearance hole diameter (#8 screw)
-Screw_Hole_Diameter = 4.5; // [3.0:0.5:6.0]
+Screw_Hole_Diameter = 4.5;
 
 // Screw countersink head diameter
-Countersink_Diameter = 9.0; // [6.0:0.5:12.0]
+Countersink_Diameter = 9.0;
 
 /* [Preview] */
 // Component to show, or all for the full assembly
-Show_Component = "all"; // [all: All Components, backplate: Backplate, towers: Dispenser Towers, chutes: Negative Chute Space, retention_hooks: Retention Hooks, stabilizing_pins: Stabilizing Pins, followers: Gravity Followers]
+Show_Component = "all"; // [all: All Components, backplate: Backplate, towers: Dispenser Towers, chutes: Negative Chute Space, retention_hooks: Retention Hooks, stabilizing_pins: Stabilizing Pins, pegs: All Pegs, followers: Gravity Followers]
 
 // Show 3D component labels in preview
 Show_Labels = true;
@@ -176,7 +177,7 @@ render_labels = false;
 
 EPSILON = 0.02;
 
-slot_spacing = Slot_Spacing_Holes * Hole_Spacing;
+slot_spacing = Slot_Spacing_Count * Hole_Spacing;
 
 actual_dispenser_count = (Tower_Count > 0) ? Tower_Count : max(len(Slot_Pattern), 1);
 total_width = actual_dispenser_count * slot_spacing;

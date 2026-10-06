@@ -15,7 +15,7 @@ Holder_Count = 4; // [1:1:12]
 // Pipe outside diameter (28.575 for 1-1/8")
 Pipe_Diameter = 28.575;
 
-// Gap between neighbouring pipes (12.7 for 1/2")
+// Gap between neighboring pipes (12.7 for 1/2")
 Pipe_Spacing = 12.7;
 
 // Width of the block (X) (25.4 for 1")
@@ -27,16 +27,6 @@ Back_Wall_Thickness = 12.7;
 // Angle the openings lean from horizontal, so pipes stay put
 Opening_Angle = 30; // [0:1:60]
 
-/* [Screw Holes] */
-// Counterbore head diameter (15.875 for 5/8")
-Screw_Head_Diameter = 15.875;
-
-// Screw shank hole diameter (4.7625 for 3/16")
-Screw_Hole_Diameter = 4.7625;
-
-// Depth of the shank hole behind each pipe (9.525 for 3/8")
-Screw_Hole_Depth = 9.525;
-
 /* [Alignment Notch] */
 // Notch width at its base (6.35 for 1/4")
 Notch_Bottom_Width = 6.35;
@@ -46,6 +36,16 @@ Notch_Top_Width = 3.175;
 
 // Notch height, a male tip on top and a female socket on the bottom for stacking blocks (3.175 for 1/8")
 Notch_Height = 3.175;
+
+/* [Screw Holes] */
+// Counterbore head diameter (15.875 for 5/8")
+Screw_Head_Diameter = 15.875;
+
+// Screw shank hole diameter (4.7625 for 3/16")
+Screw_Hole_Diameter = 4.7625;
+
+// Depth of the shank hole behind each pipe (9.525 for 3/8")
+Screw_Hole_Depth = 9.525;
 
 /* [Hidden] */
 $fn = 128;

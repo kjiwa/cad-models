@@ -25,7 +25,7 @@ keyhole_router_template/
 
 All lengths are in millimeters.
 
-### `[Part]`
+### `[Style]`
 | Parameter | Default | Description |
 |---|---|---|
 | `Style` | `three_slot` | Template layout |
@@ -33,8 +33,8 @@ All lengths are in millimeters.
 ### `[Plate]`
 | Parameter | Default | Description |
 |---|---|---|
-| `Plate_Length` | `228.6` | Plate length along the slots (X) (228.6 for 9" three_slot, 152.4 for 6" edge_guide) |
-| `Plate_Width` | `76.2` | Plate width across the slots (Y), including the fences for edge_guide (76.2 for 3" three_slot, 38.1 for 1-1/2" edge_guide) |
+| `Plate_Width` | `228.6` | Plate width along the slots (X) (228.6 for 9" three_slot, 152.4 for 6" edge_guide) |
+| `Plate_Depth` | `76.2` | Plate depth across the slots (Y), including the fences for edge_guide (76.2 for 3" three_slot, 38.1 for 1-1/2" edge_guide) |
 | `Plate_Thickness` | `6.35` | Plate thickness, which sets the guide bushing engagement (6.35 for 1/4") |
 
 ### `[Slots]`
@@ -58,7 +58,6 @@ All lengths are in millimeters.
 
 ### Presets
 
-- `Frame_Three_Slot`: 9" x 3" plate with three slots (the defaults).
 - `Edge_Guide`: 6" x 1-1/2" plate with fences and one short slot.
 
 ---

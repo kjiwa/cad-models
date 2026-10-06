@@ -4,10 +4,10 @@ include <pegboard/mount.scad>
 
 /* [Layout] */
 // Number of magnet columns
-Columns = 1;
+Columns = 1; // [1:1:10]
 
 // Number of magnet rows
-Rows = 1;
+Rows = 1; // [1:1:6]
 
 // Spacing between magnets and around the grid edge
 Magnet_Spacing = 2;
@@ -19,19 +19,19 @@ Magnet_Diameter = 12;
 // Magnet pocket depth, which is also the slab thickness
 Magnet_Depth = 3.5;
 
+// Radius of the rounded slab edges (0 to disable)
+Corner_Radius = 1.5875;
+
 /* [Backplate] */
 // Thickness of the backplate behind the magnet slab
 Backplate_Thickness = 1.5875;
-
-// Radius of the rounded slab edges (0 for square edges)
-Corner_Radius = 1.5875;
 
 /* [Pegboard] */
 // Mounting interface: modular Peglock wedge socket or monolithic integrated pegboard pegs
 Mount_Type = "peglock"; // [peglock: Modular Peglock Socket, monolithic: Integrated Pegboard Pegs]
 
-// Pegboard hole columns the mount engages, as Peglock sockets or peg columns (0 = auto: as many sockets or pegs as fit within the body width)
-Hole_Columns = 0; // [0:1:10]
+// Pegboard hole columns the mount engages (0 = auto)
+Hole_Columns = 0;
 
 // Pegboard hole center spacing (25.4 for 1" standard, 15.875 for 5/8" metal)
 Hole_Spacing = 25.4;

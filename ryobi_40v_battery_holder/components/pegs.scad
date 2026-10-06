@@ -34,7 +34,7 @@ module slot_pegs_column(x_pos, is_center_col, max_x) {
 
 // Generates all pegboard hooks and pins across columns for a single battery slot.
 module slot_pegs(x_center, max_x) {
-  for (k = [-(Slot_Spacing_Holes - 1) / 2 : (Slot_Spacing_Holes - 1) / 2]) {
+  for (k = [-(Slot_Spacing_Count - 1) / 2 : (Slot_Spacing_Count - 1) / 2]) {
     slot_pegs_column(x_center + k * Hole_Spacing, (k == 0), max_x);
   }
 }

@@ -60,7 +60,7 @@ help:
 	@echo "  3mf      - Export default 3MF for all models"
 	@echo "  preview  - Export preview PNG images for all models"
 	@echo "  presets  - Build all parameter presets across models"
-	@echo "  bundle   - Write verified single-file .scad (plus .json) per model into dist/"
+	@echo "  bundle   - Write verified single-file .scad per model into dist/"
 	@echo "  dist     - Build all models and package artifacts, bundles included, into dist/"
 	@echo "  setup    - Symlink lib/ into user OpenSCAD libraries directory"
 	@echo "  clean    - Remove build and dist artifacts"

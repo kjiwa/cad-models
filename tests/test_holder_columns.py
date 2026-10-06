@@ -23,14 +23,14 @@ WALL = 1.5875
 FAST = {"$fn": "32"}
 
 # Non-zero values elsewhere so each zeroed parameter is the only thing that changes.
-ZERO_BASE = {"Tilt_Angle": "15", "Bottom_Edge_Radius": "1.5", "Junction_Gusset": "5", "Pocket_Height": "25"}
+ZERO_BASE = {"Tilt_Angle": "15", "Bottom_Edge_Radius": "1.5", "Junction_Gusset_Chamfer": "5", "Pocket_Height": "25"}
 ZERO_DISABLE_PARAMS = (
     "Lip_Height",
     "Opening_Width",
     "Opening_Chamfer",
     "Corner_Radius",
     "Bottom_Edge_Radius",
-    "Junction_Gusset",
+    "Junction_Gusset_Chamfer",
     "Entry_Chamfer",
 )
 
@@ -145,6 +145,11 @@ class HolderColumnsTestCase(unittest.TestCase):
         self._assert_render_fails(
             {"Pocket_Height": "0.3", "Entry_Chamfer": "0.4"}, "Entry_Chamfer must not exceed Pocket_Height"
         )
+
+    def test_grid_size_asserts(self):
+        for param in ("Columns", "Rows"):
+            with self.subTest(param=param):
+                self._assert_render_fails({param: "0"}, f"{param} must be at least 1")
 
     def test_malformed_entry_asserts(self):
         for param in ("Pocket_Widths", "Pocket_Depths"):

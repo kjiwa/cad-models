@@ -51,7 +51,7 @@ The model is organized into single-responsibility geometric components and pure 
 1. Open `ryobi_40v_battery_holder.scad` in OpenSCAD.
 2. In the top menu, ensure **Window -> Customizer** is checked.
 3. Uncheck **Design -> Hide Customizer** if visible.
-4. Expand the parameter tabs (`Layout`, `Battery Rails`, `Slide Bed & Shelf`, `Gussets`, `Backplate`, `Pegboard`, `Screw Holes`, `Preview`) in the Customizer panel on the right.
+4. Expand the parameter tabs (`Layout`, `Battery Rails`, `Slide Bed and Shelf`, `Gussets`, `Backplate`, `Pegboard`, `Screw Holes`, `Preview`) in the Customizer panel on the right.
 5. Adjust parameters to match your battery count or custom tolerances.
 6. Press `F5` to preview or `F6` to render, then `F7` to export to STL.
 
@@ -65,7 +65,7 @@ All lengths are in millimeters unless noted.
 | Parameter | Default | Range | Description |
 |---|---|---|---|
 | `Battery_Count` | `2` | `1` - `6` | Number of battery slots side by side |
-| `Slot_Spacing_Holes` | `4` | `3` - `8` | Slot center-to-center spacing in pegboard holes |
+| `Slot_Spacing_Count` | `4` | `3` - `8` | Slot center-to-center spacing in pegboard holes |
 | `Tilt_Angle` | `15` | `0` - `45`, degrees | Forward tilt from vertical |
 
 ### `[Battery Rails]`
@@ -81,7 +81,7 @@ All lengths are in millimeters unless noted.
 | `Rail_Root_Radius` | `0.6` | Stress-relief fillet radius at the rail root |
 | `Include_Rails` | `true` | Include the central slide rails |
 
-### `[Slide Bed & Shelf]`
+### `[Slide Bed and Shelf]`
 | Parameter | Default | Description |
 |---|---|---|
 | `Bed_Width` | `76.0` | Width of the slide bed and bottom shelf |
@@ -98,7 +98,7 @@ All lengths are in millimeters unless noted.
 |---|---|---|---|
 | `Gusset_Style` | `full_wedge` | `full_wedge`, `swept_ribs`, `buttress_wings`, `classic` | Gusset style |
 | `Gusset_Thickness` | `5.0` | | Thickness of the gusset ribs |
-| `Hollow_Wedge` | `false` | bool | Hollow out the wedge cavity, otherwise slicer infill fills it (`full_wedge` only) |
+| `Include_Hollow_Wedge` | `false` | bool | Hollow out the wedge cavity, otherwise slicer infill fills it (`full_wedge` only) |
 
 ### `[Backplate]`
 | Parameter | Default | Description |
@@ -129,7 +129,7 @@ All lengths are in millimeters unless noted.
 |---|---|---|---|
 | `Show_Component` | `all` | `all`, `backplate`, `cradle`, `slide_bed`, `bottom_shelf`, `slide_rails`, `gussets`, `retention_hooks`, `stabilizing_pins` | Component to show, or all for the full assembly |
 | `Show_Labels` | `true` | bool | Show 3D component labels in preview |
-| `Label_Size` | `4.5` | `2.0` - `10.0` | Label text size |
+| `Label_Size` | `4.5` | | Label text size |
 
 ---
 

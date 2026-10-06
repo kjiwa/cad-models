@@ -7,10 +7,13 @@ by `include` and is copied into each model. This test keeps the copies from drif
 
 import glob
 import os
-import re
+import sys
 import unittest
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, os.path.join(REPO_ROOT, "scripts"))
+
+import customizer  # noqa: E402
 
 SHARED_NAMES = (
     "Mount_Type",
@@ -28,7 +31,11 @@ INTENTIONAL_VALUE_DIFFERENCES = {
     ("razor_blade_dispenser", "Stabilizing_Pin_Pattern"): "razor dispenser pins only the lowest row by default",
 }
 
-DECLARATION = re.compile(r"^(?P<name>\w+) = (?P<value>[^;]+);(?P<tail>.*)$")
+# (model, name) pairs whose description differs because the model has no Peglock socket mount.
+INTENTIONAL_DESCRIPTION_DIFFERENCES = {
+    ("razor_blade_dispenser", "Stabilizing_Pin_Pattern"),
+    ("ryobi_40v_battery_holder", "Stabilizing_Pin_Pattern"),
+}
 
 
 def _model_sources():
@@ -37,15 +44,12 @@ def _model_sources():
 
 
 def _declarations(path):
-    """Map each shared name to (comment line, value, text after the semicolon)."""
-    with open(path, encoding="utf-8") as f:
-        lines = f.read().splitlines()
+    """Map each shared name to (description, default, annotation)."""
     found = {}
-    for i, line in enumerate(lines):
-        m = DECLARATION.match(line)
-        if m and m["name"] in SHARED_NAMES and m["name"] not in found:
-            comment = lines[i - 1].strip() if i > 0 else ""
-            found[m["name"]] = (comment, m["value"], m["tail"])
+    for group in customizer.parse(path):
+        for p in group.params:
+            if p.name in SHARED_NAMES and p.name not in found:
+                found[p.name] = (p.description, p.default, p.annotation)
     return found
 
 
@@ -61,10 +65,12 @@ class PegboardBlockTestCase(unittest.TestCase):
         for name, models in by_name.items():
             self.assertTrue(models, f"{name} declared in no model")
             reference_model, (ref_comment, ref_value, ref_tail) = next(
-                (m, d) for m, d in models.items() if (m, name) not in INTENTIONAL_VALUE_DIFFERENCES
+                (m, d)
+                for m, d in models.items()
+                if (m, name) not in INTENTIONAL_VALUE_DIFFERENCES.keys() | INTENTIONAL_DESCRIPTION_DIFFERENCES
             )
             for model, (comment, value, tail) in models.items():
-                if comment != ref_comment:
+                if (model, name) not in INTENTIONAL_DESCRIPTION_DIFFERENCES and comment != ref_comment:
                     problems.append(f"{name}: comment in {model} differs from {reference_model}")
                 if tail != ref_tail:
                     problems.append(f"{name}: trailing text in {model} differs from {reference_model}")

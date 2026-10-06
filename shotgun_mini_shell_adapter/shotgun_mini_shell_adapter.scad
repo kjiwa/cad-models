@@ -8,11 +8,11 @@
  */
 
 /* [Overall Dimensions] */
-// Adapter length along the barrel (X)
-Length = 35;
+// Adapter width along the barrel (X)
+Width = 35;
 
-// Adapter width across the receiver (Y)
-Width = 26;
+// Adapter depth across the receiver (Y)
+Depth = 26;
 
 // Adapter height (Z)
 Height = 20.5;
@@ -29,46 +29,46 @@ Rear_Cutout_Depth = 2;
 Front_Cutout_Depth = 7;
 
 // Angle of the sloped front cut from vertical
-Front_Angled_Cutout_Angle = 45;
+Front_Cutout_Angle = 45; // [15:5:75]
 
-// Height at which the sloped front cut starts, below the base
-Front_Angled_Cutout_Offset_Z = 4;
+// Distance below the base where the sloped front cut starts
+Front_Cutout_Drop = 4;
 
-/* [Top Side Cutouts] */
+/* [Side Relief] */
 // Depth of the relief cut into each side of the top
-Top_Side_Cutout_Depth = 4.75;
+Side_Relief_Depth = 4.75;
 
 // Position along X where the side slope starts
-Top_Side_Cutout_Slope_Offset_X = -2.5;
+Side_Slope_Start = -2.5;
 
 // Rise of the side slope over its run
-Top_Side_Cutout_Slope_Rise = 2.5;
+Side_Slope_Rise = 2.5;
 
 // Run of the side slope over its rise
-Top_Side_Cutout_Slope_Run = 11;
+Side_Slope_Run = 11;
 
-/* [Top Cylindrical Cutout] */
+/* [Bore] */
 // Diameter of the shell bore (12.7 for 1/2")
-Top_Cylindrical_Cutout_Diameter = 12.7;
+Bore_Diameter = 12.7;
 
 // Depth of the shell bore
-Top_Cylindrical_Cutout_Depth = 18.35;
+Bore_Depth = 18.35;
 
 // Distance from the rear face to the bore edge along X
-Top_Cylindrical_Cutout_Offset_X = 2.5;
+Bore_Setback = 2.5;
 
-/* [Top Rectangular Cutout] */
-// Corner radius of the slot ahead of the bore
-Top_Rectangular_Cutout_Corner_Radius = 1.5;
-
+/* [Slot] */
 // Width of the slot (Y)
-Top_Rectangular_Cutout_Width = 9.9;
+Slot_Width = 9.9;
 
 // Depth of the slot
-Top_Rectangular_Cutout_Depth = 12.5;
+Slot_Depth = 12.5;
 
 // Gap between the bore and the slot along X
-Top_Rectangular_Cutout_Offset_From_Cylinder = 1;
+Slot_Gap = 1;
+
+// Corner radius of the slot ahead of the bore
+Slot_Corner_Radius = 1.5;
 
 /* [Hidden] */
 $fn = 128;
@@ -84,89 +84,89 @@ module roundedCube(x, y, z, r) {
 
 module body() {
   translate([0, 0, Height / 2])
-    cube([Length, Width, Height], center=true);
+    cube([Width, Depth, Height], center=true);
 }
 
 module frontCutout() {
   x = Front_Cutout_Depth + 1;
-  y = Width + 2;
+  y = Depth + 2;
   z = Height + 1;
-  translate([(Length / 2) - Front_Cutout_Depth, -y / 2, 0])
+  translate([(Width / 2) - Front_Cutout_Depth, -y / 2, 0])
     cube([x, y , z]);
 }
 
 module frontAngledCutout() {
   x = Height * sqrt(2) / 2 + 1;
-  y = Width + 1;
+  y = Depth + 1;
   z = Height * sqrt(2) + 1;
 
-  translate([(Length / 2) - Height, 0, -Front_Angled_Cutout_Offset_Z])
-    rotate([0, 90 - Front_Angled_Cutout_Angle, 0])
+  translate([(Width / 2) - Height, 0, -Front_Cutout_Drop])
+    rotate([0, 90 - Front_Cutout_Angle, 0])
     translate([x / 2, 0, z / 2])
     cube([x, y, z], center=true);
 }
 
 module rearCutout() {
   x = Rear_Cutout_Depth + 1;
-  y = Width + 1;
+  y = Depth + 1;
   z = Rear_Cutout_Height + 1;
 
-  translate([-(Length / 2) - 1, -y / 2, -1])
+  translate([-(Width / 2) - 1, -y / 2, -1])
     cube([x, y, z]);
 }
 
 module topSideAngledCutouts() {
-  a = atan(Top_Side_Cutout_Slope_Rise / Top_Side_Cutout_Slope_Run);
-  x = Length;
-  y = Width + 1;
+  a = atan(Side_Slope_Rise / Side_Slope_Run);
+  x = Width;
+  y = Depth + 1;
   z = Height;
 
-  translate([Top_Side_Cutout_Slope_Offset_X, 0, Rear_Cutout_Height]) {
-    translate([0, -y - (Width / 2) + Top_Side_Cutout_Depth, 0]) rotate([0, a, 0]) cube([x, y, z]);
-    translate([0, (Width / 2) - Top_Side_Cutout_Depth, 0]) rotate([0, a, 0]) cube([x, y, z]);
+  translate([Side_Slope_Start, 0, Rear_Cutout_Height]) {
+    translate([0, -y - (Depth / 2) + Side_Relief_Depth, 0]) rotate([0, a, 0]) cube([x, y, z]);
+    translate([0, (Depth / 2) - Side_Relief_Depth, 0]) rotate([0, a, 0]) cube([x, y, z]);
   }
 }
 
 module topSideCutouts() {
-  x = Length + 1;
-  y = Top_Side_Cutout_Depth + 1;
+  x = Width + 1;
+  y = Side_Relief_Depth + 1;
   z = Height - Rear_Cutout_Height + 1;
 
   topSideAngledCutouts();
-  translate([-(Length + 1) / 2, 0, Rear_Cutout_Height]) {
-    translate([0, -(Width / 2) - 1, 0]) cube([x, y, z]);
-    translate([0, (Width / 2) - Top_Side_Cutout_Depth, 0]) cube([x, y, z]);
+  translate([-(Width + 1) / 2, 0, Rear_Cutout_Height]) {
+    translate([0, -(Depth / 2) - 1, 0]) cube([x, y, z]);
+    translate([0, (Depth / 2) - Side_Relief_Depth, 0]) cube([x, y, z]);
   }
 }
 
 module topCylindricalCutout() {
-  dx = ((Top_Cylindrical_Cutout_Diameter - Length) / 2) + Top_Cylindrical_Cutout_Offset_X;
-  dz = Height - Top_Cylindrical_Cutout_Depth;
+  dx = ((Bore_Diameter - Width) / 2) + Bore_Setback;
+  dz = Height - Bore_Depth;
   translate([dx, 0, dz])
-    cylinder(d=Top_Cylindrical_Cutout_Diameter, h=Height);
+    cylinder(d=Bore_Diameter, h=Height);
 }
 
 module topRectangularCutout() {
-  x = Length;
-  dx = -Length / 2 + Top_Cylindrical_Cutout_Offset_X + Top_Cylindrical_Cutout_Diameter + Top_Rectangular_Cutout_Offset_From_Cylinder;
+  x = Width;
+  dx = -Width / 2 + Bore_Setback + Bore_Diameter + Slot_Gap;
 
-  translate([dx, -Top_Rectangular_Cutout_Width / 2, Height - Top_Rectangular_Cutout_Depth])
-    roundedCube(x, Top_Rectangular_Cutout_Width, Top_Rectangular_Cutout_Depth + 1, Top_Rectangular_Cutout_Corner_Radius);
+  translate([dx, -Slot_Width / 2, Height - Slot_Depth])
+    roundedCube(x, Slot_Width, Slot_Depth + 1, Slot_Corner_Radius);
 }
 
 module frontAngledLip() {
-  y = Width - 2 * Top_Side_Cutout_Depth;
+  y = Depth - 2 * Side_Relief_Depth;
 
-  translate([-Height + Length / 2, -y / 2, 0])
+  translate([-Height + Width / 2, -y / 2, 0])
     difference() {
       intersection() {
         cube([Height, y, Height]);
-        rotate([0, Front_Angled_Cutout_Angle, 0])
+        rotate([0, Front_Cutout_Angle, 0])
           cube([Height * sqrt(2), y, Height * sqrt(2)]);
       }
 
-      translate([Front_Angled_Cutout_Offset_Z, -1, 0])
-        rotate([0, Front_Angled_Cutout_Angle, 0])
+      translate([Front_Cutout_Drop, -1, 0])
+        rotate([0, Front_Cutout_Angle, 0])
         cube([Height * sqrt(2), y + 2, Height * sqrt(2)]);
     }
 }
