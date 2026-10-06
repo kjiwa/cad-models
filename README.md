@@ -6,14 +6,18 @@ Parametric, 3D-printable OpenSCAD models, each in its own directory with a `.sca
 - `bora_centipede_riser` — risers and locking nuts for Bora Centipede work stands
 - `curtain_rod_mounting_plate` — mounting plate for curtain rod brackets
 - `entryway_table` — plywood entryway table with angled legs
+- `keyhole_router_template` — router template for hanging slots in frames and other workpieces
 - `makita_hose_adapter` — dust extraction hose adapter for Makita tools
 - `peglock_attachment` — board attachment clips for Sy's Peglock pegboard system
 - `peglock_bit_holder` — hex bit rack for Sy's Peglock pegboard system
 - `peglock_holder` — bin/organizer for Sy's Peglock pegboard system
 - `peglock_hook` — hooks and socket racks for Sy's Peglock pegboard system
 - `peglock_magnet_mount` — magnet pockets and mount for Sy's Peglock pegboard system
+- `pipe_clamp_wall_mount` — wall rack of angled pipe clamps
 - `razor_blade_dispenser` — pegboard dispenser for single-edge razor blades
 - `ryobi_40v_battery_holder` — pegboard holder for Ryobi 40V batteries
+- `shotgun_mini_shell_adapter` — Mossberg 12 gauge adapter for 1.75" mini shells, compatible with the OPSol Mini-Clip fit
+- `wheel_tread_cover` — herringbone tread sleeve for a wheel
 
 ## Building
 
