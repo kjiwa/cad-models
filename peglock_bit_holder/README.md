@@ -44,19 +44,19 @@ All lengths are in millimeters unless noted.
 ### `[Layout]`
 | Parameter | Default | Options | Description |
 |---|---|---|---|
-| `Columns` | `10` | | Number of bits per row |
-| `Rows` | `2` | | Number of stacked tiers |
+| `Columns` | `10` | `1` to `20`, step `1` | Number of bits per row |
+| `Rows` | `2` | `1` to `6`, step `1` | Number of stacked tiers |
 
 ### `[Pocket]`
 | Parameter | Default | Options | Description |
 |---|---|---|---|
-| `Bit_Width` | `6.75` | | Hex shank width across flats, including clearance |
+| `Bit_Width` | `6.75` | | Hex shank width across flats, including clearance (6.75 for 1/4" bits) |
 | `Pocket_Height` | `15` | | Depth of each pocket |
 | `Wall_Thickness` | `2.68` | | Thickness of the thinnest wall, at the hex corners |
 | `Relief_Width` | `1.5875` | | Width of the grip slot along each row (0 to disable) |
 | `Tilt_Angle` | `15` | `5` to `45`, step `5` | Forward tilt of each tier in degrees |
 | `Entry_Chamfer` | `0.5` | | Lead-in at each pocket mouth (0 to disable) |
-| `Corner_Radius` | `1` | | Radius of the rounded outer edges of the body, except where it meets the plate; the plate is narrowed by this radius on each side (0 for square edges) |
+| `Corner_Radius` | `1` | | Radius of the rounded outer edges of the body; the plate is narrowed by this radius on each side (0 to disable) |
 
 ### `[Backplate]`
 | Parameter | Default | Options | Description |

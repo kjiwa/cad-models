@@ -4,13 +4,13 @@ include <pegboard/mount.scad>
 
 /* [Layout] */
 // Number of bits per row
-Columns = 10;
+Columns = 10; // [1:1:20]
 
 // Number of stacked tiers
-Rows = 2;
+Rows = 2; // [1:1:6]
 
 /* [Pocket] */
-// Hex shank width across flats, including clearance
+// Hex shank width across flats, including clearance (6.75 for 1/4" bits)
 Bit_Width = 6.75;
 
 // Depth of each pocket
@@ -28,7 +28,7 @@ Tilt_Angle = 15; // [5:5:45]
 // Lead-in at each pocket mouth (0 to disable)
 Entry_Chamfer = 0.5;
 
-// Radius of the rounded outer edges of the body, except where it meets the plate; the plate is narrowed by this radius on each side (0 for square edges)
+// Radius of the rounded outer edges of the body (0 to disable)
 Corner_Radius = 1;
 
 /* [Backplate] */
