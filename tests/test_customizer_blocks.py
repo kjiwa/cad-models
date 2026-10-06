@@ -7,10 +7,13 @@ by `include` and is copied into each model. This test keeps the copies from drif
 
 import glob
 import os
-import re
+import sys
 import unittest
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+sys.path.insert(0, os.path.join(REPO_ROOT, "scripts"))
+
+import customizer  # noqa: E402
 
 SHARED_NAMES = (
     "Mount_Type",
@@ -28,8 +31,6 @@ INTENTIONAL_VALUE_DIFFERENCES = {
     ("razor_blade_dispenser", "Stabilizing_Pin_Pattern"): "razor dispenser pins only the lowest row by default",
 }
 
-DECLARATION = re.compile(r"^(?P<name>\w+) = (?P<value>[^;]+);(?P<tail>.*)$")
-
 
 def _model_sources():
     paths = sorted(glob.glob(os.path.join(REPO_ROOT, "*", "*.scad")))
@@ -37,15 +38,12 @@ def _model_sources():
 
 
 def _declarations(path):
-    """Map each shared name to (comment line, value, text after the semicolon)."""
-    with open(path, encoding="utf-8") as f:
-        lines = f.read().splitlines()
+    """Map each shared name to (description, default, annotation)."""
     found = {}
-    for i, line in enumerate(lines):
-        m = DECLARATION.match(line)
-        if m and m["name"] in SHARED_NAMES and m["name"] not in found:
-            comment = lines[i - 1].strip() if i > 0 else ""
-            found[m["name"]] = (comment, m["value"], m["tail"])
+    for group in customizer.parse(path):
+        for p in group.params:
+            if p.name in SHARED_NAMES and p.name not in found:
+                found[p.name] = (p.description, p.default, p.annotation)
     return found
 
 
