@@ -1,11 +1,7 @@
 {
     "parameterSets": {
-        "5.25in": {
+        "Riser_5_25in": {
             "Height": "133.35",
-            "Part": "riser"
-        },
-        "6in": {
-            "Height": "152.4",
             "Part": "riser"
         },
         "Nut": {

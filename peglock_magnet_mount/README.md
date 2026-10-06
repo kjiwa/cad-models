@@ -18,7 +18,6 @@ Parametric, 3D-printable magnet mount for Sy's Peglock modular pegboard system a
 peglock_magnet_mount/
 ├── Makefile                      # Build automation for STL, 3MF, presets, and PNG renders
 ├── README.md                     # Documentation and printing recommendations
-├── peglock_magnet_mount.json     # Customizer preset configurations
 ├── peglock_magnet_mount.scad     # Parametric OpenSCAD source model
 ├── BOSL2                         # Relative symlink to ../lib/BOSL2
 ├── pegboard                      # Relative symlink to ../lib/pegboard
@@ -31,7 +30,7 @@ peglock_magnet_mount/
 
 1. Open `peglock_magnet_mount.scad` in OpenSCAD.
 2. In the top menu, ensure **Window -> Customizer** is checked.
-3. Select a preset (`Single_12mm`, `Pair_12mm`, `Grid_2x2_12mm`) or customize parameters.
+3. Customize parameters (the defaults hold a single 12 mm magnet).
 4. Press `F5` to preview or `F6` to render, then `F7` to export to STL.
 
 ---

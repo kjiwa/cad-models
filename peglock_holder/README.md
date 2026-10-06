@@ -31,7 +31,7 @@ peglock_holder/
 
 1. Open `peglock_holder.scad` in OpenSCAD.
 2. In the top menu, ensure **Window -> Customizer** is checked.
-3. Select a preset (e.g. `Single_Slot`, `Dual_Slot`, `Organizer_4_Slot`, `Deep_Bin`, `Showpiece_Tilted`, `Knife_Holder`, `Olfa_Knife_Holder`, `Thin_Olfa_Knife_Holder`) or customize parameters.
+3. Select a preset (`Knife_Holder`, `Olfa_Knife_Holder`, `Thin_Olfa_Knife_Holder`) or customize parameters.
 4. Press `F5` to preview or `F6` to render, then `F7` to export to STL.
 
 ---

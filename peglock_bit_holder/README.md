@@ -19,7 +19,6 @@ Parametric, 3D-printable hex bit holder for Sy's Peglock modular pegboard system
 peglock_bit_holder/
 ├── Makefile                    # Build automation for STL, 3MF, presets, and PNG renders
 ├── README.md                   # Documentation and printing recommendations
-├── peglock_bit_holder.json     # Customizer preset configurations
 ├── peglock_bit_holder.scad     # Parametric OpenSCAD source model
 ├── BOSL2                       # Relative symlink to ../lib/BOSL2
 ├── pegboard                    # Relative symlink to ../lib/pegboard
@@ -32,7 +31,7 @@ peglock_bit_holder/
 
 1. Open `peglock_bit_holder.scad` in OpenSCAD.
 2. In the top menu, ensure **Window -> Customizer** is checked.
-3. Select a preset (`Hex_Bit_1_4in`) or customize parameters.
+3. Customize parameters (the defaults fit 1/4" hex bits).
 4. Press `F5` to preview or `F6` to render, then `F7` to export to STL.
 
 ---

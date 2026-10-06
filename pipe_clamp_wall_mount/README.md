@@ -16,7 +16,6 @@ A 3D-printable wall rack of angled pipe clamps. One block holds several pipes, e
 pipe_clamp_wall_mount/
 ├── Makefile
 ├── README.md
-├── pipe_clamp_wall_mount.json     # Customizer preset configurations
 ├── pipe_clamp_wall_mount.scad     # Parametric OpenSCAD source model
 └── BOSL2     # Relative symlink to ../lib/BOSL2
 ```
@@ -51,9 +50,7 @@ All lengths are in millimeters.
 | `Screw_Hole_Diameter` | `4.7625` | Screw shank hole diameter (4.7625 for 3/16") |
 | `Screw_Hole_Depth` | `9.525` | Depth of the shank hole behind each pipe (9.525 for 3/8") |
 
-### Presets
-
-- `Pipe_1_1_8in`: 1-1/8" pipe (the defaults).
+The defaults fit 1-1/8" pipe.
 
 ---
 

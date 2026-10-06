@@ -1,10 +1,5 @@
 {
     "parameterSets": {
-        "Frame_Three_Slot": {
-            "Style": "three_slot",
-            "Plate_Width": "228.6",
-            "Plate_Depth": "76.2"
-        },
         "Edge_Guide": {
             "Style": "edge_guide",
             "Plate_Width": "152.4",

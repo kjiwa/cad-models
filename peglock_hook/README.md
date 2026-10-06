@@ -8,7 +8,7 @@ Parametric, 3D-printable tool hooks and socket racks for Sy's Peglock modular pe
 - **Custom Hook Profiles**: Circle, square, triangle, and right triangle arm profiles.
 - **Configurable Grid Layout**: Parametric row and column counts, spacing, arm depth, and hooks per arm.
 - **Stress-Relief Root Fillet**: Optional parametric fillet at the hook arm root to resist cantilever shear.
-- **Presets Included**: Pre-configured JSON parameter sets for socket racks (`Sockets (1/4)`, `Sockets (3/8)`, `Sockets (1/2)`) and a tilted vertical-lip hook (`Tilted_Vertical_Lip`).
+- **Presets Included**: Pre-configured JSON parameter sets for socket racks (`Sockets_1_4in`, `Sockets_3_8in`, `Sockets_1_2in`).
 - **Automated CLI Build**: `Makefile` support to render base models and all JSON parameter presets.
 
 ---
@@ -32,7 +32,7 @@ peglock_hook/
 
 1. Open `peglock_hook.scad` in OpenSCAD.
 2. In the top menu, ensure **Window -> Customizer** is checked.
-3. Select a preset (e.g. `Sockets (1/4)`) from the preset dropdown, or customize parameters.
+3. Select a preset (e.g. `Sockets_1_4in`) from the preset dropdown, or customize parameters.
 4. Press `F5` to preview or `F6` to render, then `F7` to export to STL.
 
 ---

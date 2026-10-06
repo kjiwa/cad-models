@@ -58,7 +58,6 @@ All lengths are in millimeters.
 
 ### Presets
 
-- `Frame_Three_Slot`: 9" x 3" plate with three slots (the defaults).
 - `Edge_Guide`: 6" x 1-1/2" plate with fences and one short slot.
 
 ---

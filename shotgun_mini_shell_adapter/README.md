@@ -15,7 +15,6 @@ A 3D-printable adapter for Mossberg 12 gauge shotguns that holds 1.75" (44.45 mm
 shotgun_mini_shell_adapter/
 ├── Makefile
 ├── README.md
-├── shotgun_mini_shell_adapter.json     # Customizer preset configurations
 └── shotgun_mini_shell_adapter.scad     # Parametric OpenSCAD source model
 ```
 
@@ -68,9 +67,7 @@ All lengths are in millimeters.
 | `Slot_Gap` | `1` | Gap between the bore and the slot along X |
 | `Slot_Corner_Radius` | `1.5` | Corner radius of the slot ahead of the bore |
 
-### Presets
-
-- `Mossberg_12ga_1_75in`: the defaults.
+The defaults fit a Mossberg 12 gauge 1.75" shell.
 
 ---
 

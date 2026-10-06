@@ -32,7 +32,7 @@ make stl       # export default STL for every model
 make 3mf       # export default 3MF for every model
 make preview   # export preview PNG for every model
 make presets   # build all parameter presets for every model
-make bundle    # write single-file .scad (and .json) per model into dist/, verified
+make bundle    # write single-file .scad per model into dist/, verified
 make dist      # build everything and collect artifacts and bundles into dist/
 make clean     # remove build and dist artifacts
 ```

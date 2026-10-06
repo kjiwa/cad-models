@@ -5,7 +5,6 @@ the tiers extend toward -Y, and model X is mirrored. Probe points are given in a
 x along the row, u from the cell's back wall toward its front, v up the tilted pocket axis.
 """
 
-import json
 import math
 import os
 import shutil
@@ -21,7 +20,6 @@ from mesh_probe import contains, shell_count  # noqa: E402
 
 MODEL_DIR = os.path.join(REPO_ROOT, "peglock_bit_holder")
 BIT_SCAD = os.path.join(MODEL_DIR, "peglock_bit_holder.scad")
-PRESETS_PATH = os.path.join(MODEL_DIR, "peglock_bit_holder.json")
 FAST = {"$fn": "32"}
 SOCKET_HEIGHT = 35.4
 WIDTH, WALL, DEPTH, TILT, CHAMFER = 6.75, 2.68, 15.0, 15.0, 0.5
@@ -184,10 +182,8 @@ class BitHolderTestCase(unittest.TestCase):
             with self.subTest(params=params):
                 self.assertEqual(shell_count(render(params)), 1)
 
-    def test_preset_reproduces_defaults(self):
-        with open(PRESETS_PATH, encoding="utf-8") as f:
-            params = json.load(f)["parameterSets"]["Hex_Bit_1_4in"]
-        self.assertEqual(shell_count(render(params)), 1)
+    def test_defaults_render_one_shell(self):
+        self.assertEqual(shell_count(render({})), 1)
 
     def test_out_of_range_parameters_assert(self):
         cases = [

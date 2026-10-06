@@ -6,7 +6,7 @@
  */
 
 /* [Adapter] */
-// Inside diameter of the tool dust port
+// Inside diameter of the tool dust port (the default fits the DeWalt DW618)
 Tool_Port_Diameter = 34.5;
 
 // Inside diameter of the Makita vacuum hose connection
