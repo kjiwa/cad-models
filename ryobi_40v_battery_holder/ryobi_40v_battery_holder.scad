@@ -1,6 +1,6 @@
 /**
  * Parametric pegboard holder for Ryobi 40V batteries.
- * Designed for 1/4\" pegboard with 1\" hole spacing and 1/4\" wall clearance.
+ * Designed for 1/4" pegboard with 1" hole spacing and 1/4" wall clearance. All dimensions are in millimeters.
  */
 
 /* [Layout] */
@@ -8,7 +8,7 @@
 Battery_Count = 2; // [1:1:6]
 
 // Slot center-to-center spacing in pegboard holes
-Slot_Spacing_Holes = 4; // [3:1:8]
+Slot_Spacing_Count = 4; // [3:1:8]
 
 // Forward tilt from vertical in degrees
 Tilt_Angle = 15; // [0:5:45]
@@ -41,7 +41,7 @@ Rail_Root_Radius = 0.6;
 // Include the central slide rails
 Include_Rails = true;
 
-/* [Slide Bed & Shelf] */
+/* [Slide Bed and Shelf] */
 // Width of the slide bed and bottom shelf
 Bed_Width = 76.0;
 
@@ -74,7 +74,7 @@ Gusset_Style = "full_wedge"; // [full_wedge: Full-Width Sculpted Wedge, swept_ri
 Gusset_Thickness = 5.0;
 
 // Hollow out the wedge cavity, otherwise slicer infill fills it (full_wedge only)
-Hollow_Wedge = false;
+Include_Hollow_Wedge = false;
 
 /* [Backplate] */
 // Thickness of the mounting backplate
@@ -99,7 +99,7 @@ Pegboard_Thickness = 6.35;
 // Height of the retention hook tab behind the pegboard
 Retention_Hook_Rise = 3.5;
 
-// Stabilizing pin rows below the retention hooks (ignored by the Peglock socket mount)
+// Stabilizing pin rows below the retention hooks
 Stabilizing_Pin_Pattern = "all"; // [all: All Rows, top_and_bottom: Top and Bottom Rows, top: Top Row Only, bottom: Bottom Row Only (Lowest Hole), none: Retention Hooks Only]
 
 // Distance from the backplate top to the retention hooks
@@ -123,7 +123,7 @@ Show_Component = "all"; // [all: All Components, backplate: Backplate, cradle: F
 Show_Labels = true;
 
 // Label text size
-Label_Size = 4.5; // [2:0.5:10]
+Label_Size = 4.5;
 
 /* [Hidden] */
 $fn = 36;
@@ -131,7 +131,7 @@ render_labels = false;
 
 EPSILON = 0.02;
 
-slot_spacing = Slot_Spacing_Holes * Hole_Spacing;
+slot_spacing = Slot_Spacing_Count * Hole_Spacing;
 
 total_width = (Battery_Count - 1) * slot_spacing + Bed_Width;
 

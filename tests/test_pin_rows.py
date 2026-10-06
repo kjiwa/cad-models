@@ -85,7 +85,7 @@ def lowest_row(z_top_peg, pin_d, hole_spacing):
 
 
 def ryobi_probe(v):
-    slots, per_slot = int(v["Battery_Count"]), int(v["Slot_Spacing_Holes"])
+    slots, per_slot = int(v["Battery_Count"]), int(v["Slot_Spacing_Count"])
     max_x = v["total_width"] / 2 - v["Pin_Diameter"] / 2 - 2.0
     columns = []
     for i in range(slots):
@@ -100,7 +100,7 @@ def ryobi_probe(v):
 
 
 def razor_probe(v):
-    count, per_slot = int(v["actual_dispenser_count"]), int(v["Slot_Spacing_Holes"])
+    count, per_slot = int(v["actual_dispenser_count"]), int(v["Slot_Spacing_Count"])
     max_x = v["total_width"] / 2 - v["Pin_Diameter"] / 2 - 1.0
     columns = []
     for i in range(count):
@@ -137,13 +137,13 @@ class Model:
 RYOBI = Model(
     "ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
     {"Battery_Count": "2", "Rail_Length": "110"},
-    ("z_top_peg", "Pin_Diameter", "Hole_Spacing", "Slot_Spacing_Holes", "Battery_Count", "slot_spacing", "total_width"),
+    ("z_top_peg", "Pin_Diameter", "Hole_Spacing", "Slot_Spacing_Count", "Battery_Count", "slot_spacing", "total_width"),
     ryobi_probe,
 )
 RAZOR = Model(
     "razor_blade_dispenser/razor_blade_dispenser.scad",
     {"Tower_Height": "150"},
-    ("z_top_peg", "Pin_Diameter", "Hole_Spacing", "Slot_Spacing_Holes", "actual_dispenser_count", "slot_spacing", "total_width"),
+    ("z_top_peg", "Pin_Diameter", "Hole_Spacing", "Slot_Spacing_Count", "actual_dispenser_count", "slot_spacing", "total_width"),
     razor_probe,
 )
 HOLDER = Model(
@@ -209,10 +209,10 @@ for _name in MODELS:
 
 @unittest.skipUnless(shutil.which("openscad"), "openscad binary not found on PATH")
 class RyobiCenterColumnTestCase(PinRowChecks):
-    """An odd Slot_Spacing_Holes puts a column on the slot centre, where row 1 is the screw hole."""
+    """An odd Slot_Spacing_Count puts a column on the slot centre, where row 1 is the screw hole."""
 
     def test_center_column_skips_row_one_with_screw_holes(self):
-        self._check_pattern(RYOBI, "all", skip_center=(1,), Slot_Spacing_Holes="3", Include_Screw_Holes="true")
+        self._check_pattern(RYOBI, "all", skip_center=(1,), Slot_Spacing_Count="3", Include_Screw_Holes="true")
 
 
 if __name__ == "__main__":

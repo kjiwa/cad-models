@@ -122,7 +122,7 @@ module gusset_rib_pair(x_center, span, z_bot, h_plate_attach, h_contact, w_conta
 // Orchestrates structural cradle reinforcement gussets based on the configured style.
 module gusset_ribs(x_center) {
   w = Bed_Width;
-  gusset_span = (Slot_Spacing_Holes % 2 == 0) ? Hole_Spacing : 2 * Hole_Spacing;
+  gusset_span = (Slot_Spacing_Count % 2 == 0) ? Hole_Spacing : 2 * Hole_Spacing;
   z_gusset_bot = z_shelf;
   h_gusset = z_plate_top - z_gusset_bot;
   w_gusset = h_gusset * tan(Tilt_Angle);
@@ -134,7 +134,7 @@ module gusset_ribs(x_center) {
 
   if (Tilt_Angle > 0) {
     if (Gusset_Style == "full_wedge") {
-      gusset_full_wedge(x_center, w, z_gusset_bot, h_plate_attach, h_contact, w_contact, Hollow_Wedge);
+      gusset_full_wedge(x_center, w, z_gusset_bot, h_plate_attach, h_contact, w_contact, Include_Hollow_Wedge);
     } else if (Gusset_Style == "buttress_wings") {
       gusset_buttress_wings(x_center, gusset_span, w, z_gusset_bot, h_plate_attach, h_contact, w_contact);
     } else {

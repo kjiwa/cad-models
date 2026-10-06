@@ -31,6 +31,12 @@ INTENTIONAL_VALUE_DIFFERENCES = {
     ("razor_blade_dispenser", "Stabilizing_Pin_Pattern"): "razor dispenser pins only the lowest row by default",
 }
 
+# (model, name) pairs whose description differs because the model has no Peglock socket mount.
+INTENTIONAL_DESCRIPTION_DIFFERENCES = {
+    ("razor_blade_dispenser", "Stabilizing_Pin_Pattern"),
+    ("ryobi_40v_battery_holder", "Stabilizing_Pin_Pattern"),
+}
+
 
 def _model_sources():
     paths = sorted(glob.glob(os.path.join(REPO_ROOT, "*", "*.scad")))
@@ -59,10 +65,12 @@ class PegboardBlockTestCase(unittest.TestCase):
         for name, models in by_name.items():
             self.assertTrue(models, f"{name} declared in no model")
             reference_model, (ref_comment, ref_value, ref_tail) = next(
-                (m, d) for m, d in models.items() if (m, name) not in INTENTIONAL_VALUE_DIFFERENCES
+                (m, d)
+                for m, d in models.items()
+                if (m, name) not in INTENTIONAL_VALUE_DIFFERENCES.keys() | INTENTIONAL_DESCRIPTION_DIFFERENCES
             )
             for model, (comment, value, tail) in models.items():
-                if comment != ref_comment:
+                if (model, name) not in INTENTIONAL_DESCRIPTION_DIFFERENCES and comment != ref_comment:
                     problems.append(f"{name}: comment in {model} differs from {reference_model}")
                 if tail != ref_tail:
                     problems.append(f"{name}: trailing text in {model} differs from {reference_model}")
