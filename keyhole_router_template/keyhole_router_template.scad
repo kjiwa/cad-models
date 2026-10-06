@@ -72,6 +72,7 @@ assert(Fenced_Slot == "short" || Fenced_Slot == "long", "Fenced_Slot must be sho
 assert(Guide_Width > Venting_Slot_Width, "Guide_Width must exceed Venting_Slot_Width");
 assert(Long_Slot_Length > Short_Slot_Length, "Long_Slot_Length must exceed Short_Slot_Length");
 assert(Style != "three_slot" || Plate_Depth > 2 * Guide_Width, "Plate_Depth must exceed twice Guide_Width so both slot rows stay inside the plate");
+assert(Style != "edge_guide" || Fence_Thickness > 0, "Fence_Thickness must be positive");
 assert(Style != "edge_guide" || Workpiece_Width > Guide_Width, "Workpiece_Width must exceed Guide_Width");
 assert(Mark_Depth >= 0 && Mark_Depth < mark_limit, "Mark_Depth must be under the distance from the plate edge to the nearest guide channel");
 assert(Style != "edge_guide" || Mark_Depth < Fence_Thickness, "Mark_Depth must be less than Fence_Thickness so each notch stops inside the fence");
