@@ -35,7 +35,7 @@ HOLDER_CONFIGS = {
     "default": {},
     "tall": {"Pocket_Height": "50"},
     "rows3": {"Rows": "3"},
-    "open_bottom": {"Closed_Bottom": "false"},
+    "open_bottom": {"Include_Bottom": "false"},
     "no_opening": {"Opening_Width": "0"},
 }
 HOOK_TILTS = (15, 45)
@@ -120,7 +120,7 @@ class TiltInvariantsTestCase(unittest.TestCase):
                     HOLDER_SCAD,
                     {
                         "Pocket_Height": str(height + wall),
-                        "Closed_Bottom": "false",
+                        "Include_Bottom": "false",
                         "Tilt_Angle": str(angle),
                     },
                 )
@@ -211,7 +211,7 @@ class HolderBackerThicknessTestCase(unittest.TestCase):
 class HolderSoftenedJunctionTestCase(unittest.TestCase):
     """Bottom roundover and junction gusset change the shape without detaching or overhanging anything."""
 
-    CONFIGS = {"default": {}, "grid": {"Rows": "3", "Columns": "2"}, "open_bottom": {"Closed_Bottom": "false"}}
+    CONFIGS = {"default": {}, "grid": {"Rows": "3", "Columns": "2"}, "open_bottom": {"Include_Bottom": "false"}}
 
     def _compare(self, knob, value, expect_more):
         for name, cfg in self.CONFIGS.items():
@@ -226,7 +226,7 @@ class HolderSoftenedJunctionTestCase(unittest.TestCase):
                     self.assertGreater(delta if expect_more else -delta, 1.0)
 
     def test_junction_gusset_adds_material(self):
-        self._compare("Junction_Gusset", "4", expect_more=True)
+        self._compare("Junction_Gusset_Chamfer", "4", expect_more=True)
 
     def test_bottom_roundover_removes_material(self):
         self._compare("Bottom_Edge_Radius", "1.5", expect_more=False)

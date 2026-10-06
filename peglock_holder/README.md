@@ -43,9 +43,9 @@ All lengths are in millimeters unless noted.
 ### `[Layout]`
 | Parameter | Default | Options | Description |
 |---|---|---|---|
-| `Columns` | `1` | | Number of pocket columns |
-| `Rows` | `1` | | Number of pocket rows |
-| `Vertical_Alignment` | `bottom` | `bottom`, `center` | Where the pockets sit on the backplate; bottom is centered once the body nearly fills the plate |
+| `Columns` | `1` | `1`-`10` | Number of pocket columns |
+| `Rows` | `1` | `1`-`6` | Number of pocket rows |
+| `Vertical_Alignment` | `bottom` | `bottom`, `center` | Where the pockets sit on the backplate (bottom is centered once the body nearly fills the plate) |
 
 ### `[Pocket]`
 | Parameter | Default | Options | Description |
@@ -54,34 +54,34 @@ All lengths are in millimeters unless noted.
 | `Pocket_Depths` | `6.35` | | Inner depth of each pocket, same format as `Pocket_Widths` |
 | `Pocket_Height` | `12.7` | | Inner height of each pocket |
 | `Entry_Chamfer` | `0.5` | | Lead-in at each pocket mouth (0 to disable) |
-| `Tilt_Angle` | `0` | | Forward tilt of the pockets in degrees, 0 to 45 (0 for vertical) |
-| `Closed_Bottom` | `true` | | Close the pocket bottoms |
+| `Tilt_Angle` | `0` | | Forward tilt of the pockets in degrees, 0 to 45 (0 to disable) |
+| `Include_Bottom` | `true` | | Include the pocket bottoms |
 | `Wall_Thickness` | `1.5875` | | Thickness of the pocket walls |
-| `Corner_Radius` | `3.175` | | Radius of the rounded pocket body corners (0 for square corners) |
+| `Corner_Radius` | `3.175` | | Radius of the rounded pocket body corners (0 to disable) |
 | `Bottom_Edge_Radius` | `0` | | Rounds the pocket body's underside edges, except where it meets the plate; limited to `Wall_Thickness` (0 to disable) |
+| `Junction_Gusset_Chamfer` | `0` | | Size of the triangular web under the pockets where they meet the plate, clamped to the plate below them; open-bottom pockets cut through it (0 to disable) |
 
 ### `[Front]`
 | Parameter | Default | Options | Description |
 |---|---|---|---|
-| `Lip_Height` | `3.175` | | Height of the front lip (0 for no lip) |
 | `Lip_Thickness` | `3.175` | | Thickness of the front lip |
-| `Opening_Width` | `6.35` | | Width of the front access opening (0 for none) |
+| `Lip_Height` | `3.175` | | Height of the front lip (0 to disable) |
+| `Opening_Width` | `6.35` | | Width of the front access opening (0 to disable) |
 | `Opening_Chamfer` | `1.0` | | Front opening lead-in chamfer (0 to disable) |
-| `Opening_Front_Row_Only` | `false` | | Only cut the front access opening on the front-most row when multi-row |
+| `Include_Opening_Back_Rows` | `true` | | Include the front access opening on every row, not only the front-most |
 
 ### `[Backplate]`
 The plate is narrower than the body by `Corner_Radius` on each side, so it stays within the flat of the body's back face.
 
 | Parameter | Default | Options | Description |
 |---|---|---|---|
-| `Backplate_Thickness` | `1.5875` | | Thickness of the backplate behind the pockets; thicker resists flex under heavy loads (no load rating is claimed) |
-| `Junction_Gusset` | `0` | | Size of the triangular web under the pockets where they meet the plate, clamped to the plate below them; open-bottom pockets cut through it (0 to disable) |
+| `Backplate_Thickness` | `1.5875` | | Thickness of the backplate behind the pockets (thicker resists flex under heavy loads; no load rating is claimed) |
 
 ### `[Pegboard]`
 | Parameter | Default | Options | Description |
 |---|---|---|---|
 | `Mount_Type` | `peglock` | `peglock`, `monolithic` | Mounting interface: modular Peglock wedge socket or monolithic integrated pegboard pegs |
-| `Hole_Columns` | `0` | `0`-`10` | Pegboard hole columns the mount engages, as Peglock sockets or peg columns (0 = auto: as many sockets or pegs as fit within the body width) |
+| `Hole_Columns` | `0` | `0`-`10` | Pegboard hole columns the mount engages, as Peglock sockets or peg columns (0 = auto: as many as fit within the body width) |
 | `Hole_Spacing` | `25.4` | | Pegboard hole center spacing (25.4 for 1" standard, 15.875 for 5/8" metal) |
 | `Pin_Diameter` | `5.7` | | Pin diameter (5.7 for standard 1/4" hole fit, 6.0 for original Sy fit) |
 | `Pegboard_Thickness` | `6.35` | | Pegboard thickness (6.35 for 1/4" board, 1.5875 for 1/16" thin metal) |

@@ -4,13 +4,13 @@ include <pegboard/mount.scad>
 
 /* [Layout] */
 // Number of pocket columns
-Columns = 1;
+Columns = 1; // [1:1:10]
 
 // Number of pocket rows
-Rows = 1;
+Rows = 1; // [1:1:6]
 
-// Where the pockets sit on the backplate; bottom is centered once the body nearly fills the plate
-Vertical_Alignment = "bottom"; // [bottom: Pockets near plate bottom, center: Pockets centered on plate]
+// Where the pockets sit on the backplate (bottom is centered once the body nearly fills the plate)
+Vertical_Alignment = "bottom"; // [bottom: Pockets Near Bottom, center: Pockets Centered]
 
 /* [Pocket] */
 // Inner width of each pocket: one value for every column or one comma-separated value per column (12.7 for 1/2")
@@ -25,50 +25,50 @@ Pocket_Height = 12.7;
 // Lead-in at each pocket mouth (0 to disable)
 Entry_Chamfer = 0.5;
 
-// Forward tilt of the pockets in degrees (0 for vertical)
+// Forward tilt of the pockets in degrees (0 to disable)
 Tilt_Angle = 0; // [0:5:45]
 
-// Close the pocket bottoms
-Closed_Bottom = true;
+// Include the pocket bottoms
+Include_Bottom = true;
 
 // Thickness of the pocket walls
 Wall_Thickness = 1.5875;
 
-// Radius of the rounded pocket body corners (0 for square corners)
+// Radius of the rounded pocket body corners (0 to disable)
 Corner_Radius = 3.175;
 
 // Rounds the pocket body's underside edges, except where it meets the plate (0 to disable)
 Bottom_Edge_Radius = 0;
 
-/* [Front] */
-// Height of the front lip (0 for no lip)
-Lip_Height = 3.175;
+// Size of the triangular web under the pockets where they meet the plate, clamped to the plate below them (0 to disable)
+Junction_Gusset_Chamfer = 0;
 
+/* [Front] */
 // Thickness of the front lip
 Lip_Thickness = 3.175;
 
-// Width of the front access opening (0 for none)
+// Height of the front lip (0 to disable)
+Lip_Height = 3.175;
+
+// Width of the front access opening (0 to disable)
 Opening_Width = 6.35;
 
 // Front opening lead-in chamfer (0 to disable)
 Opening_Chamfer = 1.0;
 
-// Only cut the front access opening on the front-most row when multi-row
-Opening_Front_Row_Only = false;
+// Include the front access opening on every row, not only the front-most
+Include_Opening_Back_Rows = true;
 
 /* [Backplate] */
-// Thickness of the backplate behind the pockets; thicker resists flex under heavy loads
+// Thickness of the backplate behind the pockets (thicker resists flex under heavy loads)
 Backplate_Thickness = 1.5875;
-
-// Size of the triangular web under the pockets where they meet the plate, clamped to the plate below them (0 to disable)
-Junction_Gusset = 0;
 
 /* [Pegboard] */
 // Mounting interface: modular Peglock wedge socket or monolithic integrated pegboard pegs
 Mount_Type = "peglock"; // [peglock: Modular Peglock Socket, monolithic: Integrated Pegboard Pegs]
 
-// Pegboard hole columns the mount engages, as Peglock sockets or peg columns (0 = auto: as many sockets or pegs as fit within the body width)
-Hole_Columns = 0; // [0:1:10]
+// Pegboard hole columns the mount engages (0 = auto)
+Hole_Columns = 0;
 
 // Pegboard hole center spacing (25.4 for 1" standard, 15.875 for 5/8" metal)
 Hole_Spacing = 25.4;
@@ -89,6 +89,8 @@ Stabilizing_Pin_Pattern = "all"; // [all: All Rows, top_and_bottom: Top and Bott
 $fn = 128;
 EPSILON = 0.02;
 
+assert(Columns >= 1, "Columns must be at least 1");
+assert(Rows >= 1, "Rows must be at least 1");
 assert(Tilt_Angle >= 0 && Tilt_Angle <= 45, "Tilt_Angle must be between 0 and 45");
 assert(Entry_Chamfer >= 0, "Entry_Chamfer must not be negative");
 assert(2 * (Entry_Chamfer + 0.1) < Wall_Thickness, "Entry_Chamfer must be less than half of Wall_Thickness");
@@ -119,7 +121,7 @@ function column_center_x(i) =
   -overallHolderWidth / 2 + Wall_Thickness + (i > 0 ? sum([for (k = [0:i - 1]) pocketWidths[k]]) + i * Wall_Thickness : 0)
     + pocketWidths[i] / 2;
 
-h = Pocket_Height + (Closed_Bottom ? Wall_Thickness : 0);
+h = Pocket_Height + (Include_Bottom ? Wall_Thickness : 0);
 tilted_height = h * cos(Tilt_Angle) + overallHolderDepth * sin(Tilt_Angle);
 
 tilt_drop = overallHolderDepth * sin(Tilt_Angle);
@@ -160,8 +162,8 @@ module PocketOutline(width, depth) {
 }
 
 module SingleHolderInside(width, depth, cut_front_opening = true) {
-  z = Pocket_Height + Lip_Height + 2 + (Closed_Bottom ? Wall_Thickness : 0);
-  tz = 1 + (Closed_Bottom ? Wall_Thickness : -1);
+  z = Pocket_Height + Lip_Height + 2 + (Include_Bottom ? Wall_Thickness : 0);
+  tz = 1 + (Include_Bottom ? Wall_Thickness : -1);
   translate([0, 0, tz]) PocketCutout(width, depth, z, h / 2 - Lip_Height / 2 - tz);
   if (cut_front_opening && Opening_Width > 0) {
     cut_depth = Wall_Thickness + 3 * maxPocketDepth / 2;
@@ -214,7 +216,7 @@ module HolderRearFill() {
 // Triangular web from the plate face to the tilted underside, inset like HolderRearFill
 module HolderJunctionGusset() {
   room = grid_tz - h / 2 + backerHeight / 2;
-  size = min(Junction_Gusset, room, overallHolderDepth);
+  size = min(Junction_Gusset_Chamfer, room, overallHolderDepth);
   width = plateWidth;
   if (size > 0) {
     hull() {
@@ -232,7 +234,7 @@ module HolderGrid() {
         translate([0, overallHolderDepth, h / 2]) HolderLip();
       }
       if (Tilt_Angle > 0) HolderRearFill();
-      if (Junction_Gusset > 0) HolderJunctionGusset();
+      if (Junction_Gusset_Chamfer > 0) HolderJunctionGusset();
     }
 
     Tilted()
@@ -240,7 +242,7 @@ module HolderGrid() {
         tx = column_center_x(i - 1);
         for (j=[1:Rows]) {
           ty = (j - 1) * (maxPocketDepth + Wall_Thickness);
-          cut_opening = (!Opening_Front_Row_Only || j == Rows);
+          cut_opening = (Include_Opening_Back_Rows || j == Rows);
           translate([tx, ty, Lip_Height / 2]) SingleHolderInside(pocketWidths[i - 1], pocketDepths[i - 1], cut_opening);
         }
       }
