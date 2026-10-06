@@ -91,7 +91,7 @@ EPSILON = 0.02;
 
 assert(Tilt_Angle >= 0 && Tilt_Angle <= 45, "Tilt_Angle must be between 0 and 45");
 assert(Entry_Chamfer >= 0, "Entry_Chamfer must not be negative");
-assert(Entry_Chamfer < Wall_Thickness, "Entry_Chamfer must be less than Wall_Thickness");
+assert(2 * (Entry_Chamfer + 0.1) < Wall_Thickness, "Entry_Chamfer must be less than half of Wall_Thickness");
 assert(Entry_Chamfer <= Pocket_Height, "Entry_Chamfer must not exceed Pocket_Height");
 assert(Hole_Columns >= 0, "Hole_Columns must not be negative");
 assert(Hole_Columns == floor(Hole_Columns), "Hole_Columns must be an integer");

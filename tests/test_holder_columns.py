@@ -137,7 +137,8 @@ class HolderColumnsTestCase(unittest.TestCase):
     def test_entry_chamfer_asserts(self):
         for bad, message in (
             ("-0.1", "Entry_Chamfer must not be negative"),
-            ("1.6", "Entry_Chamfer must be less than Wall_Thickness"),
+            ("0.7", "Entry_Chamfer must be less than half of Wall_Thickness"),
+            ("1.6", "Entry_Chamfer must be less than half of Wall_Thickness"),
         ):
             with self.subTest(Entry_Chamfer=bad):
                 self._assert_render_fails({"Entry_Chamfer": bad}, message)
