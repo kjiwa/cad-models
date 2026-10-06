@@ -22,6 +22,9 @@ Pocket_Depths = "6.35";
 // Inner height of each pocket
 Pocket_Height = 12.7;
 
+// Lead-in at each pocket mouth (0 to disable)
+Entry_Chamfer = 0.5;
+
 // Forward tilt of the pockets in degrees (0 for vertical)
 Tilt_Angle = 0; // [0:5:45]
 
@@ -87,6 +90,9 @@ $fn = 128;
 EPSILON = 0.02;
 
 assert(Tilt_Angle >= 0 && Tilt_Angle <= 45, "Tilt_Angle must be between 0 and 45");
+assert(Entry_Chamfer >= 0, "Entry_Chamfer must not be negative");
+assert(2 * (Entry_Chamfer + 0.1) < Wall_Thickness, "Entry_Chamfer must be less than half of Wall_Thickness");
+assert(Entry_Chamfer <= Pocket_Height, "Entry_Chamfer must not exceed Pocket_Height");
 assert(Hole_Columns >= 0, "Hole_Columns must not be negative");
 assert(Hole_Columns == floor(Hole_Columns), "Hole_Columns must be an integer");
 assert(Hole_Columns <= 10, "Hole_Columns must be at most 10");
@@ -121,8 +127,10 @@ grid_tz = (Vertical_Alignment == "bottom" && tilted_height < (SOCKET_HEIGHT - 2 
   ? (h - SOCKET_HEIGHT) / 2 + SOCKET_ROUNDOVER + tilt_drop
   : (h * (1 - cos(Tilt_Angle)) + tilt_drop) / 2;
 
-holeColumns = board_hole_columns(Mount_Type, Hole_Columns, overallHolderWidth, Hole_Spacing, Pin_Diameter);
-backerSize = board_mount_size(Mount_Type, [overallHolderWidth, tilted_height], holeColumns, Hole_Spacing, Pin_Diameter);
+plateWidth = overallHolderWidth - 2 * Corner_Radius;
+
+holeColumns = board_hole_columns(Mount_Type, Hole_Columns, plateWidth, Hole_Spacing, Pin_Diameter);
+backerSize = board_mount_size(Mount_Type, [plateWidth, tilted_height], holeColumns, Hole_Spacing, Pin_Diameter);
 backerHeight = backerSize[1];
 
 module HolderLip() {
@@ -135,15 +143,26 @@ module HolderLip() {
     }
 }
 
-module PocketCutout(width, depth, height) {
+module PocketCutout(width, depth, height, mouth_z) {
   translate([0, depth / 2, 0])
     cuboid([width, depth, height], rounding=Corner_Radius, except=[TOP, BOTTOM, FRONT]);
+  if (Entry_Chamfer > 0) {
+    reach = Entry_Chamfer + 0.1;
+    hull() {
+      translate([0, 0, mouth_z - Entry_Chamfer]) linear_extrude(height = 0.01) PocketOutline(width, depth);
+      translate([0, 0, mouth_z + 0.1]) linear_extrude(height = 0.01) offset(r = reach) PocketOutline(width, depth);
+    }
+  }
+}
+
+module PocketOutline(width, depth) {
+  rect([width, depth], rounding=[Corner_Radius, Corner_Radius, 0, 0], anchor=FRONT);
 }
 
 module SingleHolderInside(width, depth, cut_front_opening = true) {
   z = Pocket_Height + Lip_Height + 2 + (Closed_Bottom ? Wall_Thickness : 0);
   tz = 1 + (Closed_Bottom ? Wall_Thickness : -1);
-  translate([0, 0, tz]) PocketCutout(width, depth, z);
+  translate([0, 0, tz]) PocketCutout(width, depth, z, h / 2 - Lip_Height / 2 - tz);
   if (cut_front_opening && Opening_Width > 0) {
     cut_depth = Wall_Thickness + 3 * maxPocketDepth / 2;
     translate([-Opening_Width / 2, 0, -z / 2])
@@ -196,7 +215,7 @@ module HolderRearFill() {
 module HolderJunctionGusset() {
   room = grid_tz - h / 2 + backerHeight / 2;
   size = min(Junction_Gusset, room, overallHolderDepth);
-  width = overallHolderWidth - 2 * Corner_Radius;
+  width = plateWidth;
   if (size > 0) {
     hull() {
       translate([-width / 2, 0, -h / 2 - size]) cube([width, 0.01, size]);
