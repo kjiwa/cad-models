@@ -2,6 +2,8 @@
  * Mounting backplate with screw holes and weight-relief windows.
  */
 
+include <pegboard/backplate.scad>
+
 // Generates the solid rectangular backplate slab with rounded top corners.
 module backplate_blank(width = total_width, height = backplate_height, thickness = Backplate_Thickness, corner_radius = Backplate_Corner_Radius) {
   z_center = (z_plate_top + z_plate_bottom) / 2;
@@ -27,37 +29,12 @@ module backplate_blank(width = total_width, height = backplate_height, thickness
   }
 }
 
-// Generates the 45-degree top-rear chamfer cutter for pegboard swing-in clearance.
-module backplate_tilt_chamfer(width = total_width, chamfer = Insertion_Chamfer) {
-  translate([0, 0, z_plate_top])
-    rotate([45, 0, 0])
-      cube([width + 2 * EPSILON, chamfer * sqrt(2), chamfer * sqrt(2)], center = true);
-}
-
-// Generates a single countersunk screw clearance through-hole.
-module countersunk_screw_hole(screw_d = Screw_Hole_Diameter, cs_d = Countersink_Diameter, thickness = Backplate_Thickness) {
-  rotate([-90, 0, 0]) {
-    cylinder(d = screw_d, h = thickness + 2 * EPSILON);
-    translate([0, 0, thickness - (cs_d - screw_d) / 2])
-      cylinder(d1 = screw_d, d2 = cs_d, h = (cs_d - screw_d) / 2 + EPSILON);
-  }
-}
-
 // Generates countersunk screw clearance holes centered above each battery slot.
 module backplate_screw_holes(count = Battery_Count, spacing = slot_spacing, screw_z = z_top_peg - Hole_Spacing, screw_d = Screw_Hole_Diameter, cs_d = Countersink_Diameter, thickness = Backplate_Thickness) {
   for (i = [0 : count - 1]) {
     x_c = (i - (count - 1) / 2) * spacing;
-    translate([x_c, -EPSILON, screw_z])
+    translate([x_c, 0, screw_z])
       countersunk_screw_hole(screw_d, cs_d, thickness);
-  }
-}
-
-// Generates a 2D rounded stadium profile centered at the origin.
-module stadium_cutout_2d(width, height) {
-  r = width / 2;
-  hull() {
-    translate([0, -height / 2 + r]) circle(r = r);
-    translate([0, height / 2 - r]) circle(r = r);
   }
 }
 
@@ -84,7 +61,7 @@ module backplate_relief_windows(count = Battery_Count, spacing = slot_spacing, z
 module backplate() {
   difference() {
     backplate_blank();
-    backplate_tilt_chamfer();
+    backplate_tilt_chamfer(total_width, Insertion_Chamfer, z_plate_top);
 
     if (Include_Screw_Holes) {
       backplate_screw_holes();

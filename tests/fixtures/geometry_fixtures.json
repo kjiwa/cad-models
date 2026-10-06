@@ -47,13 +47,13 @@
       ]
     }
   },
-  "ryobi_span2_n2_t0_l110": {
+  "ryobi_bottom_n2_t0_l110": {
     "scad": "ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
     "params": {
       "Battery_Count": "2",
       "Tilt_Angle": "0",
       "Rail_Length": "110.0",
-      "Stabilizing_Pin_Pattern": "\"span_2\""
+      "Stabilizing_Pin_Pattern": "\"bottom\""
     },
     "expect": {
       "triangles": 6884,
@@ -74,12 +74,12 @@
       ]
     }
   },
-  "ryobi_span1_n2_t30": {
+  "ryobi_top_n2_t30": {
     "scad": "ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
     "params": {
       "Battery_Count": "2",
       "Tilt_Angle": "30",
-      "Stabilizing_Pin_Pattern": "\"span_1\""
+      "Stabilizing_Pin_Pattern": "\"top\""
     },
     "expect": {
       "triangles": 7708,
@@ -109,8 +109,8 @@
       "Stabilizing_Pin_Pattern": "\"all\""
     },
     "expect": {
-      "triangles": 9420,
-      "volume_mm3": 388678.8,
+      "triangles": 12876,
+      "volume_mm3": 390250.9,
       "bbox_size_mm": [
         177.6,
         56.18,
@@ -120,10 +120,10 @@
         578.2,
         31.6,
         208.8,
-        217.4,
+        185.4,
         940.9,
         1591.0,
-        2187.5
+        2191.4
       ]
     }
   },
@@ -1013,6 +1013,32 @@
         2.5,
         31.9,
         320.0
+      ]
+    }
+  },
+  "holder_monolithic_bottom": {
+    "scad": "peglock_holder/peglock_holder.scad",
+    "params": {
+      "Mount_Type": "\"monolithic\"",
+      "Pocket_Height": "100",
+      "Stabilizing_Pin_Pattern": "\"bottom\""
+    },
+    "expect": {
+      "triangles": 4724,
+      "volume_mm3": 8098.0,
+      "bbox_size_mm": [
+        25.4,
+        19.67,
+        104.76
+      ],
+      "section_areas_mm2": [
+        38.4,
+        40.5,
+        27.3,
+        7.5,
+        12.2,
+        38.8,
+        19.7
       ]
     }
   }

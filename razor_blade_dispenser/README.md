@@ -125,7 +125,7 @@ razor_blade_dispenser/
 | `Pegboard_Thickness` | `6.35` | Pegboard thickness (6.35 for 1/4" board, 1.5875 for 1/16" thin metal) |
 | `Retention_Hook_Rise` | `3.5` | Height of the retention hook tab behind the pegboard |
 | `Retention_Hook_Margin` | `6.35` | Distance from the backplate top to the retention hooks |
-| `Stabilizing_Pin_Pattern` | `bottom` | Stabilizing pins below the retention hooks (`bottom`, `top_and_bottom`, `all`, `none`, `span_2`, `span_1`) |
+| `Stabilizing_Pin_Pattern` | `bottom` | Stabilizing pin rows below the retention hooks (`top`, `bottom`, `top_and_bottom`, `all`, `none`; `bottom` is the lowest hole) |
 
 ### `[Screw Holes]`
 | Parameter | Default | Description |

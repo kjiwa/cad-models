@@ -51,6 +51,24 @@ module pegboard_upper_hook(
   }
 }
 
+PIN_PATTERNS = ["all", "top_and_bottom", "top", "bottom", "none"];
+
+// Returns the stabilizing pin row indices (1 = first row below the hooks) for a pattern, where
+// lowest is the lowest row whose pin fits; rows listed in skip are removed.
+function pegboard_pin_rows(pattern, lowest, skip = []) =
+  assert(
+    len([for (p = PIN_PATTERNS) if (p == pattern) p]) == 1,
+    str("Stabilizing_Pin_Pattern must be one of ", PIN_PATTERNS, ", got ", pattern)
+  )
+  let(
+    rows = pattern == "all" ? [for (k = [1 : lowest]) k]
+      : pattern == "top_and_bottom" ? (lowest > 1 ? [1, lowest] : [1])
+      : pattern == "top" ? [1]
+      : pattern == "bottom" ? [lowest]
+      : []
+  )
+  [for (k = rows) if (len([for (s = skip) if (s == k) s]) == 0) k];
+
 // Generates a lower stabilizing pin with a lead-in insertion chamfer.
 module pegboard_lower_pin(
   pin_d = DEFAULT_PIN_DIAMETER,

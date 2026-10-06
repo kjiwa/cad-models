@@ -6,28 +6,8 @@ include <pegboard/pegs.scad>
 
 // Generates stabilizing pins at a single column position according to the selected pattern.
 module lower_pins_at_pos(x_pos) {
-  lowest_k = max(lowest_peg_k, 1);
-
-  if (Stabilizing_Pin_Pattern == "bottom") {
-    translate([x_pos, 0, z_top_peg - lowest_k * Hole_Spacing])
-      pegboard_lower_pin(pin_d = Pin_Diameter, board_t = Pegboard_Thickness, backplate_t = Backplate_Thickness);
-  } else if (Stabilizing_Pin_Pattern == "top_and_bottom") {
-    translate([x_pos, 0, z_top_peg - Hole_Spacing])
-      pegboard_lower_pin(pin_d = Pin_Diameter, board_t = Pegboard_Thickness, backplate_t = Backplate_Thickness);
-    if (lowest_k > 1) {
-      translate([x_pos, 0, z_top_peg - lowest_k * Hole_Spacing])
-        pegboard_lower_pin(pin_d = Pin_Diameter, board_t = Pegboard_Thickness, backplate_t = Backplate_Thickness);
-    }
-  } else if (Stabilizing_Pin_Pattern == "all") {
-    for (k = [1 : lowest_k]) {
-      translate([x_pos, 0, z_top_peg - k * Hole_Spacing])
-        pegboard_lower_pin(pin_d = Pin_Diameter, board_t = Pegboard_Thickness, backplate_t = Backplate_Thickness);
-    }
-  } else if (Stabilizing_Pin_Pattern == "span_1") {
-    translate([x_pos, 0, z_top_peg - Hole_Spacing])
-      pegboard_lower_pin(pin_d = Pin_Diameter, board_t = Pegboard_Thickness, backplate_t = Backplate_Thickness);
-  } else if (Stabilizing_Pin_Pattern == "span_2") {
-    translate([x_pos, 0, z_top_peg - 2 * Hole_Spacing])
+  for (k = pegboard_pin_rows(Stabilizing_Pin_Pattern, max(lowest_peg_k, 1))) {
+    translate([x_pos, 0, z_top_peg - k * Hole_Spacing])
       pegboard_lower_pin(pin_d = Pin_Diameter, board_t = Pegboard_Thickness, backplate_t = Backplate_Thickness);
   }
 }
@@ -68,8 +48,9 @@ module mounting_pegs() {
     if (is_visible("retention_hooks")) {
       component_label("Retention Hooks", [0, -Pegboard_Thickness - 6, z_top_peg + Retention_Hook_Rise + 4], [90, 0, 0]);
     }
-    if (is_visible("stabilizing_pins")) {
-      z_label_pin = (Stabilizing_Pin_Pattern == "span_1") ? (z_top_peg - Hole_Spacing - 4) : (z_top_peg - max(lowest_peg_k, 1) * Hole_Spacing - 4);
+    pin_rows = pegboard_pin_rows(Stabilizing_Pin_Pattern, max(lowest_peg_k, 1));
+    if (is_visible("stabilizing_pins") && len(pin_rows) > 0) {
+      z_label_pin = z_top_peg - max(pin_rows) * Hole_Spacing - 4;
       component_label("Stabilizing Pins", [0, -Pegboard_Thickness - 6, z_label_pin], [90, 0, 0]);
     }
   }

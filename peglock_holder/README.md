@@ -83,6 +83,7 @@ All lengths are in millimeters unless noted.
 | `Pin_Diameter` | `5.7` | | Pin diameter (5.7 for standard 1/4" hole fit, 6.0 for original Sy fit) |
 | `Pegboard_Thickness` | `6.35` | | Pegboard thickness (6.35 for 1/4" board, 1.5875 for 1/16" thin metal) |
 | `Retention_Hook_Rise` | `3.5` | | Height of the retention hook tab behind the pegboard |
+| `Stabilizing_Pin_Pattern` | `all` | `all`, `top_and_bottom`, `top`, `bottom`, `none` | Stabilizing pin rows below the retention hooks (`bottom` is the lowest hole; ignored by the Peglock socket mount) |
 
 ---
 

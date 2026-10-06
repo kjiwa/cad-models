@@ -19,11 +19,13 @@ SHARED_NAMES = (
     "Pin_Diameter",
     "Pegboard_Thickness",
     "Retention_Hook_Rise",
+    "Stabilizing_Pin_Pattern",
 )
 
 # (model, name) pairs whose default value is meant to differ from the other models.
 INTENTIONAL_VALUE_DIFFERENCES = {
     ("peglock_attachment", "Retention_Hook_Rise"): "attachment hook tab is taller (6.0) than the 3.5 of the pegboard holders",
+    ("razor_blade_dispenser", "Stabilizing_Pin_Pattern"): "razor dispenser pins only the lowest row by default",
 }
 
 DECLARATION = re.compile(r"^(?P<name>\w+) = (?P<value>[^;]+);(?P<tail>.*)$")

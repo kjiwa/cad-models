@@ -99,11 +99,11 @@ Pegboard_Thickness = 6.35;
 // Height of the retention hook tab behind the pegboard
 Retention_Hook_Rise = 3.5;
 
+// Stabilizing pin rows below the retention hooks (ignored by the Peglock socket mount)
+Stabilizing_Pin_Pattern = "all"; // [all: All Rows, top_and_bottom: Top and Bottom Rows, top: Top Row Only, bottom: Bottom Row Only (Lowest Hole), none: Retention Hooks Only]
+
 // Distance from the backplate top to the retention hooks
 Retention_Hook_Margin = 6.35;
-
-// Stabilizing pins below the retention hooks
-Stabilizing_Pin_Pattern = "all"; // [all: All Available Rows (1-in and 2-in), span_2: 2-in Below Only, span_1: 1-in Below Only]
 
 /* [Screw Holes] */
 // Include countersunk screw clearance holes

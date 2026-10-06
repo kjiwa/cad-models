@@ -20,7 +20,7 @@ function board_mount_size(type, content_size, columns, hole_spacing, pin_d) = [
   max(content_size[1], type == "peglock" ? SOCKET_HEIGHT : hole_spacing + 10)
 ];
 
-module MonolithicPegs(size, cols, backplate_t, hole_spacing, pin_d, board_t, rise) {
+module MonolithicPegs(size, cols, backplate_t, hole_spacing, pin_d, board_t, rise, pin_pattern) {
   num_peg_intervals = max(floor((size[1] - 10) / hole_spacing), 1);
   z_top = num_peg_intervals * hole_spacing / 2;
 
@@ -28,7 +28,7 @@ module MonolithicPegs(size, cols, backplate_t, hole_spacing, pin_d, board_t, ris
     x = (cols == 1) ? 0 : (c - (cols - 1) / 2) * hole_spacing;
     translate([x, -backplate_t, z_top])
       pegboard_upper_hook(pin_d = pin_d, board_t = board_t, rise = rise, backplate_t = backplate_t);
-    for (k = [1 : num_peg_intervals]) {
+    for (k = pegboard_pin_rows(pin_pattern, num_peg_intervals)) {
       translate([x, -backplate_t, z_top - k * hole_spacing])
         pegboard_lower_pin(pin_d = pin_d, board_t = board_t, backplate_t = backplate_t);
     }
@@ -36,7 +36,7 @@ module MonolithicPegs(size, cols, backplate_t, hole_spacing, pin_d, board_t, ris
 }
 
 // Backer plate spanning y from -backplate_t to 0, plus Peglock sockets or monolithic pegs behind it.
-module BoardMount(type, size, columns, backplate_t, hole_spacing, pin_d, board_t, rise) {
+module BoardMount(type, size, columns, backplate_t, hole_spacing, pin_d, board_t, rise, pin_pattern = "all") {
   if (type == "peglock") {
     translate([0, -backplate_t + MOUNT_EPSILON, 0])
       PeglockBase(
@@ -48,7 +48,7 @@ module BoardMount(type, size, columns, backplate_t, hole_spacing, pin_d, board_t
         roundover = SOCKET_ROUNDOVER
       );
   } else if (type == "monolithic") {
-    MonolithicPegs(size, columns, backplate_t, hole_spacing, pin_d, board_t, rise);
+    MonolithicPegs(size, columns, backplate_t, hole_spacing, pin_d, board_t, rise, pin_pattern);
   }
   translate([0, -backplate_t / 2, 0])
     cuboid([size[0], backplate_t, size[1]], rounding = SOCKET_ROUNDOVER, except = [FRONT, BACK]);
