@@ -28,7 +28,7 @@ All dimensions are in millimeters.
 ### `[Tabletop]`
 | Parameter | Default | Description |
 |---|---|---|
-| `Top_Length` | `1219.2` | Tabletop length along X (48") |
+| `Top_Width` | `1219.2` | Tabletop width along X (48") |
 | `Top_Depth` | `279.4` | Tabletop depth along Y (11") |
 | `Top_Overhang` | `38.1` | Tabletop overhang beyond the leg outer faces (1-1/2") |
 
@@ -42,7 +42,7 @@ All dimensions are in millimeters.
 | Parameter | Default | Description |
 |---|---|---|
 | `Apron_Height` | `203.2` | Height of the apron boards (8") |
-| `Apron_Length` | `0` | Length of the front and back apron boards (0 = auto: `Top_Length - 2 * Top_Overhang - 2 * Leg_Board_Width`, 1041.4 by default) |
+| `Apron_Width` | `0` | Width of the front and back apron boards (0 = auto: `Top_Width - 2 * Top_Overhang - 2 * Leg_Board_Width`, 1041.4 by default) |
 | `Apron_Depth` | `0` | Depth of the side apron boards (0 = auto: `Top_Depth - 2 * Top_Overhang - 76.2`, 127 by default) |
 
 ### `[Plywood]`
