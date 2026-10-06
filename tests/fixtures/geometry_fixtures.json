@@ -341,7 +341,7 @@
   "peglock_hook_qty2_fillet2": {
     "scad": "peglock_hook/peglock_hook.scad",
     "params": {
-      "Hooks_Per_Arm": "2",
+      "Hook_Count": "2",
       "Root_Fillet_Radius": "2"
     },
     "expect": {

@@ -4,10 +4,10 @@ include <pegboard/mount.scad>
 
 /* [Layout] */
 // Number of hook columns
-Columns = 1;
+Columns = 1; // [1:1:10]
 
 // Number of hook rows
-Rows = 1;
+Rows = 1; // [1:1:6]
 
 // Center-to-center distance between hook columns (at least Arm_Width)
 Column_Spacing = 19.05;
@@ -16,7 +16,7 @@ Column_Spacing = 19.05;
 Row_Spacing = 19.05;
 
 // Where the hooks sit on the backplate
-Vertical_Alignment = "bottom"; // [bottom: Hooks at plate bottom, center: Hooks centered on plate]
+Vertical_Alignment = "bottom"; // [bottom: Hooks Near Bottom, center: Hooks Centered]
 
 /* [Arm] */
 // Cross-section profile of the hook arm
@@ -25,44 +25,44 @@ Arm_Shape = "square"; // [circle: Circle, square: Square, triangle: Triangle, ri
 // Width of the hook arm
 Arm_Width = 12.7;
 
-// Length of the hook arm from the backplate to the lip
-Arm_Length = 6.35;
+// Depth of the hook arm from the backplate to the lip
+Arm_Depth = 6.35;
 
 // Height of the hook arm
 Arm_Height = 6.35;
 
-// Upward tilt of the hook arm in degrees (0 for horizontal)
+// Upward tilt of the hook arm in degrees (0 to disable)
 Arm_Tilt_Angle = 0; // [0:5:45]
 
 // Radius of the rounded arm edges
 Arm_Edge_Radius = 1.5875;
 
+// Stress relief fillet radius at the arm root (0 to disable)
+Root_Fillet_Radius = 0;
+
 // Number of hooks chained along each arm
-Hooks_Per_Arm = 1; // [1:1:5]
+Hook_Count = 1; // [1:1:5]
 
 /* [Lip] */
-// Height of the retaining lip above the arm
-Lip_Height = 3.175;
-
 // Thickness of the retaining lip
 Lip_Thickness = 3.175;
 
+// Height of the retaining lip above the arm
+Lip_Height = 3.175;
+
 // Orientation of the retaining lip when the arm is tilted
-Lip_Orientation = "perpendicular"; // [perpendicular: Square to hook arm, vertical: Parallel to backplate]
+Lip_Orientation = "perpendicular"; // [perpendicular: Square to Hook Arm, vertical: Parallel to Backplate]
 
 /* [Backplate] */
 // Thickness of the mounting backplate
 Backplate_Thickness = 1.5875;
 
-// Stress relief fillet radius at the arm root (0 for standard/tested profile, above 0 to strengthen)
-Root_Fillet_Radius = 0;
-
 /* [Pegboard] */
 // Mounting interface: modular Peglock wedge socket or monolithic integrated pegboard pegs
 Mount_Type = "peglock"; // [peglock: Modular Peglock Socket, monolithic: Integrated Pegboard Pegs]
 
-// Pegboard hole columns the mount engages, as Peglock sockets or peg columns (0 = auto: as many sockets or pegs as fit within the body width)
-Hole_Columns = 0; // [0:1:10]
+// Pegboard hole columns the mount engages (0 = auto)
+Hole_Columns = 0;
 
 // Pegboard hole center spacing (25.4 for 1" standard, 15.875 for 5/8" metal)
 Hole_Spacing = 25.4;
@@ -83,6 +83,9 @@ Stabilizing_Pin_Pattern = "all"; // [all: All Rows, top_and_bottom: Top and Bott
 $fn = 128;
 EPSILON = 0.02;
 
+assert(Columns >= 1, "Columns must be at least 1");
+assert(Rows >= 1, "Rows must be at least 1");
+assert(Hook_Count >= 1, "Hook_Count must be at least 1");
 assert(Arm_Tilt_Angle >= 0 && Arm_Tilt_Angle <= 45, "Arm_Tilt_Angle must be between 0 and 45");
 assert(Hole_Columns >= 0, "Hole_Columns must not be negative");
 assert(Hole_Columns == floor(Hole_Columns), "Hole_Columns must be an integer");
@@ -93,7 +96,7 @@ overallHookWidth = Arm_Width;
 gridWidth = (Columns - 1) * Column_Spacing + Arm_Width;
 gridHeight = (Rows - 1) * Row_Spacing + Arm_Height;
 
-fillet_max_depth = Arm_Length * 0.35;
+fillet_max_depth = Arm_Depth * 0.35;
 fillet_max_height = min(Lip_Height * 0.4, Arm_Height * 0.35);
 fillet_max_width = Arm_Width * 0.35;
 
@@ -194,9 +197,9 @@ module HookLip() {
 }
 
 module SingleHook() {
-  HookProfile(Arm_Length);
+  HookProfile(Arm_Depth);
   HookRootFillet();
-  translate([0, Arm_Length, 0]) HookLip();
+  translate([0, Arm_Depth, 0]) HookLip();
 }
 
 // The arm tilted about its top-back edge and extended backward so it passes through the backplate face
@@ -204,7 +207,7 @@ module TiltedArm() {
   translate([0, 0, arm_pivot_z])
     rotate([Arm_Tilt_Angle, 0, 0])
       translate([0, -arm_extra_back, -arm_pivot_z])
-        HookProfile(Arm_Length + arm_extra_back);
+        HookProfile(Arm_Depth + arm_extra_back);
 }
 
 module ArmSlice(y) {
@@ -228,7 +231,7 @@ module TiltedRootFillet() {
   }
 }
 
-// One grid cell: Hooks_Per_Arm hooks tilted about the arm's top-back edge. The arm is
+// One grid cell: Hook_Count hooks tilted about the arm's top-back edge. The arm is
 // extended backward and trimmed at the backplate face so the root stays flush at any angle.
 module HookArm() {
   difference() {
@@ -236,11 +239,11 @@ module HookArm() {
       translate([0, 0, arm_pivot_z])
         rotate([Arm_Tilt_Angle, 0, 0])
           translate([0, 0, -arm_pivot_z]) {
-            translate([0, -arm_extra_back, 0]) HookProfile(Arm_Length + arm_extra_back);
-            translate([0, Arm_Length, 0]) HookLip();
-            if (Hooks_Per_Arm > 1) {
-              for (k = [2:Hooks_Per_Arm]) {
-                translate([0, (k - 1) * (Arm_Length + Lip_Thickness), 0]) SingleHook();
+            translate([0, -arm_extra_back, 0]) HookProfile(Arm_Depth + arm_extra_back);
+            translate([0, Arm_Depth, 0]) HookLip();
+            if (Hook_Count > 1) {
+              for (k = [2:Hook_Count]) {
+                translate([0, (k - 1) * (Arm_Depth + Lip_Thickness), 0]) SingleHook();
               }
             }
           }

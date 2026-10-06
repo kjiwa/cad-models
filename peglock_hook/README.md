@@ -6,7 +6,7 @@ Parametric, 3D-printable tool hooks and socket racks for Sy's Peglock modular pe
 
 - **Dual Mounting Modes**: Toggle between Sy's Peglock modular locking wedge sockets and monolithic integrated pegboard pegs.
 - **Custom Hook Profiles**: Circle, square, triangle, and right triangle arm profiles.
-- **Configurable Grid Layout**: Parametric row and column counts, spacing, arm length, and hooks per arm.
+- **Configurable Grid Layout**: Parametric row and column counts, spacing, arm depth, and hooks per arm.
 - **Stress-Relief Root Fillet**: Optional parametric fillet at the hook arm root to resist cantilever shear.
 - **Presets Included**: Pre-configured JSON parameter sets for socket racks (`Sockets (1/4)`, `Sockets (3/8)`, `Sockets (1/2)`) and a tilted vertical-lip hook (`Tilted_Vertical_Lip`).
 - **Automated CLI Build**: `Makefile` support to render base models and all JSON parameter presets.
@@ -44,8 +44,8 @@ All lengths are in millimeters unless noted.
 ### `[Layout]`
 | Parameter | Default | Options | Description |
 |---|---|---|---|
-| `Columns` | `1` | | Number of hook columns |
-| `Rows` | `1` | | Number of hook rows |
+| `Columns` | `1` | `1`-`10` | Number of hook columns |
+| `Rows` | `1` | `1`-`6` | Number of hook rows |
 | `Column_Spacing` | `19.05` | | Center-to-center distance between hook columns (at least `Arm_Width`) |
 | `Row_Spacing` | `19.05` | | Center-to-center distance between hook rows |
 | `Vertical_Alignment` | `bottom` | `bottom`, `center` | Where the hooks sit on the backplate |
@@ -55,30 +55,30 @@ All lengths are in millimeters unless noted.
 |---|---|---|---|
 | `Arm_Shape` | `square` | `circle`, `square`, `triangle`, `right_triangle` | Cross-section profile of the hook arm |
 | `Arm_Width` | `12.7` | | Width of the hook arm |
-| `Arm_Length` | `6.35` | | Length of the hook arm from the backplate to the lip |
+| `Arm_Depth` | `6.35` | | Depth of the hook arm from the backplate to the lip |
 | `Arm_Height` | `6.35` | | Height of the hook arm |
-| `Arm_Tilt_Angle` | `0` | | Upward tilt of the hook arm in degrees, 0 to 45 (0 for horizontal) |
+| `Arm_Tilt_Angle` | `0` | | Upward tilt of the hook arm in degrees, 0 to 45 (0 to disable) |
 | `Arm_Edge_Radius` | `1.5875` | | Radius of the rounded arm edges |
-| `Hooks_Per_Arm` | `1` | | Number of hooks chained along each arm (1 to 5) |
+| `Root_Fillet_Radius` | `0` | | Stress relief fillet radius at the arm root (0 to disable; above 0 strengthens the root, proportionally clamped to arm depth and lip height) |
+| `Hook_Count` | `1` | `1`-`5` | Number of hooks chained along each arm |
 
 ### `[Lip]`
 | Parameter | Default | Options | Description |
 |---|---|---|---|
-| `Lip_Height` | `3.175` | | Height of the retaining lip above the arm |
 | `Lip_Thickness` | `3.175` | | Thickness of the retaining lip |
+| `Lip_Height` | `3.175` | | Height of the retaining lip above the arm |
 | `Lip_Orientation` | `perpendicular` | `perpendicular`, `vertical` | Orientation of the retaining lip when the arm is tilted: square to the arm or parallel to the backplate; no effect at 0 degrees |
 
 ### `[Backplate]`
 | Parameter | Default | Options | Description |
 |---|---|---|---|
 | `Backplate_Thickness` | `1.5875` | | Thickness of the mounting backplate |
-| `Root_Fillet_Radius` | `0` | | Stress relief fillet radius at the arm root (0 for standard/tested profile, above 0 to strengthen; proportionally clamped to arm length and lip height) |
 
 ### `[Pegboard]`
 | Parameter | Default | Options | Description |
 |---|---|---|---|
 | `Mount_Type` | `peglock` | `peglock`, `monolithic` | Mounting interface: modular Peglock wedge socket or monolithic integrated pegboard pegs |
-| `Hole_Columns` | `0` | `0`-`10` | Pegboard hole columns the mount engages, as Peglock sockets or peg columns (0 = auto: as many sockets or pegs as fit within the body width) |
+| `Hole_Columns` | `0` | `0`-`10` | Pegboard hole columns the mount engages, as Peglock sockets or peg columns (0 = auto: as many as fit within the body width) |
 | `Hole_Spacing` | `25.4` | | Pegboard hole center spacing (25.4 for 1" standard, 15.875 for 5/8" metal) |
 | `Pin_Diameter` | `5.7` | | Pin diameter (5.7 for standard 1/4" hole fit, 6.0 for original Sy fit) |
 | `Pegboard_Thickness` | `6.35` | | Pegboard thickness (6.35 for 1/4" board, 1.5875 for 1/16" thin metal) |
