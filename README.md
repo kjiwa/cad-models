@@ -19,25 +19,48 @@ Parametric, 3D-printable OpenSCAD models, each in its own directory with a `.sca
 - `shotgun_mini_shell_adapter` — Mossberg 12 gauge adapter for 1.75" mini shells, compatible with the OPSol Mini-Clip fit
 - `wheel_tread_cover` — herringbone tread sleeve for a wheel
 
-## Building
+## Setup
 
 Requires [OpenSCAD](https://openscad.org/) and Python 3. `make bundle` and `make dist` also need
-[uv](https://docs.astral.sh/uv/) and an OpenSCAD snapshot new enough for `onescad --verify`. From the repository root:
+[uv](https://docs.astral.sh/uv/) and an OpenSCAD snapshot new enough for `onescad --verify`.
+
+Models import the libraries in `lib/` (BOSL2, threads-scad, peglock, pegboard). `make setup` symlinks them into the
+OpenSCAD user library directory once: `~/Documents/OpenSCAD/libraries` on macOS, `~/.local/share/OpenSCAD/libraries`
+on Linux. To use another location, set `OPENSCADPATH` to a directory containing them, for example
+`OPENSCADPATH=$PWD/lib openscad ...`.
+
+## Customizer
+
+1. Open the model's `.scad` file in OpenSCAD.
+2. Enable **Window > Customizer**.
+3. Pick a preset from the dropdown, if the model has a `.json`, or edit parameters.
+4. Press `F5` to preview, `F6` to render, then `F7` to export an STL.
+
+Each model's README lists its parameters and presets.
+
+## Building
+
+From the repository root:
 
 ```bash
-make setup     # symlink lib/ into your OpenSCAD user library directory (once)
-make all       # build every model: default STL, 3MF, preview PNG, and presets
-make <model>   # build one model, e.g. make bora_centipede_riser
-make stl       # export default STL for every model
-make 3mf       # export default 3MF for every model
-make preview   # export preview PNG for every model
-make presets   # build all parameter presets for every model
-make bundle    # write single-file .scad per model into dist/, verified
-make dist      # build everything and collect artifacts and bundles into dist/
+make all       # every model: default STL, 3MF, preview PNG, and presets
+make <model>   # one model, e.g. make bora_centipede_riser
+make stl       # default STL for every model
+make 3mf       # default 3MF for every model
+make preview   # preview PNG for every model
+make presets   # every parameter preset for every model
+make bundle    # verified single-file .scad per model in dist/
+make dist      # build everything and collect artifacts and bundles in dist/
+make readme    # regenerate each model README's Parameters and Presets sections
 make clean     # remove build and dist artifacts
 ```
 
-Each model directory accepts the same targets individually, e.g. `make -C bora_centipede_riser stl`.
+Each model directory accepts the same targets, e.g. `make -C bora_centipede_riser stl`. Outputs go to the model's
+`build/` directory.
+
+Each model README holds a block between `<!-- BEGIN GENERATED -->` and `<!-- END GENERATED -->` produced from the
+`.scad` Customizer block and `.json` presets. Edit the `.scad`, then run `make readme`;
+`tests/test_readme_params.py` fails when a block is out of date.
 
 ## License
 
