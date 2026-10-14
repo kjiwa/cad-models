@@ -89,7 +89,9 @@ tierPitch = wedgeRise + wedgeDepth / tan(Tilt_Angle);
 plateWidth = rowWidth - 2 * Corner_Radius;
 
 holeColumns = board_hole_columns(Mount_Type, Hole_Columns, plateWidth, Hole_Spacing, Pin_Diameter);
-backerSize = board_mount_size(Mount_Type, [plateWidth, SOCKET_HEIGHT], holeColumns, Hole_Spacing, Pin_Diameter);
+backHeight = wedgeRise - tier_base(0);
+backerSize = board_mount_size(Mount_Type, [plateWidth, backHeight], holeColumns, Hole_Spacing, Pin_Diameter);
+plateBottom = wedgeRise - backerSize[1];
 
 function column_x(i) = -rowWidth / 2 + cellSize / 2 + i * cellSize;
 
@@ -126,17 +128,18 @@ function tier_front_top(i) = [wedgeDepth + cellHeight * sin(Tilt_Angle), tier_ba
 function tier_back_top(i) = [cellHeight * sin(Tilt_Angle), tier_base(i) + wedgeRise + cellHeight * cos(Tilt_Angle)];
 
 // Side silhouette of all tiers in [y, z]. Each tier's back face is collinear with the next tier's front face.
+// The closing edge slopes from the plate bottom up to the lowest tier's base.
 function body_profile() = concat(
   [[wedgeDepth, tier_base(0)]],
   [for (i = [0:Rows - 1]) each [tier_front_top(i), tier_back_top(i)]],
-  [[0, wedgeRise], [0, tier_base(0)]]
+  [[0, wedgeRise], [0, plateBottom]]
 );
 
 // Corner_Radius on every outer corner; sharp where the body meets the plate and in the notches between tiers
 function body_radii() = concat(
   [Corner_Radius],
   [for (i = [0:Rows - 1]) each [Corner_Radius, i == Rows - 1 ? Corner_Radius : 0]],
-  [0, tier_base(0) > wedgeRise - backerSize[1] ? 0 : Corner_Radius]
+  [0, 0]
 );
 
 // Side profile swept across the row, rounded along the profile and around both end faces
@@ -172,7 +175,9 @@ module BitHolder() {
     pin_d = Pin_Diameter,
     board_t = Pegboard_Thickness,
     rise = Retention_Hook_Rise,
-    pin_pattern = Stabilizing_Pin_Pattern
+    pin_pattern = Stabilizing_Pin_Pattern,
+    socket_z = (backerSize[1] - SOCKET_HEIGHT) / 2,
+    standoff = true
   );
   BitTiers();
 }
