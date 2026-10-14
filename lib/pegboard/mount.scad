@@ -36,9 +36,11 @@ module MonolithicPegs(size, cols, backplate_t, hole_spacing, pin_d, board_t, ris
 }
 
 // Backer plate spanning y from -backplate_t to 0, plus Peglock sockets or monolithic pegs behind it.
-module BoardMount(type, size, columns, backplate_t, hole_spacing, pin_d, board_t, rise, pin_pattern = "all") {
+// socket_z shifts the Peglock sockets vertically from the plate center; standoff adds a foot at the plate bottom
+// once the plate extends below the sockets.
+module BoardMount(type, size, columns, backplate_t, hole_spacing, pin_d, board_t, rise, pin_pattern = "all", socket_z = 0, standoff = false) {
   if (type == "peglock") {
-    translate([0, -backplate_t + MOUNT_EPSILON, 0])
+    translate([0, -backplate_t + MOUNT_EPSILON, socket_z])
       PeglockBase(
         count = columns,
         width = SOCKET_WIDTH,
@@ -47,6 +49,13 @@ module BoardMount(type, size, columns, backplate_t, hole_spacing, pin_d, board_t
         spacing = hole_spacing,
         roundover = SOCKET_ROUNDOVER
       );
+    if (standoff && size[1] > SOCKET_HEIGHT)
+      translate([0, -backplate_t + MOUNT_EPSILON - SOCKET_DEPTH / 2, -size[1] / 2 + SOCKET_ROUNDOVER])
+        cuboid(
+          [peglock_base_width(columns, SOCKET_WIDTH, hole_spacing), SOCKET_DEPTH, 2 * SOCKET_ROUNDOVER],
+          rounding = SOCKET_ROUNDOVER,
+          except = [FRONT, BACK]
+        );
   } else if (type == "monolithic") {
     MonolithicPegs(size, columns, backplate_t, hole_spacing, pin_d, board_t, rise, pin_pattern);
   }

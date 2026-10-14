@@ -7,6 +7,7 @@ Parametric, 3D-printable hex bit holder for Sy's Peglock modular pegboard system
 - `Mount_Type` selects Peglock wedge sockets or monolithic integrated pegboard pegs.
 - Rows of hexagon pockets lean forward so bits sit at an angle, stacked as a sawtooth with a solid wedge under each tier.
 - A relief slot runs along each row through the hex corners and dividers, so bits can be pinched out.
+- The backplate spans the full back of the body, with a sloped underside on short bodies. The Peglock socket sits at the top, with a standoff foot at the bottom.
 - Each pocket mouth has a lead-in, and the outer edges of the body are rounded; the plate is narrowed by `Corner_Radius` on each side.
 
 <!-- BEGIN GENERATED -->

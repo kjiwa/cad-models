@@ -24,6 +24,7 @@ FAST = {"$fn": "32"}
 SOCKET_HEIGHT = 35.4
 WIDTH, WALL, DEPTH, TILT, CHAMFER = 6.75, 2.68, 15.0, 15.0, 0.5
 RADIUS, PLATE = 1.0, 1.5875
+SOCKET_DEPTH, ROUNDOVER, HOLE_SPACING = 6.0, 3.175, 25.4
 
 _cache = {}
 
@@ -35,16 +36,16 @@ def render(params=None):
     return _cache[key]
 
 
-def cell_size():
-    return 2 * WIDTH / math.sqrt(3) + 2 * WALL
+def cell_size(wall=WALL):
+    return 2 * WIDTH / math.sqrt(3) + 2 * wall
 
 
-def rise():
-    return cell_size() * math.sin(math.radians(TILT))
+def rise(wall=WALL):
+    return cell_size(wall) * math.sin(math.radians(TILT))
 
 
-def tier_pitch():
-    return rise() + cell_size() * math.cos(math.radians(TILT)) / math.tan(math.radians(TILT))
+def tier_pitch(wall=WALL):
+    return rise(wall) + cell_size(wall) * math.cos(math.radians(TILT)) / math.tan(math.radians(TILT))
 
 
 def column_x(i, columns):
@@ -66,7 +67,7 @@ def mouth_height():
 def profile_corner(kind):
     """Convex corner of the side profile: its [y, z] vertex and unit directions along both edges.
 
-    Front-bottom, front-top and bottom-back belong to the lowest tier, back-top to the top tier.
+    Front-bottom and front-top belong to the lowest tier, back-top to the top tier.
     """
     t = math.radians(TILT)
     s, c = math.sin(t), math.cos(t)
@@ -77,7 +78,6 @@ def profile_corner(kind):
         "front-bottom": ((depth, low), (s, c), (-1, 0)),
         "front-top": ((depth + h * s, low + h * c), (-s, -c), (-c, s)),
         "back-top": ((h * s, rise() + h * c), (c, -s), (-s, -c)),
-        "bottom-back": ((0, low), (0, 1), (1, 0)),
     }[kind]
 
 
@@ -89,6 +89,18 @@ def rounded_corner_probe(kind, x_model):
     half = math.asin(math.hypot(e1[0] - e2[0], e1[1] - e2[1]) / 2)
     reach = 0.5 * RADIUS * (1 / math.sin(half) - 1)
     return (-x_model, -(y + bx / norm * reach), z + bz / norm * reach)
+
+
+def plate_height(rows):
+    return max(rise() + (rows - 1) * tier_pitch(), SOCKET_HEIGHT)
+
+
+def plate_bottom(rows):
+    return rise() - plate_height(rows)
+
+
+def mount_params(mount, rows):
+    return {"Mount_Type": f'"{mount}"', "Rows": str(rows)}
 
 
 def centre(v=WALL + DEPTH / 2):
@@ -161,13 +173,67 @@ class BitHolderTestCase(unittest.TestCase):
 
     def test_profile_corners_are_rounded_along_the_row(self):
         end = 10 * cell_size() / 2
-        kinds = ("front-bottom", "front-top", "back-top", "bottom-back")
+        kinds = ("front-bottom", "front-top", "back-top")
         for kind in kinds:
             for label, x_model in (("end", end - 0.3 * RADIUS), ("mid", 0.0)):
                 with self.subTest(corner=kind, at=label):
                     point = rounded_corner_probe(kind, x_model)
                     self.assertFalse(contains(render(), point), "corner is square")
                     self.assertTrue(contains(render({"Corner_Radius": "0"}), point), "probe is outside the body")
+
+    def test_plate_covers_the_whole_back(self):
+        for mount in ("peglock", "monolithic"):
+            for rows in (1, 2, 4):
+                tris = render(mount_params(mount, rows))
+                for label, z in (("bottom", plate_bottom(rows) + 2), ("top", rise() - 2)):
+                    for x in (0, 10 * cell_size() / 2 - RADIUS - 1):
+                        with self.subTest(mount=mount, rows=rows, at=label, x=x):
+                            self.assertTrue(contains(tris, (x, PLATE / 3, z)), "plate is missing behind the back face")
+
+    def test_short_body_has_a_sloped_gusset_down_to_the_plate_bottom(self):
+        for mount in ("peglock", "monolithic"):
+            with self.subTest(mount=mount):
+                point = (0, -0.3, plate_bottom(1) + 2)
+                self.assertTrue(contains(render(mount_params(mount, 1)), point), "no gusset in front of the plate bottom")
+
+    def test_monolithic_pins_fill_the_plate_height(self):
+        for rows in (2, 4):
+            with self.subTest(rows=rows):
+                tris = render(mount_params("monolithic", rows))
+                intervals = math.floor((plate_height(rows) - 10) / HOLE_SPACING)
+                z_top = plate_bottom(rows) + plate_height(rows) / 2 + intervals * HOLE_SPACING / 2
+                for k in range(intervals + 1):
+                    self.assertTrue(contains(tris, (0, PLATE + 2, z_top - k * HOLE_SPACING)), f"no pin at row {k}")
+                    if k:
+                        self.assertFalse(contains(tris, (0, PLATE + 2, z_top - (k - 0.5) * HOLE_SPACING)), f"pin between rows {k - 1} and {k}")
+
+    def test_peglock_socket_is_flush_with_the_plate_top(self):
+        tris = render(mount_params("peglock", 4))
+        wall = HOLE_SPACING / 2
+        y = PLATE + SOCKET_DEPTH / 2
+        self.assertTrue(contains(tris, (wall, y, rise() - 1)), "socket block stops below the plate top")
+        self.assertFalse(contains(tris, (wall, y, rise() + 1)), "socket block overshoots the plate top")
+
+    def test_peglock_foot_stands_off_at_the_plate_bottom_when_the_plate_is_tall(self):
+        y = PLATE + SOCKET_DEPTH / 2
+        foot_top = plate_bottom(4) + 2 * ROUNDOVER
+        socket_bottom = rise() - SOCKET_HEIGHT
+        tris = render(mount_params("peglock", 4))
+        self.assertTrue(contains(tris, (0, y, plate_bottom(4) + 2)), "no foot at the plate bottom")
+        self.assertFalse(contains(tris, (0, y, (foot_top + socket_bottom) / 2)), "plate back is not clear between foot and socket")
+        self.assertFalse(contains(tris, (0, PLATE + SOCKET_DEPTH + 1, plate_bottom(4) + 2)), "foot is deeper than the socket block")
+
+    def test_peglock_foot_covers_plates_barely_taller_than_the_socket_block(self):
+        wall = 1.0
+        height = rise(wall) + tier_pitch(wall)
+        self.assertTrue(SOCKET_HEIGHT < height < SOCKET_HEIGHT + 2 * ROUNDOVER, "case no longer in the boundary range")
+        tris = render({"Rows": "2", "Wall_Thickness": str(wall)})
+        point = (0, PLATE + SOCKET_DEPTH / 2, rise(wall) - height + 2)
+        self.assertTrue(contains(tris, point), "no foot at the plate bottom")
+
+    def test_peglock_foot_is_omitted_when_the_plate_is_short(self):
+        tris = render(mount_params("peglock", 1))
+        self.assertAlmostEqual(min(point[2] for tri in tris for point in tri), plate_bottom(1), delta=0.05)
 
     def test_variants_render_one_shell(self):
         variants = (
@@ -176,7 +242,9 @@ class BitHolderTestCase(unittest.TestCase):
             {"Entry_Chamfer": "0"},
             {"Corner_Radius": "0"},
             {"Rows": "1"},
+            {"Rows": "4"},
             {"Mount_Type": '"monolithic"'},
+            {"Mount_Type": '"monolithic"', "Rows": "4"},
         )
         for params in variants:
             with self.subTest(params=params):
