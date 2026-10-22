@@ -43,6 +43,8 @@ cavity = [Width - 2 * Wall_Thickness, Height - 2 * Wall_Thickness];
 assert(Wall_Thickness > 0 && 2 * Wall_Thickness < Width && 2 * Wall_Thickness < Height, "Wall_Thickness must be positive and less than half of Width and Height");
 assert(Corner_Radius < min(flange_size) / 2, "Corner_Radius must be less than half of the flange");
 assert(Edge_Radius > 0 && Edge_Radius < Depth && Edge_Radius < Wall_Thickness, "Edge_Radius must be positive and less than Depth and Wall_Thickness");
+assert(Corner_Radius >= 0, "Corner_Radius must not be negative");
+assert(Fillet_Radius >= 0 && Fillet_Radius <= Flange_Overhang, "Fillet_Radius must be between 0 and Flange_Overhang");
 assert(BED_CHAMFER < Depth, "Depth is too small");
 
 module Flange() {

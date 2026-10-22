@@ -41,6 +41,7 @@ cavity_height = Sill_Height + Fit_Clearance;
 assert(Corner_Angle >= 60 && Corner_Angle <= 180, "Corner_Angle must be between 60 and 180");
 assert(Lip_Depth <= Wall_Thickness, "Lip_Depth must be at most Wall_Thickness");
 assert(Lip_Depth < Sill_Width / 2, "Lip_Depth must be less than half of Sill_Width");
+assert(Cover_Length > Sill_Width / tan(half_angle), "Cover_Length must reach past the inner corner");
 assert(Fit_Clearance >= 0 && Fit_Clearance < Wall_Thickness, "Fit_Clearance must be non-negative and less than Wall_Thickness");
 
 function MirrorX(p) = [-p.x, p.y];
@@ -70,12 +71,15 @@ module Cavity() {
 
 // Opening under the sill that narrows toward the bottom face, leaving a lip with a 45 degree top
 module LipOpening() {
-  step = Wall_Thickness / LIP_STEPS;
-  for (i = [0:LIP_STEPS - 1])
-    translate([0, 0, -Wall_Thickness + i * step - 0.001])
-      linear_extrude(height = step + 0.002)
-        offset(delta = -Lip_Depth * (1 - (i + 0.5) / LIP_STEPS))
-          Footprint(Cover_Length + Wall_Thickness + 2);
+  step = Lip_Depth / LIP_STEPS;
+  translate([0, 0, -Wall_Thickness + Lip_Depth - 0.001])
+    linear_extrude(height = Wall_Thickness - Lip_Depth + 0.002) Footprint(Cover_Length + Wall_Thickness + 2);
+  if (Lip_Depth > 0)
+    for (i = [0:LIP_STEPS - 1])
+      translate([0, 0, -Wall_Thickness + i * step - 0.001])
+        linear_extrude(height = step + 0.002)
+          offset(delta = -Lip_Depth * (1 - (i + 0.5) / LIP_STEPS))
+            Footprint(Cover_Length + Wall_Thickness + 2);
 }
 
 difference() {

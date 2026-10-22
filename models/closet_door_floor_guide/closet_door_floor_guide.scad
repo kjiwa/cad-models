@@ -49,6 +49,8 @@ end_offset = Door_Thickness + Door_Clearance + (Middle_Guide_Thickness + End_Gui
 
 assert(Base_Corner_Radius <= min(Base_Length, Base_Depth) / 2, "Base_Corner_Radius must be at most half of the base");
 assert(Guide_Top_Radius <= min(End_Guide_Thickness, Guide_Depth) / 2, "Guide_Top_Radius must be at most half of the end guide");
+assert(Guide_Depth <= Base_Depth, "Guide_Depth must not exceed Base_Depth");
+assert(Guide_Height > Guide_Top_Radius, "Guide_Height must exceed Guide_Top_Radius");
 assert(end_offset + End_Guide_Thickness / 2 <= Base_Length / 2 + 0.001, "Base_Length is too short for the guides");
 
 module Base() {

@@ -68,6 +68,8 @@ function RoundedProfile() =
     rounded = offset(offset(web, delta = -Corner_Radius, closed = true), r = Corner_Radius, closed = true)
   ) union([rounded], [rect(Corner_Radius, anchor = [-1, -1])]);
 
+assert(wall_hole_y + Width / 2 <= Height && shelf_hole_x + Width / 2 <= Depth, "Screw_Hole_Offset leaves the boss past the arm end");
+
 module Body() {
   offset_sweep(
     RoundedProfile()[0], height = Width,
