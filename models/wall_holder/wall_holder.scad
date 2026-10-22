@@ -163,6 +163,9 @@ assert(outerRadius <= overallHolderWidth / 2 && outerRadius <= overallHolderDept
 holeColumns = board_hole_columns(Mount_Type, Hole_Columns, plateWidth, Hole_Spacing, Pin_Diameter);
 backerSize = board_mount_size(Mount_Type, [plateWidth, tilted_height], holeColumns, Hole_Spacing, Pin_Diameter);
 backerHeight = backerSize[1];
+// The plate's corners are rounded only where it extends beyond the body; flush with the body they stay square
+plate_overhang = (backerSize[0] - overallHolderWidth) / 2;
+JOIN_OVERLAP = 0.01;
 
 module HolderLip() {
   rounding_depth = max(2 * outerRadius, Lip_Thickness);
@@ -241,8 +244,8 @@ module Tilted() {
 module HolderRearFill() {
   hull() {
     Tilted() HolderBody();
-    translate([-overallHolderWidth / 2, -0.01, -h / 2])
-      cube([overallHolderWidth, 0.02, h * cos(Tilt_Angle)]);
+    translate([-overallHolderWidth / 2, -JOIN_OVERLAP, -h / 2])
+      cube([overallHolderWidth, 2 * JOIN_OVERLAP, h * cos(Tilt_Angle)]);
   }
 }
 
@@ -253,7 +256,7 @@ module HolderJunctionGusset() {
   width = overallHolderWidth;
   if (size > 0) {
     hull() {
-      translate([-width / 2, -0.01, -h / 2 - size]) cube([width, 0.02, size]);
+      translate([-width / 2, -JOIN_OVERLAP, -h / 2 - size]) cube([width, 2 * JOIN_OVERLAP, size]);
       Tilted() translate([-width / 2, size, -h / 2]) cube([width, 0.01, 0.01]);
     }
   }
@@ -300,7 +303,7 @@ module Holder() {
     screw_d = Screw_Hole_Diameter,
     head_d = Screw_Head_Diameter,
     countersink = Include_Screw_Countersink,
-    plate_rounding = screwEar > 0 ? SOCKET_ROUNDOVER : 0
+    plate_rounding = plate_overhang >= SOCKET_ROUNDOVER ? SOCKET_ROUNDOVER : 0
   );
   translate([0, 0, grid_tz]) HolderGrid();
 }

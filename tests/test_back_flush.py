@@ -54,9 +54,15 @@ def configurations():
     yield "wall_hook default", scad("wall_hook"), {}
 
 
+_cache = {}
+
+
 def render(path, params):
-    literals = {k: scad_literal(k, v) for k, v in params.items()}
-    return render_triangles(path, {**FAST, **literals}, openscadpath=os.path.join(REPO_ROOT, "lib"))
+    key = (path, tuple(sorted(params.items())))
+    if key not in _cache:
+        literals = {k: scad_literal(k, v) for k, v in params.items()}
+        _cache[key] = render_triangles(path, {**FAST, **literals}, openscadpath=os.path.join(REPO_ROOT, "lib"))
+    return _cache[key]
 
 
 def unbacked(tris):

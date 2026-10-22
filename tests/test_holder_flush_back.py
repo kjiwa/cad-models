@@ -4,6 +4,7 @@ In exported STL coordinates the plate spans y 0..thickness and the body extends 
 """
 
 import json
+import math
 import os
 import shutil
 import sys
@@ -13,8 +14,6 @@ REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, os.path.join(REPO_ROOT, "scripts"))
 sys.path.insert(0, os.path.dirname(__file__))
 
-import math  # noqa: E402
-
 from geometry_fingerprint import fingerprint, render_triangles  # noqa: E402
 from mesh_probe import contains  # noqa: E402
 from test_screw_access import FAST, blocked_y, scad_literal  # noqa: E402
@@ -22,6 +21,8 @@ from test_screw_access import FAST, blocked_y, scad_literal  # noqa: E402
 SCAD = os.path.join(REPO_ROOT, "models", "wall_holder", "wall_holder.scad")
 PRESETS_JSON = os.path.join(REPO_ROOT, "models", "wall_holder", "wall_holder.json")
 EDGE = 0.15
+HEAD = 9.525
+DRIVER_MARGIN = 3
 
 
 def screw_presets():
@@ -89,7 +90,7 @@ class HolderFlushBackTestCase(unittest.TestCase):
         tris = render(params)
         width = fingerprint(tris)["bbox_size_mm"][0]
         body = 40 + 2 * 1.5875
-        ear = (9.525 + 6)
+        ear = HEAD + 2 * DRIVER_MARGIN
         self.assertAlmostEqual(width, body + 2 * ear, delta=0.1)
         for sign in (1, -1):
             x = sign * (body / 2 + ear / 2)

@@ -210,7 +210,7 @@ module BitHolder() {
     countersink = Include_Screw_Countersink,
     socket_z = (backerSize[1] - SOCKET_HEIGHT) / 2,
     standoff = true,
-    plate_rounding = screwEar > 0 ? SOCKET_ROUNDOVER : 0
+    plate_rounding = (backerSize[0] - rowWidth) / 2 >= SOCKET_ROUNDOVER ? SOCKET_ROUNDOVER : 0
   );
   BitTiers();
 }

@@ -635,21 +635,21 @@
       "Mount_Type": "\"monolithic\""
     },
     "expect": {
-      "triangles": 4040,
-      "volume_mm3": 2354.9,
+      "triangles": 4624,
+      "volume_mm3": 2341.2,
       "bbox_size_mm": [
         25.4,
         19.59,
         35.4
       ],
       "section_areas_mm2": [
+        21.6,
+        78.2,
+        49.0,
+        39.8,
+        29.1,
         20.5,
-        91.5,
-        64.3,
-        53.1,
-        40.3,
-        24.8,
-        20.5
+        20.0
       ]
     }
   },
@@ -1024,21 +1024,21 @@
       "Stabilizing_Pin_Pattern": "\"bottom\""
     },
     "expect": {
-      "triangles": 3984,
-      "volume_mm3": 7549.2,
+      "triangles": 4578,
+      "volume_mm3": 7535.5,
       "bbox_size_mm": [
         25.4,
         19.59,
         104.76
       ],
       "section_areas_mm2": [
-        58.9,
-        72.2,
-        75.6,
-        80.1,
-        84.6,
-        139.1,
-        56.8
+        64.0,
+        56.9,
+        59.6,
+        65.5,
+        71.4,
+        132.5,
+        43.4
       ]
     }
   },
