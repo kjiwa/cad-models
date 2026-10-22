@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from geometry_fingerprint import render_triangles  # noqa: E402
 from mesh_probe import contains  # noqa: E402
 
-HOOK_SCAD = os.path.join(REPO_ROOT, "peglock_hook", "peglock_hook.scad")
+HOOK_SCAD = os.path.join(REPO_ROOT, "models", "peglock_hook", "peglock_hook.scad")
 FAST = {"$fn": "32"}
 ARM_WIDTH = 12.7
 ARM_HEIGHT = 6.35

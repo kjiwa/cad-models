@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from geometry_fingerprint import fingerprint, render_triangles  # noqa: E402
 from mesh_probe import contains, shell_count  # noqa: E402
 
-MODEL_DIR = os.path.join(REPO_ROOT, "peglock_bit_holder")
+MODEL_DIR = os.path.join(REPO_ROOT, "models", "peglock_bit_holder")
 BIT_SCAD = os.path.join(MODEL_DIR, "peglock_bit_holder.scad")
 FAST = {"$fn": "32"}
 SOCKET_HEIGHT = 35.4

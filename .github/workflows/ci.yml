@@ -73,8 +73,8 @@ jobs:
             if git diff --name-only "$BASE"...HEAD | grep -qE '^(\.gitmodules|Makefile|common\.mk|scripts/|lib/|\.github/)'; then
               BUILD_ALL=true
             else
-              TARGETS=$(git diff --name-only "$BASE"...HEAD | cut -d/ -f1 | sort -u | while read -r dir; do
-                if [ -n "$dir" ] && [ -f "$dir/Makefile" ]; then
+              TARGETS=$(git diff --name-only "$BASE"...HEAD | grep "^models/" | cut -d/ -f2 | sort -u | while read -r dir; do
+                if [ -n "$dir" ] && [ -f "models/$dir/Makefile" ]; then
                   echo "$dir"
                 fi
               done)

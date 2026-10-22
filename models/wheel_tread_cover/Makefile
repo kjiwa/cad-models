@@ -1,2 +1,2 @@
 MODEL := wheel_tread_cover
-include ../common.mk
+include ../../common.mk

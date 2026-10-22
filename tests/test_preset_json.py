@@ -18,7 +18,7 @@ from build_presets import slugify  # noqa: E402
 from customizer import parse  # noqa: E402
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-PRESET_FILES = sorted([p for p in glob.glob(os.path.join(REPO_ROOT, "*", "*.json")) if os.path.basename(os.path.dirname(p)) != "dist"])
+PRESET_FILES = sorted([p for p in glob.glob(os.path.join(REPO_ROOT, "models", "*", "*.json")) if os.path.basename(os.path.dirname(p)) != "dist"])
 NAME = re.compile(r"^[A-Z][A-Za-z0-9]*(_[A-Za-z0-9]+)*$")
 
 

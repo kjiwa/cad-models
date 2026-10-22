@@ -56,7 +56,7 @@ def _presets(model_dir, model):
 
 
 def generate(model, root=REPO_ROOT):
-    model_dir = os.path.join(root, model)
+    model_dir = os.path.join(root, "models", model)
     groups = parse(os.path.join(model_dir, model + ".scad"))
     blocks = [_parameters(groups), _presets(model_dir, model)]
     return "\n\n".join(b for b in blocks if b)
@@ -64,7 +64,7 @@ def generate(model, root=REPO_ROOT):
 
 def render(model, root=REPO_ROOT):
     """Return the model's README text with the generated region refreshed."""
-    path = os.path.join(root, model, "README.md")
+    path = os.path.join(root, "models", model, "README.md")
     with open(path, encoding="utf-8") as f:
         text = f.read()
     head, sep, rest = text.partition(BEGIN)
@@ -75,7 +75,7 @@ def render(model, root=REPO_ROOT):
 
 
 def _current(model, root):
-    with open(os.path.join(root, model, "README.md"), encoding="utf-8") as f:
+    with open(os.path.join(root, "models", model, "README.md"), encoding="utf-8") as f:
         return f.read()
 
 
@@ -93,7 +93,7 @@ def main(argv):
         return 1 if stale else 0
     for m in models:
         text = render(m)
-        with open(os.path.join(REPO_ROOT, m, "README.md"), "w", encoding="utf-8") as f:
+        with open(os.path.join(REPO_ROOT, "models", m, "README.md"), "w", encoding="utf-8") as f:
             f.write(text)
     return 0
 

@@ -31,12 +31,12 @@ ZERO_WORDING = ("(0 to disable)", "(0 = auto)")
 
 
 def _model_sources():
-    paths = sorted(glob.glob(os.path.join(REPO_ROOT, "*", "*.scad")))
+    paths = sorted(glob.glob(os.path.join(REPO_ROOT, "models", "*", "*.scad")))
     return [p for p in paths if os.path.basename(os.path.dirname(p)) not in ("dist", "lib")]
 
 
 def _all_scad_sources():
-    paths = glob.glob(os.path.join(REPO_ROOT, "*", "*.scad")) + glob.glob(os.path.join(REPO_ROOT, "*", "components", "*.scad"))
+    paths = glob.glob(os.path.join(REPO_ROOT, "models", "*", "*.scad")) + glob.glob(os.path.join(REPO_ROOT, "models", "*", "components", "*.scad"))
     return sorted(p for p in paths if os.path.basename(os.path.dirname(p)) not in ("dist", "lib"))
 
 

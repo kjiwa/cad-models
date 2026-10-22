@@ -135,19 +135,19 @@ class Model:
 
 
 RYOBI = Model(
-    "ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
+    "models/ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
     {"Battery_Count": "2", "Rail_Length": "110"},
     ("z_top_peg", "Pin_Diameter", "Hole_Spacing", "Slot_Spacing_Count", "Battery_Count", "slot_spacing", "total_width"),
     ryobi_probe,
 )
 RAZOR = Model(
-    "razor_blade_dispenser/razor_blade_dispenser.scad",
+    "models/razor_blade_dispenser/razor_blade_dispenser.scad",
     {"Tower_Height": "150"},
     ("z_top_peg", "Pin_Diameter", "Hole_Spacing", "Slot_Spacing_Count", "actual_dispenser_count", "slot_spacing", "total_width"),
     razor_probe,
 )
 HOLDER = Model(
-    "peglock_holder/peglock_holder.scad",
+    "models/peglock_holder/peglock_holder.scad",
     {"Mount_Type": scad_string("monolithic"), "Pocket_Height": "100"},
     ("holeColumns", "backerHeight", "Hole_Spacing", "Backplate_Thickness"),
     holder_probe,

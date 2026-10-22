@@ -1,3 +1,3 @@
 MODEL := entryway_table
-include ../common.mk
+include ../../common.mk
 

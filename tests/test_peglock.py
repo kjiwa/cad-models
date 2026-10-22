@@ -76,7 +76,7 @@ class PeglockScalingTestCase(unittest.TestCase):
     def test_thin_metal_renders_distinct_geometry(self):
         from geometry_fingerprint import fingerprint
 
-        scad_path = os.path.join(REPO_ROOT, "peglock_attachment", "peglock_attachment.scad")
+        scad_path = os.path.join(REPO_ROOT, "models", "peglock_attachment", "peglock_attachment.scad")
         with tempfile.TemporaryDirectory() as tmpdir:
             stl_079 = os.path.join(tmpdir, "out_079.stl")
             stl_119 = os.path.join(tmpdir, "out_119.stl")

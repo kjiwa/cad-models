@@ -1,15 +1,16 @@
 # Root Makefile to coordinate builds across all model directories
 
-# Discover all subdirectories containing a Makefile (stripped of trailing slash)
-PROJECTS := $(patsubst %/,%,$(dir $(wildcard */Makefile)))
+# Discover all model directories under models/ containing a Makefile
+PROJECTS := $(patsubst %/,%,$(dir $(wildcard models/*/Makefile)))
+MODELS := $(notdir $(PROJECTS))
 
-.PHONY: all clean setup dist help readme $(PROJECTS) stl 3mf preview presets bundle
+.PHONY: all clean setup dist help readme $(MODELS) stl 3mf preview presets bundle
 
-all: $(PROJECTS)
+all: $(MODELS)
 
-$(PROJECTS):
+$(MODELS):
 	@echo "==> Building in $@"
-	@$(MAKE) -C $@ all
+	@$(MAKE) -C models/$@ all
 
 stl 3mf preview presets bundle:
 	@for dir in $(PROJECTS); do \
@@ -28,7 +29,7 @@ dist: all bundle
 	@ls -la dist
 
 readme:
-	@python3 scripts/readme_params.py $(PROJECTS)
+	@python3 scripts/readme_params.py $(MODELS)
 
 clean:
 	@rm -rf dist

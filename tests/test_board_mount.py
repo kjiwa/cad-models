@@ -58,7 +58,7 @@ VALIDATION_CASES = (("1.5", "Hole_Columns must be an integer"), ("11", "Hole_Col
 
 
 def model_scad(model):
-    return os.path.join(REPO_ROOT, model, f"{model}.scad")
+    return os.path.join(REPO_ROOT, "models", model, f"{model}.scad")
 
 
 def plate_width(model, params):

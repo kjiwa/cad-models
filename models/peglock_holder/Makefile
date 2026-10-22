@@ -1,2 +1,2 @@
 MODEL := peglock_holder
-include ../common.mk
+include ../../common.mk

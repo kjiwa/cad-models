@@ -18,7 +18,7 @@ from geometry_fingerprint import fingerprint, render_triangles  # noqa: E402
 from mesh_probe import contains, shell_count  # noqa: E402
 from test_geometry_regression import BBOX_ABS_TOL_MM, FIXTURES_PATH, VOLUME_REL_TOL  # noqa: E402
 
-HOLDER_SCAD = os.path.join(REPO_ROOT, "peglock_holder", "peglock_holder.scad")
+HOLDER_SCAD = os.path.join(REPO_ROOT, "models", "peglock_holder", "peglock_holder.scad")
 WALL = 1.5875
 FAST = {"$fn": "32"}
 

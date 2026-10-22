@@ -1,2 +1,2 @@
 MODEL := keyhole_router_template
-include ../common.mk
+include ../../common.mk

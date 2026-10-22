@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from geometry_fingerprint import fingerprint, render_triangles  # noqa: E402
 from mesh_probe import contains  # noqa: E402
 
-MODEL_DIR = os.path.join(REPO_ROOT, "peglock_magnet_mount")
+MODEL_DIR = os.path.join(REPO_ROOT, "models", "peglock_magnet_mount")
 MAGNET_SCAD = os.path.join(MODEL_DIR, "peglock_magnet_mount.scad")
 FAST = {"$fn": "32"}
 PLATE = 1.5875
