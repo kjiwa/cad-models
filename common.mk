@@ -19,7 +19,7 @@ DIST_DIR ?= $(REPO_ROOT)/dist
 
 PRESET_BUILDER := $(REPO_ROOT)/scripts/build_presets.py
 
-.PHONY: all stl 3mf preview presets bundle clean help
+.PHONY: all stl 3mf preview presets check bundle clean help
 
 all: stl 3mf preview presets
 
@@ -54,6 +54,14 @@ presets: $(SCAD_FILE) $(COMPONENTS)
 			--target all; \
 	fi
 
+check: $(SCAD_FILE) $(COMPONENTS)
+	@python3 $(REPO_ROOT)/scripts/check_scad.py \
+		--model "$(MODEL)" \
+		--scad "$(SCAD_FILE)" \
+		--json "$(JSON_FILE)" \
+		--build-dir "$(BUILD_DIR)" \
+		--openscad "$(OPENSCAD)"
+
 bundle: $(SCAD_FILE) $(COMPONENTS)
 	@mkdir -p $(DIST_DIR)
 	OPENSCADPATH=$(REPO_ROOT)/lib $(ONESCAD) $(SCAD_FILE) -o $(DIST_DIR)/$(SCAD_FILE) --verify
@@ -68,5 +76,6 @@ help:
 	@echo "  3mf      - Export default 3MF"
 	@echo "  preview  - Export rendered PNG preview image"
 	@echo "  presets  - Build all parameter presets from $(JSON_FILE) (if present)"
+	@echo "  check    - Evaluate the default and every preset without rendering geometry"
 	@echo "  bundle   - Inline includes into a single verified $(SCAD_FILE) in dist/ (needs uv)"
 	@echo "  clean    - Remove build artifacts"

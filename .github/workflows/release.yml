@@ -20,11 +20,6 @@ jobs:
           submodules: recursive
           persist-credentials: false
 
-      - name: Install OpenSCAD and Xvfb
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends openscad xvfb
-
       - name: Install OpenSCAD snapshot
         uses: ./.github/actions/setup-openscad
 
@@ -32,10 +27,7 @@ jobs:
         uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
 
       - name: Build and package artifacts
-        run: |
-          set -eu
-          xvfb-run -a make all
-          APPIMAGE_EXTRACT_AND_RUN=1 QT_QPA_PLATFORM=offscreen PATH="$HOME/openscad-snapshot:$PATH" xvfb-run -a make dist
+        run: xvfb-run -a make -j"$(nproc)" dist
 
       - name: Create Release
         uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3

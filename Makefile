@@ -4,7 +4,9 @@
 PROJECTS := $(patsubst %/,%,$(dir $(wildcard models/*/Makefile)))
 MODELS := $(notdir $(PROJECTS))
 
-.PHONY: all clean setup dist help readme $(MODELS) stl 3mf preview presets bundle
+FANOUT_TARGETS := stl 3mf preview presets check bundle
+
+.PHONY: all clean setup dist help readme $(MODELS) $(FANOUT_TARGETS)
 
 all: $(MODELS)
 
@@ -12,11 +14,15 @@ $(MODELS):
 	@echo "==> Building in $@"
 	@$(MAKE) -C models/$@ all
 
-stl 3mf preview presets bundle:
-	@for dir in $(PROJECTS); do \
-		echo "==> Building $@ in $$dir"; \
-		$(MAKE) -C $$dir $@ || exit 1; \
-	done
+define fanout
+$(1): $(addprefix $(1)-,$(MODELS))
+
+$(1)-%:
+	@echo "==> Building $(1) in $$*"
+	@$$(MAKE) -C models/$$* $(1)
+endef
+
+$(foreach target,$(FANOUT_TARGETS),$(eval $(call fanout,$(target))))
 
 dist: all bundle
 	@mkdir -p dist
@@ -64,6 +70,7 @@ help:
 	@echo "  3mf      - Export default 3MF for all models"
 	@echo "  preview  - Export preview PNG images for all models"
 	@echo "  presets  - Build all parameter presets across models"
+	@echo "  check    - Evaluate every model and preset without rendering geometry"
 	@echo "  bundle   - Write verified single-file .scad per model into dist/"
 	@echo "  dist     - Build all models and package artifacts, bundles included, into dist/"
 	@echo "  readme   - Regenerate the Parameters and Presets sections of every model README"

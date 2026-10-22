@@ -1,5 +1,5 @@
 name: Set up OpenSCAD snapshot
-description: Install the pinned OpenSCAD snapshot (needed by onescad --verify) into $HOME/openscad-snapshot, off PATH so the apt OpenSCAD that the geometry fixtures target stays the default.
+description: Install the pinned OpenSCAD snapshot (Manifold backend) and Xvfb, and put openscad on PATH.
 runs:
   using: composite
   steps:
@@ -11,9 +11,14 @@ runs:
       run: |
         set -eu
         sudo apt-get update
-        sudo apt-get install -y --no-install-recommends libegl1 libopengl0 libgl1 libglu1-mesa libxkbcommon0 libfontconfig1 libdbus-1-3
-        curl -fsSL -o openscad "https://files.openscad.org/snapshots/OpenSCAD-${OPENSCAD_VERSION}-x86_64.AppImage"
-        echo "${OPENSCAD_SHA256}  openscad" | sha256sum -c -
-        chmod +x openscad
+        sudo apt-get install -y --no-install-recommends xvfb libegl1 libopengl0 libgl1 libglu1-mesa libxkbcommon0 libfontconfig1 libdbus-1-3 libharfbuzz0b
+        curl -fsSL -o openscad.AppImage "https://files.openscad.org/snapshots/OpenSCAD-${OPENSCAD_VERSION}-x86_64.AppImage"
+        echo "${OPENSCAD_SHA256}  openscad.AppImage" | sha256sum -c -
+        chmod +x openscad.AppImage
         mkdir -p "$HOME/openscad-snapshot"
-        mv openscad "$HOME/openscad-snapshot/openscad"
+        (cd "$HOME/openscad-snapshot" && "$OLDPWD/openscad.AppImage" --appimage-extract >/dev/null)
+        rm openscad.AppImage
+        printf '#!/bin/sh\nexec "%s/openscad-snapshot/squashfs-root/AppRun" "$@"\n' "$HOME" > "$HOME/openscad-snapshot/openscad"
+        chmod +x "$HOME/openscad-snapshot/openscad"
+        echo "$HOME/openscad-snapshot" >> "$GITHUB_PATH"
+        "$HOME/openscad-snapshot/openscad" --version
