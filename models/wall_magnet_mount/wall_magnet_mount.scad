@@ -48,9 +48,6 @@ Retention_Hook_Rise = 3.5;
 // Stabilizing pin rows below the retention hooks (ignored by the Peglock socket mount)
 Stabilizing_Pin_Pattern = "all"; // [all: All Rows, top_and_bottom: Top and Bottom Rows, top: Top Row Only, bottom: Bottom Row Only (Lowest Hole), none: Retention Hooks Only]
 
-// Screw hole columns across the backplate (screws mount)
-Screw_Hole_Columns = 1;
-
 // Screw hole rows down the backplate (screws mount)
 Screw_Hole_Rows = 1;
 
@@ -85,8 +82,10 @@ gridWidth = Columns * pitch + Magnet_Spacing;
 gridHeight = Rows * pitch + Magnet_Spacing;
 assert(2 * Corner_Radius <= min(gridWidth, gridHeight), "Corner_Radius is too large for the magnet slab");
 
+screwEar = Mount_Type == "screws" ? screw_ear_width(Screw_Head_Diameter) : 0;
+
 holeColumns = board_hole_columns(Mount_Type, Hole_Columns, gridWidth, Hole_Spacing, Pin_Diameter);
-backerSize = board_mount_size(Mount_Type, [gridWidth, gridHeight + 2 * SOCKET_ROUNDOVER], holeColumns, Hole_Spacing, Pin_Diameter);
+backerSize = board_mount_size(Mount_Type, [gridWidth + 2 * screwEar, gridHeight + 2 * SOCKET_ROUNDOVER], holeColumns, Hole_Spacing, Pin_Diameter);
 
 function pocket_offset(i, count) = -(count * pitch + Magnet_Spacing) / 2 + Magnet_Diameter / 2 + Magnet_Spacing + i * pitch;
 
@@ -110,9 +109,10 @@ module MagnetMount() {
     board_t = Pegboard_Thickness,
     rise = Retention_Hook_Rise,
     pin_pattern = Stabilizing_Pin_Pattern,
-    screw_columns = Screw_Hole_Columns,
+    screw_columns = 2,
     screw_rows = Screw_Hole_Rows,
     screw_inset = Screw_Hole_Inset,
+    screw_column_inset = screwEar / 2,
     screw_d = Screw_Hole_Diameter,
     head_d = Screw_Head_Diameter,
     countersink = Include_Screw_Countersink

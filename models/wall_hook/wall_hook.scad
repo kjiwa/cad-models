@@ -138,7 +138,6 @@ holeColumns = board_hole_columns(Mount_Type, Hole_Columns, bodyWidth, Hole_Spaci
 mountSize = board_mount_size(Mount_Type, [bodyWidth, root_height + 2 * SOCKET_ROUNDOVER], holeColumns, Hole_Spacing, Pin_Diameter);
 backerSize = [mountSize[0], max(mountSize[1], Backplate_Height)];
 backerHeight = backerSize[1];
-SCREW_DRIVER_MARGIN = 3;
 screw_row_z = screw_hole_offsets(backerHeight, Screw_Hole_Rows, Screw_Hole_Inset);
 align_shift = Vertical_Alignment == "center" ? (backerHeight - root_height) / 2
   : Vertical_Alignment == "screws" ? screw_row_z[0] + Screw_Head_Diameter / 2 + SCREW_DRIVER_MARGIN + backerHeight / 2

@@ -57,9 +57,6 @@ Retention_Hook_Rise = 3.5;
 // Stabilizing pin rows below the retention hooks (ignored by the Peglock socket mount)
 Stabilizing_Pin_Pattern = "all"; // [all: All Rows, top_and_bottom: Top and Bottom Rows, top: Top Row Only, bottom: Bottom Row Only (Lowest Hole), none: Retention Hooks Only]
 
-// Screw hole columns across the backplate (screws mount)
-Screw_Hole_Columns = 1;
-
 // Screw hole rows down the backplate (screws mount)
 Screw_Hole_Rows = 1;
 
@@ -105,10 +102,11 @@ wedgeRise = cellSize * sin(Tilt_Angle);
 tierPitch = wedgeRise + wedgeDepth / tan(Tilt_Angle);
 
 plateWidth = rowWidth - 2 * Corner_Radius;
+screwEar = Mount_Type == "screws" ? screw_ear_width(Screw_Head_Diameter) : 0;
 
 holeColumns = board_hole_columns(Mount_Type, Hole_Columns, plateWidth, Hole_Spacing, Pin_Diameter);
 backHeight = wedgeRise - tier_base(0);
-backerSize = board_mount_size(Mount_Type, [plateWidth, backHeight], holeColumns, Hole_Spacing, Pin_Diameter);
+backerSize = board_mount_size(Mount_Type, [Mount_Type == "screws" ? rowWidth + 2 * screwEar : plateWidth, backHeight], holeColumns, Hole_Spacing, Pin_Diameter);
 plateBottom = wedgeRise - backerSize[1];
 
 function column_x(i) = -rowWidth / 2 + cellSize / 2 + i * cellSize;
@@ -194,9 +192,10 @@ module BitHolder() {
     board_t = Pegboard_Thickness,
     rise = Retention_Hook_Rise,
     pin_pattern = Stabilizing_Pin_Pattern,
-    screw_columns = Screw_Hole_Columns,
+    screw_columns = 2,
     screw_rows = Screw_Hole_Rows,
     screw_inset = Screw_Hole_Inset,
+    screw_column_inset = screwEar / 2,
     screw_d = Screw_Hole_Diameter,
     head_d = Screw_Head_Diameter,
     countersink = Include_Screw_Countersink,

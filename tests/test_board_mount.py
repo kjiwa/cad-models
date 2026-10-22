@@ -135,20 +135,22 @@ SCREW_MOUNT = {
     "Include_Screw_Countersink": "true",
     "Columns": "3",
     "Rows": "3",
-    "Screw_Hole_Columns": "2",
     "Screw_Hole_Rows": "3",
     "Screw_Hole_Inset": "8",
 }
 
 
-def screw_positions(width, height, columns, rows, inset):
-    def axis(extent, count):
+EAR_INSET = (HEAD_D + 6) / 2
+
+
+def screw_positions(width, height, rows, inset):
+    def axis(extent, count, edge):
         if count == 1:
             return [0.0]
-        half = extent / 2 - inset
+        half = extent / 2 - edge
         return [-half + i * 2 * half / (count - 1) for i in range(count)]
 
-    return [(x, z) for x in axis(width, columns) for z in axis(height, rows)]
+    return [(x, z) for x in axis(width, 2, EAR_INSET) for z in axis(height, rows, inset)]
 
 
 @unittest.skipUnless(shutil.which("openscad"), "openscad binary not found on PATH")
@@ -158,7 +160,7 @@ class ScrewMountTestCase(unittest.TestCase):
         cls.params = {**FAST, **SCREW_MOUNT}
         cls.tris = render_triangles(model_scad("wall_magnet_mount"), cls.params, openscadpath=LIB_PATH)
         size = fingerprint(cls.tris)["bbox_size_mm"]
-        cls.positions = screw_positions(size[0], size[2], 2, 3, 8)
+        cls.positions = screw_positions(size[0], size[2], 3, 8)
 
     def test_holes_at_grid_positions(self):
         self.assertEqual(len(self.positions), 6)
@@ -185,15 +187,17 @@ class ScrewMountTestCase(unittest.TestCase):
         self.assertFalse(contains(tris, (x, 0.05, z)), "hole is missing")
         self.assertTrue(contains(tris, (x + r, 0.05, z)), "front face is still countersunk")
 
-    def test_single_row_and_column_are_centered(self):
-        tris = render_triangles(
-            model_scad("wall_magnet_mount"),
-            {**self.params, "Screw_Hole_Columns": "1", "Screw_Hole_Rows": "1"},
-            openscadpath=LIB_PATH,
-        )
-        self.assertFalse(contains(tris, (0, PLATE_T / 2, 0)))
-        x, z = self.positions[0]
-        self.assertTrue(contains(tris, (x, PLATE_T / 2, z)))
+    def test_heads_overhanging_the_plate_are_rejected(self):
+        params = {**self.params, "Columns": "1", "Rows": "1", "Screw_Hole_Rows": "2", "Screw_Hole_Inset": "2"}
+        with self.assertRaises(RuntimeError) as ctx:
+            render_triangles(model_scad("wall_magnet_mount"), params, openscadpath=LIB_PATH)
+        self.assertIn("reduce Screw_Hole_Inset or Screw_Head_Diameter", str(ctx.exception))
+
+    def test_single_row_is_centered(self):
+        tris = render_triangles(model_scad("wall_magnet_mount"), {**self.params, "Screw_Hole_Rows": "1"}, openscadpath=LIB_PATH)
+        x = self.positions[0][0]
+        self.assertFalse(contains(tris, (x, PLATE_T / 2, 0)))
+        self.assertTrue(contains(tris, (0, PLATE_T / 2, 0)))
 
 
 if __name__ == "__main__":
