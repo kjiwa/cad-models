@@ -43,12 +43,13 @@
             "Wall_Thickness": "3",
             "Lip_Height": "0",
             "Opening_Width": "50",
-            "Opening_Height": "15",
+            "Opening_Height": "20",
             "Screw_Hole_Columns": "2",
             "Screw_Hole_Rows": "1",
             "Screw_Hole_Inset": "15",
             "Screw_Hole_Diameter": "5",
-            "Screw_Head_Diameter": "8"
+            "Screw_Head_Diameter": "8",
+            "Include_Screw_Countersink": "true"
         },
         "INIU_Battery_Bank": {
             "Mount_Type": "screws",
@@ -64,7 +65,8 @@
             "Screw_Hole_Rows": "1",
             "Screw_Hole_Inset": "15",
             "Screw_Hole_Diameter": "5",
-            "Screw_Head_Diameter": "8"
+            "Screw_Head_Diameter": "8",
+            "Include_Screw_Countersink": "true"
         }
     },
     "fileFormatVersion": "1"

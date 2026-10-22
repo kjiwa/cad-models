@@ -68,7 +68,8 @@ Parametric, 3D-printable open-front bin and organizer for Sy's Peglock modular p
 | `Screw_Hole_Rows` | `1` |  | Screw hole rows down the backplate (screws mount) |
 | `Screw_Hole_Inset` | `19.05` |  | Distance from the backplate edge to the outermost screw hole centers (a single column or row sits centered) |
 | `Screw_Hole_Diameter` | `4.7625` |  | Screw shank hole diameter (4.7625 for 3/16") |
-| `Screw_Head_Diameter` | `9.525` |  | Countersink head diameter (9.525 for 3/8") (0 to disable) |
+| `Screw_Head_Diameter` | `9.525` |  | Screw head or washer outer diameter (9.525 for 3/8") |
+| `Include_Screw_Countersink` | `false` |  | Include a countersink cone for the screw head instead of a straight hole |
 
 ## Presets
 

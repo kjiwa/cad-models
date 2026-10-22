@@ -100,8 +100,11 @@ Screw_Hole_Inset = 19.05;
 // Screw shank hole diameter (4.7625 for 3/16")
 Screw_Hole_Diameter = 4.7625;
 
-// Countersink head diameter (9.525 for 3/8") (0 to disable)
+// Screw head or washer outer diameter (9.525 for 3/8")
 Screw_Head_Diameter = 9.525;
+
+// Include a countersink cone for the screw head instead of a straight hole
+Include_Screw_Countersink = false;
 
 /* [Hidden] */
 $fn = 128;
@@ -286,7 +289,8 @@ module Holder() {
     screw_rows = Screw_Hole_Rows,
     screw_inset = Screw_Hole_Inset,
     screw_d = Screw_Hole_Diameter,
-    head_d = Screw_Head_Diameter
+    head_d = Screw_Head_Diameter,
+    countersink = Include_Screw_Countersink
   );
   translate([0, 0, grid_tz]) HolderGrid();
 }

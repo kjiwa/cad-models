@@ -44,9 +44,9 @@ function screw_hole_offsets(extent, count, inset) = count == 1
   ? [0]
   : [for (i = [0 : count - 1]) -extent / 2 + inset + i * (extent - 2 * inset) / (count - 1)];
 
-// Hole through a plate spanning y from -plate_t to 0, countersunk on the +y face; a straight hole when head_d <= screw_d.
-module ScrewHole(screw_d, head_d, plate_t) {
-  if (head_d > screw_d) {
+// Hole through a plate spanning y from -plate_t to 0, countersunk on the +y face when countersink is set and head_d > screw_d; otherwise straight.
+module ScrewHole(screw_d, head_d, countersink, plate_t) {
+  if (countersink && head_d > screw_d) {
     translate([0, -plate_t, 0]) countersunk_screw_hole(screw_d, head_d, plate_t);
   } else {
     rotate([90, 0, 0]) translate([0, 0, -EPSILON]) cylinder(d = screw_d, h = plate_t + 2 * EPSILON);
@@ -56,7 +56,7 @@ module ScrewHole(screw_d, head_d, plate_t) {
 // Backer plate spanning y from -backplate_t to 0, plus Peglock sockets or monolithic pegs behind it.
 // socket_z shifts the Peglock sockets vertically from the plate center; standoff adds a foot at the plate bottom
 // once the plate extends below the sockets.
-module BoardMount(type, size, columns, backplate_t, hole_spacing, pin_d, board_t, rise, pin_pattern = "all", socket_z = 0, standoff = false, screw_columns = 1, screw_rows = 1, screw_inset = 0, screw_d = 4.7625, head_d = 9.525) {
+module BoardMount(type, size, columns, backplate_t, hole_spacing, pin_d, board_t, rise, pin_pattern = "all", socket_z = 0, standoff = false, screw_columns = 1, screw_rows = 1, screw_inset = 0, screw_d = 4.7625, head_d = 9.525, countersink = false) {
   if (type == "peglock") {
     translate([0, -backplate_t + EPSILON, socket_z])
       PeglockBase(
@@ -88,6 +88,6 @@ module BoardMount(type, size, columns, backplate_t, hole_spacing, pin_d, board_t
       cuboid([size[0], backplate_t, size[1]], rounding = SOCKET_ROUNDOVER, except = [FRONT, BACK]);
     if (type == "screws")
       for (x = screw_hole_offsets(size[0], screw_columns, screw_inset), z = screw_hole_offsets(size[1], screw_rows, screw_inset))
-        translate([x, 0, z]) ScrewHole(screw_d, head_d, backplate_t);
+        translate([x, 0, z]) ScrewHole(screw_d, head_d, countersink, backplate_t);
   }
 }

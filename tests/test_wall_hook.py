@@ -21,6 +21,20 @@ FAST = {"$fn": "32"}
 ARM_WIDTH = 12.7
 ARM_HEIGHT = 6.35
 ARM_CENTER_Z = -11.35
+ANGLED_ON_SCREWS = {
+    "Mount_Type": '"screws"',
+    "Backplate_Height": "152.4",
+    "Screw_Hole_Rows": "2",
+    "Screw_Hole_Inset": "19.05",
+    "Screw_Head_Diameter": "16",
+    "Vertical_Alignment": '"screws"',
+    "Arm_Width": "38.1",
+    "Arm_Height": "12.7",
+    "Arm_Depth": "76.2",
+    "Arm_Tilt_Angle": "60",
+    "Lip_Height": "0",
+    "Lip_Thickness": "0",
+}
 
 
 @unittest.skipUnless(shutil.which("openscad"), "openscad binary not found on PATH")
@@ -54,7 +68,7 @@ class HookBackplateTestCase(unittest.TestCase):
         )
 
     def test_backplate_height_extends_plate(self):
-        for alignment in ("bottom", "center"):
+        for alignment in ("bottom", "screws"):
             with self.subTest(alignment=alignment):
                 tris = self.render(
                     {"Mount_Type": '"screws"', "Backplate_Height": "152.4", "Vertical_Alignment": f'"{alignment}"'}
@@ -62,7 +76,15 @@ class HookBackplateTestCase(unittest.TestCase):
                 self.assertAlmostEqual(fingerprint(tris)["bbox_size_mm"][2], 152.4, delta=0.05)
 
     def test_centered_arm_on_tall_plate(self):
-        tris = self.render({"Mount_Type": '"screws"', "Backplate_Height": "152.4", "Vertical_Alignment": '"center"'})
+        tris = self.render(
+            {
+                "Mount_Type": '"screws"',
+                "Screw_Hole_Rows": "2",
+                "Screw_Hole_Inset": "19.05",
+                "Backplate_Height": "152.4",
+                "Vertical_Alignment": '"center"',
+            }
+        )
         self.assertTrue(contains(tris, (0, -3.0, 0.0)), "arm is not centered on the plate")
 
     def test_backplate_height_requires_screw_mount(self):
@@ -95,6 +117,21 @@ class HookBackplateTestCase(unittest.TestCase):
             with self.subTest(z=z):
                 self.assertFalse(contains(tris, (0, 0.8, z)), "no screw hole")
         self.assertTrue(contains(tris, (0, 0.8, 0.0)))
+
+    def test_screws_alignment_requires_screw_mount(self):
+        with self.assertRaises(RuntimeError) as ctx:
+            self.render({"Vertical_Alignment": '"screws"'})
+        self.assertIn("Vertical_Alignment screws needs Mount_Type screws", str(ctx.exception))
+
+    def test_arm_raised_into_a_screw_head_is_rejected(self):
+        for params in (
+            {"Vertical_Alignment": '"center"', "Screw_Hole_Rows": "1"},
+            {**ANGLED_ON_SCREWS, "Arm_Depth": "90"},
+        ):
+            with self.subTest(params=params):
+                with self.assertRaises(RuntimeError) as ctx:
+                    self.render({**ANGLED_ON_SCREWS, **params})
+                self.assertIn("screw heads overlap the arm", str(ctx.exception))
 
     def test_tilt_cap_is_60(self):
         self.render({"Arm_Tilt_Angle": "60"})

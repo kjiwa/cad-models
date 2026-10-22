@@ -32,6 +32,7 @@ SCREW_MOUNT_NAMES = (
     "Screw_Hole_Inset",
     "Screw_Hole_Diameter",
     "Screw_Head_Diameter",
+    "Include_Screw_Countersink",
 )
 
 # (model, name) pairs whose default value is meant to differ from the other models.

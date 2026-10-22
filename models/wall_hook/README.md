@@ -22,7 +22,7 @@ Parametric, 3D-printable tool hooks and socket racks for Sy's Peglock modular pe
 | `Rows` | `1` | 1 to 6, step 1 | Number of hook rows |
 | `Column_Spacing` | `19.05` |  | Center-to-center distance between hook columns (at least Arm_Width) |
 | `Row_Spacing` | `19.05` |  | Center-to-center distance between hook rows |
-| `Vertical_Alignment` | `"bottom"` | Hooks Near Bottom, Hooks Centered | Where the hooks sit on the backplate |
+| `Vertical_Alignment` | `"bottom"` | Hooks Near Bottom, Hooks Centered, Between Screw Rows | Where the hooks sit on the backplate |
 
 ### Arm
 
@@ -67,7 +67,8 @@ Parametric, 3D-printable tool hooks and socket racks for Sy's Peglock modular pe
 | `Screw_Hole_Rows` | `1` |  | Screw hole rows down the backplate (screws mount) |
 | `Screw_Hole_Inset` | `19.05` |  | Distance from the backplate edge to the outermost screw hole centers (a single column or row sits centered) |
 | `Screw_Hole_Diameter` | `4.7625` |  | Screw shank hole diameter (4.7625 for 3/16") |
-| `Screw_Head_Diameter` | `9.525` |  | Countersink head diameter (9.525 for 3/8") (0 to disable) |
+| `Screw_Head_Diameter` | `9.525` |  | Screw head or washer outer diameter (9.525 for 3/8") |
+| `Include_Screw_Countersink` | `false` |  | Include a countersink cone for the screw head instead of a straight hole |
 
 ## Presets
 

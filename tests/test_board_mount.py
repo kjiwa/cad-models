@@ -132,6 +132,7 @@ SCREW_D = 4.7625
 HEAD_D = 9.525
 SCREW_MOUNT = {
     "Mount_Type": '"screws"',
+    "Include_Screw_Countersink": "true",
     "Columns": "3",
     "Rows": "3",
     "Screw_Hole_Columns": "2",
@@ -175,9 +176,9 @@ class ScrewMountTestCase(unittest.TestCase):
         self.assertFalse(contains(self.tris, (x + r, 0.05, z)), "front face is not countersunk")
         self.assertTrue(contains(self.tris, (x + r, PLATE_T - 0.05, z)), "back face is countersunk")
 
-    def test_zero_head_diameter_gives_straight_holes(self):
+    def test_countersink_off_gives_straight_holes(self):
         tris = render_triangles(
-            model_scad("wall_magnet_mount"), {**self.params, "Screw_Head_Diameter": "0"}, openscadpath=LIB_PATH
+            model_scad("wall_magnet_mount"), {**self.params, "Include_Screw_Countersink": "false"}, openscadpath=LIB_PATH
         )
         x, z = self.positions[0]
         r = (SCREW_D + HEAD_D) / 4
