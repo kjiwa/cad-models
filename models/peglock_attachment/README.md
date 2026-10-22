@@ -2,7 +2,7 @@
 
 Parametric, 3D-printable board attachment clip for Sy's Peglock modular pegboard system.
 
-Prints flat with an integrated 0.2 mm living hinge. After printing, fold 180 degrees in half and insert into the pegboard holes. Accessories (`peglock_holder`, `peglock_hook`) slide downward over the male wedge, locking the folded halves together and anchoring securely to the board.
+Prints flat with an integrated 0.2 mm living hinge. After printing, fold 180 degrees in half and insert into the pegboard holes. Accessories (`wall_holder`, `wall_hook`) slide downward over the male wedge, locking the folded halves together and anchoring securely to the board.
 
 ## Features
 

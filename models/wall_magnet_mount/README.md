@@ -1,4 +1,4 @@
-# Peglock Magnet Mount
+# Wall Magnet Mount
 
 Parametric, 3D-printable magnet mount for Sy's Peglock modular pegboard system and standard 1/4" pegboards. A grid of round magnet pockets in a thin slab holds tools, bits, or sheet-metal fixtures on the pegboard. The defaults hold a single 12 mm magnet.
 

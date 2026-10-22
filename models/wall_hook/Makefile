@@ -1,2 +1,2 @@
-MODEL := peglock_holder
+MODEL := wall_hook
 include ../../common.mk

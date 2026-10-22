@@ -1,4 +1,4 @@
-"""Property tests for peglock_bit_holder: tier pitch, hexagon pockets, grip relief, entry chamfer, plate seat, rounding.
+"""Property tests for wall_bit_holder: tier pitch, hexagon pockets, grip relief, entry chamfer, plate seat, rounding.
 
 In exported STL coordinates the model is rotated 180 degrees about Z, so the plate sits at +Y,
 the tiers extend toward -Y, and model X is mirrored. Probe points are given in a pocket frame:
@@ -18,8 +18,8 @@ sys.path.insert(0, os.path.dirname(__file__))
 from geometry_fingerprint import fingerprint, render_triangles  # noqa: E402
 from mesh_probe import contains, shell_count  # noqa: E402
 
-MODEL_DIR = os.path.join(REPO_ROOT, "models", "peglock_bit_holder")
-BIT_SCAD = os.path.join(MODEL_DIR, "peglock_bit_holder.scad")
+MODEL_DIR = os.path.join(REPO_ROOT, "models", "wall_bit_holder")
+BIT_SCAD = os.path.join(MODEL_DIR, "wall_bit_holder.scad")
 FAST = {"$fn": "32"}
 SOCKET_HEIGHT = 35.4
 WIDTH, WALL, DEPTH, TILT, CHAMFER = 6.75, 2.68, 15.0, 15.0, 0.5

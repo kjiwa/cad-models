@@ -80,7 +80,7 @@ class PegboardBlockTestCase(unittest.TestCase):
 
     def test_models_found(self):
         models = {os.path.basename(os.path.dirname(p)) for p in _model_sources()}
-        self.assertTrue({"peglock_holder", "peglock_hook", "peglock_magnet_mount", "peglock_attachment"} <= models)
+        self.assertTrue({"wall_holder", "wall_hook", "wall_magnet_mount", "peglock_attachment"} <= models)
 
 
 if __name__ == "__main__":

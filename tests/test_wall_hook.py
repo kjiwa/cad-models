@@ -1,4 +1,4 @@
-"""Property tests for peglock_hook arm profiles.
+"""Property tests for wall_hook arm profiles.
 
 In exported STL coordinates the model is rotated 180 degrees about Z, so the arm extends
 toward -Y and model X is mirrored.
@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from geometry_fingerprint import render_triangles  # noqa: E402
 from mesh_probe import contains  # noqa: E402
 
-HOOK_SCAD = os.path.join(REPO_ROOT, "models", "peglock_hook", "peglock_hook.scad")
+HOOK_SCAD = os.path.join(REPO_ROOT, "models", "wall_hook", "wall_hook.scad")
 FAST = {"$fn": "32"}
 ARM_WIDTH = 12.7
 ARM_HEIGHT = 6.35

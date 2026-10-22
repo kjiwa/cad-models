@@ -147,12 +147,12 @@ RAZOR = Model(
     razor_probe,
 )
 HOLDER = Model(
-    "models/peglock_holder/peglock_holder.scad",
+    "models/wall_holder/wall_holder.scad",
     {"Mount_Type": scad_string("monolithic"), "Pocket_Height": "100"},
     ("holeColumns", "backerHeight", "Hole_Spacing", "Backplate_Thickness"),
     holder_probe,
 )
-MODELS = {"ryobi": RYOBI, "razor": RAZOR, "peglock_holder": HOLDER}
+MODELS = {"ryobi": RYOBI, "razor": RAZOR, "wall_holder": HOLDER}
 
 
 class PinRowChecks(unittest.TestCase):

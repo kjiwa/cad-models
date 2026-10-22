@@ -16,9 +16,9 @@ sys.path.insert(0, os.path.join(REPO_ROOT, "scripts"))
 
 from geometry_fingerprint import render_triangles  # noqa: E402
 
-HOOK_SCAD = os.path.join(REPO_ROOT, "models", "peglock_hook", "peglock_hook.scad")
-HOOK_PRESETS = os.path.join(REPO_ROOT, "models", "peglock_hook", "peglock_hook.json")
-MAGNET_SCAD = os.path.join(REPO_ROOT, "models", "peglock_magnet_mount", "peglock_magnet_mount.scad")
+HOOK_SCAD = os.path.join(REPO_ROOT, "models", "wall_hook", "wall_hook.scad")
+HOOK_PRESETS = os.path.join(REPO_ROOT, "models", "wall_hook", "wall_hook.json")
+MAGNET_SCAD = os.path.join(REPO_ROOT, "models", "wall_magnet_mount", "wall_magnet_mount.scad")
 
 FAST = {"$fn": "32"}
 PLATE_THICKNESS = 1.5875

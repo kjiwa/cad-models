@@ -1,4 +1,4 @@
-# Peglock Hook
+# Wall Hook
 
 Parametric, 3D-printable tool hooks and socket racks for Sy's Peglock modular pegboard system and standard 1/4" pegboards.
 

@@ -1,4 +1,4 @@
-# Peglock Bit Holder
+# Wall Bit Holder
 
 Parametric, 3D-printable hex bit holder for Sy's Peglock modular pegboard system and standard 1/4" pegboards. Tilted tiers of hexagonal pockets hold 1/4" hex shank drill and driver bits, with a grip slot along each row for lifting bits out. The defaults fit 1/4" hex bits.
 

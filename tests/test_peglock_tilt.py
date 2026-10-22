@@ -20,8 +20,8 @@ sys.path.insert(0, os.path.dirname(__file__))
 from geometry_fingerprint import render_triangles  # noqa: E402
 from mesh_probe import contains, shell_count  # noqa: E402
 
-HOOK_SCAD = os.path.join(REPO_ROOT, "models", "peglock_hook", "peglock_hook.scad")
-HOLDER_SCAD = os.path.join(REPO_ROOT, "models", "peglock_holder", "peglock_holder.scad")
+HOOK_SCAD = os.path.join(REPO_ROOT, "models", "wall_hook", "wall_hook.scad")
+HOLDER_SCAD = os.path.join(REPO_ROOT, "models", "wall_holder", "wall_holder.scad")
 
 FAST = {"$fn": "32"}
 HOOK_CONFIGS = {

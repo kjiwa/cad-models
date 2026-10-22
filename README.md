@@ -9,10 +9,10 @@ Parametric, 3D-printable OpenSCAD models, each in its own directory under `model
 - `models/keyhole_router_template` — router template for hanging slots in frames and other workpieces
 - `models/makita_hose_adapter` — dust extraction hose adapter for Makita tools
 - `models/peglock_attachment` — board attachment clips for Sy's Peglock pegboard system
-- `models/peglock_bit_holder` — hex bit rack for Sy's Peglock pegboard system
-- `models/peglock_holder` — bin/organizer for Sy's Peglock pegboard system
-- `models/peglock_hook` — hooks and socket racks for Sy's Peglock pegboard system
-- `models/peglock_magnet_mount` — magnet pockets and mount for Sy's Peglock pegboard system
+- `models/wall_bit_holder` — hex bit rack for Sy's Peglock pegboard system
+- `models/wall_holder` — bin/organizer for Sy's Peglock pegboard system
+- `models/wall_hook` — hooks and socket racks for Sy's Peglock pegboard system
+- `models/wall_magnet_mount` — magnet pockets and mount for Sy's Peglock pegboard system
 - `models/pipe_clamp_wall_mount` — wall rack of angled pipe clamps
 - `models/razor_blade_dispenser` — pegboard dispenser for single-edge razor blades
 - `models/ryobi_40v_battery_holder` — pegboard holder for Ryobi 40V batteries
@@ -74,5 +74,5 @@ licenses and are not covered by this repository's LICENSE:
 
 - `lib/BOSL2` ([BelfrySCAD/BOSL2](https://github.com/BelfrySCAD/BOSL2)) — BSD-2-Clause
 - `lib/threads-scad` ([rcolyer/threads-scad](https://github.com/rcolyer/threads-scad)) — CC0-1.0
-- `lib/peglock`, `models/peglock_attachment`, `models/peglock_bit_holder`, `models/peglock_holder`, `models/peglock_hook`, and `models/peglock_magnet_mount` interface with Sy's Peglock modular pegboard mounting
+- `lib/peglock`, `models/peglock_attachment`, `models/wall_bit_holder`, `models/wall_holder`, `models/wall_hook`, and `models/wall_magnet_mount` interface with Sy's Peglock modular pegboard mounting
   system, [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) ([Printables 249871](https://www.printables.com/model/249871)); only the mounting interface is reused, credited here

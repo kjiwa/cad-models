@@ -1,4 +1,4 @@
-# Peglock Holder
+# Wall Holder
 
 Parametric, 3D-printable open-front bin and organizer for Sy's Peglock modular pegboard system and standard 1/4" pegboards.
 
