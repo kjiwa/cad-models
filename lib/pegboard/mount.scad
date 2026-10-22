@@ -63,6 +63,9 @@ module ScrewHole(screw_d, head_d, countersink, plate_t) {
 // socket_z shifts the Peglock sockets vertically from the plate center; standoff adds a foot at the plate bottom
 // once the plate extends below the sockets. Screw columns sit screw_column_inset from the plate sides (default screw_inset).
 module BoardMount(type, size, columns, backplate_t, hole_spacing, pin_d, board_t, rise, pin_pattern = "all", socket_z = 0, standoff = false, screw_columns = 1, screw_rows = 1, screw_inset = 0, screw_column_inset = undef, screw_d = 4.7625, head_d = 9.525, countersink = false) {
+  column_inset = is_undef(screw_column_inset) ? screw_inset : screw_column_inset;
+  hole_xs = screw_hole_offsets(size[0], screw_columns, column_inset);
+  hole_zs = screw_hole_offsets(size[1], screw_rows, screw_inset);
   if (type == "peglock") {
     translate([0, -backplate_t + EPSILON, socket_z])
       PeglockBase(
@@ -86,17 +89,17 @@ module BoardMount(type, size, columns, backplate_t, hole_spacing, pin_d, board_t
   if (type == "screws") {
     assert(screw_columns >= 1 && screw_columns == floor(screw_columns), "Screw_Hole_Columns must be a positive integer");
     assert(screw_rows >= 1 && screw_rows == floor(screw_rows), "Screw_Hole_Rows must be a positive integer");
-    column_inset = is_undef(screw_column_inset) ? screw_inset : screw_column_inset;
     assert(screw_inset >= 0 && (screw_columns == 1 || 2 * column_inset <= size[0]) && (screw_rows == 1 || 2 * screw_inset <= size[1]),
       "Screw_Hole_Inset must not exceed half the plate");
-    assert(len([for (z = screw_hole_offsets(size[1], screw_rows, screw_inset)) if (abs(z) + head_d / 2 > size[1] / 2 + 0.01) 1]) == 0,
+    assert(len([for (x = hole_xs) if (abs(x) + head_d / 2 > size[0] / 2 + 0.01) 1]) == 0
+      && len([for (z = hole_zs) if (abs(z) + head_d / 2 > size[1] / 2 + 0.01) 1]) == 0,
       "Screw heads overhang the backplate: reduce Screw_Hole_Inset or Screw_Head_Diameter");
   }
   difference() {
     translate([0, -backplate_t / 2, 0])
       cuboid([size[0], backplate_t, size[1]], rounding = SOCKET_ROUNDOVER, except = [FRONT, BACK]);
     if (type == "screws")
-      for (x = screw_hole_offsets(size[0], screw_columns, is_undef(screw_column_inset) ? screw_inset : screw_column_inset), z = screw_hole_offsets(size[1], screw_rows, screw_inset))
+      for (x = hole_xs, z = hole_zs)
         translate([x, 0, z]) ScrewHole(screw_d, head_d, countersink, backplate_t);
   }
 }

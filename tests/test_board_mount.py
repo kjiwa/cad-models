@@ -193,6 +193,12 @@ class ScrewMountTestCase(unittest.TestCase):
             render_triangles(model_scad("wall_magnet_mount"), params, openscadpath=LIB_PATH)
         self.assertIn("reduce Screw_Hole_Inset or Screw_Head_Diameter", str(ctx.exception))
 
+    def test_heads_overhanging_the_plate_sides_are_rejected(self):
+        params = {"$fn": "32", "Mount_Type": '"screws"', "Screw_Hole_Columns": "2", "Screw_Hole_Inset": "2"}
+        with self.assertRaises(RuntimeError) as ctx:
+            render_triangles(model_scad("wall_holder"), params, openscadpath=LIB_PATH)
+        self.assertIn("reduce Screw_Hole_Inset or Screw_Head_Diameter", str(ctx.exception))
+
     def test_single_row_is_centered(self):
         tris = render_triangles(model_scad("wall_magnet_mount"), {**self.params, "Screw_Hole_Rows": "1"}, openscadpath=LIB_PATH)
         x = self.positions[0][0]
