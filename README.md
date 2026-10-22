@@ -7,8 +7,11 @@ Parametric, 3D-printable OpenSCAD models, each in its own directory under `model
 - `models/curtain_rod_mounting_plate` — mounting plate for curtain rod brackets
 - `models/entryway_table` — plywood entryway table with angled legs
 - `models/keyhole_router_template` — router template for hanging slots in frames and other workpieces
+- `models/knob` — fluted or knurled knob with a captive nut pocket, for stop blocks and miter gauge handles
 - `models/makita_hose_adapter` — dust extraction hose adapter for Makita tools
 - `models/peglock_attachment` — board attachment clips for Sy's Peglock pegboard system
+- `models/stop_block` — fence stop block with rounded corners and dust relief, for indexing against a ruler
+- `models/table_saw_blade_spacer` — arbor spacers for a table saw
 - `models/wall_bit_holder` — hex bit rack for Sy's Peglock pegboard system
 - `models/wall_holder` — bin/organizer for Sy's Peglock pegboard system
 - `models/wall_hook` — hooks and socket racks for Sy's Peglock pegboard system
