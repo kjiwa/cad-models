@@ -75,6 +75,8 @@ Parametric, 3D-printable open-front bin and organizer for Sy's Peglock modular p
 - `Knife_Holder`
 - `Olfa_Knife_Holder`
 - `Thin_Olfa_Knife_Holder`
+- `Shelly_HT`
+- `INIU_Battery_Bank`
 
 <!-- END GENERATED -->
 

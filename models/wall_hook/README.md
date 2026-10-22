@@ -74,6 +74,7 @@ Parametric, 3D-printable tool hooks and socket racks for Sy's Peglock modular pe
 - `Sockets_1_4in`
 - `Sockets_3_8in`
 - `Sockets_1_2in`
+- `Angled_Screw_Hook`
 
 <!-- END GENERATED -->
 

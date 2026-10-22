@@ -44,6 +44,24 @@
             "Arm_Shape": "square",
             "Backplate_Thickness": "1.5875",
             "Arm_Width": "12"
+        },
+        "Angled_Screw_Hook": {
+            "Mount_Type": "screws",
+            "Backplate_Thickness": "6.35",
+            "Backplate_Height": "152.4",
+            "Screw_Hole_Columns": "1",
+            "Screw_Hole_Rows": "2",
+            "Screw_Hole_Inset": "19.05",
+            "Screw_Hole_Diameter": "4.7625",
+            "Screw_Head_Diameter": "0",
+            "Vertical_Alignment": "center",
+            "Arm_Width": "38.1",
+            "Arm_Height": "12.7",
+            "Arm_Depth": "76.2",
+            "Arm_Tilt_Angle": "60",
+            "Lip_Height": "0",
+            "Lip_Thickness": "0",
+            "Root_Fillet_Radius": "0"
         }
     },
     "fileFormatVersion": "1"
