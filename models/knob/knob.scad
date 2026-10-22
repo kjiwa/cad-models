@@ -60,6 +60,7 @@ FLUTE_WEB = 0.85;
 BORE_CHAMFER = 0.6;
 CAP_CHAMFER = 0.6;
 WALL_MIN = 1.2;
+KNURL_DEPTH = 1;
 
 radius = Diameter / 2;
 pocket_depth = Pocket_Depth > 0 ? Pocket_Depth : Nut_Thickness;
@@ -70,14 +71,16 @@ flute_center = (radius - flute_depth) / (1 - FLUTE_WEB * flute_sin);
 flute_radius = FLUTE_WEB * flute_center * flute_sin;
 lobe_radius = max(0.6, Diameter / 25);
 cap_length = pocket_depth - Nut_Thickness;
+grip_depth = Grip == "fluted" ? flute_depth : KNURL_DEPTH;
 
 assert(Part == "knob" || Pocket_End == "top", "Part cap needs Pocket_End set to Top");
 assert(Part == "knob" || cap_length > 0, "Pocket_Depth must exceed Nut_Thickness for a cap");
 assert(pocket_depth < Height, "Pocket_Depth must be less than Height");
 assert(Top_Rounding < Height / 2 && Bottom_Chamfer < Height / 2, "Top_Rounding and Bottom_Chamfer must be less than half of Height");
 assert(Bolt_Diameter < Nut_Width, "Bolt_Diameter must be less than Nut_Width");
+assert(Height - pocket_depth >= WALL_MIN, "Pocket_Depth leaves too thin a floor");
 assert(
-  radius - (Grip == "fluted" ? flute_depth : 0) - hex_diameter / 2 >= WALL_MIN,
+  radius - grip_depth - hex_diameter / 2 >= WALL_MIN,
   "Diameter is too small for the nut pocket"
 );
 

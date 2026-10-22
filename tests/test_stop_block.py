@@ -70,12 +70,17 @@ class StopBlockTestCase(unittest.TestCase):
         self.assertTrue(contains(tris, (FENCE_DEPTH + 0.4, FENCE_HEIGHT - 0.4, EDGE)))
         self.assertTrue(contains(tris, (FENCE_DEPTH + 0.3, 0.3, EDGE)))
 
+    def test_slots_stay_inside_the_end_faces(self):
+        tris = render()
+        self.assertTrue(contains(tris, (0.3, 71, WIDTH / 2)), "top slot opens the end face")
+        self.assertTrue(contains(tris, (53.7, 71, WIDTH / 2)), "front slot opens the top face")
+
     def test_bolt_slots_are_cut_through_both_legs(self):
         tris = render()
         mid = WIDTH / 2
-        for point in ((10, 71, mid), (45, 30, mid), (45, 15, mid), (45, 50, mid)):
+        for point in ((17, 71, mid), (45, 30, mid), (45, 15, mid), (45, 50, mid)):
             self.assertFalse(contains(tris, point), f"slot blocked at {point}")
-        for point in ((10, 71, 4), (45, 30, 4), (45, 30, WIDTH - 4)):
+        for point in ((17, 71, 4), (45, 30, 4), (45, 30, WIDTH - 4)):
             self.assertTrue(contains(tris, point), f"slot too wide at {point}")
 
 

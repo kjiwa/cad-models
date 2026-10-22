@@ -32,7 +32,7 @@
 
 | Parameter | Default | Options | Description |
 | --- | --- | --- | --- |
-| `Hub_Diameter` | `15.5` |  | Hub outside diameter |
+| `Hub_Clearance` | `0.2` |  | Gap between the hub and the bottom bore |
 | `Hub_Thickness` | `2.38125` |  | Hub thickness (2.38125 for 3/32") |
 
 ### Finish

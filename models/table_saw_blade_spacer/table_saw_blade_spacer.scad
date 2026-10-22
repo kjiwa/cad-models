@@ -22,8 +22,8 @@ Bottom_Bore_Diameter = 15.5;
 Bore_Diameter = 13;
 
 /* [Hub] */
-// Hub outside diameter
-Hub_Diameter = 15.5;
+// Gap between the hub and the bottom bore
+Hub_Clearance = 0.2;
 
 // Hub thickness (2.38125 for 3/32")
 Hub_Thickness = 2.38125;
@@ -35,9 +35,12 @@ Edge_Chamfer = 0.4;
 /* [Hidden] */
 $fn = 128;
 
-assert(Bore_Diameter < Hub_Diameter && Hub_Diameter <= Bottom_Bore_Diameter, "Bore_Diameter must be less than Hub_Diameter, which must not exceed Bottom_Bore_Diameter");
+hub_diameter = Bottom_Bore_Diameter - Hub_Clearance;
+
+assert(Bore_Diameter < hub_diameter, "Bore_Diameter must be less than Bottom_Bore_Diameter minus Hub_Clearance");
 assert(Bottom_Bore_Diameter < Outer_Diameter, "Bottom_Bore_Diameter must be less than Outer_Diameter");
-assert(2 * Edge_Chamfer < (Hub_Diameter - Bore_Diameter) / 2, "Edge_Chamfer is too large for the hub wall");
+assert(2 * Edge_Chamfer < (hub_diameter - Bore_Diameter) / 2, "Edge_Chamfer is too large for the hub wall");
+assert(2 * Edge_Chamfer < min(Thickness, Hub_Thickness), "Edge_Chamfer is too large for the thickness");
 
 module Section(inner, outer, height, z = 0) {
   translate([inner / 2, z]) square([(outer - inner) / 2, height]);
@@ -49,10 +52,10 @@ module Profile() {
   } else if (Part == "top") {
     Section(Bore_Diameter, Outer_Diameter, Thickness);
   } else if (Part == "ring") {
-    Section(Bore_Diameter, Hub_Diameter, Hub_Thickness);
+    Section(Bore_Diameter, hub_diameter, Hub_Thickness);
   } else {
     Section(Bore_Diameter, Outer_Diameter, Thickness);
-    Section(Bore_Diameter, Hub_Diameter, Hub_Thickness + 0.01, Thickness - 0.01);
+    Section(Bore_Diameter, hub_diameter, Hub_Thickness + 0.01, Thickness - 0.01);
   }
 }
 

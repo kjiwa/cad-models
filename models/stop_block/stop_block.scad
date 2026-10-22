@@ -42,10 +42,15 @@ CHAMFER = 0.5;
 total_depth = Fence_Depth + Front_Thickness;
 total_height = Fence_Height + Top_Thickness;
 foot_radius = Edge_Radius / 2;
+slot_start = Bolt_Hole_Offset + Bolt_Diameter / 2;
+top_slot_length = Fence_Depth - 2 * slot_start;
+front_slot_length = Fence_Height - 2 * slot_start;
 
 assert(Edge_Radius > 0 && Edge_Radius < Top_Thickness, "Edge_Radius must be positive and less than Top_Thickness");
 assert(Bolt_Diameter < Width, "Bolt_Diameter must be less than Width");
 assert(Bolt_Diameter < Top_Thickness + Front_Thickness, "Bolt_Diameter is too large for the block");
+assert(top_slot_length >= 0, "Fence_Depth is too small for Bolt_Hole_Offset and Bolt_Diameter");
+assert(front_slot_length >= 0, "Fence_Height is too small for Bolt_Hole_Offset and Bolt_Diameter");
 
 module Outline() {
   hull() {
@@ -86,16 +91,15 @@ module Slot(length, depth) {
 }
 
 module TopSlot() {
-  translate([0, total_height, Width / 2])
+  translate([slot_start, total_height, Width / 2])
     rotate([90, 0, 0])
-    Slot(Fence_Depth - Bolt_Hole_Offset - Bolt_Diameter / 2, Top_Thickness + 1);
+    Slot(top_slot_length, Top_Thickness + 1);
 }
 
 module FrontSlot() {
-  length = Fence_Height - 2 * Bolt_Hole_Offset - Bolt_Diameter;
-  translate([total_depth, Bolt_Hole_Offset + Bolt_Diameter / 2 + length, Width / 2])
+  translate([total_depth, slot_start + front_slot_length, Width / 2])
     rotate([90, 0, -90])
-    Slot(length, Front_Thickness + 1);
+    Slot(front_slot_length, Front_Thickness + 1);
 }
 
 difference() {

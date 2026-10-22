@@ -17,7 +17,7 @@ THICKNESS = 2.38125
 OUTER = 50.8
 BOTTOM_BORE = 15.5
 BORE = 13
-HUB = 15.5
+HUB = BOTTOM_BORE - 0.2
 FAST = {"$fn": "64"}
 
 _cache = {}
