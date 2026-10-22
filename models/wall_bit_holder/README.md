@@ -50,7 +50,6 @@ Parametric, 3D-printable hex bit holder for Sy's Peglock modular pegboard system
 | `Pegboard_Thickness` | `6.35` |  | Pegboard thickness (6.35 for 1/4" board, 1.5875 for 1/16" thin metal) |
 | `Retention_Hook_Rise` | `3.5` |  | Height of the retention hook tab behind the pegboard |
 | `Stabilizing_Pin_Pattern` | `"all"` | All Rows, Top and Bottom Rows, Top Row Only, Bottom Row Only (Lowest Hole), Retention Hooks Only | Stabilizing pin rows below the retention hooks (ignored by the Peglock socket mount) |
-| `Screw_Hole_Columns` | `1` |  | Screw hole columns across the backplate (screws mount) |
 | `Screw_Hole_Rows` | `1` |  | Screw hole rows down the backplate (screws mount) |
 | `Screw_Hole_Inset` | `19.05` |  | Distance from the backplate edge to the outermost screw hole centers (a single column or row sits centered) |
 | `Screw_Hole_Diameter` | `4.7625` |  | Screw shank hole diameter (4.7625 for 3/16") |

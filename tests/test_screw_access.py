@@ -1,4 +1,4 @@
-"""Every screw hole of the wall_hook and wall_holder presets must have a clear driver-side axis.
+"""Every screw hole of the wall_hook and wall_holder presets, and of the ear models, must have a clear driver-side axis.
 
 In exported STL coordinates the plate spans y 0..thickness and the model extends toward -Y,
 so the screwdriver approaches each hole from -Y.
@@ -87,6 +87,13 @@ def hole_centres(tris):
     return centres
 
 
+EAR_MODELS = ("wall_bit_holder", "wall_magnet_mount")
+EAR_CONFIGS = (
+    ("rows_1", {"Screw_Hole_Rows": "1"}),
+    ("rows_2", {"Screw_Hole_Rows": "2", "Screw_Hole_Inset": "6.35"}),
+)
+
+
 def blocked_y(tris, x, z):
     for n in range(1, int(REACH / RAY_STEP) + 1):
         y = -n * RAY_STEP
@@ -118,6 +125,36 @@ def arm_extent(tris):
 
 @unittest.skipUnless(shutil.which("openscad"), "openscad binary not found on PATH")
 class ScrewAccessTestCase(unittest.TestCase):
+    def assert_axis_clear(self, tris, x, z, head):
+        reach = 0.8 * head / 2
+        blocked = ring_blocked(tris, x, z, head / 2 + RING_MARGIN)
+        self.assertIsNone(blocked, f"head clearance ring around x={x:.1f} z={z:.1f} blocked at {blocked}")
+        for dx, dz in ((0, 0), (reach, 0), (-reach, 0), (0, reach), (0, -reach)):
+            y = blocked_y(tris, x + dx, z + dz)
+            self.assertIsNone(y, f"axis at x={x:.1f} z={z:.1f} (offset {dx:.1f},{dz:.1f}) blocked at y={y}")
+
+    def test_ear_models_have_reachable_holes_in_ears(self):
+        for model in EAR_MODELS:
+            scad = os.path.join(REPO_ROOT, "models", model, f"{model}.scad")
+            for config, params in EAR_CONFIGS:
+                with self.subTest(model=model, config=config):
+                    tris = render_triangles(scad, {**FAST, "Mount_Type": '"screws"', **params}, openscadpath=os.path.join(REPO_ROOT, "lib"))
+                    centres = hole_centres(tris)
+                    rows = int(params["Screw_Hole_Rows"])
+                    self.assertGreaterEqual(len(centres), 2, f"holes found: {centres}")
+                    self.assertEqual(len(centres), 2 * rows, f"holes found: {centres}")
+                    head = DEFAULT_HEAD
+                    content_half = max(abs(p[0]) for t in tris for p in t if p[1] < -0.01)
+                    plate_half = max(abs(p[0]) for t in tris for p in t)
+                    plate_bottom = min(p[2] for t in tris for p in t)
+                    plate_top = max(p[2] for t in tris for p in t if p[1] > 0.01)
+                    for x, z in centres:
+                        self.assertGreaterEqual(abs(x) - head / 2, content_half - 0.01, f"hole at x={x:.1f} is not in an ear")
+                        self.assertLessEqual(abs(x) + head / 2, plate_half + 0.01, f"head at x={x:.1f} overhangs the ear")
+                        self.assertGreaterEqual(z - head / 2, plate_bottom - 0.01, f"head at z={z:.1f} overhangs the plate")
+                        self.assertLessEqual(z + head / 2, plate_top + 0.01, f"head at z={z:.1f} overhangs the plate top")
+                        self.assert_axis_clear(tris, x, z, head)
+
     def test_every_screw_axis_is_clear(self):
         found = 0
         for model, name, scad, params in screw_presets():
@@ -129,7 +166,6 @@ class ScrewAccessTestCase(unittest.TestCase):
                 columns = int(params.get("Screw_Hole_Columns", 1))
                 self.assertEqual(len(centres), rows * columns, f"holes found: {centres}")
                 head = float(params.get("Screw_Head_Diameter", DEFAULT_HEAD))
-                reach = 0.8 * head / 2
                 plate_bottom = min(p[2] for t in tris for p in t)
                 for x, z in centres:
                     found += 1
@@ -138,11 +174,7 @@ class ScrewAccessTestCase(unittest.TestCase):
                         low, high = arm_extent(tris)
                         margin = head / 2 + DRIVER_MARGIN
                         self.assertTrue(z + margin <= low + 0.6 or z - margin >= high, f"arm {low:.2f}..{high:.2f} reaches head at z={z:.1f}")
-                    blocked = ring_blocked(tris, x, z, head / 2 + RING_MARGIN)
-                    self.assertIsNone(blocked, f"head clearance ring around x={x:.1f} z={z:.1f} blocked at {blocked}")
-                    for dx, dz in ((0, 0), (reach, 0), (-reach, 0), (0, reach), (0, -reach)):
-                        y = blocked_y(tris, x + dx, z + dz)
-                        self.assertIsNone(y, f"axis at x={x:.1f} z={z:.1f} (offset {dx:.1f},{dz:.1f}) blocked at y={y}")
+                    self.assert_axis_clear(tris, x, z, head)
         self.assertGreater(found, 0)
 
 

@@ -149,7 +149,8 @@ grid_tz = (Vertical_Alignment == "bottom" && tilted_height < (SOCKET_HEIGHT - 2 
   ? (h - SOCKET_HEIGHT) / 2 + SOCKET_ROUNDOVER + tilt_drop
   : (h * (1 - cos(Tilt_Angle)) + tilt_drop) / 2;
 
-plateWidth = overallHolderWidth - 2 * Corner_Radius;
+plateInset = Mount_Type == "screws" ? min(Corner_Radius, Wall_Thickness / 2) : Corner_Radius;
+plateWidth = overallHolderWidth - 2 * plateInset;
 
 holeColumns = board_hole_columns(Mount_Type, Hole_Columns, plateWidth, Hole_Spacing, Pin_Diameter);
 backerSize = board_mount_size(Mount_Type, [plateWidth, tilted_height], holeColumns, Hole_Spacing, Pin_Diameter);
