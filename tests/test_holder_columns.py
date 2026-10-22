@@ -27,6 +27,7 @@ ZERO_BASE = {"Tilt_Angle": "15", "Bottom_Edge_Radius": "1.5", "Junction_Gusset_C
 ZERO_DISABLE_PARAMS = (
     "Lip_Height",
     "Opening_Width",
+    "Opening_Height",
     "Opening_Chamfer",
     "Corner_Radius",
     "Bottom_Edge_Radius",
@@ -133,6 +134,17 @@ class HolderColumnsTestCase(unittest.TestCase):
         x = width / 2 + chamfer / 2
         self.assertFalse(contains(tris, stl_point(x, depth / 2, top - 0.05)), "wall is solid inside the chamfer")
         self.assertTrue(contains(tris, stl_point(x, depth / 2, top - 2.05)), "wall is empty below the chamfer")
+
+    def test_opening_height_limits_front_opening_depth(self):
+        # Vertical_Alignment center puts the body's top at (Pocket_Height + Wall_Thickness) / 2.
+        top = (25 + WALL) / 2
+        front_wall_y = 6.35 + WALL / 2
+        base = {"Vertical_Alignment": '"center"', "Lip_Height": "0", "Pocket_Height": "25", "Opening_Width": "6.35"}
+        for height, high_solid, low_solid in (("0", False, False), ("10", False, True)):
+            with self.subTest(Opening_Height=height):
+                tris = render({**base, "Opening_Height": height})
+                self.assertEqual(contains(tris, stl_point(0, front_wall_y, top - 5)), high_solid)
+                self.assertEqual(contains(tris, stl_point(0, front_wall_y, top - 15)), low_solid)
 
     def test_entry_chamfer_asserts(self):
         for bad, message in (

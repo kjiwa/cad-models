@@ -53,6 +53,9 @@ Lip_Height = 3.175;
 // Width of the front access opening (0 to disable)
 Opening_Width = 6.35;
 
+// Limits the front access opening to this depth from the top of the pocket (0 to disable)
+Opening_Height = 0;
+
 // Front opening lead-in chamfer (0 to disable)
 Opening_Chamfer = 1.0;
 
@@ -181,18 +184,23 @@ module SingleHolderInside(width, depth, cut_front_opening = true) {
   translate([0, 0, tz]) PocketCutout(width, depth, z, h / 2 - Lip_Height / 2 - tz);
   if (cut_front_opening && Opening_Width > 0) {
     cut_depth = Wall_Thickness + 3 * maxPocketDepth / 2;
-    translate([-Opening_Width / 2, 0, -z / 2])
-      cube([Opening_Width, cut_depth, z]);
+    limited_floor = h / 2 - Lip_Height / 2 - min(Opening_Height, Pocket_Height);
+    cube_floor = Opening_Height > 0 ? limited_floor : -z / 2;
+    chamfer_floor = Opening_Height > 0 ? limited_floor : -z;
+    translate([-Opening_Width / 2, 0, cube_floor])
+      cube([Opening_Width, cut_depth, z / 2 - cube_floor]);
 
     if (Opening_Chamfer > 0) {
       b = min(Opening_Chamfer, Opening_Width / 4);
       y_entry = maxPocketDepth + Wall_Thickness;
       translate([-Opening_Width / 2, y_entry, 0])
-        rotate([0, 0, 45])
-          cube([b * sqrt(2), b * sqrt(2), z * 2], center=true);
+        translate([0, 0, (chamfer_floor + z) / 2])
+          rotate([0, 0, 45])
+            cube([b * sqrt(2), b * sqrt(2), z - chamfer_floor], center=true);
       translate([Opening_Width / 2, y_entry, 0])
-        rotate([0, 0, 45])
-          cube([b * sqrt(2), b * sqrt(2), z * 2], center=true);
+        translate([0, 0, (chamfer_floor + z) / 2])
+          rotate([0, 0, 45])
+            cube([b * sqrt(2), b * sqrt(2), z - chamfer_floor], center=true);
     }
   }
 }

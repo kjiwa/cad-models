@@ -43,6 +43,7 @@ Parametric, 3D-printable open-front bin and organizer for Sy's Peglock modular p
 | `Lip_Thickness` | `3.175` |  | Thickness of the front lip |
 | `Lip_Height` | `3.175` |  | Height of the front lip (0 to disable) |
 | `Opening_Width` | `6.35` |  | Width of the front access opening (0 to disable) |
+| `Opening_Height` | `0` |  | Limits the front access opening to this depth from the top of the pocket (0 to disable) |
 | `Opening_Chamfer` | `1.0` |  | Front opening lead-in chamfer (0 to disable) |
 | `Include_Opening_Back_Rows` | `true` |  | Include the front access opening on every row, not only the front-most |
 
