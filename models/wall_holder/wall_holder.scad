@@ -145,11 +145,13 @@ h = Pocket_Height + (Include_Bottom ? Wall_Thickness : 0);
 tilted_height = h * cos(Tilt_Angle) + overallHolderDepth * sin(Tilt_Angle);
 
 tilt_drop = overallHolderDepth * sin(Tilt_Angle);
-grid_tz = (Vertical_Alignment == "bottom" && tilted_height < (SOCKET_HEIGHT - 2 * SOCKET_ROUNDOVER))
+grid_tz = (Vertical_Alignment == "bottom" && Mount_Type != "screws" && tilted_height < (SOCKET_HEIGHT - 2 * SOCKET_ROUNDOVER))
   ? (h - SOCKET_HEIGHT) / 2 + SOCKET_ROUNDOVER + tilt_drop
   : (h * (1 - cos(Tilt_Angle)) + tilt_drop) / 2;
 
-plateInset = Mount_Type == "screws" ? min(Corner_Radius, Wall_Thickness / 2) : Corner_Radius;
+// A screw-mounted back is flat and square, as wide as the body, so it seats flush on the wall
+bodyRounding = Mount_Type == "screws" ? 0 : Corner_Radius;
+plateInset = bodyRounding;
 plateWidth = overallHolderWidth - 2 * plateInset;
 
 holeColumns = board_hole_columns(Mount_Type, Hole_Columns, plateWidth, Hole_Spacing, Pin_Diameter);
@@ -215,11 +217,11 @@ module HolderBody() {
   translate([0, overallHolderDepth / 2, 0]) {
     if (bottom_roundover > 0) {
       intersection() {
-        cuboid(size, rounding=Corner_Radius, except=[TOP, BOTTOM, FRONT]);
+        cuboid(size, rounding=bodyRounding, except=[TOP, BOTTOM, FRONT]);
         cuboid(size, rounding=bottom_roundover, edges=BOTTOM, except=BACK);
       }
     } else {
-      cuboid(size, rounding=Corner_Radius, except=[TOP, BOTTOM, FRONT]);
+      cuboid(size, rounding=bodyRounding, except=[TOP, BOTTOM, FRONT]);
     }
   }
 }
@@ -234,8 +236,8 @@ module Tilted() {
 module HolderRearFill() {
   hull() {
     Tilted() HolderBody();
-    translate([-overallHolderWidth / 2 + Corner_Radius, 0, -h / 2])
-      cube([overallHolderWidth - 2 * Corner_Radius, 0.01, h * cos(Tilt_Angle)]);
+    translate([-overallHolderWidth / 2 + bodyRounding, 0, -h / 2])
+      cube([overallHolderWidth - 2 * bodyRounding, 0.01, h * cos(Tilt_Angle)]);
   }
 }
 
@@ -291,7 +293,8 @@ module Holder() {
     screw_inset = Screw_Hole_Inset,
     screw_d = Screw_Hole_Diameter,
     head_d = Screw_Head_Diameter,
-    countersink = Include_Screw_Countersink
+    countersink = Include_Screw_Countersink,
+    plate_rounding = Mount_Type == "screws" ? 0 : SOCKET_ROUNDOVER
   );
   translate([0, 0, grid_tz]) HolderGrid();
 }
