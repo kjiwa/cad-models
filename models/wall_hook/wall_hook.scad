@@ -57,7 +57,7 @@ Lip_Orientation = "perpendicular"; // [perpendicular: Square to Hook Arm, vertic
 // Thickness of the mounting backplate
 Backplate_Thickness = 1.5875;
 
-// Height of the backplate, which may extend past the hooks (0 = auto)
+// Height of the backplate past the hooks, for the screw mount only (0 = auto)
 Backplate_Height = 0;
 
 /* [Pegboard] */
@@ -105,6 +105,7 @@ assert(Rows >= 1, "Rows must be at least 1");
 assert(Hook_Count >= 1, "Hook_Count must be at least 1");
 assert(Arm_Tilt_Angle >= 0 && Arm_Tilt_Angle <= 60, "Arm_Tilt_Angle must be between 0 and 60");
 assert(Backplate_Height >= 0, "Backplate_Height must not be negative");
+assert(Backplate_Height == 0 || Mount_Type == "screws", "Backplate_Height needs Mount_Type screws");
 assert(Hole_Columns >= 0, "Hole_Columns must not be negative");
 assert(Hole_Columns == floor(Hole_Columns), "Hole_Columns must be an integer");
 assert(Hole_Columns <= 10, "Hole_Columns must be at most 10");

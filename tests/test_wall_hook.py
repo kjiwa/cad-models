@@ -56,12 +56,30 @@ class HookBackplateTestCase(unittest.TestCase):
     def test_backplate_height_extends_plate(self):
         for alignment in ("bottom", "center"):
             with self.subTest(alignment=alignment):
-                tris = self.render({"Backplate_Height": "152.4", "Vertical_Alignment": f'"{alignment}"'})
+                tris = self.render(
+                    {"Mount_Type": '"screws"', "Backplate_Height": "152.4", "Vertical_Alignment": f'"{alignment}"'}
+                )
                 self.assertAlmostEqual(fingerprint(tris)["bbox_size_mm"][2], 152.4, delta=0.05)
 
     def test_centered_arm_on_tall_plate(self):
-        tris = self.render({"Backplate_Height": "152.4", "Vertical_Alignment": '"center"'})
+        tris = self.render({"Mount_Type": '"screws"', "Backplate_Height": "152.4", "Vertical_Alignment": '"center"'})
         self.assertTrue(contains(tris, (0, -3.0, 0.0)), "arm is not centered on the plate")
+
+    def test_backplate_height_requires_screw_mount(self):
+        with self.assertRaises(RuntimeError) as ctx:
+            self.render({"Backplate_Height": "152.4"})
+        self.assertIn("Backplate_Height needs Mount_Type screws", str(ctx.exception))
+
+    def test_screw_grid_counts_and_inset_are_validated(self):
+        for params, message in (
+            ({"Screw_Hole_Columns": "0"}, "Screw_Hole_Columns must be a positive integer"),
+            ({"Screw_Hole_Rows": "1.5"}, "Screw_Hole_Rows must be a positive integer"),
+            ({"Screw_Hole_Inset": "100"}, "Screw_Hole_Inset must not exceed half the plate"),
+        ):
+            with self.subTest(params=params):
+                with self.assertRaises(RuntimeError) as ctx:
+                    self.render({"Mount_Type": '"screws"', "Screw_Hole_Columns": "2", "Screw_Hole_Rows": "2", **params})
+                self.assertIn(message, str(ctx.exception))
 
     def test_screw_mount_holes_are_clear_of_the_arm(self):
         params = {

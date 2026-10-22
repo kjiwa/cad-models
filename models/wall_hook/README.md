@@ -50,7 +50,7 @@ Parametric, 3D-printable tool hooks and socket racks for Sy's Peglock modular pe
 | Parameter | Default | Options | Description |
 | --- | --- | --- | --- |
 | `Backplate_Thickness` | `1.5875` |  | Thickness of the mounting backplate |
-| `Backplate_Height` | `0` |  | Height of the backplate, which may extend past the hooks (0 = auto) |
+| `Backplate_Height` | `0` |  | Height of the backplate past the hooks, for the screw mount only (0 = auto) |
 
 ### Pegboard
 

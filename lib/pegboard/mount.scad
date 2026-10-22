@@ -77,6 +77,12 @@ module BoardMount(type, size, columns, backplate_t, hole_spacing, pin_d, board_t
   } else if (type == "monolithic") {
     MonolithicPegs(size, columns, backplate_t, hole_spacing, pin_d, board_t, rise, pin_pattern);
   }
+  if (type == "screws") {
+    assert(screw_columns >= 1 && screw_columns == floor(screw_columns), "Screw_Hole_Columns must be a positive integer");
+    assert(screw_rows >= 1 && screw_rows == floor(screw_rows), "Screw_Hole_Rows must be a positive integer");
+    assert(screw_inset >= 0 && (screw_columns == 1 || 2 * screw_inset <= size[0]) && (screw_rows == 1 || 2 * screw_inset <= size[1]),
+      "Screw_Hole_Inset must not exceed half the plate");
+  }
   difference() {
     translate([0, -backplate_t / 2, 0])
       cuboid([size[0], backplate_t, size[1]], rounding = SOCKET_ROUNDOVER, except = [FRONT, BACK]);
