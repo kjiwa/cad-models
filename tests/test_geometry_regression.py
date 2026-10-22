@@ -16,13 +16,13 @@ but isn't asserted yet, and what it needs before it can be.
 Requires the `openscad` binary; skips (not fails) when it isn't on PATH, so this file
 must run after OpenSCAD is installed in CI, not before.
 
-Fixture values are generated against the OpenSCAD version CI installs (apt on Ubuntu
-noble, currently 2021.01, no Manifold backend -- CGAL only). A local OpenSCAD build new
-enough to support `--backend=Manifold` triangulates differently and will show spurious
-triangle-count/section-area diffs even on unchanged geometry; volume still agrees to
-within a fraction of a percent across backends. Regenerate fixtures inside a matching
-container (`docker run -v $(pwd):/repo ubuntu:noble ...`, install openscad via apt) when
-intentionally updating them, not with a newer local OpenSCAD.
+Fixture values are generated against the OpenSCAD snapshot pinned in
+.github/actions/setup-openscad/action.yml (Manifold backend). A different build triangulates
+differently and shows spurious triangle-count diffs even on unchanged geometry; volume still
+agrees to within a fraction of a percent. Regenerate fixtures inside `docker run --platform
+linux/amd64 ubuntu:noble` with that snapshot, not with a local OpenSCAD, when intentionally
+updating them. The AppImage runtime does not exec under emulation: extract its squashfs
+payload with unsquashfs instead, and install libharfbuzz0b beside the action's libraries.
 """
 
 import json
@@ -47,13 +47,10 @@ FIXTURES_PATH = os.path.join(os.path.dirname(__file__), "fixtures", "geometry_fi
 VOLUME_REL_TOL = 0.005
 BBOX_ABS_TOL_MM = 0.05
 
-# Triangle count is NOT a reliable cross-environment signal: two different Ubuntu
-# noble CGAL/OpenSCAD apt package snapshots (a local `docker run ubuntu:noble` pull
-# vs. GitHub's actual ubuntu-latest runner image) triangulated the same geometry with
-# a consistent ~3-5% difference (e.g. 9426 vs 9762 triangles for the same part), even
-# though volume/bbox agreed to within a fraction of a percent between them. Kept only
-# as a coarse sanity bound (catches a doubled or missing mesh, not a precise
-# regression) -- volume/bbox are the real signal.
+# Triangle count is NOT a reliable cross-environment signal: different OpenSCAD builds
+# triangulate the same geometry differently while volume/bbox agree to within a fraction
+# of a percent. Kept only as a coarse sanity bound (catches a doubled or missing mesh, not
+# a precise regression) -- volume/bbox are the real signal.
 TRIANGLE_REL_TOL = 0.25
 
 

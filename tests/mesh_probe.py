@@ -31,8 +31,55 @@ def _ray_hits_triangle(origin, tri):
     return sum(e2[i] * q[i] for i in range(3)) / det > 0
 
 
+def _cross(a, b):
+    return (a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0])
+
+
+def _unit(a):
+    n = sum(x * x for x in a) ** 0.5
+    return tuple(x / n for x in a)
+
+
+# Plane perpendicular to _RAY: a ray can only hit a triangle whose projection onto it holds the
+# projected origin, so a grid over the projected triangles narrows each query to a few candidates.
+_U = _unit(_cross(_RAY, (1.0, 0.0, 0.0)))
+_V = _unit(_cross(_RAY, _U))
+_PAD = 1e-6
+_index_cache = {}
+
+
+def _project(p):
+    return (sum(p[i] * _U[i] for i in range(3)), sum(p[i] * _V[i] for i in range(3)))
+
+
+def _build_index(tris):
+    boxes = []
+    for t in tris:
+        q = [_project(p) for p in t]
+        xs = [c[0] for c in q]
+        ys = [c[1] for c in q]
+        boxes.append((min(xs) - _PAD, min(ys) - _PAD, max(xs) + _PAD, max(ys) + _PAD))
+    x0 = min(b[0] for b in boxes)
+    y0 = min(b[1] for b in boxes)
+    span = max(max(b[2] for b in boxes) - x0, max(b[3] for b in boxes) - y0)
+    cells = max(1, int(len(tris) ** 0.5))
+    size = span / cells
+    grid = {}
+    for t, (bx0, by0, bx1, by1) in zip(tris, boxes):
+        for i in range(int((bx0 - x0) / size), int((bx1 - x0) / size) + 1):
+            for k in range(int((by0 - y0) / size), int((by1 - y0) / size) + 1):
+                grid.setdefault((i, k), []).append(t)
+    return x0, y0, size, grid
+
+
 def contains(tris, point):
-    return sum(_ray_hits_triangle(point, t) for t in tris) % 2 == 1
+    entry = _index_cache.get(id(tris))
+    if entry is None or entry[0] is not tris:
+        entry = _index_cache[id(tris)] = (tris, _build_index(tris))
+    x0, y0, size, grid = entry[1]
+    px, py = _project(point)
+    candidates = grid.get((int((px - x0) // size), int((py - y0) // size)), ())
+    return sum(_ray_hits_triangle(point, t) for t in candidates) % 2 == 1
 
 
 def _key(p):

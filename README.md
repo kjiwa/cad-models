@@ -21,8 +21,9 @@ Parametric, 3D-printable OpenSCAD models, each in its own directory under `model
 
 ## Setup
 
-Requires [OpenSCAD](https://openscad.org/) and Python 3. `make bundle` and `make dist` also need
-[uv](https://docs.astral.sh/uv/) and an OpenSCAD snapshot new enough for `onescad --verify`.
+Requires [OpenSCAD](https://openscad.org/) 2021.01 or later and Python 3. A recent development snapshot is much
+faster: its Manifold backend renders in under a second what 2021.01 takes close to a minute to render. `make bundle` and
+`make dist` also need [uv](https://docs.astral.sh/uv/) and a snapshot new enough for `onescad --verify`.
 
 Models import the libraries in `lib/` (BOSL2, threads-scad, peglock, pegboard). `make setup` symlinks them into the
 OpenSCAD user library directory once: `~/Documents/OpenSCAD/libraries` on macOS, `~/.local/share/OpenSCAD/libraries`
@@ -49,11 +50,14 @@ make stl       # default STL for every model
 make 3mf       # default 3MF for every model
 make preview   # preview PNG for every model
 make presets   # every parameter preset for every model
+make check     # evaluate every model and preset without rendering, failing on any warning
 make bundle    # verified single-file .scad per model in dist/
 make dist      # build everything and collect artifacts and bundles in dist/
 make readme    # regenerate each model README's Parameters and Presets sections
 make clean     # remove build and dist artifacts
 ```
+
+Add `-j` to build models in parallel, e.g. `make -j8 all`.
 
 Each model directory accepts the same targets, e.g. `make -C models/bora_centipede_riser stl`. Outputs go to the model's
 `build/` directory.

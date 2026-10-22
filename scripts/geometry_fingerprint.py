@@ -92,7 +92,7 @@ def fingerprint(tris):
 
 def detect_backend_flag(openscad="openscad"):
     # Mirrors common.mk's OPENSCAD_BACKEND detection: older OpenSCAD builds
-    # (e.g. the apt package on Ubuntu CI runners) support neither --backend
+    # (e.g. the apt package on Ubuntu) support neither --backend
     # nor --enable=manifold, so probe --help rather than assuming Manifold.
     result = subprocess.run([openscad, "--help"], capture_output=True, text=True)
     help_text = result.stdout + result.stderr

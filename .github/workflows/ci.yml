@@ -15,20 +15,14 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          fetch-depth: 0
           submodules: recursive
           persist-credentials: false
-
-      - name: Install OpenSCAD and Xvfb
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends openscad xvfb
 
       - name: Install OpenSCAD snapshot
         uses: ./.github/actions/setup-openscad
@@ -39,14 +33,30 @@ jobs:
       - name: Run unit tests
         env:
           OPENSCADPATH: ${{ github.workspace }}/lib
-        run: xvfb-run -a python3 -m unittest discover
+        run: xvfb-run -a uvx --with pytest-xdist==3.8.0 pytest==9.1.1 -n auto -q --durations 15 tests
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Install OpenSCAD snapshot
+        uses: ./.github/actions/setup-openscad
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
 
       - name: Bundle and verify models
         env:
           OPENSCADPATH: ${{ github.workspace }}/lib
-          APPIMAGE_EXTRACT_AND_RUN: '1'
-          QT_QPA_PLATFORM: offscreen
-        run: PATH="$HOME/openscad-snapshot:$PATH" xvfb-run -a make bundle
+        run: |
+          nproc
+          xvfb-run -a make -j"$(nproc)" bundle
 
       - name: Build models
         env:
@@ -83,16 +93,35 @@ jobs:
 
           if [ "$BUILD_ALL" = true ]; then
             echo "Building all models..."
-            xvfb-run -a make all
+            xvfb-run -a make -j"$(nproc)" all
           elif [ -n "$TARGETS" ]; then
             echo "Building changed models: $TARGETS"
-            for target in $TARGETS; do
-              echo "==> Building $target"
-              xvfb-run -a make "$target"
-            done
+            # shellcheck disable=SC2086
+            xvfb-run -a make -j"$(nproc)" $TARGETS
           else
             echo "No CAD models changed. Skipping build."
           fi
+
+  compat:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          submodules: recursive
+          persist-credentials: false
+
+      - name: Install OpenSCAD
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends openscad
+
+      - name: Evaluate models and presets
+        env:
+          OPENSCADPATH: ${{ github.workspace }}/lib
+        run: |
+          openscad --version
+          make -j"$(nproc)" check
 
   privacy:
     uses: kjiwa/.github/.github/workflows/privacy.yml@main
