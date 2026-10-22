@@ -14,7 +14,7 @@ from geometry_fingerprint import render_triangles  # noqa: E402
 from mesh_probe import contains  # noqa: E402
 
 ADAPTER_SCAD = os.path.join(
-    REPO_ROOT, "shotgun_mini_shell_adapter", "shotgun_mini_shell_adapter.scad"
+    REPO_ROOT, "models", "shotgun_mini_shell_adapter", "shotgun_mini_shell_adapter.scad"
 )
 WIDTH = 35
 HEIGHT = 20.5

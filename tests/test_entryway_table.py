@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.join(REPO_ROOT, "scripts"))
 
 from geometry_fingerprint import render_fingerprint  # noqa: E402
 
-TABLE_SCAD = os.path.join(REPO_ROOT, "entryway_table", "entryway_table.scad")
+TABLE_SCAD = os.path.join(REPO_ROOT, "models", "entryway_table", "entryway_table.scad")
 DEFAULT_VOLUME_MM3 = 21857436.2
 DEFAULT_BBOX_MM = [1219.2, 279.4, 933.45]
 HARDCODED_WIDE_LEG_VOLUME_MM3 = 21072284.9

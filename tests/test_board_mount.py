@@ -22,10 +22,10 @@ FAST = {"$fn": "32"}
 # Each config has a body width where the old rule floor(body / 22) made the plate wider than the body.
 # (model, params, body width, old plate width)
 OVERSHOOT_CASES = (
-    ("peglock_holder", {"Columns": "3"}, 44.45, 47.4),
-    ("peglock_hook", {"Arm_Width": "45"}, 45.0, 47.4),
-    ("peglock_magnet_mount", {"Columns": "3"}, 44.0, 47.4),
-    ("peglock_bit_holder", {"Columns": "7"}, 7 * (2 * 6.75 / 3**0.5 + 2 * 2.68), 98.2),
+    ("wall_holder", {"Columns": "3"}, 44.45, 47.4),
+    ("wall_hook", {"Arm_Width": "45"}, 45.0, 47.4),
+    ("wall_magnet_mount", {"Columns": "3"}, 44.0, 47.4),
+    ("wall_bit_holder", {"Columns": "7"}, 7 * (2 * 6.75 / 3**0.5 + 2 * 2.68), 98.2),
 )
 
 CLASS_CHECK = """
@@ -58,7 +58,7 @@ VALIDATION_CASES = (("1.5", "Hole_Columns must be an integer"), ("11", "Hole_Col
 
 
 def model_scad(model):
-    return os.path.join(REPO_ROOT, model, f"{model}.scad")
+    return os.path.join(REPO_ROOT, "models", model, f"{model}.scad")
 
 
 def plate_width(model, params):
@@ -101,7 +101,7 @@ class BoardMountTestCase(unittest.TestCase):
         self.assertNotIn("ERROR", run_echo(MONOLITHIC_CHECK))
 
     def test_hole_columns_validation(self):
-        for model in ("peglock_holder", "peglock_hook", "peglock_magnet_mount", "peglock_bit_holder"):
+        for model in ("wall_holder", "wall_hook", "wall_magnet_mount", "wall_bit_holder"):
             for value, message in VALIDATION_CASES:
                 with self.subTest(model=model, value=value):
                     output = render_output(model, value)
@@ -120,7 +120,7 @@ class BoardMountTestCase(unittest.TestCase):
                 self.assertAlmostEqual(plate_width(model, {**params, "Hole_Columns": "2"}), 47.4, delta=0.05)
 
     def test_explicit_columns_can_widen_plate_past_body(self):
-        self.assertAlmostEqual(plate_width("peglock_holder", {"Columns": "3", "Hole_Columns": "3"}), 72.8, delta=0.05)
+        self.assertAlmostEqual(plate_width("wall_holder", {"Columns": "3", "Hole_Columns": "3"}), 72.8, delta=0.05)
 
 
 if __name__ == "__main__":

@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from geometry_fingerprint import fingerprint, render_triangles  # noqa: E402
 from mesh_probe import contains  # noqa: E402
 
-TEMPLATE_SCAD = os.path.join(REPO_ROOT, "keyhole_router_template", "keyhole_router_template.scad")
+TEMPLATE_SCAD = os.path.join(REPO_ROOT, "models", "keyhole_router_template", "keyhole_router_template.scad")
 FAST = {"$fn": "32"}
 PLATE = 6.35
 FENCE = 3.175

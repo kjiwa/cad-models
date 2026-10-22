@@ -1,6 +1,6 @@
 {
   "ryobi_default": {
-    "scad": "ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
+    "scad": "models/ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
     "params": {},
     "expect": {
       "triangles": 9426,
@@ -22,7 +22,7 @@
     }
   },
   "ryobi_all_n1_t15": {
-    "scad": "ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
+    "scad": "models/ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
     "params": {
       "Battery_Count": "1",
       "Tilt_Angle": "15",
@@ -48,7 +48,7 @@
     }
   },
   "ryobi_bottom_n2_t0_l110": {
-    "scad": "ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
+    "scad": "models/ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
     "params": {
       "Battery_Count": "2",
       "Tilt_Angle": "0",
@@ -75,7 +75,7 @@
     }
   },
   "ryobi_top_n2_t30": {
-    "scad": "ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
+    "scad": "models/ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
     "params": {
       "Battery_Count": "2",
       "Tilt_Angle": "30",
@@ -101,7 +101,7 @@
     }
   },
   "ryobi_all_n2_t15_l110": {
-    "scad": "ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
+    "scad": "models/ryobi_40v_battery_holder/ryobi_40v_battery_holder.scad",
     "params": {
       "Battery_Count": "2",
       "Tilt_Angle": "15",
@@ -128,7 +128,7 @@
     }
   },
   "razor_default": {
-    "scad": "razor_blade_dispenser/razor_blade_dispenser.scad",
+    "scad": "models/razor_blade_dispenser/razor_blade_dispenser.scad",
     "params": {},
     "expect": {
       "triangles": 6330,
@@ -150,7 +150,7 @@
     }
   },
   "razor_all_h150": {
-    "scad": "razor_blade_dispenser/razor_blade_dispenser.scad",
+    "scad": "models/razor_blade_dispenser/razor_blade_dispenser.scad",
     "params": {
       "Stabilizing_Pin_Pattern": "\"all\"",
       "Tower_Height": "150.0"
@@ -175,7 +175,7 @@
     }
   },
   "razor_top_and_bottom_h75": {
-    "scad": "razor_blade_dispenser/razor_blade_dispenser.scad",
+    "scad": "models/razor_blade_dispenser/razor_blade_dispenser.scad",
     "params": {
       "Stabilizing_Pin_Pattern": "\"top_and_bottom\"",
       "Tower_Height": "75.0"
@@ -200,7 +200,7 @@
     }
   },
   "razor_none_single": {
-    "scad": "razor_blade_dispenser/razor_blade_dispenser.scad",
+    "scad": "models/razor_blade_dispenser/razor_blade_dispenser.scad",
     "params": {
       "Stabilizing_Pin_Pattern": "\"none\"",
       "Slot_Pattern": "\"M\""
@@ -224,8 +224,8 @@
       ]
     }
   },
-  "peglock_hook_default": {
-    "scad": "peglock_hook/peglock_hook.scad",
+  "wall_hook_default": {
+    "scad": "models/wall_hook/wall_hook.scad",
     "params": {},
     "expect": {
       "triangles": 2236,
@@ -246,8 +246,8 @@
       ]
     }
   },
-  "peglock_holder_default": {
-    "scad": "peglock_holder/peglock_holder.scad",
+  "wall_holder_default": {
+    "scad": "models/wall_holder/wall_holder.scad",
     "params": {},
     "expect": {
       "triangles": 3392,
@@ -269,7 +269,7 @@
     }
   },
   "peglock_attachment_default": {
-    "scad": "peglock_attachment/peglock_attachment.scad",
+    "scad": "models/peglock_attachment/peglock_attachment.scad",
     "params": {},
     "expect": {
       "triangles": 6412,
@@ -290,8 +290,8 @@
       ]
     }
   },
-  "peglock_hook_fillet2": {
-    "scad": "peglock_hook/peglock_hook.scad",
+  "wall_hook_fillet2": {
+    "scad": "models/wall_hook/wall_hook.scad",
     "params": {
       "Root_Fillet_Radius": "2"
     },
@@ -314,8 +314,8 @@
       ]
     }
   },
-  "peglock_hook_fillet10": {
-    "scad": "peglock_hook/peglock_hook.scad",
+  "wall_hook_fillet10": {
+    "scad": "models/wall_hook/wall_hook.scad",
     "params": {
       "Root_Fillet_Radius": "10"
     },
@@ -338,8 +338,8 @@
       ]
     }
   },
-  "peglock_hook_qty2_fillet2": {
-    "scad": "peglock_hook/peglock_hook.scad",
+  "wall_hook_qty2_fillet2": {
+    "scad": "models/wall_hook/wall_hook.scad",
     "params": {
       "Hook_Count": "2",
       "Root_Fillet_Radius": "2"
@@ -363,8 +363,8 @@
       ]
     }
   },
-  "peglock_hook_grid2x2": {
-    "scad": "peglock_hook/peglock_hook.scad",
+  "wall_hook_grid2x2": {
+    "scad": "models/wall_hook/wall_hook.scad",
     "params": {
       "Rows": "2",
       "Columns": "2"
@@ -388,8 +388,8 @@
       ]
     }
   },
-  "peglock_hook_circle": {
-    "scad": "peglock_hook/peglock_hook.scad",
+  "wall_hook_circle": {
+    "scad": "models/wall_hook/wall_hook.scad",
     "params": {
       "Arm_Shape": "\"circle\""
     },
@@ -412,8 +412,8 @@
       ]
     }
   },
-  "peglock_hook_triangle": {
-    "scad": "peglock_hook/peglock_hook.scad",
+  "wall_hook_triangle": {
+    "scad": "models/wall_hook/wall_hook.scad",
     "params": {
       "Arm_Shape": "\"triangle\""
     },
@@ -436,8 +436,8 @@
       ]
     }
   },
-  "peglock_hook_righttriangle": {
-    "scad": "peglock_hook/peglock_hook.scad",
+  "wall_hook_righttriangle": {
+    "scad": "models/wall_hook/wall_hook.scad",
     "params": {
       "Arm_Shape": "\"right_triangle\""
     },
@@ -460,8 +460,8 @@
       ]
     }
   },
-  "peglock_hook_monolithic": {
-    "scad": "peglock_hook/peglock_hook.scad",
+  "wall_hook_monolithic": {
+    "scad": "models/wall_hook/wall_hook.scad",
     "params": {
       "Mount_Type": "\"monolithic\""
     },
@@ -484,8 +484,8 @@
       ]
     }
   },
-  "peglock_holder_open_bottom": {
-    "scad": "peglock_holder/peglock_holder.scad",
+  "wall_holder_open_bottom": {
+    "scad": "models/wall_holder/wall_holder.scad",
     "params": {
       "Include_Bottom": "false"
     },
@@ -508,8 +508,8 @@
       ]
     }
   },
-  "peglock_holder_rows2_front_only": {
-    "scad": "peglock_holder/peglock_holder.scad",
+  "wall_holder_rows2_front_only": {
+    "scad": "models/wall_holder/wall_holder.scad",
     "params": {
       "Rows": "2",
       "Include_Opening_Back_Rows": "false"
@@ -533,8 +533,8 @@
       ]
     }
   },
-  "peglock_holder_cols3": {
-    "scad": "peglock_holder/peglock_holder.scad",
+  "wall_holder_cols3": {
+    "scad": "models/wall_holder/wall_holder.scad",
     "params": {
       "Columns": "3"
     },
@@ -557,8 +557,8 @@
       ]
     }
   },
-  "peglock_holder_h5": {
-    "scad": "peglock_holder/peglock_holder.scad",
+  "wall_holder_h5": {
+    "scad": "models/wall_holder/wall_holder.scad",
     "params": {
       "Pocket_Height": "5"
     },
@@ -581,8 +581,8 @@
       ]
     }
   },
-  "peglock_holder_h50": {
-    "scad": "peglock_holder/peglock_holder.scad",
+  "wall_holder_h50": {
+    "scad": "models/wall_holder/wall_holder.scad",
     "params": {
       "Pocket_Height": "50"
     },
@@ -605,8 +605,8 @@
       ]
     }
   },
-  "peglock_holder_no_opening": {
-    "scad": "peglock_holder/peglock_holder.scad",
+  "wall_holder_no_opening": {
+    "scad": "models/wall_holder/wall_holder.scad",
     "params": {
       "Opening_Width": "0"
     },
@@ -629,8 +629,8 @@
       ]
     }
   },
-  "peglock_holder_monolithic": {
-    "scad": "peglock_holder/peglock_holder.scad",
+  "wall_holder_monolithic": {
+    "scad": "models/wall_holder/wall_holder.scad",
     "params": {
       "Mount_Type": "\"monolithic\""
     },
@@ -653,8 +653,8 @@
       ]
     }
   },
-  "peglock_magnet_mount_single_12mm": {
-    "scad": "peglock_magnet_mount/peglock_magnet_mount.scad",
+  "wall_magnet_mount_single_12mm": {
+    "scad": "models/wall_magnet_mount/wall_magnet_mount.scad",
     "params": {
       "Columns": "1",
       "Rows": "1",
@@ -680,8 +680,8 @@
       ]
     }
   },
-  "peglock_magnet_mount_pair_12mm": {
-    "scad": "peglock_magnet_mount/peglock_magnet_mount.scad",
+  "wall_magnet_mount_pair_12mm": {
+    "scad": "models/wall_magnet_mount/wall_magnet_mount.scad",
     "params": {
       "Columns": "2",
       "Rows": "1",
@@ -707,8 +707,8 @@
       ]
     }
   },
-  "peglock_magnet_mount_grid_2x2_12mm": {
-    "scad": "peglock_magnet_mount/peglock_magnet_mount.scad",
+  "wall_magnet_mount_grid_2x2_12mm": {
+    "scad": "models/wall_magnet_mount/wall_magnet_mount.scad",
     "params": {
       "Columns": "2",
       "Rows": "2",
@@ -734,8 +734,8 @@
       ]
     }
   },
-  "peglock_holder_knife_holder": {
-    "scad": "peglock_holder/peglock_holder.scad",
+  "wall_holder_knife_holder": {
+    "scad": "models/wall_holder/wall_holder.scad",
     "params": {
       "Columns": "2",
       "Rows": "1",
@@ -766,8 +766,8 @@
       ]
     }
   },
-  "peglock_holder_olfa_knife_holder": {
-    "scad": "peglock_holder/peglock_holder.scad",
+  "wall_holder_olfa_knife_holder": {
+    "scad": "models/wall_holder/wall_holder.scad",
     "params": {
       "Columns": "4",
       "Rows": "1",
@@ -798,8 +798,8 @@
       ]
     }
   },
-  "peglock_holder_thin_olfa_knife_holder": {
-    "scad": "peglock_holder/peglock_holder.scad",
+  "wall_holder_thin_olfa_knife_holder": {
+    "scad": "models/wall_holder/wall_holder.scad",
     "params": {
       "Columns": "2",
       "Rows": "1",
@@ -831,8 +831,8 @@
       ]
     }
   },
-  "peglock_bit_holder_default": {
-    "scad": "peglock_bit_holder/peglock_bit_holder.scad",
+  "wall_bit_holder_default": {
+    "scad": "models/wall_bit_holder/wall_bit_holder.scad",
     "params": {},
     "expect": {
       "triangles": 15018,
@@ -853,8 +853,8 @@
       ]
     }
   },
-  "peglock_bit_holder_rows1_no_relief": {
-    "scad": "peglock_bit_holder/peglock_bit_holder.scad",
+  "wall_bit_holder_rows1_no_relief": {
+    "scad": "models/wall_bit_holder/wall_bit_holder.scad",
     "params": {
       "Rows": "1",
       "Relief_Width": "0"
@@ -878,8 +878,8 @@
       ]
     }
   },
-  "peglock_bit_holder_monolithic": {
-    "scad": "peglock_bit_holder/peglock_bit_holder.scad",
+  "wall_bit_holder_monolithic": {
+    "scad": "models/wall_bit_holder/wall_bit_holder.scad",
     "params": {
       "Mount_Type": "\"monolithic\""
     },
@@ -903,7 +903,7 @@
     }
   },
   "pipe_clamp_wall_mount_default": {
-    "scad": "pipe_clamp_wall_mount/pipe_clamp_wall_mount.scad",
+    "scad": "models/pipe_clamp_wall_mount/pipe_clamp_wall_mount.scad",
     "params": {},
     "expect": {
       "triangles": 7928,
@@ -925,7 +925,7 @@
     }
   },
   "wheel_tread_cover_default": {
-    "scad": "wheel_tread_cover/wheel_tread_cover.scad",
+    "scad": "models/wheel_tread_cover/wheel_tread_cover.scad",
     "params": {},
     "expect": {
       "triangles": 45720,
@@ -947,7 +947,7 @@
     }
   },
   "keyhole_router_template_frame_three_slot": {
-    "scad": "keyhole_router_template/keyhole_router_template.scad",
+    "scad": "models/keyhole_router_template/keyhole_router_template.scad",
     "params": {},
     "expect": {
       "triangles": 3452,
@@ -969,7 +969,7 @@
     }
   },
   "keyhole_router_template_edge_guide": {
-    "scad": "keyhole_router_template/keyhole_router_template.scad",
+    "scad": "models/keyhole_router_template/keyhole_router_template.scad",
     "params": {
       "Style": "\"edge_guide\"",
       "Plate_Width": "152.4",
@@ -995,7 +995,7 @@
     }
   },
   "shotgun_mini_shell_adapter_default": {
-    "scad": "shotgun_mini_shell_adapter/shotgun_mini_shell_adapter.scad",
+    "scad": "models/shotgun_mini_shell_adapter/shotgun_mini_shell_adapter.scad",
     "params": {},
     "expect": {
       "triangles": 844,
@@ -1017,7 +1017,7 @@
     }
   },
   "holder_monolithic_bottom": {
-    "scad": "peglock_holder/peglock_holder.scad",
+    "scad": "models/wall_holder/wall_holder.scad",
     "params": {
       "Mount_Type": "\"monolithic\"",
       "Pocket_Height": "100",
@@ -1043,7 +1043,7 @@
     }
   },
   "wheel_tread_cover_no_wrap": {
-    "scad": "wheel_tread_cover/wheel_tread_cover.scad",
+    "scad": "models/wheel_tread_cover/wheel_tread_cover.scad",
     "params": {
       "Wrap_Angle": "0"
     },
@@ -1067,7 +1067,7 @@
     }
   },
   "keyhole_router_template_edge_guide_long": {
-    "scad": "keyhole_router_template/keyhole_router_template.scad",
+    "scad": "models/keyhole_router_template/keyhole_router_template.scad",
     "params": {
       "Style": "\"edge_guide\"",
       "Fenced_Slot": "\"long\"",
@@ -1094,7 +1094,7 @@
     }
   },
   "pipe_clamp_wall_mount_single": {
-    "scad": "pipe_clamp_wall_mount/pipe_clamp_wall_mount.scad",
+    "scad": "models/pipe_clamp_wall_mount/pipe_clamp_wall_mount.scad",
     "params": {
       "Holder_Count": "1"
     },

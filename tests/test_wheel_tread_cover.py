@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from geometry_fingerprint import fingerprint, render_triangles  # noqa: E402
 from mesh_probe import contains  # noqa: E402
 
-COVER_SCAD = os.path.join(REPO_ROOT, "wheel_tread_cover", "wheel_tread_cover.scad")
+COVER_SCAD = os.path.join(REPO_ROOT, "models", "wheel_tread_cover", "wheel_tread_cover.scad")
 FAST = {"$fn": "32"}
 INNER_DIAMETER = 171.45
 WIDTH = 52.3875

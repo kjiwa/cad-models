@@ -1,6 +1,6 @@
 """Every model main file must open with no warning when only its own directory resolves includes.
 
-OPENSCADPATH is unset and HOME is empty, so no library path or user library can mask a bad include.
+OPENSCADPATH holds only lib/ and HOME is empty, so no user library can mask a bad include.
 Exports CSG, which evaluates includes without rendering geometry and covers every model in seconds.
 """
 
@@ -16,15 +16,14 @@ EXCLUDED_DIRS = {"dist", "lib"}
 
 
 def _model_files():
-    for path in sorted(glob.glob(os.path.join(REPO_ROOT, "*", "*.scad"))):
+    for path in sorted(glob.glob(os.path.join(REPO_ROOT, "models", "*", "*.scad"))):
         directory = os.path.basename(os.path.dirname(path))
         if directory not in EXCLUDED_DIRS and os.path.basename(path) == f"{directory}.scad":
             yield directory, path
 
 
 def _open_model(scad_path, home):
-    env = {k: v for k, v in os.environ.items() if k != "OPENSCADPATH"}
-    env["HOME"] = home
+    env = dict(os.environ, HOME=home, OPENSCADPATH=os.path.join(REPO_ROOT, "lib"))
     out = os.path.join(home, "out.csg")
     res = subprocess.run(
         ["openscad", "-o", out, scad_path],

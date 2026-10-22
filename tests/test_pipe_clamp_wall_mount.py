@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from geometry_fingerprint import fingerprint, render_triangles  # noqa: E402
 from mesh_probe import contains  # noqa: E402
 
-CLAMP_SCAD = os.path.join(REPO_ROOT, "pipe_clamp_wall_mount", "pipe_clamp_wall_mount.scad")
+CLAMP_SCAD = os.path.join(REPO_ROOT, "models", "pipe_clamp_wall_mount", "pipe_clamp_wall_mount.scad")
 FAST = {"$fn": "32"}
 BOTTOM = 9.525
 TOP = 6.35

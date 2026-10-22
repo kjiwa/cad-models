@@ -1,4 +1,4 @@
-"""Property tests for peglock_magnet_mount: pockets reach the plate face and the slab between them stays solid.
+"""Property tests for wall_magnet_mount: pockets reach the plate face and the slab between them stays solid.
 
 In exported STL coordinates the model is rotated 180 degrees about Z, so the plate sits at +Y,
 the magnet slab extends toward -Y, and model X is mirrored.
@@ -16,8 +16,8 @@ sys.path.insert(0, os.path.dirname(__file__))
 from geometry_fingerprint import fingerprint, render_triangles  # noqa: E402
 from mesh_probe import contains  # noqa: E402
 
-MODEL_DIR = os.path.join(REPO_ROOT, "peglock_magnet_mount")
-MAGNET_SCAD = os.path.join(MODEL_DIR, "peglock_magnet_mount.scad")
+MODEL_DIR = os.path.join(REPO_ROOT, "models", "wall_magnet_mount")
+MAGNET_SCAD = os.path.join(MODEL_DIR, "wall_magnet_mount.scad")
 FAST = {"$fn": "32"}
 PLATE = 1.5875
 SOCKET_HEIGHT = 35.4

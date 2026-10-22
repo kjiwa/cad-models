@@ -1,23 +1,23 @@
 # CAD Models
 
-Parametric, 3D-printable OpenSCAD models, each in its own directory with a `.scad` source, a
+Parametric, 3D-printable OpenSCAD models, each in its own directory under `models/` with a `.scad` source, a
 `Makefile`, and a README covering its own parameters and printing recommendations:
 
-- `bora_centipede_riser` — risers and locking nuts for Bora Centipede work stands
-- `curtain_rod_mounting_plate` — mounting plate for curtain rod brackets
-- `entryway_table` — plywood entryway table with angled legs
-- `keyhole_router_template` — router template for hanging slots in frames and other workpieces
-- `makita_hose_adapter` — dust extraction hose adapter for Makita tools
-- `peglock_attachment` — board attachment clips for Sy's Peglock pegboard system
-- `peglock_bit_holder` — hex bit rack for Sy's Peglock pegboard system
-- `peglock_holder` — bin/organizer for Sy's Peglock pegboard system
-- `peglock_hook` — hooks and socket racks for Sy's Peglock pegboard system
-- `peglock_magnet_mount` — magnet pockets and mount for Sy's Peglock pegboard system
-- `pipe_clamp_wall_mount` — wall rack of angled pipe clamps
-- `razor_blade_dispenser` — pegboard dispenser for single-edge razor blades
-- `ryobi_40v_battery_holder` — pegboard holder for Ryobi 40V batteries
-- `shotgun_mini_shell_adapter` — Mossberg 12 gauge adapter for 1.75" mini shells, compatible with the OPSol Mini-Clip fit
-- `wheel_tread_cover` — herringbone tread sleeve for a wheel
+- `models/bora_centipede_riser` — risers and locking nuts for Bora Centipede work stands
+- `models/curtain_rod_mounting_plate` — mounting plate for curtain rod brackets
+- `models/entryway_table` — plywood entryway table with angled legs
+- `models/keyhole_router_template` — router template for hanging slots in frames and other workpieces
+- `models/makita_hose_adapter` — dust extraction hose adapter for Makita tools
+- `models/peglock_attachment` — board attachment clips for Sy's Peglock pegboard system
+- `models/wall_bit_holder` — hex bit rack for Sy's Peglock pegboard system
+- `models/wall_holder` — bin/organizer for Sy's Peglock pegboard system
+- `models/wall_hook` — hooks and socket racks for Sy's Peglock pegboard system
+- `models/wall_magnet_mount` — magnet pockets and mount for Sy's Peglock pegboard system
+- `models/pipe_clamp_wall_mount` — wall rack of angled pipe clamps
+- `models/razor_blade_dispenser` — pegboard dispenser for single-edge razor blades
+- `models/ryobi_40v_battery_holder` — pegboard holder for Ryobi 40V batteries
+- `models/shotgun_mini_shell_adapter` — Mossberg 12 gauge adapter for 1.75" mini shells, compatible with the OPSol Mini-Clip fit
+- `models/wheel_tread_cover` — herringbone tread sleeve for a wheel
 
 ## Setup
 
@@ -55,7 +55,7 @@ make readme    # regenerate each model README's Parameters and Presets sections
 make clean     # remove build and dist artifacts
 ```
 
-Each model directory accepts the same targets, e.g. `make -C bora_centipede_riser stl`. Outputs go to the model's
+Each model directory accepts the same targets, e.g. `make -C models/bora_centipede_riser stl`. Outputs go to the model's
 `build/` directory.
 
 Each model README holds a block between `<!-- BEGIN GENERATED -->` and `<!-- END GENERATED -->` produced from the
@@ -74,5 +74,5 @@ licenses and are not covered by this repository's LICENSE:
 
 - `lib/BOSL2` ([BelfrySCAD/BOSL2](https://github.com/BelfrySCAD/BOSL2)) — BSD-2-Clause
 - `lib/threads-scad` ([rcolyer/threads-scad](https://github.com/rcolyer/threads-scad)) — CC0-1.0
-- `lib/peglock`, `peglock_attachment`, `peglock_bit_holder`, `peglock_holder`, `peglock_hook`, and `peglock_magnet_mount` interface with Sy's Peglock modular pegboard mounting
+- `lib/peglock`, `models/peglock_attachment`, `models/wall_bit_holder`, `models/wall_holder`, `models/wall_hook`, and `models/wall_magnet_mount` interface with Sy's Peglock modular pegboard mounting
   system, [CC BY-SA](https://creativecommons.org/licenses/by-sa/4.0/) ([Printables 249871](https://www.printables.com/model/249871)); only the mounting interface is reused, credited here

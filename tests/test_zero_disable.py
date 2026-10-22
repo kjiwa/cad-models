@@ -27,7 +27,7 @@ FAST = {"$fn": "32"}
 
 
 def _model_sources():
-    paths = sorted(glob.glob(os.path.join(REPO_ROOT, "*", "*.scad")))
+    paths = sorted(glob.glob(os.path.join(REPO_ROOT, "models", "*", "*.scad")))
     return [p for p in paths if os.path.basename(os.path.dirname(p)) not in ("dist", "lib")]
 
 

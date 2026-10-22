@@ -1,4 +1,4 @@
-"""Property tests for peglock_holder per-column pockets and zero-disable parameters.
+"""Property tests for wall_holder per-column pockets and zero-disable parameters.
 
 In exported STL coordinates the model is rotated 180 degrees about Z, so the backer sits at +Y,
 pockets extend toward -Y, and model X is mirrored.
@@ -18,7 +18,7 @@ from geometry_fingerprint import fingerprint, render_triangles  # noqa: E402
 from mesh_probe import contains, shell_count  # noqa: E402
 from test_geometry_regression import BBOX_ABS_TOL_MM, FIXTURES_PATH, VOLUME_REL_TOL  # noqa: E402
 
-HOLDER_SCAD = os.path.join(REPO_ROOT, "peglock_holder", "peglock_holder.scad")
+HOLDER_SCAD = os.path.join(REPO_ROOT, "models", "wall_holder", "wall_holder.scad")
 WALL = 1.5875
 FAST = {"$fn": "32"}
 
@@ -52,7 +52,7 @@ def stl_point(model_x, model_y, z):
 class HolderColumnsTestCase(unittest.TestCase):
     def test_defaults_match_default_fixture(self):
         with open(FIXTURES_PATH, encoding="utf-8") as f:
-            case = json.load(f)["peglock_holder_default"]
+            case = json.load(f)["wall_holder_default"]
         actual = fingerprint(render(case["params"]))
         expect = case["expect"]
         self.assertAlmostEqual(
