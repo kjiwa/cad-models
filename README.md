@@ -5,7 +5,7 @@ Parametric, 3D-printable OpenSCAD models, each in its own directory under `model
 
 - `models/bora_centipede_riser` — risers and locking nuts for Bora Centipede work stands
 - `models/closet_door_floor_guide` — floor guide for closet doors
-- `models/corner_cover` — cap for the outside corner of a mitered rail
+- `models/corner_cover` — cap for the outside corner of a mitered sill
 - `models/curtain_rod_mounting_plate` — mounting plate for curtain rod brackets
 - `models/entryway_table` — plywood entryway table with angled legs
 - `models/heater_vent_switch_cover` — cover for a heater vent switch
