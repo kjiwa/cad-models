@@ -1,0 +1,38 @@
+{
+    "parameterSets": {
+        "Rockler_Blade_Holder_Knob": {
+            "Diameter": "76",
+            "Height": "15",
+            "Flute_Count": "8",
+            "Bolt_Diameter": "13",
+            "Nut_Width": "18.62",
+            "Nut_Thickness": "11.5"
+        },
+        "Miter_Gauge_Handle": {
+            "Grip": "knurled",
+            "Diameter": "25.4",
+            "Height": "50.8",
+            "Texture_Size": "2.54",
+            "Top_Rounding": "2.54",
+            "Bolt_Diameter": "6.5",
+            "Nut_Width": "11.5",
+            "Nut_Thickness": "3.97",
+            "Pocket_End": "top",
+            "Pocket_Depth": "24.525"
+        },
+        "Miter_Gauge_Handle_Cap": {
+            "Part": "cap",
+            "Grip": "knurled",
+            "Diameter": "25.4",
+            "Height": "50.8",
+            "Texture_Size": "2.54",
+            "Top_Rounding": "2.54",
+            "Bolt_Diameter": "6.5",
+            "Nut_Width": "11.5",
+            "Nut_Thickness": "3.97",
+            "Pocket_End": "top",
+            "Pocket_Depth": "24.525"
+        }
+    },
+    "fileFormatVersion": "1"
+}
