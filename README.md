@@ -4,8 +4,11 @@ Parametric, 3D-printable OpenSCAD models, each in its own directory under `model
 `Makefile`, and a README covering its own parameters and printing recommendations:
 
 - `models/bora_centipede_riser` — risers and locking nuts for Bora Centipede work stands
+- `models/closet_door_floor_guide` — floor guide for closet doors
+- `models/corner_cover` — cap for the outside corner of a mitered rail
 - `models/curtain_rod_mounting_plate` — mounting plate for curtain rod brackets
 - `models/entryway_table` — plywood entryway table with angled legs
+- `models/heater_vent_switch_cover` — cover for a heater vent switch
 - `models/keyhole_router_template` — router template for hanging slots in frames and other workpieces
 - `models/knob` — fluted or knurled knob with a captive nut pocket, for stop blocks and miter gauge handles
 - `models/makita_hose_adapter` — dust extraction hose adapter for Makita tools
@@ -19,6 +22,7 @@ Parametric, 3D-printable OpenSCAD models, each in its own directory under `model
 - `models/pipe_clamp_wall_mount` — wall rack of angled pipe clamps
 - `models/razor_blade_dispenser` — pegboard dispenser for single-edge razor blades
 - `models/ryobi_40v_battery_holder` — pegboard holder for Ryobi 40V batteries
+- `models/shallow_shelf_bracket` — cove-gusset bracket for a shallow shelf
 - `models/shotgun_mini_shell_adapter` — Mossberg 12 gauge adapter for 1.75" mini shells, compatible with the OPSol Mini-Clip fit
 - `models/wheel_tread_cover` — herringbone tread sleeve for a wheel
 
