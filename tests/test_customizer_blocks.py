@@ -25,6 +25,16 @@ SHARED_NAMES = (
     "Stabilizing_Pin_Pattern",
 )
 
+# Other models reuse these names with their own meaning, so they are compared only among models that declare Mount_Type.
+SCREW_MOUNT_NAMES = (
+    "Screw_Hole_Columns",
+    "Screw_Hole_Rows",
+    "Screw_Hole_Inset",
+    "Screw_Hole_Diameter",
+    "Screw_Head_Diameter",
+    "Include_Screw_Countersink",
+)
+
 # (model, name) pairs whose default value is meant to differ from the other models.
 INTENTIONAL_VALUE_DIFFERENCES = {
     ("peglock_attachment", "Retention_Hook_Rise"): "attachment hook tab is taller (6.0) than the 3.5 of the pegboard holders",
@@ -45,17 +55,18 @@ def _model_sources():
 
 def _declarations(path):
     """Map each shared name to (description, default, annotation)."""
+    params = [p for group in customizer.parse(path) for p in group.params]
+    names = SHARED_NAMES + (SCREW_MOUNT_NAMES if any(p.name == "Mount_Type" for p in params) else ())
     found = {}
-    for group in customizer.parse(path):
-        for p in group.params:
-            if p.name in SHARED_NAMES and p.name not in found:
-                found[p.name] = (p.description, p.default, p.annotation)
+    for p in params:
+        if p.name in names and p.name not in found:
+            found[p.name] = (p.description, p.default, p.annotation)
     return found
 
 
 class PegboardBlockTestCase(unittest.TestCase):
     def test_shared_declarations_are_identical(self):
-        by_name = {name: {} for name in SHARED_NAMES}
+        by_name = {name: {} for name in SHARED_NAMES + SCREW_MOUNT_NAMES}
         for path in _model_sources():
             model = os.path.basename(os.path.dirname(path))
             for name, decl in _declarations(path).items():

@@ -1,11 +1,14 @@
 include <peglock/peglock.scad>
 include <pegs.scad>
 
-MOUNT_EPSILON = 0.02;
+EPSILON = 0.02;
+include <backplate.scad>
 
 // Hole columns the mount engages: the request, or by default the most that fit within the content width.
-// Peglock counts socket bases; monolithic counts pegs, with at least one.
-function board_hole_columns(type, requested, content_width, hole_spacing, pin_d) = requested > 0
+// Peglock counts socket bases; monolithic counts pegs, with at least one; screws have no columns.
+function board_hole_columns(type, requested, content_width, hole_spacing, pin_d) = type == "screws"
+  ? 1
+  : requested > 0
   ? requested
   : type == "peglock"
     ? max(floor((content_width + hole_spacing - SOCKET_WIDTH) / hole_spacing), 1)
@@ -13,7 +16,8 @@ function board_hole_columns(type, requested, content_width, hole_spacing, pin_d)
 
 // Backer plate size [width, height]: the content size, grown to fit the mount interface.
 // Monolithic pegs need hole_spacing and the span of their columns; auto columns never exceed it.
-function board_mount_size(type, content_size, columns, hole_spacing, pin_d) = [
+// Screws need nothing beyond the content.
+function board_mount_size(type, content_size, columns, hole_spacing, pin_d) = type == "screws" ? content_size : [
   max(content_size[0], type == "peglock"
     ? peglock_base_width(columns, SOCKET_WIDTH, hole_spacing)
     : max(hole_spacing, (columns - 1) * hole_spacing + pin_d)),
@@ -35,12 +39,26 @@ module MonolithicPegs(size, cols, backplate_t, hole_spacing, pin_d, board_t, ris
   }
 }
 
+// Screw hole centers along one axis: evenly spaced between inset from each edge, centered when there is one.
+function screw_hole_offsets(extent, count, inset) = count == 1
+  ? [0]
+  : [for (i = [0 : count - 1]) -extent / 2 + inset + i * (extent - 2 * inset) / (count - 1)];
+
+// Hole through a plate spanning y from -plate_t to 0, countersunk on the +y face when countersink is set and head_d > screw_d; otherwise straight.
+module ScrewHole(screw_d, head_d, countersink, plate_t) {
+  if (countersink && head_d > screw_d) {
+    translate([0, -plate_t, 0]) countersunk_screw_hole(screw_d, head_d, plate_t);
+  } else {
+    rotate([90, 0, 0]) translate([0, 0, -EPSILON]) cylinder(d = screw_d, h = plate_t + 2 * EPSILON);
+  }
+}
+
 // Backer plate spanning y from -backplate_t to 0, plus Peglock sockets or monolithic pegs behind it.
 // socket_z shifts the Peglock sockets vertically from the plate center; standoff adds a foot at the plate bottom
 // once the plate extends below the sockets.
-module BoardMount(type, size, columns, backplate_t, hole_spacing, pin_d, board_t, rise, pin_pattern = "all", socket_z = 0, standoff = false) {
+module BoardMount(type, size, columns, backplate_t, hole_spacing, pin_d, board_t, rise, pin_pattern = "all", socket_z = 0, standoff = false, screw_columns = 1, screw_rows = 1, screw_inset = 0, screw_d = 4.7625, head_d = 9.525, countersink = false) {
   if (type == "peglock") {
-    translate([0, -backplate_t + MOUNT_EPSILON, socket_z])
+    translate([0, -backplate_t + EPSILON, socket_z])
       PeglockBase(
         count = columns,
         width = SOCKET_WIDTH,
@@ -50,7 +68,7 @@ module BoardMount(type, size, columns, backplate_t, hole_spacing, pin_d, board_t
         roundover = SOCKET_ROUNDOVER
       );
     if (standoff && size[1] > SOCKET_HEIGHT)
-      translate([0, -backplate_t + MOUNT_EPSILON - SOCKET_DEPTH / 2, -size[1] / 2 + SOCKET_ROUNDOVER])
+      translate([0, -backplate_t + EPSILON - SOCKET_DEPTH / 2, -size[1] / 2 + SOCKET_ROUNDOVER])
         cuboid(
           [peglock_base_width(columns, SOCKET_WIDTH, hole_spacing), SOCKET_DEPTH, 2 * SOCKET_ROUNDOVER],
           rounding = SOCKET_ROUNDOVER,
@@ -59,6 +77,17 @@ module BoardMount(type, size, columns, backplate_t, hole_spacing, pin_d, board_t
   } else if (type == "monolithic") {
     MonolithicPegs(size, columns, backplate_t, hole_spacing, pin_d, board_t, rise, pin_pattern);
   }
-  translate([0, -backplate_t / 2, 0])
-    cuboid([size[0], backplate_t, size[1]], rounding = SOCKET_ROUNDOVER, except = [FRONT, BACK]);
+  if (type == "screws") {
+    assert(screw_columns >= 1 && screw_columns == floor(screw_columns), "Screw_Hole_Columns must be a positive integer");
+    assert(screw_rows >= 1 && screw_rows == floor(screw_rows), "Screw_Hole_Rows must be a positive integer");
+    assert(screw_inset >= 0 && (screw_columns == 1 || 2 * screw_inset <= size[0]) && (screw_rows == 1 || 2 * screw_inset <= size[1]),
+      "Screw_Hole_Inset must not exceed half the plate");
+  }
+  difference() {
+    translate([0, -backplate_t / 2, 0])
+      cuboid([size[0], backplate_t, size[1]], rounding = SOCKET_ROUNDOVER, except = [FRONT, BACK]);
+    if (type == "screws")
+      for (x = screw_hole_offsets(size[0], screw_columns, screw_inset), z = screw_hole_offsets(size[1], screw_rows, screw_inset))
+        translate([x, 0, z]) ScrewHole(screw_d, head_d, countersink, backplate_t);
+  }
 }

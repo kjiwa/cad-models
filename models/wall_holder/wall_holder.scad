@@ -53,6 +53,9 @@ Lip_Height = 3.175;
 // Width of the front access opening (0 to disable)
 Opening_Width = 6.35;
 
+// Limits the front access opening to this depth from the top of the pocket (0 to disable)
+Opening_Height = 0;
+
 // Front opening lead-in chamfer (0 to disable)
 Opening_Chamfer = 1.0;
 
@@ -64,8 +67,8 @@ Include_Opening_Back_Rows = true;
 Backplate_Thickness = 1.5875;
 
 /* [Pegboard] */
-// Mounting interface: modular Peglock wedge socket or monolithic integrated pegboard pegs
-Mount_Type = "peglock"; // [peglock: Modular Peglock Socket, monolithic: Integrated Pegboard Pegs]
+// Mounting interface: modular Peglock wedge socket, monolithic integrated pegboard pegs, or countersunk screw holes
+Mount_Type = "peglock"; // [peglock: Modular Peglock Socket, monolithic: Integrated Pegboard Pegs, screws: Screw Holes]
 
 // Pegboard hole columns the mount engages (0 = auto)
 Hole_Columns = 0;
@@ -84,6 +87,24 @@ Retention_Hook_Rise = 3.5;
 
 // Stabilizing pin rows below the retention hooks (ignored by the Peglock socket mount)
 Stabilizing_Pin_Pattern = "all"; // [all: All Rows, top_and_bottom: Top and Bottom Rows, top: Top Row Only, bottom: Bottom Row Only (Lowest Hole), none: Retention Hooks Only]
+
+// Screw hole columns across the backplate (screws mount)
+Screw_Hole_Columns = 1;
+
+// Screw hole rows down the backplate (screws mount)
+Screw_Hole_Rows = 1;
+
+// Distance from the backplate edge to the outermost screw hole centers (a single column or row sits centered)
+Screw_Hole_Inset = 19.05;
+
+// Screw shank hole diameter (4.7625 for 3/16")
+Screw_Hole_Diameter = 4.7625;
+
+// Screw head or washer outer diameter (9.525 for 3/8")
+Screw_Head_Diameter = 9.525;
+
+// Include a countersink cone for the screw head instead of a straight hole
+Include_Screw_Countersink = false;
 
 /* [Hidden] */
 $fn = 128;
@@ -166,18 +187,23 @@ module SingleHolderInside(width, depth, cut_front_opening = true) {
   translate([0, 0, tz]) PocketCutout(width, depth, z, h / 2 - Lip_Height / 2 - tz);
   if (cut_front_opening && Opening_Width > 0) {
     cut_depth = Wall_Thickness + 3 * maxPocketDepth / 2;
-    translate([-Opening_Width / 2, 0, -z / 2])
-      cube([Opening_Width, cut_depth, z]);
+    limited_floor = h / 2 - Lip_Height / 2 - min(Opening_Height, Pocket_Height);
+    cube_floor = Opening_Height > 0 ? limited_floor : -z / 2;
+    chamfer_floor = Opening_Height > 0 ? limited_floor : -z;
+    translate([-Opening_Width / 2, 0, cube_floor])
+      cube([Opening_Width, cut_depth, z / 2 - cube_floor]);
 
     if (Opening_Chamfer > 0) {
       b = min(Opening_Chamfer, Opening_Width / 4);
       y_entry = maxPocketDepth + Wall_Thickness;
       translate([-Opening_Width / 2, y_entry, 0])
-        rotate([0, 0, 45])
-          cube([b * sqrt(2), b * sqrt(2), z * 2], center=true);
+        translate([0, 0, (chamfer_floor + z) / 2])
+          rotate([0, 0, 45])
+            cube([b * sqrt(2), b * sqrt(2), z - chamfer_floor], center=true);
       translate([Opening_Width / 2, y_entry, 0])
-        rotate([0, 0, 45])
-          cube([b * sqrt(2), b * sqrt(2), z * 2], center=true);
+        translate([0, 0, (chamfer_floor + z) / 2])
+          rotate([0, 0, 45])
+            cube([b * sqrt(2), b * sqrt(2), z - chamfer_floor], center=true);
     }
   }
 }
@@ -258,7 +284,13 @@ module Holder() {
     pin_d = Pin_Diameter,
     board_t = Pegboard_Thickness,
     rise = Retention_Hook_Rise,
-    pin_pattern = Stabilizing_Pin_Pattern
+    pin_pattern = Stabilizing_Pin_Pattern,
+    screw_columns = Screw_Hole_Columns,
+    screw_rows = Screw_Hole_Rows,
+    screw_inset = Screw_Hole_Inset,
+    screw_d = Screw_Hole_Diameter,
+    head_d = Screw_Head_Diameter,
+    countersink = Include_Screw_Countersink
   );
   translate([0, 0, grid_tz]) HolderGrid();
 }

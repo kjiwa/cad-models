@@ -33,6 +33,40 @@
             "Lip_Height": "0",
             "Opening_Width": "0",
             "Corner_Radius": "0"
+        },
+        "Shelly_HT": {
+            "Mount_Type": "screws",
+            "Pocket_Widths": "70",
+            "Pocket_Depths": "26",
+            "Pocket_Height": "25",
+            "Include_Bottom": "true",
+            "Wall_Thickness": "3",
+            "Lip_Height": "0",
+            "Opening_Width": "50",
+            "Opening_Height": "20",
+            "Screw_Hole_Columns": "2",
+            "Screw_Hole_Rows": "1",
+            "Screw_Hole_Inset": "15",
+            "Screw_Hole_Diameter": "5",
+            "Screw_Head_Diameter": "8",
+            "Include_Screw_Countersink": "true"
+        },
+        "INIU_Battery_Bank": {
+            "Mount_Type": "screws",
+            "Pocket_Widths": "69",
+            "Pocket_Depths": "17",
+            "Pocket_Height": "40",
+            "Include_Bottom": "true",
+            "Wall_Thickness": "3",
+            "Lip_Height": "0",
+            "Opening_Width": "59",
+            "Opening_Height": "35",
+            "Screw_Hole_Columns": "2",
+            "Screw_Hole_Rows": "1",
+            "Screw_Hole_Inset": "15",
+            "Screw_Hole_Diameter": "5",
+            "Screw_Head_Diameter": "8",
+            "Include_Screw_Countersink": "true"
         }
     },
     "fileFormatVersion": "1"

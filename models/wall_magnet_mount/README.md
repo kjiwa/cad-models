@@ -38,13 +38,19 @@ Parametric, 3D-printable magnet mount for Sy's Peglock modular pegboard system a
 
 | Parameter | Default | Options | Description |
 | --- | --- | --- | --- |
-| `Mount_Type` | `"peglock"` | Modular Peglock Socket, Integrated Pegboard Pegs | Mounting interface: modular Peglock wedge socket or monolithic integrated pegboard pegs |
+| `Mount_Type` | `"peglock"` | Modular Peglock Socket, Integrated Pegboard Pegs, Screw Holes | Mounting interface: modular Peglock wedge socket, monolithic integrated pegboard pegs, or countersunk screw holes |
 | `Hole_Columns` | `0` |  | Pegboard hole columns the mount engages (0 = auto) |
 | `Hole_Spacing` | `25.4` |  | Pegboard hole center spacing (25.4 for 1" standard, 15.875 for 5/8" metal) |
 | `Pin_Diameter` | `5.7` |  | Pin diameter (5.7 for standard 1/4" hole fit, 6.0 for original Sy fit) |
 | `Pegboard_Thickness` | `6.35` |  | Pegboard thickness (6.35 for 1/4" board, 1.5875 for 1/16" thin metal) |
 | `Retention_Hook_Rise` | `3.5` |  | Height of the retention hook tab behind the pegboard |
 | `Stabilizing_Pin_Pattern` | `"all"` | All Rows, Top and Bottom Rows, Top Row Only, Bottom Row Only (Lowest Hole), Retention Hooks Only | Stabilizing pin rows below the retention hooks (ignored by the Peglock socket mount) |
+| `Screw_Hole_Columns` | `1` |  | Screw hole columns across the backplate (screws mount) |
+| `Screw_Hole_Rows` | `1` |  | Screw hole rows down the backplate (screws mount) |
+| `Screw_Hole_Inset` | `19.05` |  | Distance from the backplate edge to the outermost screw hole centers (a single column or row sits centered) |
+| `Screw_Hole_Diameter` | `4.7625` |  | Screw shank hole diameter (4.7625 for 3/16") |
+| `Screw_Head_Diameter` | `9.525` |  | Screw head or washer outer diameter (9.525 for 3/8") |
+| `Include_Screw_Countersink` | `false` |  | Include a countersink cone for the screw head instead of a straight hole |
 
 <!-- END GENERATED -->
 

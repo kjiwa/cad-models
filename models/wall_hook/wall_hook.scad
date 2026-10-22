@@ -16,7 +16,7 @@ Column_Spacing = 19.05;
 Row_Spacing = 19.05;
 
 // Where the hooks sit on the backplate
-Vertical_Alignment = "bottom"; // [bottom: Hooks Near Bottom, center: Hooks Centered]
+Vertical_Alignment = "bottom"; // [bottom: Hooks Near Bottom, center: Hooks Centered, screws: Between Screw Rows]
 
 /* [Arm] */
 // Cross-section profile of the hook arm
@@ -32,7 +32,7 @@ Arm_Depth = 6.35;
 Arm_Height = 6.35;
 
 // Upward tilt of the hook arm in degrees (0 to disable)
-Arm_Tilt_Angle = 0; // [0:5:45]
+Arm_Tilt_Angle = 0; // [0:5:60]
 
 // Radius of the rounded arm edges (0 to disable)
 Arm_Edge_Radius = 1.5875;
@@ -57,9 +57,12 @@ Lip_Orientation = "perpendicular"; // [perpendicular: Square to Hook Arm, vertic
 // Thickness of the mounting backplate
 Backplate_Thickness = 1.5875;
 
+// Height of the backplate past the hooks, for the screw mount only (0 = auto)
+Backplate_Height = 0;
+
 /* [Pegboard] */
-// Mounting interface: modular Peglock wedge socket or monolithic integrated pegboard pegs
-Mount_Type = "peglock"; // [peglock: Modular Peglock Socket, monolithic: Integrated Pegboard Pegs]
+// Mounting interface: modular Peglock wedge socket, monolithic integrated pegboard pegs, or countersunk screw holes
+Mount_Type = "peglock"; // [peglock: Modular Peglock Socket, monolithic: Integrated Pegboard Pegs, screws: Screw Holes]
 
 // Pegboard hole columns the mount engages (0 = auto)
 Hole_Columns = 0;
@@ -79,13 +82,34 @@ Retention_Hook_Rise = 3.5;
 // Stabilizing pin rows below the retention hooks (ignored by the Peglock socket mount)
 Stabilizing_Pin_Pattern = "all"; // [all: All Rows, top_and_bottom: Top and Bottom Rows, top: Top Row Only, bottom: Bottom Row Only (Lowest Hole), none: Retention Hooks Only]
 
+// Screw hole columns across the backplate (screws mount)
+Screw_Hole_Columns = 1;
+
+// Screw hole rows down the backplate (screws mount)
+Screw_Hole_Rows = 1;
+
+// Distance from the backplate edge to the outermost screw hole centers (a single column or row sits centered)
+Screw_Hole_Inset = 19.05;
+
+// Screw shank hole diameter (4.7625 for 3/16")
+Screw_Hole_Diameter = 4.7625;
+
+// Screw head or washer outer diameter (9.525 for 3/8")
+Screw_Head_Diameter = 9.525;
+
+// Include a countersink cone for the screw head instead of a straight hole
+Include_Screw_Countersink = false;
+
 /* [Hidden] */
 $fn = 128;
 
 assert(Columns >= 1, "Columns must be at least 1");
 assert(Rows >= 1, "Rows must be at least 1");
 assert(Hook_Count >= 1, "Hook_Count must be at least 1");
-assert(Arm_Tilt_Angle >= 0 && Arm_Tilt_Angle <= 45, "Arm_Tilt_Angle must be between 0 and 45");
+assert(Arm_Tilt_Angle >= 0 && Arm_Tilt_Angle <= 60, "Arm_Tilt_Angle must be between 0 and 60");
+assert(Backplate_Height >= 0, "Backplate_Height must not be negative");
+assert(Backplate_Height == 0 || Mount_Type == "screws", "Backplate_Height needs Mount_Type screws");
+assert(Vertical_Alignment != "screws" || Mount_Type == "screws", "Vertical_Alignment screws needs Mount_Type screws");
 assert(Hole_Columns >= 0, "Hole_Columns must not be negative");
 assert(Hole_Columns == floor(Hole_Columns), "Hole_Columns must be an integer");
 assert(Hole_Columns <= 10, "Hole_Columns must be at most 10");
@@ -111,9 +135,23 @@ root_height = gridHeight + 2 * fillet_flare_z + tilt_root_drop;
 
 bodyWidth = gridWidth + 2 * fillet_flare_x;
 holeColumns = board_hole_columns(Mount_Type, Hole_Columns, bodyWidth, Hole_Spacing, Pin_Diameter);
-backerSize = board_mount_size(Mount_Type, [bodyWidth, root_height + 2 * SOCKET_ROUNDOVER], holeColumns, Hole_Spacing, Pin_Diameter);
+mountSize = board_mount_size(Mount_Type, [bodyWidth, root_height + 2 * SOCKET_ROUNDOVER], holeColumns, Hole_Spacing, Pin_Diameter);
+backerSize = [mountSize[0], max(mountSize[1], Backplate_Height)];
 backerHeight = backerSize[1];
-align_shift = Vertical_Alignment == "center" ? (backerHeight - root_height) / 2 : SOCKET_ROUNDOVER;
+SCREW_DRIVER_MARGIN = 3;
+screw_row_z = screw_hole_offsets(backerHeight, Screw_Hole_Rows, Screw_Hole_Inset);
+align_shift = Vertical_Alignment == "center" ? (backerHeight - root_height) / 2
+  : Vertical_Alignment == "screws" ? screw_row_z[0] + Screw_Head_Diameter / 2 + SCREW_DRIVER_MARGIN + backerHeight / 2
+  : SOCKET_ROUNDOVER;
+
+// The lowest solid arm point is the root's bottom edge. The highest is the last row's lip, or its tip when tilted:
+// arms tilt up about the top-back edge, so each chained hook adds Arm_Depth + Lip_Thickness along the tilt.
+arm_low = -backerHeight / 2 + align_shift;
+lip_rise = Lip_Orientation == "vertical" && Arm_Tilt_Angle > 0
+  ? ((Hook_Count - 1) * (Arm_Depth + Lip_Thickness) + Arm_Depth) * sin(Arm_Tilt_Angle) + Lip_Height
+  : Hook_Count * (Arm_Depth + Lip_Thickness) * sin(Arm_Tilt_Angle) + Lip_Height * cos(Arm_Tilt_Angle);
+arm_high = arm_low + fillet_flare_z + tilt_root_drop + Arm_Height + (Rows - 1) * Row_Spacing + max(fillet_flare_z, lip_rise);
+screw_heads_clear = [for (z = screw_row_z) z + Screw_Head_Diameter / 2 + SCREW_DRIVER_MARGIN <= arm_low || z - Screw_Head_Diameter / 2 - SCREW_DRIVER_MARGIN >= arm_high];
 
 if (Columns > 1) assert(Column_Spacing >= Arm_Width, "Column_Spacing must be at least Arm_Width");
 if (Rows > 1) assert(Row_Spacing * cos(Arm_Tilt_Angle) >= Arm_Height + Lip_Height, "Row_Spacing is too small for Arm_Height + Lip_Height");
@@ -277,8 +315,16 @@ module Hook() {
     pin_d = Pin_Diameter,
     board_t = Pegboard_Thickness,
     rise = Retention_Hook_Rise,
-    pin_pattern = Stabilizing_Pin_Pattern
+    pin_pattern = Stabilizing_Pin_Pattern,
+    screw_columns = Screw_Hole_Columns,
+    screw_rows = Screw_Hole_Rows,
+    screw_inset = Screw_Hole_Inset,
+    screw_d = Screw_Hole_Diameter,
+    head_d = Screw_Head_Diameter,
+    countersink = Include_Screw_Countersink
   );
+  if (Mount_Type == "screws")
+    assert(len([for (clear = screw_heads_clear) if (!clear) 1]) == 0, "screw heads overlap the arm: raise Backplate_Height, lower Arm_Tilt_Angle or Arm_Depth, or reduce Screw_Head_Diameter");
   HookGrid();
 }
 
