@@ -53,6 +53,7 @@ assert(Wall_Thickness < Height && Wall_Thickness < Depth, "Wall_Thickness must b
 assert(2 * Corner_Radius <= Wall_Thickness, "Corner_Radius must be at most half of Wall_Thickness");
 assert(2 * Edge_Radius < Width && Edge_Radius > 0, "Edge_Radius must be positive and less than half of Width");
 assert(Screw_Head_Diameter < Width, "Screw_Head_Diameter must be less than Width");
+assert(Screw_Hole_Depth > 0, "Screw_Hole_Depth must be positive");
 assert(Screw_Diameter < Screw_Head_Diameter, "Screw_Diameter must be less than Screw_Head_Diameter");
 assert(!Include_Screw_Countersink || (Screw_Head_Diameter - Screw_Diameter) / 2 <= Screw_Hole_Depth, "Screw_Hole_Depth is too small to seat a countersunk head");
 
@@ -63,7 +64,7 @@ pad_length = Screw_Head_Diameter + 2 * PAD_MARGIN;
 pad_height = Screw_Hole_Depth + PAD_WALL;
 countersink = (Screw_Head_Diameter - Screw_Diameter) / 2;
 
-assert(wall_hole_y + pad_length / 2 <= Height && shelf_hole_x + pad_length / 2 <= Depth, "Screw_Hole_Offset leaves the pad past the arm end");
+assert(wall_hole_y - pad_length / 2 >= 0 && wall_hole_y + pad_length / 2 <= Height && shelf_hole_x - pad_length / 2 >= 0 && shelf_hole_x + pad_length / 2 <= Depth, "Screw_Hole_Offset leaves a pad past an arm end");
 
 // The profile reaches Edge_Radius past both mounting faces so the roundover stops at the flat faces when cropped
 function ExtendedProfile() =
