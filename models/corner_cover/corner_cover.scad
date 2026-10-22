@@ -29,14 +29,13 @@ assert(Inner_Width < Outer_Width, "Inner_Width must be less than Outer_Width");
 assert(Corner_Radius <= (Outer_Width - Inner_Width), "Corner_Radius must not exceed the wall thickness");
 assert(Edge_Radius < (Outer_Width - Inner_Width), "Edge_Radius must be less than the wall thickness");
 
+// Rounded square swept up with the top and bottom edge rounding following the corner radius
 module Outline() {
-  intersection() {
-    cuboid(
-      [Outer_Width, Outer_Width, Height], rounding = Corner_Radius, anchor = BOTTOM,
-      edges = [LEFT + FRONT, LEFT + BACK, RIGHT + FRONT, RIGHT + BACK]
-    );
-    if (Edge_Radius > 0) cuboid([Outer_Width, Outer_Width, Height], rounding = Edge_Radius, anchor = BOTTOM, edges = [TOP, BOTTOM]);
-  }
+  outline = rect([Outer_Width, Outer_Width], rounding = Corner_Radius);
+  if (Edge_Radius > 0)
+    offset_sweep(outline, height = Height, top = os_circle(r = Edge_Radius), bottom = os_circle(r = Edge_Radius));
+  else
+    linear_extrude(height = Height) polygon(outline);
 }
 
 difference() {

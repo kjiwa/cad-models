@@ -101,7 +101,7 @@ wedgeDepth = cellSize * cos(Tilt_Angle);
 wedgeRise = cellSize * sin(Tilt_Angle);
 tierPitch = wedgeRise + wedgeDepth / tan(Tilt_Angle);
 
-plateWidth = rowWidth - 2 * Corner_Radius;
+plateWidth = rowWidth;
 screwEar = Mount_Type == "screws" ? screw_ear_width(Screw_Head_Diameter) : 0;
 
 holeColumns = board_hole_columns(Mount_Type, Hole_Columns, plateWidth, Hole_Spacing, Pin_Diameter);
@@ -158,18 +158,27 @@ function body_radii() = concat(
   [0, 0]
 );
 
-// Side profile swept across the row, rounded along the profile and around both end faces
+module SharpBlock() {
+  translate([-rowWidth / 2, 0, 0]) rotate([90, 0, 90]) linear_extrude(height = rowWidth) polygon(body_profile());
+}
+
+// Side profile swept across the row, rounded along the profile and around both end faces; the back stays square
+// against the plate, so the body and plate form one flat face.
 module BodyBlock() {
-  translate([-rowWidth / 2, 0, 0]) rotate([90, 0, 90]) {
-    if (Corner_Radius > 0)
+  if (Corner_Radius > 0) {
+    translate([-rowWidth / 2, 0, 0]) rotate([90, 0, 90])
       offset_sweep(
         round_corners(body_profile(), method = "circle", radius = body_radii()),
         height = rowWidth,
         top = os_circle(r = Corner_Radius),
         bottom = os_circle(r = Corner_Radius)
       );
-    else
-      linear_extrude(height = rowWidth) polygon(body_profile());
+    intersection() {
+      SharpBlock();
+      translate([-rowWidth / 2 - 1, 0, plateBottom - 1]) cube([rowWidth + 2, Corner_Radius, wedgeRise - plateBottom + 2]);
+    }
+  } else {
+    SharpBlock();
   }
 }
 
@@ -200,7 +209,8 @@ module BitHolder() {
     head_d = Screw_Head_Diameter,
     countersink = Include_Screw_Countersink,
     socket_z = (backerSize[1] - SOCKET_HEIGHT) / 2,
-    standoff = true
+    standoff = true,
+    plate_rounding = (backerSize[0] - rowWidth) / 2 >= SOCKET_ROUNDOVER ? SOCKET_ROUNDOVER : 0
   );
   BitTiers();
 }

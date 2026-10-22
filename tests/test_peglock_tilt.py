@@ -104,7 +104,7 @@ class TiltInvariantsTestCase(unittest.TestCase):
         wall = 1.5875
         for angle in (0, 15, 45):
             with self.subTest(angle=angle):
-                tris = render(HOLDER_SCAD, {"Vertical_Alignment": '"center"', "Tilt_Angle": str(angle)})
+                tris = render(HOLDER_SCAD, {"Vertical_Alignment": '"center"', "Tilt_Angle": str(angle), "Opening_Width": "0"})
                 a = math.radians(angle)
                 envelope = (12.7 + wall) * math.cos(a) + (6.35 + wall) * math.sin(a)
                 self.assertAlmostEqual(min_z(tris, in_front=True), -envelope / 2, delta=0.02)

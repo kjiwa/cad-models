@@ -36,6 +36,7 @@
         },
         "Shelly_HT": {
             "Mount_Type": "screws",
+            "Screw_Placement": "back",
             "Pocket_Widths": "70",
             "Pocket_Depths": "26",
             "Pocket_Height": "25",
@@ -54,6 +55,7 @@
         },
         "INIU_Battery_Bank": {
             "Mount_Type": "screws",
+            "Screw_Placement": "back",
             "Pocket_Widths": "69",
             "Pocket_Depths": "17",
             "Pocket_Height": "40",

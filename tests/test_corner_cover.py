@@ -52,6 +52,15 @@ class CornerCoverTestCase(unittest.TestCase):
         self.assertFalse(contains(tris, (18.9, -18.9, MID)), "outer corner is square")
         self.assertTrue(contains(tris, (17, -17, MID)), "outer corner is too round")
 
+    def test_edge_rounding_wraps_the_corner_radius(self):
+        tris = render()
+        r = 6.35
+        c = OUTER / 2 - r
+        d = (r - 0.15) / 2 ** 0.5
+        for z in (0.1, HEIGHT - 0.1):
+            self.assertFalse(contains(tris, (c + d, -(c + d), z)), f"corner arc is square at z={z}")
+        self.assertTrue(contains(tris, (c + d, -(c + d), MID)), "corner is missing at mid height")
+
     def test_top_and_bottom_edges_are_eased_unless_disabled(self):
         self.assertFalse(contains(render(), (19.0, 0, 0.1)), "top edge is square")
         self.assertTrue(contains(render(Edge_Radius=0), (19.0, 0, 0.1)), "edge is rounded at Edge_Radius=0")

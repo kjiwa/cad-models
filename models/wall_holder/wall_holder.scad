@@ -34,7 +34,7 @@ Include_Bottom = true;
 // Thickness of the pocket walls
 Wall_Thickness = 1.5875;
 
-// Radius of the rounded pocket body corners (0 to disable)
+// Inside radius of the rounded pocket corners, with the outside radius larger by the wall thickness (0 to disable)
 Corner_Radius = 3.175;
 
 // Rounds the pocket body's underside edges, except where it meets the plate (0 to disable)
@@ -87,6 +87,9 @@ Retention_Hook_Rise = 3.5;
 
 // Stabilizing pin rows below the retention hooks (ignored by the Peglock socket mount)
 Stabilizing_Pin_Pattern = "all"; // [all: All Rows, top_and_bottom: Top and Bottom Rows, top: Top Row Only, bottom: Bottom Row Only (Lowest Hole), none: Retention Hooks Only]
+
+// Where the screws go: ears beside the body leave the pockets clear, the back wall needs a driver opening and uses the column, row and inset settings (screws mount)
+Screw_Placement = "ears"; // [ears: Side Ears, back: Back Wall]
 
 // Screw hole columns across the backplate (screws mount)
 Screw_Hole_Columns = 1;
@@ -149,22 +152,28 @@ grid_tz = (Vertical_Alignment == "bottom" && Mount_Type != "screws" && tilted_he
   ? (h - SOCKET_HEIGHT) / 2 + SOCKET_ROUNDOVER + tilt_drop
   : (h * (1 - cos(Tilt_Angle)) + tilt_drop) / 2;
 
-// A screw-mounted back is flat and square, as wide as the body, so it seats flush on the wall
-bodyRounding = Mount_Type == "screws" ? 0 : Corner_Radius;
-plateInset = bodyRounding;
-plateWidth = overallHolderWidth - 2 * plateInset;
+// Only the two vertical edges at the open front are rounded, concentric with the pockets so the wall keeps its
+// thickness at the corner. The back is square and the plate spans the full width, so the back is one flat surface.
+outerRadius = Corner_Radius > 0 ? Corner_Radius + Wall_Thickness : 0;
+screwEar = Mount_Type == "screws" && Screw_Placement == "ears" ? screw_ear_width(Screw_Head_Diameter) : 0;
+plateWidth = overallHolderWidth + 2 * screwEar;
+
+assert(outerRadius <= overallHolderWidth / 2 && outerRadius <= overallHolderDepth, "Corner_Radius plus Wall_Thickness is too large for the holder");
 
 holeColumns = board_hole_columns(Mount_Type, Hole_Columns, plateWidth, Hole_Spacing, Pin_Diameter);
 backerSize = board_mount_size(Mount_Type, [plateWidth, tilted_height], holeColumns, Hole_Spacing, Pin_Diameter);
 backerHeight = backerSize[1];
+// The plate's corners are rounded only where it extends beyond the body; flush with the body they stay square
+plate_overhang = (backerSize[0] - overallHolderWidth) / 2;
+JOIN_OVERLAP = 0.01;
 
 module HolderLip() {
-  rounding_depth = max(2 * Corner_Radius, Lip_Thickness);
+  rounding_depth = max(2 * outerRadius, Lip_Thickness);
   translate([0, -Lip_Thickness / 2, Lip_Height / 2])
     intersection() {
       cuboid([overallHolderWidth, Lip_Thickness, Lip_Height], rounding=0, edges=[FRONT]);
       translate([0, (Lip_Thickness - rounding_depth) / 2, 0])
-        cuboid([overallHolderWidth, rounding_depth, Lip_Height], rounding=Corner_Radius, edges=[BACK+LEFT, BACK+RIGHT]);
+        cuboid([overallHolderWidth, rounding_depth, Lip_Height], rounding=outerRadius, edges=[BACK+LEFT, BACK+RIGHT]);
     }
 }
 
@@ -217,11 +226,11 @@ module HolderBody() {
   translate([0, overallHolderDepth / 2, 0]) {
     if (bottom_roundover > 0) {
       intersection() {
-        cuboid(size, rounding=bodyRounding, except=[TOP, BOTTOM, FRONT]);
+        cuboid(size, rounding=outerRadius, except=[TOP, BOTTOM, FRONT]);
         cuboid(size, rounding=bottom_roundover, edges=BOTTOM, except=BACK);
       }
     } else {
-      cuboid(size, rounding=bodyRounding, except=[TOP, BOTTOM, FRONT]);
+      cuboid(size, rounding=outerRadius, except=[TOP, BOTTOM, FRONT]);
     }
   }
 }
@@ -231,24 +240,23 @@ module Tilted() {
   translate([0, 0, -h / 2]) rotate([-Tilt_Angle, 0, 0]) translate([0, 0, h / 2]) children();
 }
 
-// Fills the wedge between the backer and the tilted back wall; the strip stops short of the
-// rounded back corners so the fill never leaves the body's own outline.
+// Fills the wedge between the backer and the tilted back wall, as wide as the walls
 module HolderRearFill() {
   hull() {
     Tilted() HolderBody();
-    translate([-overallHolderWidth / 2 + bodyRounding, 0, -h / 2])
-      cube([overallHolderWidth - 2 * bodyRounding, 0.01, h * cos(Tilt_Angle)]);
+    translate([-overallHolderWidth / 2, -JOIN_OVERLAP, -h / 2])
+      cube([overallHolderWidth, 2 * JOIN_OVERLAP, h * cos(Tilt_Angle)]);
   }
 }
 
-// Triangular web from the plate face to the tilted underside, inset like HolderRearFill
+// Triangular web from the plate face to the tilted underside, as wide as the walls
 module HolderJunctionGusset() {
   room = grid_tz - h / 2 + backerHeight / 2;
   size = min(Junction_Gusset_Chamfer, room, overallHolderDepth);
-  width = plateWidth;
+  width = overallHolderWidth;
   if (size > 0) {
     hull() {
-      translate([-width / 2, 0, -h / 2 - size]) cube([width, 0.01, size]);
+      translate([-width / 2, -JOIN_OVERLAP, -h / 2 - size]) cube([width, 2 * JOIN_OVERLAP, size]);
       Tilted() translate([-width / 2, size, -h / 2]) cube([width, 0.01, 0.01]);
     }
   }
@@ -288,13 +296,14 @@ module Holder() {
     board_t = Pegboard_Thickness,
     rise = Retention_Hook_Rise,
     pin_pattern = Stabilizing_Pin_Pattern,
-    screw_columns = Screw_Hole_Columns,
+    screw_columns = screwEar > 0 ? 2 : Screw_Hole_Columns,
     screw_rows = Screw_Hole_Rows,
     screw_inset = Screw_Hole_Inset,
+    screw_column_inset = screwEar > 0 ? screwEar / 2 : undef,
     screw_d = Screw_Hole_Diameter,
     head_d = Screw_Head_Diameter,
     countersink = Include_Screw_Countersink,
-    plate_rounding = Mount_Type == "screws" ? 0 : SOCKET_ROUNDOVER
+    plate_rounding = plate_overhang >= SOCKET_ROUNDOVER ? SOCKET_ROUNDOVER : 0
   );
   translate([0, 0, grid_tz]) HolderGrid();
 }

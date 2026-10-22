@@ -113,7 +113,7 @@ class HolderColumnsTestCase(unittest.TestCase):
         for message in messages:
             self.assertIn(message, str(ctx.exception))
 
-    def test_plate_stays_within_body_back_face(self):
+    def test_plate_spans_the_body_back_face(self):
         for mount in ("peglock", "monolithic"):
             for columns in (1, 2, 4):
                 with self.subTest(mount=mount, columns=columns):
@@ -123,8 +123,9 @@ class HolderColumnsTestCase(unittest.TestCase):
                     self.assertGreaterEqual(width, body - 0.05)
                     if width > body + 0.05:
                         continue  # the socket base or peg span is wider than the body
-                    # The plate sits at +Y in STL coordinates; the body's rounded corners start where the plate ends.
-                    self.assertFalse(contains(tris, (body / 2 - 0.1, WALL / 2, 0.0)), "plate reaches into the rounded body corner")
+                    # The plate sits at +Y in STL coordinates and is as wide as the body, so the back is one flat face.
+                    self.assertTrue(contains(tris, (body / 2 - 0.1, WALL / 2, 0.0)), "plate stops short of the body corner")
+                    self.assertFalse(contains(tris, (body / 2 + 0.1, WALL / 2, 0.0)), "plate overhangs the body")
 
     def test_entry_chamfer_widens_pocket_mouth(self):
         # Vertical_Alignment center puts the body's top at (Pocket_Height + Wall_Thickness) / 2.

@@ -4,10 +4,11 @@ Parametric, 3D-printable open-front bin and organizer for Sy's Peglock modular p
 
 ## Features
 
-- `Mount_Type` selects Peglock wedge sockets or monolithic integrated pegboard pegs.
+- `Mount_Type` selects Peglock wedge sockets, monolithic integrated pegboard pegs, or screws through side ears or the back wall.
 - Configurable pocket dimensions (rows and columns) with a separate width and depth per column.
 - Independent pockets with intact internal partitions or continuous open slots.
-- The backplate is narrower than the body by `Corner_Radius` on each side, so it stays within the flat of the body's back face.
+- The backplate is as wide as the body and the back is square, so the walls and floor are fully backed and the holder seats flat. The open-front corners are rounded, concentric with the pockets so the wall keeps its thickness.
+- Screw ears keep the pockets clear and need no driver opening; screws through the back wall suit holders that have a front opening.
 
 <!-- BEGIN GENERATED -->
 
@@ -32,7 +33,7 @@ Parametric, 3D-printable open-front bin and organizer for Sy's Peglock modular p
 | `Tilt_Angle` | `0` | 0 to 45, step 5 | Forward tilt of the pockets in degrees (0 to disable) |
 | `Include_Bottom` | `true` |  | Include the pocket bottoms |
 | `Wall_Thickness` | `1.5875` |  | Thickness of the pocket walls |
-| `Corner_Radius` | `3.175` |  | Radius of the rounded pocket body corners (0 to disable) |
+| `Corner_Radius` | `3.175` |  | Inside radius of the rounded pocket corners, with the outside radius larger by the wall thickness (0 to disable) |
 | `Bottom_Edge_Radius` | `0` |  | Rounds the pocket body's underside edges, except where it meets the plate (0 to disable) |
 | `Junction_Gusset_Chamfer` | `0` |  | Size of the triangular web under the pockets where they meet the plate, clamped to the plate below them (0 to disable) |
 
@@ -64,6 +65,7 @@ Parametric, 3D-printable open-front bin and organizer for Sy's Peglock modular p
 | `Pegboard_Thickness` | `6.35` |  | Pegboard thickness (6.35 for 1/4" board, 1.5875 for 1/16" thin metal) |
 | `Retention_Hook_Rise` | `3.5` |  | Height of the retention hook tab behind the pegboard |
 | `Stabilizing_Pin_Pattern` | `"all"` | All Rows, Top and Bottom Rows, Top Row Only, Bottom Row Only (Lowest Hole), Retention Hooks Only | Stabilizing pin rows below the retention hooks (ignored by the Peglock socket mount) |
+| `Screw_Placement` | `"ears"` | Side Ears, Back Wall | Where the screws go: ears beside the body leave the pockets clear, the back wall needs a driver opening and uses the column, row and inset settings (screws mount) |
 | `Screw_Hole_Columns` | `1` |  | Screw hole columns across the backplate (screws mount) |
 | `Screw_Hole_Rows` | `1` |  | Screw hole rows down the backplate (screws mount) |
 | `Screw_Hole_Inset` | `19.05` |  | Distance from the backplate edge to the outermost screw hole centers (a single column or row sits centered) |
