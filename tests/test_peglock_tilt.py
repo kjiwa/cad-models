@@ -176,8 +176,8 @@ class TiltAngleBoundsTestCase(unittest.TestCase):
         self.assertIn(param, str(ctx.exception))
 
     def test_angle_out_of_range_asserts(self):
-        for scad, param in ((HOOK_SCAD, "Arm_Tilt_Angle"), (HOLDER_SCAD, "Tilt_Angle")):
-            for value in (-1, 46):
+        for scad, param, over in ((HOOK_SCAD, "Arm_Tilt_Angle", 61), (HOLDER_SCAD, "Tilt_Angle", 46)):
+            for value in (-1, over):
                 with self.subTest(param=param, value=value):
                     self._assert_rejected(scad, param, value)
 

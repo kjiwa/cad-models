@@ -32,7 +32,7 @@ Parametric, 3D-printable tool hooks and socket racks for Sy's Peglock modular pe
 | `Arm_Width` | `12.7` |  | Width of the hook arm |
 | `Arm_Depth` | `6.35` |  | Depth of the hook arm from the backplate to the lip |
 | `Arm_Height` | `6.35` |  | Height of the hook arm |
-| `Arm_Tilt_Angle` | `0` | 0 to 45, step 5 | Upward tilt of the hook arm in degrees (0 to disable) |
+| `Arm_Tilt_Angle` | `0` | 0 to 60, step 5 | Upward tilt of the hook arm in degrees (0 to disable) |
 | `Arm_Edge_Radius` | `1.5875` |  | Radius of the rounded arm edges (0 to disable) |
 | `Root_Fillet_Radius` | `0` |  | Stress relief fillet radius at the arm root (0 to disable) |
 | `Hook_Count` | `1` | 1 to 5, step 1 | Number of hooks chained along each arm |
@@ -50,18 +50,24 @@ Parametric, 3D-printable tool hooks and socket racks for Sy's Peglock modular pe
 | Parameter | Default | Options | Description |
 | --- | --- | --- | --- |
 | `Backplate_Thickness` | `1.5875` |  | Thickness of the mounting backplate |
+| `Backplate_Height` | `0` |  | Height of the backplate, which may extend past the hooks (0 = auto) |
 
 ### Pegboard
 
 | Parameter | Default | Options | Description |
 | --- | --- | --- | --- |
-| `Mount_Type` | `"peglock"` | Modular Peglock Socket, Integrated Pegboard Pegs | Mounting interface: modular Peglock wedge socket or monolithic integrated pegboard pegs |
+| `Mount_Type` | `"peglock"` | Modular Peglock Socket, Integrated Pegboard Pegs, Screw Holes | Mounting interface: modular Peglock wedge socket, monolithic integrated pegboard pegs, or countersunk screw holes |
 | `Hole_Columns` | `0` |  | Pegboard hole columns the mount engages (0 = auto) |
 | `Hole_Spacing` | `25.4` |  | Pegboard hole center spacing (25.4 for 1" standard, 15.875 for 5/8" metal) |
 | `Pin_Diameter` | `5.7` |  | Pin diameter (5.7 for standard 1/4" hole fit, 6.0 for original Sy fit) |
 | `Pegboard_Thickness` | `6.35` |  | Pegboard thickness (6.35 for 1/4" board, 1.5875 for 1/16" thin metal) |
 | `Retention_Hook_Rise` | `3.5` |  | Height of the retention hook tab behind the pegboard |
 | `Stabilizing_Pin_Pattern` | `"all"` | All Rows, Top and Bottom Rows, Top Row Only, Bottom Row Only (Lowest Hole), Retention Hooks Only | Stabilizing pin rows below the retention hooks (ignored by the Peglock socket mount) |
+| `Screw_Hole_Columns` | `1` |  | Screw hole columns across the backplate (screws mount) |
+| `Screw_Hole_Rows` | `1` |  | Screw hole rows down the backplate (screws mount) |
+| `Screw_Hole_Inset` | `19.05` |  | Distance from the backplate edge to the outermost screw hole centers (a single column or row sits centered) |
+| `Screw_Hole_Diameter` | `4.7625` |  | Screw shank hole diameter (4.7625 for 3/16") |
+| `Screw_Head_Diameter` | `9.525` |  | Countersink head diameter (9.525 for 3/8") (0 to disable) |
 
 ## Presets
 

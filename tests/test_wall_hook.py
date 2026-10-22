@@ -13,7 +13,7 @@ REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, os.path.join(REPO_ROOT, "scripts"))
 sys.path.insert(0, os.path.dirname(__file__))
 
-from geometry_fingerprint import render_triangles  # noqa: E402
+from geometry_fingerprint import fingerprint, render_triangles  # noqa: E402
 from mesh_probe import contains  # noqa: E402
 
 HOOK_SCAD = os.path.join(REPO_ROOT, "models", "wall_hook", "wall_hook.scad")
@@ -41,6 +41,48 @@ class HookArmProfileTestCase(unittest.TestCase):
             contains(tris, (-ARM_WIDTH / 2 + 0.5, arm_y, ARM_CENTER_Z + ARM_HEIGHT / 2 - 0.5)),
             "arm fills above the hypotenuse",
         )
+
+
+@unittest.skipUnless(shutil.which("openscad"), "openscad binary not found on PATH")
+class HookBackplateTestCase(unittest.TestCase):
+    def render(self, params):
+        return render_triangles(HOOK_SCAD, {**FAST, **params}, openscadpath=os.path.join(REPO_ROOT, "lib"))
+
+    def test_zero_backplate_height_fits_to_content(self):
+        self.assertEqual(
+            fingerprint(self.render({"Backplate_Height": "0"})), fingerprint(self.render({}))
+        )
+
+    def test_backplate_height_extends_plate(self):
+        for alignment in ("bottom", "center"):
+            with self.subTest(alignment=alignment):
+                tris = self.render({"Backplate_Height": "152.4", "Vertical_Alignment": f'"{alignment}"'})
+                self.assertAlmostEqual(fingerprint(tris)["bbox_size_mm"][2], 152.4, delta=0.05)
+
+    def test_centered_arm_on_tall_plate(self):
+        tris = self.render({"Backplate_Height": "152.4", "Vertical_Alignment": '"center"'})
+        self.assertTrue(contains(tris, (0, -3.0, 0.0)), "arm is not centered on the plate")
+
+    def test_screw_mount_holes_are_clear_of_the_arm(self):
+        params = {
+            "Mount_Type": '"screws"',
+            "Screw_Hole_Columns": "1",
+            "Screw_Hole_Rows": "2",
+            "Screw_Hole_Inset": "19.05",
+            "Backplate_Height": "152.4",
+            "Vertical_Alignment": '"center"',
+        }
+        tris = self.render(params)
+        for z in (-57.15, 57.15):
+            with self.subTest(z=z):
+                self.assertFalse(contains(tris, (0, 0.8, z)), "no screw hole")
+        self.assertTrue(contains(tris, (0, 0.8, 0.0)))
+
+    def test_tilt_cap_is_60(self):
+        self.render({"Arm_Tilt_Angle": "60"})
+        with self.assertRaises(RuntimeError) as ctx:
+            self.render({"Arm_Tilt_Angle": "61"})
+        self.assertIn("Arm_Tilt_Angle must be between 0 and 60", str(ctx.exception))
 
 
 if __name__ == "__main__":

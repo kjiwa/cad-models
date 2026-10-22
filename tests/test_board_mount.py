@@ -14,7 +14,10 @@ import unittest
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, os.path.join(REPO_ROOT, "scripts"))
 
+sys.path.insert(0, os.path.dirname(__file__))
+
 from geometry_fingerprint import fingerprint, render_triangles  # noqa: E402
+from mesh_probe import contains  # noqa: E402
 
 LIB_PATH = os.path.join(REPO_ROOT, "lib")
 FAST = {"$fn": "32"}
@@ -121,6 +124,75 @@ class BoardMountTestCase(unittest.TestCase):
 
     def test_explicit_columns_can_widen_plate_past_body(self):
         self.assertAlmostEqual(plate_width("wall_holder", {"Columns": "3", "Hole_Columns": "3"}), 72.8, delta=0.05)
+
+
+# Plate y span in STL coordinates (the models are rotated 180 degrees about Z): 0 is the front face, where the countersinks open.
+PLATE_T = 1.5875
+SCREW_D = 4.7625
+HEAD_D = 9.525
+SCREW_MOUNT = {
+    "Mount_Type": '"screws"',
+    "Columns": "3",
+    "Rows": "3",
+    "Screw_Hole_Columns": "2",
+    "Screw_Hole_Rows": "3",
+    "Screw_Hole_Inset": "8",
+}
+
+
+def screw_positions(width, height, columns, rows, inset):
+    def axis(extent, count):
+        if count == 1:
+            return [0.0]
+        half = extent / 2 - inset
+        return [-half + i * 2 * half / (count - 1) for i in range(count)]
+
+    return [(x, z) for x in axis(width, columns) for z in axis(height, rows)]
+
+
+@unittest.skipUnless(shutil.which("openscad"), "openscad binary not found on PATH")
+class ScrewMountTestCase(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.params = {**FAST, **SCREW_MOUNT}
+        cls.tris = render_triangles(model_scad("wall_magnet_mount"), cls.params, openscadpath=LIB_PATH)
+        size = fingerprint(cls.tris)["bbox_size_mm"]
+        cls.positions = screw_positions(size[0], size[2], 2, 3, 8)
+
+    def test_holes_at_grid_positions(self):
+        self.assertEqual(len(self.positions), 6)
+        for x, z in self.positions:
+            with self.subTest(x=x, z=z):
+                self.assertFalse(contains(self.tris, (x, PLATE_T / 2, z)), "no hole through the plate")
+                self.assertTrue(contains(self.tris, (x + SCREW_D, PLATE_T / 2, z)), "plate beside the hole is missing")
+
+    def test_plate_is_solid_between_holes(self):
+        self.assertTrue(contains(self.tris, (0, PLATE_T / 2, self.positions[0][1] / 2)))
+
+    def test_countersink_opens_on_front_face(self):
+        x, z = self.positions[0]
+        r = (SCREW_D + HEAD_D) / 4
+        self.assertFalse(contains(self.tris, (x + r, 0.05, z)), "front face is not countersunk")
+        self.assertTrue(contains(self.tris, (x + r, PLATE_T - 0.05, z)), "back face is countersunk")
+
+    def test_zero_head_diameter_gives_straight_holes(self):
+        tris = render_triangles(
+            model_scad("wall_magnet_mount"), {**self.params, "Screw_Head_Diameter": "0"}, openscadpath=LIB_PATH
+        )
+        x, z = self.positions[0]
+        r = (SCREW_D + HEAD_D) / 4
+        self.assertFalse(contains(tris, (x, 0.05, z)), "hole is missing")
+        self.assertTrue(contains(tris, (x + r, 0.05, z)), "front face is still countersunk")
+
+    def test_single_row_and_column_are_centered(self):
+        tris = render_triangles(
+            model_scad("wall_magnet_mount"),
+            {**self.params, "Screw_Hole_Columns": "1", "Screw_Hole_Rows": "1"},
+            openscadpath=LIB_PATH,
+        )
+        self.assertFalse(contains(tris, (0, PLATE_T / 2, 0)))
+        x, z = self.positions[0]
+        self.assertTrue(contains(tris, (x, PLATE_T / 2, z)))
 
 
 if __name__ == "__main__":

@@ -27,8 +27,8 @@ Corner_Radius = 1.5875;
 Backplate_Thickness = 1.5875;
 
 /* [Pegboard] */
-// Mounting interface: modular Peglock wedge socket or monolithic integrated pegboard pegs
-Mount_Type = "peglock"; // [peglock: Modular Peglock Socket, monolithic: Integrated Pegboard Pegs]
+// Mounting interface: modular Peglock wedge socket, monolithic integrated pegboard pegs, or countersunk screw holes
+Mount_Type = "peglock"; // [peglock: Modular Peglock Socket, monolithic: Integrated Pegboard Pegs, screws: Screw Holes]
 
 // Pegboard hole columns the mount engages (0 = auto)
 Hole_Columns = 0;
@@ -47,6 +47,21 @@ Retention_Hook_Rise = 3.5;
 
 // Stabilizing pin rows below the retention hooks (ignored by the Peglock socket mount)
 Stabilizing_Pin_Pattern = "all"; // [all: All Rows, top_and_bottom: Top and Bottom Rows, top: Top Row Only, bottom: Bottom Row Only (Lowest Hole), none: Retention Hooks Only]
+
+// Screw hole columns across the backplate (screws mount)
+Screw_Hole_Columns = 1;
+
+// Screw hole rows down the backplate (screws mount)
+Screw_Hole_Rows = 1;
+
+// Distance from the backplate edge to the outermost screw hole centers (a single column or row sits centered)
+Screw_Hole_Inset = 19.05;
+
+// Screw shank hole diameter (4.7625 for 3/16")
+Screw_Hole_Diameter = 4.7625;
+
+// Countersink head diameter (9.525 for 3/8") (0 to disable)
+Screw_Head_Diameter = 9.525;
 
 /* [Hidden] */
 $fn = 128;
@@ -91,7 +106,12 @@ module MagnetMount() {
     pin_d = Pin_Diameter,
     board_t = Pegboard_Thickness,
     rise = Retention_Hook_Rise,
-    pin_pattern = Stabilizing_Pin_Pattern
+    pin_pattern = Stabilizing_Pin_Pattern,
+    screw_columns = Screw_Hole_Columns,
+    screw_rows = Screw_Hole_Rows,
+    screw_inset = Screw_Hole_Inset,
+    screw_d = Screw_Hole_Diameter,
+    head_d = Screw_Head_Diameter
   );
   MagnetGrid();
 }
