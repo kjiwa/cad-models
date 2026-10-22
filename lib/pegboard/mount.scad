@@ -62,7 +62,7 @@ module ScrewHole(screw_d, head_d, countersink, plate_t) {
 // Backer plate spanning y from -backplate_t to 0, plus Peglock sockets or monolithic pegs behind it.
 // socket_z shifts the Peglock sockets vertically from the plate center; standoff adds a foot at the plate bottom
 // once the plate extends below the sockets. Screw columns sit screw_column_inset from the plate sides (default screw_inset).
-module BoardMount(type, size, columns, backplate_t, hole_spacing, pin_d, board_t, rise, pin_pattern = "all", socket_z = 0, standoff = false, screw_columns = 1, screw_rows = 1, screw_inset = 0, screw_column_inset = undef, screw_d = 4.7625, head_d = 9.525, countersink = false) {
+module BoardMount(type, size, columns, backplate_t, hole_spacing, pin_d, board_t, rise, pin_pattern = "all", socket_z = 0, standoff = false, screw_columns = 1, screw_rows = 1, screw_inset = 0, screw_column_inset = undef, screw_d = 4.7625, head_d = 9.525, countersink = false, plate_rounding = SOCKET_ROUNDOVER) {
   column_inset = is_undef(screw_column_inset) ? screw_inset : screw_column_inset;
   hole_xs = screw_hole_offsets(size[0], screw_columns, column_inset);
   hole_zs = screw_hole_offsets(size[1], screw_rows, screw_inset);
@@ -97,7 +97,7 @@ module BoardMount(type, size, columns, backplate_t, hole_spacing, pin_d, board_t
   }
   difference() {
     translate([0, -backplate_t / 2, 0])
-      cuboid([size[0], backplate_t, size[1]], rounding = SOCKET_ROUNDOVER, except = [FRONT, BACK]);
+      cuboid([size[0], backplate_t, size[1]], rounding = plate_rounding, except = [FRONT, BACK]);
     if (type == "screws")
       for (x = hole_xs, z = hole_zs)
         translate([x, 0, z]) ScrewHole(screw_d, head_d, countersink, backplate_t);

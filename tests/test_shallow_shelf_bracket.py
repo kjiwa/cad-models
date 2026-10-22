@@ -65,11 +65,32 @@ class ShelfBracketTestCase(unittest.TestCase):
         tris = render()
         self.assertFalse(contains(tris, (152.4, 3, MID)), "no hole through the shelf arm")
         self.assertTrue(contains(tris, (152.4 + 3.5, 3, MID)), "shelf hole is too wide")
-        self.assertFalse(contains(tris, (152.4, 18, MID)), "no driver channel beyond the head seat")
+        self.assertFalse(contains(tris, (152.4, 14, MID)), "no driver channel beyond the head seat")
 
-    def test_boss_holds_the_head_seat_where_the_cove_is_thin(self):
+    def test_holes_are_round(self):
         tris = render()
-        self.assertTrue(contains(tris, (152.4 + 6.5, 12, MID)), "no boss around the shelf hole")
+        self.assertTrue(contains(tris, (152.4, 3, MID + 2.5)), "shelf hole is not round")
+        self.assertTrue(contains(tris, (3, 25.4, MID + 2.5)), "wall hole is not round")
+        self.assertFalse(contains(tris, (152.4, 3, MID + 2.2)), "shelf hole is too narrow")
+
+    def test_pad_holds_the_head_seat_where_the_cove_is_thin(self):
+        tris = render()
+        self.assertTrue(contains(tris, (152.4 + 8.5, 12, MID)), "no pad around the shelf hole")
+        self.assertTrue(contains(tris, (152.4 - 8.5, 14, MID)), "pad is short")
+
+    def test_pad_follows_the_side_roundover(self):
+        tris = render()
+        self.assertFalse(contains(tris, (152.4 + 5, 14.4, 0.1)), "pad sits proud of the roundover")
+
+    def test_head_recess_is_a_flat_counterbore_by_default(self):
+        tris = render()
+        self.assertFalse(contains(tris, (152.4 + 6, 12.9, MID)), "no recess above the seat")
+        self.assertTrue(contains(tris, (152.4 + 6, 12.5, MID)), "recess is cut below the seat")
+
+    def test_countersink_option_cuts_a_cone(self):
+        tris = render(Include_Screw_Countersink="true")
+        self.assertFalse(contains(tris, (152.4 + 6, 12.5, MID)), "no cone under the seat")
+        self.assertTrue(contains(tris, (152.4 + 6, 9, MID)), "cone is too wide")
 
     def test_contact_faces_are_flat(self):
         tris = render()
@@ -78,11 +99,17 @@ class ShelfBracketTestCase(unittest.TestCase):
         self.assertTrue(contains(tris, (80, 0.3, MID)), "shelf face is short")
         self.assertTrue(contains(tris, (0.3, 0.3, MID)), "the mounting corner is rounded")
 
-    def test_exposed_corners_and_bed_edge_are_eased(self):
+    def test_mounting_face_edges_are_crisp(self):
         tris = render()
-        self.assertFalse(contains(tris, (0.3, 50.5, MID)), "wall tip is square")
-        self.assertFalse(contains(tris, (50, 0.5, 0.2)), "bed-side edge is square")
-        self.assertTrue(contains(tris, (50, 3, 0.2)), "bed-side face is too narrow")
+        self.assertTrue(contains(tris, (0.3, 40, 0.1)), "wall face edge is rounded")
+        self.assertTrue(contains(tris, (80, 0.3, 0.1)), "shelf face edge is rounded")
+        self.assertTrue(contains(tris, (0.3, 40, WIDTH - 0.1)), "wall face edge is rounded")
+
+    def test_exposed_edges_are_eased(self):
+        tris = render()
+        self.assertFalse(contains(tris, (3, 50.5, 0.1)), "wall top edge is square")
+        self.assertFalse(contains(tris, (105, 12.0, 0.1)), "cove edge is square")
+        self.assertTrue(contains(tris, (105, 12.0, MID)), "cove is short")
 
 
 if __name__ == "__main__":
