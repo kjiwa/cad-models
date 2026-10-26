@@ -16,6 +16,9 @@ Template_Width = 76.2;
 // Workpiece thickness under the top plate (19.05 for 3/4")
 Template_Overhang_Height = 19.05;
 
+// Top plate thickness, at least the bit bearing height (12.7 for 1/2")
+Template_Plate_Thickness = 12.7;
+
 // Fence wall thickness (6.35 for 1/4")
 Template_Wall_Thickness = 6.35;
 
@@ -36,14 +39,8 @@ Cleat_Thickness = 19.05;
 Cleat_Height = 95.25;
 
 /* [Router Bit] */
-// Pattern bit diameter, cuts a dog-bone relief at each closed corner of the opening (22.225 for 7/8") (0 to disable)
-Router_Bit_Diameter = 22.225;
-
-// Bit cutter height (31.75 for 1-1/4")
-Router_Bit_Cutter_Height = 31.75;
-
-// Bearing height above the cutter (6.35 for 1/4")
-Router_Bit_Guide_Bushing_Height = 6.35;
+// Diameter of the smallest pattern bit, which finishes the corners and sizes the dog-bone reliefs (6.35 for 1/4") (0 to disable)
+Corner_Bit_Diameter = 6.35;
 
 /* [Screw Holes] */
 // Screw hole diameter (4.7625 for 3/16")
@@ -61,33 +58,39 @@ Screw_Hole_Offset = 25.4;
 /* [Hidden] */
 $fn = 128;
 
-top_wall_thickness = (Router_Bit_Cutter_Height - Template_Overhang_Height) / 2 + Router_Bit_Guide_Bushing_Height;
-template_depth = top_wall_thickness + Template_Overhang_Height;
+template_depth = Template_Plate_Thickness + Template_Overhang_Height;
 cleat_start = (Template_Length - Cleat_Height) / 2;
-bit_radius = Router_Bit_Diameter / 2;
+bit_radius = Corner_Bit_Diameter / 2;
+RELIEF_CLEARANCE = 0.2;
 screw_countersink_diameter = (Screw_Head_Diameter - Screw_Hole_Diameter) * Template_Wall_Thickness / Screw_Head_Thickness + Screw_Hole_Diameter;
 cleat_top_slope = Cleat_Thickness * tan(Cleat_Angle);
 
 assert(Cleat_Height <= Template_Length, "Cleat_Height must not exceed Template_Length");
 assert(Cleat_Height > cleat_top_slope, "Cleat_Angle is too steep for Cleat_Height");
-assert(Router_Bit_Diameter >= 0, "Router_Bit_Diameter must not be negative");
+assert(Corner_Bit_Diameter >= 0, "Corner_Bit_Diameter must not be negative");
+assert(Template_Plate_Thickness > 0, "Template_Plate_Thickness must be positive");
 assert(Template_Width > Cleat_Thickness + bit_radius, "Template_Width is too small for the cleat and bit relief");
 assert(cleat_start > bit_radius, "Template_Length is too short for the cleat and bit relief");
 assert(Screw_Head_Diameter > Screw_Hole_Diameter, "Screw_Head_Diameter must exceed Screw_Hole_Diameter");
 assert(Screw_Hole_Offset < cleat_start, "Screw_Hole_Offset must keep the screws clear of the cleat opening");
-assert(Router_Bit_Cutter_Height > Template_Overhang_Height, "Router_Bit_Cutter_Height must exceed Template_Overhang_Height");
 
 cleat_outline = [[0, 0], [Cleat_Thickness, 0], [Cleat_Thickness, Cleat_Height], [0, Cleat_Height - cleat_top_slope]];
 
-// Circle of the bit diameter centered on the corner at `index`: it opens into the cleat opening, so the bearing can
-// follow it into the corner and the bit cuts the corner square.
+// Slot along the bisector of the closed corner at `index`, from the bit touching both walls to the bit edge on the
+// corner. It opens into the cleat opening, so a bearing the size of the bit can follow it into the corner and cut it square.
 module Relief(index) {
-  translate(cleat_outline[index]) circle(d = Router_Bit_Diameter);
+  corner = cleat_outline[index];
+  toward_prev = unit(cleat_outline[(index + 3) % 4] - corner);
+  toward_next = unit(cleat_outline[(index + 1) % 4] - corner);
+  bisector = unit(toward_prev + toward_next);
+  half_angle = vector_angle(toward_prev, toward_next) / 2;
+  hull() for (distance = [bit_radius / sin(half_angle), bit_radius])
+    translate(corner + bisector * distance) circle(r = bit_radius + RELIEF_CLEARANCE);
 }
 
 module CleatOpening() {
   polygon(cleat_outline);
-  if (Router_Bit_Diameter > 0) {
+  if (Corner_Bit_Diameter > 0) {
     Relief(1);
     Relief(2);
   }
@@ -97,7 +100,7 @@ module TemplateBase() {
   size = [Template_Width + Template_Wall_Thickness, Template_Length, template_depth];
   difference() {
     cuboid(size, anchor = BOTTOM + LEFT + FRONT);
-    translate([Template_Wall_Thickness, -1, -top_wall_thickness]) cube([size.x, size.y + 2, template_depth]);
+    translate([Template_Wall_Thickness, -1, -Template_Plate_Thickness]) cube([size.x, size.y + 2, template_depth]);
     translate([-Template_Wall_Thickness, cleat_start, 0]) cube([2 * Template_Wall_Thickness, Cleat_Height, 2 * template_depth]);
     translate([0, cleat_start, -Template_Overhang_Height]) cube([2 * Template_Wall_Thickness, Cleat_Height, 2 * Template_Overhang_Height]);
   }
@@ -124,7 +127,7 @@ module Template() {
       OuterShape();
     }
     translate([Template_Wall_Thickness, cleat_start, Template_Overhang_Height - 1])
-      linear_extrude(height = top_wall_thickness + 2) CleatOpening();
+      linear_extrude(height = Template_Plate_Thickness + 2) CleatOpening();
     for (y = [Screw_Hole_Offset, Template_Length - Screw_Hole_Offset])
       translate([Template_Wall_Thickness, y, Template_Overhang_Height / 2]) rotate([0, -90, 0]) Screw();
   }
