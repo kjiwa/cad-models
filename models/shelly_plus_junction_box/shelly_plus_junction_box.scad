@@ -98,10 +98,10 @@ wago_housing_x = Wago_Connector_Width + 2 * Inner_Wall_Thickness;
 shelly_housing_x = Shelly_Width + 2 * Inner_Wall_Thickness;
 inner_x = 2 * (Wago_Connector_Height + Wago_Wire_Space) + Shelly_Width + 2 * Inner_Wall_Thickness;
 inner_y = max(
-  Wago_Connector_Left_Count * (Wago_Connector_Width + Inner_Wall_Thickness),
-  Wago_Connector_Right_Count * (Wago_Connector_Width + Inner_Wall_Thickness),
-  Shelly_Height + Shelly_Wire_Space
-) + Inner_Wall_Thickness;
+  Wago_Connector_Left_Count * wago_housing_x - 2 * Outer_Wall_Thickness,
+  Wago_Connector_Right_Count * wago_housing_x - 2 * Outer_Wall_Thickness,
+  Shelly_Height + Shelly_Wire_Space + Inner_Wall_Thickness
+);
 inner_z = max(Wago_Connector_Depth, Shelly_Depth + Shelly_Wire_Space);
 outer_x = inner_x + 2 * Outer_Wall_Thickness;
 outer_y = inner_y + 2 * Outer_Wall_Thickness;
@@ -208,7 +208,7 @@ module Lid() {
       translate([outer_x / 2, outer_y / 2, 0])
         offset_sweep(
           rect([outer_x, outer_y], rounding = Corner_Radius),
-          height = Outer_Wall_Thickness, top = os_circle(r = Outer_Wall_Thickness / 2)
+          height = Outer_Wall_Thickness, bottom = os_circle(r = Outer_Wall_Thickness / 2)
         );
       translate([Outer_Wall_Thickness + Lid_Clearance, Outer_Wall_Thickness + Lid_Clearance, Outer_Wall_Thickness - EPSILON])
         cube([inner_x - 2 * Lid_Clearance, inner_y - 2 * Lid_Clearance, Outer_Wall_Thickness + EPSILON]);
@@ -223,7 +223,7 @@ module Lid() {
 module MountTab() {
   difference() {
     cube([Mount_Width, Mount_Tab_Length, Outer_Wall_Thickness]);
-    translate([Mount_Tab_Length / 2, Mount_Width / 2, -1])
+    translate([Mount_Width / 2, Mount_Tab_Length / 2, -1])
       cylinder(d = Mount_Screw_Hole_Diameter, h = Outer_Wall_Thickness + 2);
   }
 }

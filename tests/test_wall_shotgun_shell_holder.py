@@ -110,6 +110,15 @@ class ShotgunShellHolderTestCase(unittest.TestCase):
         self.assertTrue(solid(render({"Entry_Chamfer": "0"}), x, depth, HEIGHT - 0.1))
         self.assertTrue(solid(render(), x, depth, HEIGHT - 3))
 
+    def test_entry_chamfer_is_a_45_degree_flare_of_the_chamfer_size(self):
+        edge = column_x(0) + SHELL / 2
+        depth = WALL + RIM_T + 1
+        tris = render()
+        self.assertFalse(solid(tris, edge + 0.8, depth, HEIGHT - 0.05), "flare is narrower than the chamfer at the top")
+        self.assertTrue(solid(tris, edge + 1.2, depth, HEIGHT - 0.05), "flare is wider than the chamfer at the top")
+        self.assertFalse(solid(tris, edge + 0.4, depth, HEIGHT - 0.5), "flare is not 45 degrees")
+        self.assertTrue(solid(tris, edge + 0.7, depth, HEIGHT - 0.5), "flare is not 45 degrees")
+
     def test_outer_edges_are_rounded_and_the_back_is_square(self):
         x = WIDTH / 2 - 0.05
         self.assertFalse(solid(render(), x, FRONT / 2, HEIGHT - 0.05))

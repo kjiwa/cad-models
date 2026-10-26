@@ -87,10 +87,28 @@ class ShellyPlusJunctionBoxTestCase(unittest.TestCase):
             self.assertFalse(contains(tris, (mid_x, edge - inward * 0.1, 3)), "plug is deeper than the opening less clearance")
             self.assertTrue(contains(tris, (mid_x, edge + inward * 0.1, 3)), "plug is shallower than the opening less clearance")
 
+    def test_lid_is_rounded_on_the_outer_face_and_square_where_it_meets_the_box(self):
+        tris = render("lid")
+        mid_y = OUTER_Y / 2
+        self.assertFalse(contains(tris, (0.05, mid_y, 0.05)), "outer face edge is square")
+        self.assertTrue(contains(tris, (0.05, mid_y, WALL - 0.05)), "mating face edge is rounded")
+
     def test_lid_size(self):
         size = fingerprint(render("lid"))["bbox_size_mm"]
         for got, want in zip(size, (OUTER_X, OUTER_Y, 2 * WALL)):
             self.assertAlmostEqual(got, want, delta=0.05)
+
+    def test_wago_row_fits_inside_the_box_at_the_largest_count(self):
+        box_y = fingerprint(render("box", Wago_Connector_Left_Count=4))["bbox_size_mm"][1]
+        lid_y = fingerprint(render("lid", Wago_Connector_Left_Count=4))["bbox_size_mm"][1]
+        self.assertAlmostEqual(box_y, lid_y, delta=0.05, msg="Wago row pokes through the outer wall")
+        self.assertGreaterEqual(lid_y, 4 * (18.8 + 2 * WALL), "box is shorter than the Wago row")
+
+    def test_mount_tab_hole_is_centered_when_width_and_length_differ(self):
+        tris = render("mount", Mount_Width=15, Mount_Tab_Length=30)
+        self.assertFalse(contains(tris, (7.5 + 2.2, -15, 1)), "tab hole is off center")
+        self.assertFalse(contains(tris, (7.5 - 2.2, -15, 1)), "tab hole is off center")
+        self.assertTrue(contains(tris, (7.5 + 2.8, -15, 1)), "tab hole is too wide")
 
     def test_mount_size_matches_the_original(self):
         size = fingerprint(render("mount"))["bbox_size_mm"]

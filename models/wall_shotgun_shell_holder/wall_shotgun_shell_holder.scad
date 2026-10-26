@@ -112,7 +112,7 @@ module ChannelCutter(width, from, to) {
     if (Entry_Chamfer > 0)
       hull() {
         translate([-width / 2, from, length - Entry_Chamfer - 1]) cube([width, to - from, 0.01]);
-        translate([-width / 2 - Entry_Chamfer - 1, from, length - 1]) cube([width + 2 * Entry_Chamfer + 2, to - from, 0.01]);
+        translate([-width / 2 - Entry_Chamfer - 1, from, length]) cube([width + 2 * Entry_Chamfer + 2, to - from, 0.01]);
       }
   }
 }
