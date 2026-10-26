@@ -1,0 +1,8 @@
+{
+    "parameterSets": {
+        "Two_Column_Screw_Mount": {
+            "Mount_Type": "screws",
+            "Screw_Hole_Rows": "2"
+        }
+    }
+}

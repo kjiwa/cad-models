@@ -50,6 +50,8 @@ def configurations():
         yield f"wall_holder {name}", scad("wall_holder"), params
     yield "wall_bit_holder default", scad("wall_bit_holder"), {}
     yield "wall_bit_holder screws", scad("wall_bit_holder"), {"Mount_Type": "screws"}
+    yield "wall_shotgun_shell_holder default", scad("wall_shotgun_shell_holder"), {}
+    yield "wall_shotgun_shell_holder screws", scad("wall_shotgun_shell_holder"), {"Mount_Type": "screws", "Screw_Hole_Rows": "2"}
     yield "wall_magnet_mount default", scad("wall_magnet_mount"), {}
     yield "wall_hook default", scad("wall_hook"), {}
 

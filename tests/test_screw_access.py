@@ -87,7 +87,7 @@ def hole_centres(tris):
     return centres
 
 
-EAR_MODELS = ("wall_bit_holder", "wall_magnet_mount")
+EAR_MODELS = ("wall_bit_holder", "wall_magnet_mount", "wall_shotgun_shell_holder")
 EAR_CONFIGS = (
     ("rows_1", {"Screw_Hole_Rows": "1"}),
     ("rows_2", {"Screw_Hole_Rows": "2", "Screw_Hole_Inset": "6.35"}),

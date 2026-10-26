@@ -29,6 +29,7 @@ OVERSHOOT_CASES = (
     ("wall_hook", {"Arm_Width": "45"}, 45.0, 47.4),
     ("wall_magnet_mount", {"Columns": "3"}, 44.0, 47.4),
     ("wall_bit_holder", {"Columns": "7"}, 7 * (2 * 6.75 / 3**0.5 + 2 * 2.68), 98.2),
+    ("wall_shotgun_shell_holder", {"Columns": "1", "Wall_Thickness": "11"}, 45.0, 47.4),
 )
 
 CLASS_CHECK = """
@@ -104,7 +105,7 @@ class BoardMountTestCase(unittest.TestCase):
         self.assertNotIn("ERROR", run_echo(MONOLITHIC_CHECK))
 
     def test_hole_columns_validation(self):
-        for model in ("wall_holder", "wall_hook", "wall_magnet_mount", "wall_bit_holder"):
+        for model in ("wall_holder", "wall_hook", "wall_magnet_mount", "wall_bit_holder", "wall_shotgun_shell_holder"):
             for value, message in VALIDATION_CASES:
                 with self.subTest(model=model, value=value):
                     output = render_output(model, value)
