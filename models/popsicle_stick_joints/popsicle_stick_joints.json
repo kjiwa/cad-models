@@ -1,0 +1,24 @@
+{
+    "parameterSets": {
+        "Cap": {
+            "Stick_Count": "1",
+            "Joint_Angle": "0"
+        },
+        "Two_Way_30": {
+            "Joint_Angle": "30"
+        },
+        "Two_Way_45": {
+            "Joint_Angle": "45"
+        },
+        "Two_Way_60": {
+            "Joint_Angle": "60"
+        },
+        "Two_Way_120": {
+            "Joint_Angle": "120"
+        },
+        "Straight": {
+            "Joint_Angle": "180"
+        }
+    },
+    "fileFormatVersion": "1"
+}
