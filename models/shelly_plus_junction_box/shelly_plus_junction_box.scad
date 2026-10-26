@@ -65,7 +65,7 @@ Wire_Hole_Diameter = 10;
 Corner_Radius = 3;
 
 /* [Lid] */
-// Diameter of each corner screw post
+// Width of each square corner screw post
 Post_Diameter = 7;
 
 // Diameter of the pilot hole in each post
@@ -178,8 +178,12 @@ module BoxShell() {
 
 module Posts() {
   for (c = post_centers) {
+    inward = [c.x < outer_x / 2 ? 1 : -1, c.y < outer_y / 2 ? 1 : -1, 0];
     translate([c.x, c.y, Outer_Wall_Thickness - EPSILON])
-      cylinder(d = Post_Diameter, h = post_height + EPSILON);
+      cuboid(
+        [Post_Diameter, Post_Diameter, post_height + EPSILON],
+        rounding = Post_Diameter / 2, edges = [inward], anchor = BOTTOM
+      );
   }
 }
 

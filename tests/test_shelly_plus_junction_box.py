@@ -58,6 +58,22 @@ class ShellyPlusJunctionBoxTestCase(unittest.TestCase):
             self.assertTrue(contains(tris, (x + 2, y, POST_TOP - 0.3)), f"post short at {x},{y}")
             self.assertFalse(contains(tris, (x + 2, y, POST_TOP + 0.3)), f"post tall at {x},{y}")
 
+    def test_each_post_fills_its_corner(self):
+        tris = render("box")
+        for x in (WALL + 0.5, OUTER_X - WALL - 0.5):
+            for y in (WALL + 0.5, OUTER_Y - WALL - 0.5):
+                self.assertTrue(contains(tris, (x, y, 10)), f"corner empty at {x},{y}")
+
+    def test_each_post_is_rounded_on_its_inward_edge(self):
+        tris = render("box")
+        for x, y in POST_CENTERS:
+            dx = 1 if x < OUTER_X / 2 else -1
+            dy = 1 if y < OUTER_Y / 2 else -1
+            self.assertFalse(
+                contains(tris, (x + dx * (POST_D / 2 - 0.3), y + dy * (POST_D / 2 - 0.3), 10)),
+                f"inward edge of the post at {x},{y} is not rounded",
+            )
+
     def test_posts_stay_clear_of_the_wago_housings(self):
         tris = render("box")
         self.assertFalse(contains(tris, (15, WALL + POST_D / 2, 10)), "post reaches the Wago housing")

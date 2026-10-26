@@ -56,7 +56,7 @@ A 3D-printable junction box for a Shelly Plus module and Wago connectors, with a
 
 | Parameter | Default | Options | Description |
 | --- | --- | --- | --- |
-| `Post_Diameter` | `7` |  | Diameter of each corner screw post |
+| `Post_Diameter` | `7` |  | Width of each square corner screw post |
 | `Screw_Pilot_Diameter` | `2.5` |  | Diameter of the pilot hole in each post |
 | `Screw_Hole_Diameter` | `3.5` |  | Diameter of the lid screw clearance hole |
 | `Screw_Head_Diameter` | `7` |  | Diameter of the lid screw head countersink |
