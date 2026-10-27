@@ -59,7 +59,7 @@ A 3D-printable half of a split clamp that holds an optic rail above a blaster ra
 
 ## Printing
 
-- **Quantity**: Print two identical halves; turn one half 180 degrees about the rail axis to close the clamp.
+- **Quantity**: Print two identical halves; turn one half end for end (180 degrees about the axis running from the blaster rail to the optic rail) to close the clamp.
 - **Material**: PETG or ABS.
 - **Orientation**: On the outer face, as modeled, so the screw holes stand upright.
 - **Assembly**: Close the halves around the rails so each lug drops into a cross-slot.
