@@ -1,0 +1,65 @@
+# Daisy Optic Bracket
+
+A 3D-printable half of a split clamp that holds an optic rail above a blaster rail. The two halves close sideways around both rails and two screws clamp them.
+
+## Features
+
+- The halves clamp the optic rail and the blaster rail together.
+- Lugs drop into adjacent cross-slots of the blaster rail as the halves close.
+- The two outer long corners, the end faces and the rail channel mouths are chamfered.
+- Set both rail profiles, the cross-slot size and pitch, the lug count and clearance, and the screw layout.
+
+<!-- BEGIN GENERATED -->
+
+## Parameters
+
+### Optic Rail
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Optic_Rail_Width_Large` | `12.7` |  | Width of the wide part of the optic rail |
+| `Optic_Rail_Width_Small` | `8.8` |  | Width of the narrow part of the optic rail |
+| `Optic_Rail_Depth_Large` | `4.6` |  | Depth of the wide part of the optic rail |
+| `Optic_Rail_Depth_Small` | `2.5` |  | Depth of the narrow part of the optic rail measured from the top |
+| `Optic_Rail_Depth` | `10` |  | Depth of the optic rail |
+
+### Blaster Rail
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Blaster_Rail_Width_Large` | `18` |  | Width of the wide part of the blaster rail |
+| `Blaster_Rail_Width_Small` | `12.5` |  | Width of the narrow part of the blaster rail |
+| `Blaster_Rail_Depth_Large` | `4.2` |  | Depth of the wide part of the blaster rail |
+| `Blaster_Rail_Depth_Small` | `3.1` |  | Depth of the narrow part of the blaster rail measured from the top |
+| `Blaster_Rail_Depth` | `7.3` |  | Depth of the blaster rail |
+
+### Rail Slots
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Rail_Slot_Width` | `5.3` |  | Width of a blaster rail cross-slot along the rail |
+| `Rail_Slot_Pitch` | `10.1` |  | Distance between adjacent cross-slot centers |
+| `Rail_Slot_Depth` | `4.7625` |  | Depth of a cross-slot from the rail top (4.7625 for 3/16") |
+| `Lug_Clearance` | `0.3` |  | Gap left around each lug in its slot |
+| `Lug_Count` | `2` | 0 to 4, step 1 | Number of lugs (0 to disable) |
+
+### Bracket
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Bracket_Length` | `51.4` |  | Length of the bracket along the rails |
+| `Bracket_Thickness` | `5` |  | Wall thickness outside the wider rail |
+| `Screw_Diameter` | `4` |  | Diameter of the clamping screw holes |
+| `Screw_Spacing` | `35.4` |  | Distance between the two screw holes |
+| `Screw_Offset` | `3.75` |  | Offset of the screw axis from the rail seam towards the optic |
+| `Outer_Chamfer` | `2.5` |  | Size of the chamfer on the two outer long corners |
+| `Edge_Chamfer` | `0.5` |  | Size of the chamfer on the end faces and rail channel mouths |
+
+<!-- END GENERATED -->
+
+## Printing
+
+- **Quantity**: Print two identical halves; turn one half 180 degrees about the rail axis to close the clamp.
+- **Material**: PETG or ABS.
+- **Orientation**: On the outer face, as modeled, so the screw holes stand upright.
+- **Assembly**: Close the halves around the rails so each lug drops into a cross-slot.

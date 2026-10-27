@@ -10,6 +10,7 @@ Parametric, 3D-printable OpenSCAD models, each in its own directory under `model
 - `models/closet_pole_socket` — closed or open socket for a closet pole
 - `models/corner_cover` — L-shaped guard for the sharp outer corner of cabinet trim
 - `models/curtain_rod_mounting_plate` — mounting plate for curtain rod brackets
+- `models/daisy_optic_bracket` — split clamp that holds an optic rail above a blaster rail, with lugs for the rail cross-slots
 - `models/entryway_table` — plywood entryway table with angled legs
 - `models/french_cleat_router_template` — router template for cutting a French cleat, with optional dog-bone corner reliefs
 - `models/garage_door_rail_end_cap` — TPU bumper cap for a garage door rail end
