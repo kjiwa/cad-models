@@ -12,6 +12,7 @@ Parametric, 3D-printable OpenSCAD models, each in its own directory under `model
 - `models/entryway_table` — plywood entryway table with angled legs
 - `models/french_cleat_router_template` — router template for cutting a French cleat, with optional dog-bone corner reliefs
 - `models/garage_door_rail_end_cap` — TPU bumper cap for a garage door rail end
+- `models/glock_front_sight_tool` — slide cap with a sight slot for aligning a Glock front sight
 - `models/heater_vent_switch_cover` — cover for a heater vent switch
 - `models/keyhole_router_template` — router template for hanging slots in frames and other workpieces
 - `models/knob` — fluted or knurled knob with a captive nut pocket, for stop blocks and miter gauge handles
