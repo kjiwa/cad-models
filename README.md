@@ -10,7 +10,7 @@ Parametric, 3D-printable OpenSCAD models, each in its own directory under `model
 - `models/corner_cover` — L-shaped guard for the sharp outer corner of cabinet trim
 - `models/curtain_rod_mounting_plate` — mounting plate for curtain rod brackets
 - `models/entryway_table` — plywood entryway table with angled legs
-- `models/french_cleat_router_template` — router template for cutting a French cleat, with dog-bone corner reliefs
+- `models/french_cleat_router_template` — router template for cutting a French cleat, with optional dog-bone corner reliefs
 - `models/garage_door_rail_end_cap` — TPU bumper cap for a garage door rail end
 - `models/heater_vent_switch_cover` — cover for a heater vent switch
 - `models/keyhole_router_template` — router template for hanging slots in frames and other workpieces

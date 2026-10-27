@@ -30,7 +30,7 @@ Edge_Chamfer = 1.5875;
 
 /* [Cleat] */
 // Angle of the cleat bevel
-Cleat_Angle = 30; // [15:1:45]
+Cleat_Angle = 30; // [0:1:45]
 
 // Cleat thickness (19.05 for 3/4")
 Cleat_Thickness = 19.05;
@@ -39,8 +39,8 @@ Cleat_Thickness = 19.05;
 Cleat_Height = 95.25;
 
 /* [Router Bit] */
-// Diameter of the smallest pattern bit, which finishes the corners and sizes the dog-bone reliefs (6.35 for 1/4") (0 to disable)
-Corner_Bit_Diameter = 6.35;
+// Corner bit diameter for dog-bone reliefs that let it cut square inside corners (6.35 for 1/4") (0 to disable)
+Corner_Bit_Diameter = 0;
 
 /* [Screw Holes] */
 // Screw hole diameter (4.7625 for 3/16")
