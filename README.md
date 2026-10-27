@@ -3,15 +3,18 @@
 Parametric, 3D-printable OpenSCAD models, each in its own directory under `models/` with a `.scad` source, a
 `Makefile`, and a README covering its own parameters and printing recommendations:
 
+- `models/ar15_mag_release_tool` — thumb-head plunger for pressing a recessed AR-15 magazine release
 - `models/bifold_door_lock` — lock that holds a bifold door pair together
 - `models/bora_centipede_riser` — risers and locking nuts for Bora Centipede work stands
 - `models/closet_door_floor_guide` — floor guide for closet doors
 - `models/closet_pole_socket` — closed or open socket for a closet pole
 - `models/corner_cover` — L-shaped guard for the sharp outer corner of cabinet trim
 - `models/curtain_rod_mounting_plate` — mounting plate for curtain rod brackets
+- `models/daisy_optic_bracket` — split clamp that holds an optic rail above a blaster rail, with lugs for the rail cross-slots
 - `models/entryway_table` — plywood entryway table with angled legs
 - `models/french_cleat_router_template` — router template for cutting a French cleat, with optional dog-bone corner reliefs
 - `models/garage_door_rail_end_cap` — TPU bumper cap for a garage door rail end
+- `models/glock_front_sight_tool` — slide cap with a sight slot for aligning a Glock front sight
 - `models/heater_vent_switch_cover` — cover for a heater vent switch
 - `models/keyhole_router_template` — router template for hanging slots in frames and other workpieces
 - `models/knob` — fluted or knurled knob with a captive nut pocket, for stop blocks and miter gauge handles
