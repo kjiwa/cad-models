@@ -147,6 +147,9 @@ class FrenchCleatRouterTemplateTestCase(unittest.TestCase):
         tris = render(Cleat_Angle=0)
         self.assertFalse(contains(tris, _plate(2, CLEAT_HEIGHT - 0.5)), "rectangular opening is too short")
         self.assertTrue(contains(tris, _plate(2, CLEAT_HEIGHT + 0.5)), "rectangular opening is too tall")
+        far = CLEAT_THICKNESS - 2
+        self.assertFalse(contains(tris, _plate(far, CLEAT_HEIGHT - 0.5)), "top edge slopes across the opening")
+        self.assertTrue(contains(tris, _plate(far, CLEAT_HEIGHT + 0.5)), "top edge is too tall across the opening")
 
     def test_screw_holes_match_the_original_in_millimeters(self):
         tris = render()
