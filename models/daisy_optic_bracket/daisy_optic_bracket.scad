@@ -84,7 +84,7 @@ Screw_Head_Diameter = 7;
 // Height of the screw head
 Screw_Head_Height = 4;
 
-// Length of the screw under the head
+// Length of the screw under the head, widening the bracket to fit
 Screw_Length = 22;
 
 // Nut across the flats
@@ -99,7 +99,11 @@ Pocket_Clearance = 0.3;
 /* [Hidden] */
 $fn = 128;
 
-Half_Width = (max(Optic_Rail_Width_Large, Blaster_Rail_Width_Large) + 2 * Bracket_Thickness) / 2;
+Counterbore_Depth = Screw_Head_Height + 0.5;
+Half_Width = max(
+  (max(Optic_Rail_Width_Large, Blaster_Rail_Width_Large) + 2 * Bracket_Thickness) / 2,
+  (Counterbore_Depth + Screw_Length + 0.5) / 2
+);
 Lug_Length = Rail_Slot_Width - Lug_Clearance;
 Lug_Floor = Rail_Slot_Depth - Lug_Clearance;
 Join_Overlap = 0.01;
@@ -107,7 +111,6 @@ Wall_Min = 2.5;
 Nut_Seat_Gap = 0.3;
 
 Clamp_Width = 2 * Half_Width;
-Counterbore_Depth = Screw_Head_Height + 0.5;
 Counterbore_Diameter = Screw_Head_Diameter + Pocket_Clearance;
 Screw_End = Counterbore_Depth + Screw_Length;
 Nut_Pocket_Depth = max(Clamp_Width - Screw_End + Nut_Thickness + Nut_Seat_Gap, Nut_Thickness + Nut_Seat_Gap);
@@ -140,10 +143,9 @@ assert(
   Screw_Offset - Screw_Diameter / 2 > -Blaster_Rail_Depth && Screw_Offset + Screw_Diameter / 2 < Optic_Rail_Depth,
   "Screw holes must stay within the rail stack depth"
 );
-assert(Screw_End <= Clamp_Width - 0.5, "Screw_Length leaves the screw end proud of the clamp");
 assert(
   Pocket_Wall - max(Counterbore_Depth, Nut_Pocket_Depth) >= Wall_Min,
-  "Pockets must leave at least 2.5 mm of wall"
+  "Pockets must leave at least 2.5 mm of wall; use a longer screw or a larger Bracket_Thickness"
 );
 
 function RailHalfProfile(width_large, width_small, depth_large, depth_small, depth) = [

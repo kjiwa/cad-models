@@ -156,6 +156,23 @@ class DaisyOpticBracketTestCase(unittest.TestCase):
             self.assertGreaterEqual(floor - x - STEP, WALL_MIN - STEP, f"wall under pocket at z = {z:.1f} is too thin")
             self.assertAlmostEqual(x + STEP, CAVITY_WALL_X, delta=2 * STEP)
 
+    def test_longer_screw_widens_the_bracket_and_keeps_the_screw_end_inside(self):
+        for length, half_width, nut_depth in ((22, 14, 5.0), (25, 15, 4.0), (30, 17.5, 4.0)):
+            with self.subTest(length=length):
+                tris = render(Lug_Count=0, Screw_Length=length)
+                self.assertAlmostEqual(fingerprint(tris)["bbox_size_mm"][2], half_width - 4.4, delta=TOL)
+                self.assertEqual(shell_count(tris), 1)
+                screw_end = HEAD_DEPTH + length
+                self.assertLessEqual(screw_end, 2 * half_width - 0.5 + TOL)
+                for z, floor in ((HEAD_Z, half_width - HEAD_DEPTH), (NUT_Z, half_width - nut_depth)):
+                    probe = lambda x: contains(tris, (z + 3, SCREW_Y, half_width - x))  # noqa: E731
+                    self.assertFalse(probe(floor + TOL), f"pocket floor is not at {floor}")
+                    self.assertTrue(probe(floor - TOL), f"pocket is deeper than {floor}")
+                    x = floor - TOL
+                    while probe(x):
+                        x -= STEP
+                    self.assertGreaterEqual(floor - x - STEP, WALL_MIN - STEP, "wall under pocket is too thin")
+
     def test_rail_cavities_match_the_source_profile(self):
         tris = render()
         z = 26
@@ -206,8 +223,7 @@ class DaisyOpticBracketTestCase(unittest.TestCase):
                 {"Bracket_Thickness": "20", "Outer_Chamfer": "10"},
                 "Outer_Chamfer must be less than half the rail stack depth",
             ),
-            ({"Screw_Length": "25"}, "Screw_Length leaves the screw end proud of the clamp"),
-            ({"Screw_Length": "20"}, "Pockets must leave at least 2.5 mm of wall"),
+            ({"Screw_Length": "20"}, "use a longer screw or a larger Bracket_Thickness"),
             ({"Screw_Offset": "-6"}, "Screw holes must stay within the rail stack depth"),
             ({"Screw_Offset": "9"}, "Screw holes must stay within the rail stack depth"),
         ]

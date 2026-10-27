@@ -62,7 +62,7 @@ A 3D-printable half of a split clamp that holds an optic rail above a blaster ra
 | `Screw_Offset` | `3.75` |  | Offset of the screw axis from the rail seam towards the optic |
 | `Screw_Head_Diameter` | `7` |  | Diameter of the screw head |
 | `Screw_Head_Height` | `4` |  | Height of the screw head |
-| `Screw_Length` | `22` |  | Length of the screw under the head |
+| `Screw_Length` | `22` |  | Length of the screw under the head, widening the bracket to fit |
 | `Nut_Across_Flats` | `7` |  | Nut across the flats |
 | `Nut_Thickness` | `3.2` |  | Nut thickness |
 | `Pocket_Clearance` | `0.3` |  | Gap added around the screw head and the nut |
@@ -74,5 +74,5 @@ A 3D-printable half of a split clamp that holds an optic rail above a blaster ra
 - **Quantity**: Print two identical halves; turn one half end for end (180 degrees about the axis running from the blaster rail to the optic rail) to close the clamp. Each half has the counterbore at the screw hole nearer the origin end of the printed model and the nut pocket at the far hole. Turning one half end for end puts its counterbore opposite the other half's nut pocket at each screw.
 - **Material**: PETG or ABS.
 - **Orientation**: On the outer face, as modeled, so the screw holes stand upright and the pockets bridge.
-- **Hardware**: Two M4 x 22 socket head cap screws and two M4 nuts, one of each per joint. The screw holes are 4.4 mm clearance holes.
+- **Hardware**: Two M4 x 22 socket head cap screws and two M4 nuts, one of each per joint. A longer screw widens the bracket automatically. The screw holes are 4.4 mm clearance holes.
 - **Assembly**: Close the halves around the rails so each lug drops into a cross-slot.
