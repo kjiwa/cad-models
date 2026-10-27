@@ -83,6 +83,21 @@ class GlockFrontSightToolTestCase(unittest.TestCase):
         self.assertFalse(contains(tris, (LENGTH - 0.1, half - 0.1, HEIGHT - 0.1)), "top corner is square")
         self.assertFalse(contains(tris, (LENGTH - 0.1, half - 0.1, 8)), "vertical edge is square")
 
+    def test_invalid_parameters_fail_their_asserts(self):
+        cases = [
+            ({"Sight_Width": "25"}, "Sight_Width plus twice Entry_Chamfer must be less than the cavity width"),
+            ({"Sight_Length": "1"}, "Sight_Length must exceed Entry_Chamfer"),
+            (
+                {"Tool_Length": "2", "Sight_Length": "1", "Entry_Chamfer": "0.5"},
+                "Edge_Radius must be at most half of Wall_Thickness and Tool_Length",
+            ),
+        ]
+        for params, message in cases:
+            with self.subTest(params=params):
+                with self.assertRaises(RuntimeError) as ctx:
+                    render_triangles(TOOL_SCAD, {**FAST, **params}, openscadpath=os.path.join(REPO_ROOT, "lib"))
+                self.assertIn(message, str(ctx.exception))
+
 
 if __name__ == "__main__":
     unittest.main()

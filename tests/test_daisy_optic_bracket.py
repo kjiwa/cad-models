@@ -160,6 +160,22 @@ class DaisyOpticBracketTestCase(unittest.TestCase):
         self.assertEmpty(tris, 9.05, -2, LENGTH - TOL, "blaster channel mouth is square")
         self.assertSolid(tris, 9.05, -2, LENGTH - 1, "blaster channel mouth chamfer is oversize")
 
+    def test_invalid_parameters_fail_their_asserts(self):
+        cases = [
+            ({"Outer_Chamfer": "4.8"}, "Outer_Chamfer must leave the rail walls wider than Edge_Chamfer"),
+            (
+                {"Bracket_Thickness": "20", "Outer_Chamfer": "10"},
+                "Outer_Chamfer must be less than half the rail stack depth",
+            ),
+            ({"Screw_Offset": "-6"}, "Screw holes must stay within the rail stack depth"),
+            ({"Screw_Offset": "9"}, "Screw holes must stay within the rail stack depth"),
+        ]
+        for params, message in cases:
+            with self.subTest(params=params):
+                with self.assertRaises(RuntimeError) as ctx:
+                    render_triangles(BRACKET_SCAD, {**FAST, **params}, openscadpath=os.path.join(REPO_ROOT, "lib"))
+                self.assertIn(message, str(ctx.exception))
+
 
 if __name__ == "__main__":
     unittest.main()

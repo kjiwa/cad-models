@@ -46,10 +46,11 @@ outer_width = slide_width + 2 * Wall_Thickness;
 cavity_width = slide_width + Slide_Clearance;
 cavity_height = Tool_Height - Wall_Thickness;
 
-assert(Edge_Radius <= min(Wall_Thickness, Tool_Length) / 2, "Edge_Radius must be at most half of Wall_Thickness");
+assert(Edge_Radius <= min(Wall_Thickness, Tool_Length) / 2, "Edge_Radius must be at most half of Wall_Thickness and Tool_Length");
 assert(Entry_Chamfer < Wall_Thickness, "Entry_Chamfer must be less than Wall_Thickness");
 assert(Sight_Length <= Tool_Length, "Sight_Length must not exceed Tool_Length");
-assert(Sight_Width + 2 * Entry_Chamfer < outer_width, "Sight_Width is too wide for the tool");
+assert(Sight_Width + 2 * Entry_Chamfer < cavity_width, "Sight_Width plus twice Entry_Chamfer must be less than the cavity width");
+assert(Sight_Length > Entry_Chamfer, "Sight_Length must exceed Entry_Chamfer");
 assert(cavity_height > Entry_Chamfer, "Tool_Height must exceed Wall_Thickness plus Entry_Chamfer");
 
 module Body() {

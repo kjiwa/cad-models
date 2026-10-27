@@ -45,7 +45,8 @@ assert(Plunger_Width <= Head_Width && Plunger_Length <= Head_Length, "Plunger mu
 assert(Tip_Radius > 0 && Thumb_Radius > 0, "Tip_Radius and Thumb_Radius must be positive");
 assert(Tip_Radius <= Plunger_Width / 2, "Tip_Radius must be at most half of Plunger_Width");
 assert(Thumb_Radius <= Head_Thickness / 2, "Thumb_Radius must be at most half of Head_Thickness");
-assert(Texture_Depth < Thumb_Radius + Head_Width / 4, "Texture_Depth is too deep for the head");
+assert(Plunger_Height > Tip_Radius, "Plunger_Height must exceed Tip_Radius");
+assert(Texture_Depth < Head_Width / 4, "Texture_Depth must be less than a quarter of Head_Width");
 
 function Stadium(width, length) = rect([width, length], rounding = width / 2);
 

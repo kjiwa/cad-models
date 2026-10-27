@@ -90,7 +90,15 @@ assert(Rail_Slot_Pitch > Rail_Slot_Width, "Rail_Slot_Pitch must exceed Rail_Slot
 assert((Lug_Count - 1) * Rail_Slot_Pitch + Lug_Length <= Bracket_Length, "Lugs must fit within Bracket_Length");
 assert(Lug_Floor <= Blaster_Rail_Depth, "Rail_Slot_Depth must not exceed Blaster_Rail_Depth");
 assert(Screw_Spacing + Screw_Diameter <= Bracket_Length, "Screws must fit within Bracket_Length");
-assert(Outer_Chamfer < Bracket_Thickness + Edge_Chamfer, "Outer_Chamfer is too large");
+assert(
+  Half_Width - Outer_Chamfer > max(Optic_Rail_Width_Large, Blaster_Rail_Width_Large) / 2 + Edge_Chamfer,
+  "Outer_Chamfer must leave the rail walls wider than Edge_Chamfer"
+);
+assert(2 * Outer_Chamfer < Optic_Rail_Depth + Blaster_Rail_Depth, "Outer_Chamfer must be less than half the rail stack depth");
+assert(
+  Screw_Offset - Screw_Diameter / 2 > -Blaster_Rail_Depth && Screw_Offset + Screw_Diameter / 2 < Optic_Rail_Depth,
+  "Screw holes must stay within the rail stack depth"
+);
 
 function RailHalfProfile(width_large, width_small, depth_large, depth_small, depth) = [
   [0, 0],

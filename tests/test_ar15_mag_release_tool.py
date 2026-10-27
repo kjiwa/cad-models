@@ -72,6 +72,17 @@ class Ar15MagReleaseToolTestCase(unittest.TestCase):
         self.assertFalse(contains(tris, (HEAD[0] / 2 - TOL, 0, TOL)))
         self.assertFalse(contains(tris, (0, HEAD[1] / 2 - TOL, TOL)))
 
+    def test_invalid_parameters_fail_their_asserts(self):
+        cases = [
+            ({"Plunger_Height": "1"}, "Plunger_Height must exceed Tip_Radius"),
+            ({"Texture_Depth": "3"}, "Texture_Depth must be less than a quarter of Head_Width"),
+        ]
+        for params, message in cases:
+            with self.subTest(params=params):
+                with self.assertRaises(RuntimeError) as ctx:
+                    render_triangles(TOOL_SCAD, {**FAST, **params}, openscadpath=os.path.join(REPO_ROOT, "lib"))
+                self.assertIn(message, str(ctx.exception))
+
 
 if __name__ == "__main__":
     unittest.main()
