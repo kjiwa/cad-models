@@ -23,7 +23,13 @@ OPTIC_TOP, BLASTER_TOP = 10, -7.3
 SLOT_WIDTH, SLOT_PITCH, SLOT_DEPTH, CLEARANCE = 5.3, 10.1, 4.7625, 0.3
 LUG_LENGTH = SLOT_WIDTH - CLEARANCE
 LUG_FLOOR = -(SLOT_DEPTH - CLEARANCE)
-SCREW_SPACING, SCREW_Y, SCREW_DIAMETER = 35.4, 3.75, 4
+SCREW_SPACING, SCREW_Y, SCREW_DIAMETER = 35.4, 3.75, 4.4
+HEAD_DIAMETER, HEAD_DEPTH = 7 + 0.3, 4.5
+NUT_FLATS, NUT_DEPTH = 7 + 0.3, 5.0
+NUT_CORNER = NUT_FLATS / 3**0.5
+CAVITY_WALL_X = 6.35
+WALL_MIN = 2.5
+HEAD_Z, NUT_Z = LENGTH / 2 - SCREW_SPACING / 2, LENGTH / 2 + SCREW_SPACING / 2
 FAST = {"$fn": "32"}
 STEP = 0.1
 TOL = 0.05
@@ -105,21 +111,54 @@ class DaisyOpticBracketTestCase(unittest.TestCase):
 
     def test_screw_holes_are_source_sized_and_spaced(self):
         tris = render()
-        holes = runs(tris, 10, SCREW_Y, False)
+        holes = runs(tris, 8, SCREW_Y, False)
         self.assertEqual(len(holes), 2)
         centers = [(a + b) / 2 for a, b in holes]
         self.assertAlmostEqual(centers[1] - centers[0], SCREW_SPACING, delta=2 * STEP)
         self.assertAlmostEqual(sum(centers) / 2, LENGTH / 2, delta=2 * STEP)
         for z in centers:
             r = SCREW_DIAMETER / 2
-            self.assertEmpty(tris, 10, SCREW_Y + r - TOL, z, "hole is undersize")
-            self.assertEmpty(tris, 10, SCREW_Y - r + TOL, z, "hole is undersize")
-            self.assertSolid(tris, 10, SCREW_Y + r + TOL, z, "hole is oversize")
-            self.assertSolid(tris, 10, SCREW_Y - r - TOL, z, "hole is oversize")
+            self.assertEmpty(tris, 8, SCREW_Y + r - TOL, z, "hole is undersize")
+            self.assertEmpty(tris, 8, SCREW_Y - r + TOL, z, "hole is undersize")
+            self.assertSolid(tris, 8, SCREW_Y + r + TOL, z, "hole is oversize")
+            self.assertSolid(tris, 8, SCREW_Y - r - TOL, z, "hole is oversize")
+
+    def test_counterbore_at_the_head_side_hole(self):
+        tris = render()
+        r, floor = HEAD_DIAMETER / 2, HALF_WIDTH - HEAD_DEPTH
+        self.assertEmpty(tris, HALF_WIDTH - TOL, SCREW_Y, HEAD_Z, "counterbore does not open on the outer face")
+        for dz, dy in ((r - TOL, 0), (-(r - TOL), 0), (0, r - TOL), (0, -(r - TOL))):
+            self.assertEmpty(tris, floor + 0.5, SCREW_Y + dy, HEAD_Z + dz, "counterbore is undersize")
+        for dz, dy in ((r + TOL, 0), (-(r + TOL), 0), (0, r + TOL), (0, -(r + TOL))):
+            self.assertSolid(tris, floor + 0.5, SCREW_Y + dy, HEAD_Z + dz, "counterbore is oversize")
+        self.assertSolid(tris, floor - TOL, SCREW_Y, HEAD_Z + 3, "counterbore is deeper than the head depth")
+        self.assertEmpty(tris, floor + TOL, SCREW_Y, HEAD_Z + 3, "counterbore is shallower than the head depth")
+        self.assertSolid(tris, 12, SCREW_Y, HEAD_Z + 4, "counterbore is not round")
+
+    def test_hex_pocket_at_the_nut_side_hole(self):
+        tris = render()
+        flat, floor = NUT_FLATS / 2, HALF_WIDTH - NUT_DEPTH
+        self.assertEmpty(tris, HALF_WIDTH - TOL, SCREW_Y, NUT_Z + 3, "hex pocket does not open on the outer face")
+        for sign in (-1, 1):
+            self.assertEmpty(tris, 12, SCREW_Y + sign * (flat - TOL), NUT_Z, "hex flats are undersize")
+            self.assertSolid(tris, 12, SCREW_Y + sign * (flat + TOL), NUT_Z, "hex flats are oversize")
+            self.assertEmpty(tris, 12, SCREW_Y, NUT_Z + sign * (NUT_CORNER - TOL), "hex corners are undersize")
+            self.assertSolid(tris, 12, SCREW_Y, NUT_Z + sign * (NUT_CORNER + TOL), "hex corners are oversize")
+        self.assertSolid(tris, floor - TOL, SCREW_Y, NUT_Z + 3, "hex pocket is deeper than computed")
+        self.assertEmpty(tris, floor + TOL, SCREW_Y, NUT_Z + 3, "hex pocket is shallower than computed")
+
+    def test_wall_under_each_pocket(self):
+        tris = render()
+        for z, floor in ((HEAD_Z, HALF_WIDTH - HEAD_DEPTH), (NUT_Z, HALF_WIDTH - NUT_DEPTH)):
+            x = floor - TOL
+            while contains(tris, at(x, SCREW_Y, z + 3)):
+                x -= STEP
+            self.assertGreaterEqual(floor - x - STEP, WALL_MIN - STEP, f"wall under pocket at z = {z:.1f} is too thin")
+            self.assertAlmostEqual(x + STEP, CAVITY_WALL_X, delta=2 * STEP)
 
     def test_rail_cavities_match_the_source_profile(self):
         tris = render()
-        z = 10
+        z = 26
         pairs = (
             (6.35, 2), (6.35, 3.5),
             (4.4, 9), (4.4, 8),
@@ -143,7 +182,7 @@ class DaisyOpticBracketTestCase(unittest.TestCase):
 
     def test_outer_long_corners_are_chamfered_and_outer_face_is_flat(self):
         tris = render()
-        z = 10
+        z = 26
         self.assertEmpty(tris, 13, BLASTER_TOP + TOL, z, "blaster side corner is square")
         self.assertSolid(tris, 11, BLASTER_TOP + TOL, z, "blaster side chamfer is oversize")
         self.assertEmpty(tris, 13, OPTIC_TOP - TOL, z, "optic side corner is square")
@@ -167,6 +206,8 @@ class DaisyOpticBracketTestCase(unittest.TestCase):
                 {"Bracket_Thickness": "20", "Outer_Chamfer": "10"},
                 "Outer_Chamfer must be less than half the rail stack depth",
             ),
+            ({"Screw_Length": "25"}, "Screw_Length leaves the screw end proud of the clamp"),
+            ({"Screw_Length": "20"}, "Pockets must leave at least 2.5 mm of wall"),
             ({"Screw_Offset": "-6"}, "Screw holes must stay within the rail stack depth"),
             ({"Screw_Offset": "9"}, "Screw holes must stay within the rail stack depth"),
         ]

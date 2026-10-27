@@ -7,7 +7,8 @@ A 3D-printable half of a split clamp that holds an optic rail above a blaster ra
 - The halves clamp the optic rail and the blaster rail together.
 - Lugs drop into adjacent cross-slots of the blaster rail as the halves close.
 - The two outer long corners, the end faces and the rail channel mouths are chamfered.
-- Set both rail profiles, the cross-slot size and pitch, the lug count and clearance, and the screw layout.
+- Each half has a counterbore for an M4 socket head cap screw at one screw hole and a hex pocket for an M4 nut at the other; both open on the outer face and print without supports.
+- Set both rail profiles, the cross-slot size and pitch, the lug count and clearance, and the screw and nut sizes.
 
 <!-- BEGIN GENERATED -->
 
@@ -49,17 +50,29 @@ A 3D-printable half of a split clamp that holds an optic rail above a blaster ra
 | --- | --- | --- | --- |
 | `Bracket_Length` | `51.4` |  | Length of the bracket along the rails |
 | `Bracket_Thickness` | `5` |  | Wall thickness outside the wider rail |
-| `Screw_Diameter` | `4` |  | Diameter of the clamping screw holes |
-| `Screw_Spacing` | `35.4` |  | Distance between the two screw holes |
-| `Screw_Offset` | `3.75` |  | Offset of the screw axis from the rail seam towards the optic |
 | `Outer_Chamfer` | `2.5` |  | Size of the chamfer on the two outer long corners |
 | `Edge_Chamfer` | `0.5` |  | Size of the chamfer on the end faces and rail channel mouths |
+
+### Screw
+
+| Parameter | Default | Options | Description |
+| --- | --- | --- | --- |
+| `Screw_Diameter` | `4.4` |  | Diameter of the clamping screw holes |
+| `Screw_Spacing` | `35.4` |  | Distance between the two screw holes |
+| `Screw_Offset` | `3.75` |  | Offset of the screw axis from the rail seam towards the optic |
+| `Screw_Head_Diameter` | `7` |  | Diameter of the screw head |
+| `Screw_Head_Height` | `4` |  | Height of the screw head |
+| `Screw_Length` | `22` |  | Length of the screw under the head |
+| `Nut_Across_Flats` | `7` |  | Nut across the flats |
+| `Nut_Thickness` | `3.2` |  | Nut thickness |
+| `Pocket_Clearance` | `0.3` |  | Gap added around the screw head and the nut |
 
 <!-- END GENERATED -->
 
 ## Printing
 
-- **Quantity**: Print two identical halves; turn one half end for end (180 degrees about the axis running from the blaster rail to the optic rail) to close the clamp.
+- **Quantity**: Print two identical halves; turn one half end for end (180 degrees about the axis running from the blaster rail to the optic rail) to close the clamp. Each half has the counterbore at the screw hole nearer the origin end of the printed model and the nut pocket at the far hole. Turning one half end for end puts its counterbore opposite the other half's nut pocket at each screw.
 - **Material**: PETG or ABS.
-- **Orientation**: On the outer face, as modeled, so the screw holes stand upright.
+- **Orientation**: On the outer face, as modeled, so the screw holes stand upright and the pockets bridge.
+- **Hardware**: Two M4 x 22 socket head cap screws and two M4 nuts, one of each per joint. The screw holes are 4.4 mm clearance holes.
 - **Assembly**: Close the halves around the rails so each lug drops into a cross-slot.
