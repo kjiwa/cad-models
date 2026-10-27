@@ -1,4 +1,4 @@
-"""Property tests for french_cleat_router_template: cleat opening, dog-bone corner reliefs, and screw holes."""
+"""Property tests for french_cleat_router_template: cleat opening, optional dog-bone corner reliefs, and screw holes."""
 
 import math
 import os
@@ -24,6 +24,7 @@ CLEAT_Y0 = (171.45 - CLEAT_HEIGHT) / 2
 PLATE_Z = 25.4
 HOLE_Z = 9.525
 FAST = {"$fn": "32"}
+DOG_BONES = {"Corner_Bit_Diameter": 6.35}
 
 _cache = {}
 
@@ -103,7 +104,7 @@ class FrenchCleatRouterTemplateTestCase(unittest.TestCase):
         self.assertTrue(contains(tris, _plate(2, slope + 0.5)), "sloped edge is too high")
 
     def test_closed_corners_are_relieved_for_the_router_bit(self):
-        tris = render()
+        tris = render(**DOG_BONES)
         for probe in _relief_probes():
             self.assertFalse(contains(tris, probe), f"dog-bone relief does not open into the cleat opening at {probe}")
 
@@ -118,13 +119,13 @@ class FrenchCleatRouterTemplateTestCase(unittest.TestCase):
                     self.assertFalse(contains(tris, probe), f"bit of radius {r} cannot reach corner {c} at {probe}")
 
     def test_corner_bit_reaches_each_closed_corner(self):
-        self._assert_corner_bit_reaches_each_corner(render(), BIT_RADIUS)
+        self._assert_corner_bit_reaches_each_corner(render(**DOG_BONES), BIT_RADIUS)
 
     def test_larger_corner_bit_reaches_each_closed_corner(self):
         self._assert_corner_bit_reaches_each_corner(render(Corner_Bit_Diameter=22.225), 22.225 / 2)
 
     def test_relief_overcuts_each_wall_by_no_more_than_the_bit_geometry(self):
-        tris = render()
+        tris = render(**DOG_BONES)
         r = BIT_RADIUS
         for c, bis, half, walls in _closed_corners():
             center = (c[0] + bis[0] * r, c[1] + bis[1] * r)
@@ -137,10 +138,18 @@ class FrenchCleatRouterTemplateTestCase(unittest.TestCase):
                 probe = _plate(foot[0] + nx / norm * depth, foot[1] + ny / norm * depth)
                 self.assertTrue(contains(tris, probe), f"relief overcuts a wall by more than the bit geometry at {probe}")
 
-    def test_zero_bit_diameter_leaves_the_corners_closed(self):
-        tris = render(Corner_Bit_Diameter=0)
+    def test_default_leaves_the_corners_closed(self):
+        tris = render()
         for probe in _relief_probes():
             self.assertTrue(contains(tris, probe), f"corner is relieved with no router bit at {probe}")
+
+    def test_zero_angle_cuts_a_rectangular_opening(self):
+        tris = render(Cleat_Angle=0)
+        self.assertFalse(contains(tris, _plate(2, CLEAT_HEIGHT - 0.5)), "rectangular opening is too short")
+        self.assertTrue(contains(tris, _plate(2, CLEAT_HEIGHT + 0.5)), "rectangular opening is too tall")
+        far = CLEAT_THICKNESS - 2
+        self.assertFalse(contains(tris, _plate(far, CLEAT_HEIGHT - 0.5)), "top edge slopes across the opening")
+        self.assertTrue(contains(tris, _plate(far, CLEAT_HEIGHT + 0.5)), "top edge is too tall across the opening")
 
     def test_screw_holes_match_the_original_in_millimeters(self):
         tris = render()

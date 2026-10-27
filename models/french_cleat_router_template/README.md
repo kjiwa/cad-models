@@ -4,7 +4,9 @@ A 3D-printable router template for cutting a French cleat: a fence wall and a to
 
 ## Features
 
-- Corner_Bit_Diameter, the smallest pattern bit you use, cuts a dog-bone slot into each closed inside corner of the opening so that bit's bearing can reach the corner and square-cornered parts fit; set it to 0 for plain corners. Larger bits stop short of the corners, so finish them with the small bit.
+- Inside corners of the opening come out at the finishing bit's radius (1/8" for a 1/4" bit), so round over the cleat edges at least that much to seat them; this also leaves no sharp edges. Jigsaw the waste, flush-trim with a large pattern bit, which is stiffer and takes the bulk, and finish with the small one.
+- Set Corner_Bit_Diameter to the finishing bit for dog-bone slots that let it cut square inside corners. Larger bits stop short of the corners.
+- Cleat_Angle 0 cuts a rectangular opening, such as for a bottom stability cleat.
 - Set each pattern bit so the top of its cutter is flush with the underside of the plate. The cutter must be at least as long as the workpiece is thick.
 - The far plate corners are rounded and the outer top edges chamfered; the routed edge and the fence face stay sharp.
 - Two countersunk screw holes in the fence wall fasten the template to the workpiece.
@@ -30,7 +32,7 @@ A 3D-printable router template for cutting a French cleat: a fence wall and a to
 
 | Parameter | Default | Options | Description |
 | --- | --- | --- | --- |
-| `Cleat_Angle` | `30` | 15 to 45, step 1 | Angle of the cleat bevel |
+| `Cleat_Angle` | `30` | 0 to 45, step 1 | Angle of the cleat bevel |
 | `Cleat_Thickness` | `19.05` |  | Cleat thickness (19.05 for 3/4") |
 | `Cleat_Height` | `95.25` |  | Cleat height (95.25 for 3-3/4") |
 
@@ -38,7 +40,7 @@ A 3D-printable router template for cutting a French cleat: a fence wall and a to
 
 | Parameter | Default | Options | Description |
 | --- | --- | --- | --- |
-| `Corner_Bit_Diameter` | `6.35` |  | Diameter of the smallest pattern bit, which finishes the corners and sizes the dog-bone reliefs (6.35 for 1/4") (0 to disable) |
+| `Corner_Bit_Diameter` | `0` |  | Corner bit diameter for dog-bone reliefs that let it cut square inside corners (6.35 for 1/4") (0 to disable) |
 
 ### Screw Holes
 
