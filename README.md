@@ -3,6 +3,7 @@
 Parametric, 3D-printable OpenSCAD models, each in its own directory under `models/` with a `.scad` source, a
 `Makefile`, and a README covering its own parameters and printing recommendations:
 
+- `models/ar15_mag_release_tool` — thumb-head plunger for pressing a recessed AR-15 magazine release
 - `models/bifold_door_lock` — lock that holds a bifold door pair together
 - `models/bora_centipede_riser` — risers and locking nuts for Bora Centipede work stands
 - `models/closet_door_floor_guide` — floor guide for closet doors
