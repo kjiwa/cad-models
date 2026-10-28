@@ -8,6 +8,13 @@
             "Nut_Width": "18.62",
             "Nut_Thickness": "11.5"
         },
+        "M10_Lock_Knob": {
+            "Diameter": "62",
+            "Height": "18",
+            "Bolt_Diameter": "10.5",
+            "Nut_Width": "17",
+            "Nut_Thickness": "8"
+        },
         "Miter_Gauge_Handle": {
             "Grip": "knurled",
             "Diameter": "25.4",
