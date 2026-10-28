@@ -1,0 +1,17 @@
+{
+    "parameterSets": {
+        "Pillion_Holder_Left": {
+            "Cap_Diameter": "40",
+            "Stem_Diameter": "34",
+            "Stem_Length": "7",
+            "Rib_Count": "5"
+        },
+        "Pillion_Holder_Right": {
+            "Cap_Diameter": "40",
+            "Stem_Diameter": "35",
+            "Stem_Length": "7",
+            "Rib_Count": "5"
+        }
+    },
+    "fileFormatVersion": "1"
+}

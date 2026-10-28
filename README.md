@@ -6,6 +6,7 @@ Parametric, 3D-printable OpenSCAD models, each in its own directory under `model
 - `models/ar15_mag_release_tool` — thumb-head plunger for pressing a recessed AR-15 magazine release
 - `models/bifold_door_lock` — lock that holds a bifold door pair together
 - `models/bora_centipede_riser` — risers and locking nuts for Bora Centipede work stands
+- `models/cat_eye_spoke_reflector` — faceted spoke reflector, spoke nuts and a tape template for 3M microprismatic tape
 - `models/closet_door_floor_guide` — floor guide for closet doors
 - `models/closet_pole_socket` — closed or open socket for a closet pole
 - `models/corner_cover` — L-shaped guard for the sharp outer corner of cabinet trim
@@ -16,10 +17,12 @@ Parametric, 3D-printable OpenSCAD models, each in its own directory under `model
 - `models/garage_door_rail_end_cap` — TPU bumper cap for a garage door rail end
 - `models/glock_front_sight_tool` — slide cap with a sight slot for aligning a Glock front sight
 - `models/heater_vent_switch_cover` — cover for a heater vent switch
+- `models/honda_chassis_plugs` — ribbed or finned caps for the open frame and pillion holder tubes of a Honda CB300R
 - `models/keyhole_router_template` — router template for hanging slots in frames and other workpieces
 - `models/knob` — fluted or knurled knob with a captive nut pocket, for stop blocks and miter gauge handles
 - `models/makita_hose_adapter` — dust extraction hose adapter for Makita tools
 - `models/miter_clamp_spacer` — corner spacer for clamping mitered frames
+- `models/motorcycle_mirror_extension` — riser that moves a motorcycle mirror up and out, with an insert-ready or direct M10 thread
 - `models/peglock_attachment` — board attachment clips for Sy's Peglock pegboard system
 - `models/stop_block` — fence stop block with rounded corners and dust relief, for indexing against a ruler
 - `models/table_saw_blade_spacer` — arbor spacers for a table saw
@@ -35,6 +38,7 @@ Parametric, 3D-printable OpenSCAD models, each in its own directory under `model
 - `models/shallow_shelf_bracket` — cove-gusset bracket for a shallow shelf
 - `models/shelly_plus_junction_box` — junction box for a Shelly Plus module and Wago connectors, with a screw-down lid and wall mount
 - `models/shotgun_mini_shell_adapter` — Mossberg 12 gauge adapter for 1.75" mini shells, compatible with the OPSol Mini-Clip fit
+- `models/sw_motech_t_lock_molle_adapter` — MOLLE webbing plate with a ring and notches that lock into an SW-Motech T-Lock holder
 - `models/wheel_tread_cover` — herringbone tread sleeve for a wheel
 
 ## Setup

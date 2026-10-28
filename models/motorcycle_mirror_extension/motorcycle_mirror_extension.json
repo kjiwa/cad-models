@@ -1,0 +1,9 @@
+{
+    "parameterSets": {
+        "M10_Bolt": {
+            "Thread_Diameter": "10",
+            "Thread_Pitch": "1.25"
+        }
+    },
+    "fileFormatVersion": "1"
+}

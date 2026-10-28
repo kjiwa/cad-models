@@ -2,7 +2,7 @@ include <BOSL2/std.scad>
 
 /**
  * Tool for pressing the magazine release of an AR-15 when the button is recessed: a plunger
- * on a textured thumb head. Print head down, as modeled. All dimensions are in millimeters.
+ * on a thumb head. Print head down, as modeled. All dimensions are in millimeters.
  */
 
 /* [Plunger] */
@@ -16,7 +16,7 @@ Plunger_Length = 12.7;
 Plunger_Height = 9.525;
 
 // Radius of the rounded plunger tip
-Tip_Radius = 1.5;
+Tip_Radius = 0.5;
 
 /* [Head] */
 // Head width (11.1125 for 7/16")
@@ -31,13 +31,6 @@ Head_Thickness = 6.35;
 // Radius of the rounded thumb face perimeter
 Thumb_Radius = 1;
 
-/* [Grip] */
-// Size of one diamond in the grip texture
-Texture_Size = 2.5;
-
-// Depth of the grip texture recesses
-Texture_Depth = 0.5;
-
 /* [Hidden] */
 $fn = 128;
 
@@ -46,19 +39,11 @@ assert(Tip_Radius > 0 && Thumb_Radius > 0, "Tip_Radius and Thumb_Radius must be 
 assert(Tip_Radius <= Plunger_Width / 2, "Tip_Radius must be at most half of Plunger_Width");
 assert(Thumb_Radius <= Head_Thickness / 2, "Thumb_Radius must be at most half of Head_Thickness");
 assert(Plunger_Height > Tip_Radius, "Plunger_Height must exceed Tip_Radius");
-assert(Texture_Depth < Head_Width / 4, "Texture_Depth must be less than a quarter of Head_Width");
 
 function Stadium(width, length) = rect([width, length], rounding = width / 2);
 
 module Head() {
-  path = Stadium(Head_Width, Head_Length);
-  intersection() {
-    offset_sweep(path, height = Head_Thickness, bottom = os_circle(r = Thumb_Radius));
-    linear_sweep(
-      path, height = Head_Thickness,
-      texture = "diamonds", tex_inset = true, tex_size = [Texture_Size, Texture_Size], tex_depth = Texture_Depth
-    );
-  }
+  offset_sweep(Stadium(Head_Width, Head_Length), height = Head_Thickness, bottom = os_circle(r = Thumb_Radius));
 }
 
 module Plunger() {
