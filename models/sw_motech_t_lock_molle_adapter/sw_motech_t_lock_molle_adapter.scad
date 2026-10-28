@@ -26,7 +26,7 @@ Lock_Inner_Tab_Length = 20;
 // Width of the opening's tab (along the short diameter)
 Lock_Inner_Tab_Width = 15;
 
-// Ring thickness above the inner recess
+// Height of the wide inner recess, measured from the plate
 Lock_Top_Thickness = 3;
 
 // Ring height above the plate
@@ -140,12 +140,18 @@ function plate_outline() = union([
 ])[0];
 
 module strap_slot_cutter() {
+  flare = rect(
+    [Strap_Hole_Length + 2 * Strap_Hole_Edge_Radius, Strap_Hole_Width + 2 * Strap_Hole_Edge_Radius],
+    rounding=Strap_Hole_Corner_Radius + Strap_Hole_Edge_Radius
+  );
   offset_sweep(
     rect([Strap_Hole_Length, Strap_Hole_Width], rounding=Strap_Hole_Corner_Radius),
     height=Strap_Plate_Thickness,
     bottom=os_circle(r=-Strap_Hole_Edge_Radius),
     top=os_circle(r=-Strap_Hole_Edge_Radius)
   );
+  translate([0, 0, -1]) linear_extrude(1.01) polygon(flare);
+  translate([0, 0, Strap_Plate_Thickness - 0.01]) linear_extrude(1.01) polygon(flare);
 }
 
 module strap_plate() {

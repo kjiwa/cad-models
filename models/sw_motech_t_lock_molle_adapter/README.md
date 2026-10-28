@@ -23,7 +23,7 @@ A 3D-printable clone of an SW-Motech T-Lock MOLLE adapter. The ring and its two 
 | `Lock_Inner_Diameter_Short` | `20` |  | Short diameter of the bayonet opening |
 | `Lock_Inner_Tab_Length` | `20` |  | Length of the opening's tab (along the long diameter) |
 | `Lock_Inner_Tab_Width` | `15` |  | Width of the opening's tab (along the short diameter) |
-| `Lock_Top_Thickness` | `3` |  | Ring thickness above the inner recess |
+| `Lock_Top_Thickness` | `3` |  | Height of the wide inner recess, measured from the plate |
 | `Lock_Depth` | `5` |  | Ring height above the plate |
 | `Lock_Notch_Depth` | `1` |  | Radial depth of each notch beyond the ring (before Fit_Clearance) |
 | `Lock_Notch_Width` | `3` |  | Notch width (before Fit_Clearance) |

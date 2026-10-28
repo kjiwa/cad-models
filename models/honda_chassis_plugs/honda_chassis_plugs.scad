@@ -79,7 +79,7 @@ module stem_core() {
   assert(Stem_Chamfer < (core_diameter - bore_diameter) / 2, "Stem_Chamfer must be less than the stem wall");
   chamfer = Rib_Count == 0 ? Stem_Chamfer : 0;
   if (chamfer > 0) cylinder(d1 = core_diameter - 2 * chamfer, d2 = core_diameter, h = chamfer);
-  translate([0, 0, chamfer - 0.01]) cylinder(d = core_diameter, h = Stem_Length - chamfer + 0.01);
+  translate([0, 0, chamfer - 0.01]) cylinder(d = core_diameter, h = Stem_Length - chamfer + 0.02);
 }
 
 module stem() {
