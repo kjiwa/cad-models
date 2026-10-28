@@ -47,6 +47,7 @@ A 3D-printable knob with a through bolt bore and a hex pocket that captures a nu
 ## Presets
 
 - `Rockler_Blade_Holder_Knob`
+- `M10_Lock_Knob`
 - `Miter_Gauge_Handle`
 - `Miter_Gauge_Handle_Cap`
 
