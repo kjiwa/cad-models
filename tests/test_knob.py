@@ -76,8 +76,10 @@ class KnobTestCase(unittest.TestCase):
         self.assertEqual(fingerprint(tris)["bbox_size_mm"][2], 18)
         self.assertFalse(contains(tris, (5.0, 0, 12)), "bore too narrow")
         self.assertTrue(contains(tris, (5.6, 0, 12)), "bore too wide")
-        self.assertFalse(contains(tris, (corner_radius(17) - 0.2, 0, 4)), "nut pocket corner is closed")
-        self.assertTrue(contains(tris, (corner_radius(17) - 0.2, 0, 8.4)), "nut pocket is deeper than Nut_Thickness")
+        self.assertFalse(contains(tris, (corner_radius(17.6) - 0.2, 0, 4)), "nut pocket corner is closed")
+        self.assertFalse(contains(tris, (0, 17.6 / 2 - 0.2, 4)), "nut pocket flat is closed for a 17 mm nut")
+        self.assertTrue(contains(tris, (0, 17.6 / 2 + 0.3, 4)), "nut pocket is oversize")
+        self.assertTrue(contains(tris, (corner_radius(17.6) - 0.2, 0, 8.9)), "nut pocket is deeper than an 8.4 mm nut")
 
     def test_miter_gauge_handle_pocket_is_open_at_the_top(self):
         tris = render(preset("Miter_Gauge_Handle"))

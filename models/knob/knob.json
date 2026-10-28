@@ -12,8 +12,8 @@
             "Diameter": "62",
             "Height": "18",
             "Bolt_Diameter": "10.5",
-            "Nut_Width": "17",
-            "Nut_Thickness": "8"
+            "Nut_Width": "17.6",
+            "Nut_Thickness": "8.5"
         },
         "Miter_Gauge_Handle": {
             "Grip": "knurled",
