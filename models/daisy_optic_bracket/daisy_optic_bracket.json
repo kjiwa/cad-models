@@ -1,0 +1,13 @@
+{
+    "parameterSets": {
+        "Kronos_Front_Half_A": {
+            "Bracket_Length": "46.8",
+            "Lug_Offset": "-1.3"
+        },
+        "Kronos_Front_Half_B": {
+            "Bracket_Length": "46.8",
+            "Lug_Offset": "1.3"
+        }
+    },
+    "fileFormatVersion": "1"
+}

@@ -55,6 +55,9 @@ Lug_Clearance = 0.3;
 // Number of lugs (0 to disable)
 Lug_Count = 2; // [0:1:4]
 
+// Shift of the lugs from the bracket center, positive away from the origin end
+Lug_Offset = 0;
+
 /* [Bracket] */
 // Length of the bracket along the rails
 Bracket_Length = 51.4;
@@ -108,6 +111,7 @@ Lug_Length = Rail_Slot_Width - Lug_Clearance;
 Lug_Floor = Rail_Slot_Depth - Lug_Clearance;
 Join_Overlap = 0.01;
 Wall_Min = 2.5;
+End_Wall_Min = 1.2;
 Nut_Seat_Gap = 0.3;
 
 Clamp_Width = 2 * Half_Width;
@@ -131,9 +135,15 @@ Pocket_Wall = Half_Width - CavityHalfWidth(Screw_Offset);
 
 assert(Rail_Slot_Depth > Lug_Clearance && Rail_Slot_Width > Lug_Clearance, "Lug_Clearance must be smaller than the slot");
 assert(Rail_Slot_Pitch > Rail_Slot_Width, "Rail_Slot_Pitch must exceed Rail_Slot_Width");
-assert((Lug_Count - 1) * Rail_Slot_Pitch + Lug_Length <= Bracket_Length, "Lugs must fit within Bracket_Length");
+assert(
+  abs(Lug_Offset) + ((Lug_Count - 1) * Rail_Slot_Pitch + Lug_Length) / 2 <= Bracket_Length / 2,
+  "Lugs must fit within Bracket_Length"
+);
 assert(Lug_Floor <= Blaster_Rail_Depth, "Rail_Slot_Depth must not exceed Blaster_Rail_Depth");
-assert(Screw_Spacing + Screw_Diameter <= Bracket_Length, "Screws must fit within Bracket_Length");
+assert(
+  (Bracket_Length - Screw_Spacing - Nut_Pocket_Corners) / 2 >= End_Wall_Min,
+  "Bracket_Length must leave at least 1.2 mm of wall between the screw pockets and the end faces"
+);
 assert(
   Half_Width - Outer_Chamfer > max(Optic_Rail_Width_Large, Blaster_Rail_Width_Large) / 2 + Edge_Chamfer,
   "Outer_Chamfer must leave the rail walls wider than Edge_Chamfer"
@@ -195,7 +205,7 @@ module Lug() {
 
 module Lugs() {
   for (i = [0:Lug_Count - 1])
-    translate([0, 0, Bracket_Length / 2 + (i - (Lug_Count - 1) / 2) * Rail_Slot_Pitch]) Lug();
+    translate([0, 0, Bracket_Length / 2 + Lug_Offset + (i - (Lug_Count - 1) / 2) * Rail_Slot_Pitch]) Lug();
 }
 
 module ScrewHole(z) {
