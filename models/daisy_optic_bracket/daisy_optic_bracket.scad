@@ -55,7 +55,7 @@ Lug_Clearance = 0.3;
 // Number of lugs (0 to disable)
 Lug_Count = 2; // [0:1:4]
 
-// Shift of the lugs from the bracket center, positive away from the origin end; the two halves of a pair take opposite signs
+// Shift of the lugs from the bracket center, positive away from the origin end
 Lug_Offset = 0;
 
 /* [Bracket] */

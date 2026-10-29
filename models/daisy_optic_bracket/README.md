@@ -44,7 +44,7 @@ A 3D-printable half of a split clamp that holds an optic rail above a blaster ra
 | `Rail_Slot_Depth` | `4.7625` |  | Depth of a cross-slot from the rail top (4.7625 for 3/16") |
 | `Lug_Clearance` | `0.3` |  | Gap left around each lug in its slot |
 | `Lug_Count` | `2` | 0 to 4, step 1 | Number of lugs (0 to disable) |
-| `Lug_Offset` | `0` |  | Shift of the lugs from the bracket center, positive away from the origin end; the two halves of a pair take opposite signs |
+| `Lug_Offset` | `0` |  | Shift of the lugs from the bracket center, positive away from the origin end |
 
 ### Bracket
 
