@@ -107,6 +107,7 @@ class DaisyOpticBracketTestCase(unittest.TestCase):
             with self.subTest(offset=offset):
                 tris = render(Bracket_Length=KRONOS_LENGTH, Lug_Offset=offset)
                 centers = [(a + b) / 2 for a, b in lug_spans(tris, KRONOS_LENGTH)]
+                self.assertEqual(len(centers), 2)
                 want = [front_lug, front_lug + SLOT_PITCH]
                 if not from_origin_end:
                     want = [KRONOS_LENGTH - z for z in reversed(want)]
@@ -114,13 +115,13 @@ class DaisyOpticBracketTestCase(unittest.TestCase):
                     self.assertAlmostEqual(got, expected, delta=2 * STEP)
 
     def test_kronos_front_halves_leave_a_printable_wall_at_the_end_faces(self):
-        tris = render(Bracket_Length=KRONOS_LENGTH, Lug_Offset=-1.3)
-        for z0, step in ((0, 1), (KRONOS_LENGTH, -1)):
-            wall = next(
-                d for d in (i * STEP + STEP / 2 for i in range(int(3 / STEP)))
-                if not contains(tris, at(HALF_WIDTH - 2.5, SCREW_Y, z0 + step * d))
-            )
-            self.assertGreaterEqual(wall, 1.2 - STEP, f"wall at the end face z = {z0} is too thin")
+        for offset in (-1.3, 1.3):
+            tris = render(Bracket_Length=KRONOS_LENGTH, Lug_Offset=offset)
+            for z0, step in ((0, 1), (KRONOS_LENGTH, -1)):
+                depths = (i * STEP + STEP / 2 for i in range(int(3 / STEP)))
+                wall = next((d for d in depths if not contains(tris, at(HALF_WIDTH - 2.5, SCREW_Y, z0 + step * d))), None)
+                self.assertIsNotNone(wall, f"no pocket within 3 mm of the end face z = {z0}")
+                self.assertGreaterEqual(wall, 1.2 - STEP, f"wall at the end face z = {z0} is too thin")
 
     def test_lug_depth_and_split_clearance(self):
         tris = render()
