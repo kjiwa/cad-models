@@ -19,6 +19,7 @@ from mesh_probe import contains, shell_count  # noqa: E402
 BRACKET_SCAD = os.path.join(REPO_ROOT, "models", "daisy_optic_bracket", "daisy_optic_bracket.scad")
 HALF_WIDTH = 14
 LENGTH = 51.4
+KRONOS_LENGTH = 46.8
 OPTIC_TOP, BLASTER_TOP = 10, -7.3
 SLOT_WIDTH, SLOT_PITCH, SLOT_DEPTH, CLEARANCE = 5.3, 10.1, 4.7625, 0.3
 LUG_LENGTH = SLOT_WIDTH - CLEARANCE
@@ -50,10 +51,10 @@ def at(x, y, z):
     return (z, y, HALF_WIDTH - x)
 
 
-def runs(tris, x, y, solid):
+def runs(tris, x, y, solid, length=LENGTH):
     """Return (start, end) z spans along the line (x, y) whose occupancy equals `solid`."""
     spans, start = [], None
-    for i in range(int(LENGTH / STEP)):
+    for i in range(int(length / STEP)):
         z = i * STEP
         if contains(tris, at(x, y, z)) == solid:
             start = z if start is None else start
@@ -61,12 +62,12 @@ def runs(tris, x, y, solid):
             spans.append((start, z - STEP))
             start = None
     if start is not None:
-        spans.append((start, LENGTH - STEP))
+        spans.append((start, length - STEP))
     return spans
 
 
-def lug_spans(tris):
-    return runs(tris, 3, -2, True)
+def lug_spans(tris, length=LENGTH):
+    return runs(tris, 3, -2, True, length)
 
 
 @unittest.skipUnless(shutil.which("openscad"), "openscad binary not found on PATH")
@@ -89,6 +90,37 @@ class DaisyOpticBracketTestCase(unittest.TestCase):
                     self.assertAlmostEqual(c1 - c0, SLOT_PITCH, delta=2 * STEP)
                 if centers:
                     self.assertAlmostEqual(sum(centers) / count, LENGTH / 2, delta=2 * STEP)
+
+    def test_lug_offset_shifts_the_lug_group_along_the_bracket(self):
+        for offset in (-1.3, 1.3):
+            with self.subTest(offset=offset):
+                spans = lug_spans(render(Lug_Offset=offset))
+                self.assertEqual(len(spans), 2)
+                centers = [(a + b) / 2 for a, b in spans]
+                self.assertAlmostEqual(sum(centers) / 2, LENGTH / 2 + offset, delta=2 * STEP)
+                self.assertAlmostEqual(centers[1] - centers[0], SLOT_PITCH, delta=2 * STEP)
+
+    def test_kronos_front_halves_seat_in_slots_two_and_three_behind_the_sight(self):
+        front_notch, end_gap = 4.8, 0.5
+        front_lug = front_notch + SLOT_WIDTH / 2 + SLOT_PITCH - end_gap
+        for offset, from_origin_end in ((-1.3, True), (1.3, False)):
+            with self.subTest(offset=offset):
+                tris = render(Bracket_Length=KRONOS_LENGTH, Lug_Offset=offset)
+                centers = [(a + b) / 2 for a, b in lug_spans(tris, KRONOS_LENGTH)]
+                want = [front_lug, front_lug + SLOT_PITCH]
+                if not from_origin_end:
+                    want = [KRONOS_LENGTH - z for z in reversed(want)]
+                for got, expected in zip(centers, want):
+                    self.assertAlmostEqual(got, expected, delta=2 * STEP)
+
+    def test_kronos_front_halves_leave_a_printable_wall_at_the_end_faces(self):
+        tris = render(Bracket_Length=KRONOS_LENGTH, Lug_Offset=-1.3)
+        for z0, step in ((0, 1), (KRONOS_LENGTH, -1)):
+            wall = next(
+                d for d in (i * STEP + STEP / 2 for i in range(int(3 / STEP)))
+                if not contains(tris, at(HALF_WIDTH - 2.5, SCREW_Y, z0 + step * d))
+            )
+            self.assertGreaterEqual(wall, 1.2 - STEP, f"wall at the end face z = {z0} is too thin")
 
     def test_lug_depth_and_split_clearance(self):
         tris = render()
@@ -223,6 +255,8 @@ class DaisyOpticBracketTestCase(unittest.TestCase):
                 {"Bracket_Thickness": "20", "Outer_Chamfer": "10"},
                 "Outer_Chamfer must be less than half the rail stack depth",
             ),
+            ({"Bracket_Length": "44.2"}, "Bracket_Length must leave at least 1.2 mm of wall"),
+            ({"Lug_Offset": "20"}, "Lugs must fit within Bracket_Length"),
             ({"Screw_Length": "20"}, "use a longer screw or a larger Bracket_Thickness"),
             ({"Screw_Offset": "-6"}, "Screw holes must stay within the rail stack depth"),
             ({"Screw_Offset": "9"}, "Screw holes must stay within the rail stack depth"),

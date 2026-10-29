@@ -8,7 +8,8 @@ A 3D-printable half of a split clamp that holds an optic rail above a blaster ra
 - Lugs drop into adjacent cross-slots of the blaster rail as the halves close.
 - The two outer long corners, the end faces and the rail channel mouths are chamfered.
 - Each half has a counterbore for an M4 socket head cap screw at one screw hole and a hex pocket for an M4 nut at the other; both open on the outer face and print without supports.
-- Set both rail profiles, the cross-slot size and pitch, the lug count and clearance, and the screw and nut sizes.
+- Set both rail profiles, the cross-slot size and pitch, the lug count, offset and clearance, and the screw and nut sizes.
+- The `Kronos_Front_Half_A` and `Kronos_Front_Half_B` presets seat the bracket in the second and third cross-slots of a Nerf Rival Kronos rail, stopping 0.5 mm behind the front sight.
 
 <!-- BEGIN GENERATED -->
 
@@ -43,6 +44,7 @@ A 3D-printable half of a split clamp that holds an optic rail above a blaster ra
 | `Rail_Slot_Depth` | `4.7625` |  | Depth of a cross-slot from the rail top (4.7625 for 3/16") |
 | `Lug_Clearance` | `0.3` |  | Gap left around each lug in its slot |
 | `Lug_Count` | `2` | 0 to 4, step 1 | Number of lugs (0 to disable) |
+| `Lug_Offset` | `0` |  | Shift of the lugs from the bracket center, positive away from the origin end; the two halves of a pair take opposite signs |
 
 ### Bracket
 
@@ -67,11 +69,16 @@ A 3D-printable half of a split clamp that holds an optic rail above a blaster ra
 | `Nut_Thickness` | `3.2` |  | Nut thickness |
 | `Pocket_Clearance` | `0.3` |  | Gap added around the screw head and the nut |
 
+## Presets
+
+- `Kronos_Front_Half_A`
+- `Kronos_Front_Half_B`
+
 <!-- END GENERATED -->
 
 ## Printing
 
-- **Quantity**: Print two identical halves; turn one half end for end (180 degrees about the axis running from the blaster rail to the optic rail) to close the clamp. Each half has the counterbore at the screw hole nearer the origin end of the printed model and the nut pocket at the far hole. Turning one half end for end puts its counterbore opposite the other half's nut pocket at each screw.
+- **Quantity**: Print two identical halves, or one of each Kronos preset; turn one half end for end (180 degrees about the axis running from the blaster rail to the optic rail) to close the clamp. The Kronos presets shift the lugs, so print one of each and turn one half end for end the same way. Each half has the counterbore at the screw hole nearer the origin end of the printed model and the nut pocket at the far hole. Turning one half end for end puts its counterbore opposite the other half's nut pocket at each screw.
 - **Material**: PETG or ABS.
 - **Orientation**: On the outer face, as modeled, so the screw holes stand upright and the pockets bridge.
 - **Hardware**: Two M4 x 22 socket head cap screws and two M4 nuts, one of each per joint. A longer screw widens the bracket automatically. The screw holes are 4.4 mm clearance holes.
