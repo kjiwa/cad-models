@@ -22,6 +22,7 @@ Parametric, 3D-printable OpenSCAD models, each in its own directory under `model
 - `models/knob` — fluted or knurled knob with a captive nut pocket, for stop blocks and miter gauge handles
 - `models/makita_hose_adapter` — dust extraction hose adapter for Makita tools
 - `models/miter_clamp_spacer` — corner spacer for clamping mitered frames
+- `models/mitsubishi_panel_hinge_clip` — front panel hinge clip for a Mitsubishi MSZ-GS09NA mini split, with every feature adjustable against the real part
 - `models/motorcycle_mirror_extension` — riser that moves a motorcycle mirror up and out, with an insert-ready or direct M10 thread
 - `models/peglock_attachment` — board attachment clips for Sy's Peglock pegboard system
 - `models/stop_block` — fence stop block with rounded corners and dust relief, for indexing against a ruler
