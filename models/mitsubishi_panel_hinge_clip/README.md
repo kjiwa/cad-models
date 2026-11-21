@@ -91,7 +91,7 @@ Only the dimensions marked Caliper below were measured on the real part; the res
 
 | Parameter | Default | Options | Description |
 | --- | --- | --- | --- |
-| `Fin_Position` | `9` |  | Distance from the root of the angled plate to the front base edge of the fin |
+| `Fin_Position` | `9` |  | Distance from the upper shoulder end face to the front base edge of the fin |
 | `Fin_Height` | `30` |  | Height of the fin above the bottom face of the base plate |
 | `Fin_Base_Width` | `13.3` |  | Width of the fin at its base along the long axis |
 | `Fin_Top_Width` | `9` |  | Width of the fin at its top along the long axis |
@@ -112,10 +112,10 @@ Only the dimensions marked Caliper below were measured on the real part; the res
 | --- | --- | --- | --- |
 | `Cradle_Radius` | `6` |  | Inside radius of the cradle |
 | `Cradle_Wall` | `2.15` |  | Wall thickness of the cradle |
-| `Cradle_Width` | `4` |  | Width of the cradle across the part |
-| `Cradle_Position` | `4` |  | Distance from the root of the angled plate to the cradle center |
-| `Cradle_Offset` | `5.5` |  | Distance from the long centerline to the cradle center, on the lip side |
-| `Cradle_Arc_Angle` | `120` | 30 to 180, step 5 | Angle the cradle arc spans |
+| `Cradle_Width` | `3` |  | Width of the cradle across the part |
+| `Cradle_Position` | `7` |  | Distance from the upper shoulder end face to the cradle center |
+| `Cradle_Offset` | `6.9` |  | Distance from the long centerline to the cradle center, on the lip side |
+| `Cradle_Arc_Angle` | `90` | 30 to 180, step 5 | Angle the cradle arc spans |
 
 ### Legs
 
@@ -125,7 +125,7 @@ Only the dimensions marked Caliper below were measured on the real part; the res
 | `Leg_Width` | `6` |  | Width of a leg along the long axis |
 | `Leg_Length` | `9.2` |  | Length of a leg below the bottom face of the base plate |
 | `Leg_Thickness` | `2.15` |  | Wall thickness of a leg |
-| `Leg_Position` | `23.75` |  | Distance from the root of the angled plate to the leg center |
+| `Leg_Position` | `23.75` |  | Distance from the upper shoulder end face to the leg center |
 | `Foot_Height` | `1.5` |  | Height of a foot at the leg tip |
 | `Foot_Projection` | `1` |  | Distance a foot projects past the leg face (0 to disable) |
 | `Foot_Side` | `"outward"` | Outward, Inward | Face of the leg that carries the foot |

@@ -1,5 +1,6 @@
 """Property tests for mitsubishi_panel_hinge_clip: caliper-measured features, mirrored hands, pair layout and asserts."""
 
+import math
 import os
 import shutil
 import sys
@@ -28,14 +29,32 @@ NECK_WIDTH = 9.6
 NECK_THICKNESS = 1.8
 TONGUE_WIDTH = 10
 TONGUE_PROBE = (28.2, -2.21)
-CRADLE = (4, 5.5)
-CRADLE_INSIDE_BOTTOM_Z = 4.3
+CRADLE_CENTER = (7, 6.9, 8.15)
+CRADLE_RADIUS = 6
+CRADLE_PROBE_ANGLE = 300
 LIP_PROBE_X = 17.15
 LIP_PROBE_Z = 29
 LIP_PROBE_Y = 2.0
 PAIR_GAP = 5
 
 _cache = {}
+
+
+def shell_count(tris):
+    """Number of connected bodies, joining triangles that share a vertex."""
+    parent = {}
+
+    def find(v):
+        while parent.setdefault(v, v) != v:
+            parent[v] = parent[parent[v]]
+            v = parent[v]
+        return v
+
+    for tri in tris:
+        keys = [tuple(round(c, 4) for c in vertex) for vertex in tri]
+        for key in keys[1:]:
+            parent[find(key)] = find(keys[0])
+    return len({find(v) for v in list(parent)})
 
 
 def render(**params):
@@ -75,9 +94,10 @@ class MitsubishiPanelHingeClipTestCase(unittest.TestCase):
 
     def test_cradle_inside_radius_is_the_measured_radius(self):
         tris = render()
-        x, y = CRADLE
-        self.assertTrue(contains(tris, (x, y, CRADLE_INSIDE_BOTTOM_Z - EDGE)), "cradle wall too thin")
-        self.assertFalse(contains(tris, (x, y, CRADLE_INSIDE_BOTTOM_Z + EDGE)), "cradle radius too small")
+        x, y, z = CRADLE_CENTER
+        cos, sin = math.cos(math.radians(CRADLE_PROBE_ANGLE)), math.sin(math.radians(CRADLE_PROBE_ANGLE))
+        self.assertFalse(contains(tris, (x + (CRADLE_RADIUS - EDGE) * cos, y, z + (CRADLE_RADIUS - EDGE) * sin)), "cradle radius too small")
+        self.assertTrue(contains(tris, (x + (CRADLE_RADIUS + EDGE) * cos, y, z + (CRADLE_RADIUS + EDGE) * sin)), "cradle radius too large")
 
     def test_overall_size_is_fin_plus_legs_tall_and_lug_span_wide(self):
         bbox = fingerprint(render())["bbox_size_mm"]
@@ -89,6 +109,22 @@ class MitsubishiPanelHingeClipTestCase(unittest.TestCase):
             tris = render(Part=f'"{part}"')
             self.assertTrue(contains(tris, (LIP_PROBE_X, side * LIP_PROBE_Y, LIP_PROBE_Z)), f"no lip on the {part} clip")
             self.assertFalse(contains(tris, (LIP_PROBE_X, -side * LIP_PROBE_Y, LIP_PROBE_Z)), f"lip on the wrong side of the {part} clip")
+
+    def test_every_variant_is_one_connected_body(self):
+        variants = [
+            {},
+            {"Part": '"right"'},
+            {"Foot_Side": '"inward"'},
+            {"Foot_Projection": 0},
+            {"Cradle_Arc_Angle": 30},
+            {"Cradle_Arc_Angle": 180},
+            {"Plate_A_Angle": 90},
+            {"Plate_A_Angle": 0},
+            {"Tongue_Drop_Angle": 90, "Tongue_Rise_Angle": 90},
+        ]
+        for params in variants:
+            with self.subTest(params=params):
+                self.assertEqual(shell_count(render(**params)), 1)
 
     def test_hands_have_equal_volume_and_size(self):
         left, right = fingerprint(render(Part='"left"')), fingerprint(render(Part='"right"'))
@@ -116,6 +152,8 @@ class MitsubishiPanelHingeClipTestCase(unittest.TestCase):
             ({"Barrel_Wall": "4"}, "Barrel_Wall must be less than Barrel_Depth"),
             ({"Fin_Top_Width": "20"}, "Fin_Top_Width must not exceed Fin_Base_Width"),
             ({"Leg_Gap": "20"}, "The legs must fit within Lower_Width"),
+            ({"Lug_Length": "8"}, "Lug_Length must not exceed Shoulder_Length or Lower_Length"),
+            ({"Cradle_Position": "40"}, "The cradle must stand on the base plate"),
             ({"Foot_Side": '"inward"', "Foot_Projection": "4"}, "Inward feet must leave a gap between the legs"),
         ]
         for params, message in cases:

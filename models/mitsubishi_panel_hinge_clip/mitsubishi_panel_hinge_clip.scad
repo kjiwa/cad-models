@@ -4,9 +4,9 @@
  * one of each hand; the right clip mirrors the left across the long centerline. All dimensions
  * are in millimeters.
  *
- * Measure against the real part from one datum: X from the root of the angled plate along the
- * long axis, Y from the long centerline, Z from the bottom face of the base plate (the legs and
- * barrel reach below it). Set Highlight to tint one feature in the preview, then adjust that
+ * Measure against the real part from one datum: X along the long axis from the outer end face of
+ * the upper shoulder, where the angled plate leaves it; Y from the long centerline; Z from the
+ * bottom face of the base plate (the legs and barrel reach below it). Set Highlight to tint one feature in the preview, then adjust that
  * feature's group.
  */
 
@@ -98,7 +98,7 @@ Lug_Height = 4;
 Lug_Projection = 3.5;
 
 /* [Fin] */
-// Distance from the root of the angled plate to the front base edge of the fin
+// Distance from the upper shoulder end face to the front base edge of the fin
 Fin_Position = 9;
 
 // Height of the fin above the bottom face of the base plate
@@ -134,16 +134,16 @@ Cradle_Radius = 6;
 Cradle_Wall = 2.15;
 
 // Width of the cradle across the part
-Cradle_Width = 4;
+Cradle_Width = 3;
 
-// Distance from the root of the angled plate to the cradle center
-Cradle_Position = 4;
+// Distance from the upper shoulder end face to the cradle center
+Cradle_Position = 7;
 
 // Distance from the long centerline to the cradle center, on the lip side
-Cradle_Offset = 5.5;
+Cradle_Offset = 6.9;
 
 // Angle the cradle arc spans
-Cradle_Arc_Angle = 120; // [30:5:180]
+Cradle_Arc_Angle = 90; // [30:5:180]
 
 /* [Legs] */
 // Gap between the inside faces of the two legs
@@ -158,7 +158,7 @@ Leg_Length = 9.2;
 // Wall thickness of a leg
 Leg_Thickness = 2.15;
 
-// Distance from the root of the angled plate to the leg center
+// Distance from the upper shoulder end face to the leg center
 Leg_Position = 23.75;
 
 // Height of a foot at the leg tip
@@ -189,7 +189,7 @@ Base_End = Lower_Start + Lower_Length;
 Barrel_Radius = (pow(Barrel_Width / 2, 2) + pow(Barrel_Depth, 2)) / (2 * Barrel_Depth);
 Barrel_Center_Z = Plate_Thickness - Barrel_Depth + Barrel_Radius;
 Cradle_Outer_Radius = Cradle_Radius + Cradle_Wall;
-Cradle_Center_Z = Plate_Thickness + Cradle_Outer_Radius;
+Cradle_Center_Z = Plate_Thickness + Cradle_Radius;
 Fin_Top_End = Fin_Position + (Fin_Base_Width + Fin_Top_Width) / 2;
 Tongue_Rise_Length = Tongue_Length - Tongue_Drop_Length;
 Pair_Offset = (max(Shoulder_Width, Lower_Width) + 2 * Lug_Projection + Pair_Gap) / 2;
@@ -207,6 +207,8 @@ assert(Lip_Length <= Fin_Top_Width, "Lip_Length must not exceed Fin_Top_Width");
 assert(Lip_Height < Fin_Height, "Lip_Height must be less than Fin_Height");
 assert(Fin_Position >= 0 && Fin_Position + Fin_Base_Width <= Base_End, "The fin must stand on the base plate");
 assert(Cradle_Offset + Cradle_Width / 2 <= Shoulder_Width / 2, "The cradle must stay within Shoulder_Width");
+assert(Lug_Length <= min(Shoulder_Length, Lower_Length), "Lug_Length must not exceed Shoulder_Length or Lower_Length");
+assert(Cradle_Position >= 0 && Cradle_Position <= Base_End, "The cradle must stand on the base plate");
 assert(Leg_Gap + 2 * Leg_Thickness <= Lower_Width, "The legs must fit within Lower_Width");
 assert(Leg_Position - Leg_Width / 2 >= 0 && Leg_Position + Leg_Width / 2 <= Base_End, "The legs must sit under the base plate");
 assert(Foot_Height <= Leg_Length, "Foot_Height must not exceed Leg_Length");
